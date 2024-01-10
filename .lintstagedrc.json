@@ -1,0 +1,4 @@
+{
+  "./backend/**/*.ts": ["npm run lint:backend", "npm run testBackend:staged"],
+  "./frontend/**/*.ts": ["npm run testFrontend:staged"]
+}
