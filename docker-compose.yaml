@@ -13,17 +13,18 @@ services:
     networks:
       - default
   database:
-    container_name: database
-    image: postgres
+    container_name: mongo-database
+    image: mongo:6.0.4
     ports:
-      - '5432:5432'
+      - '27017:27017'
     environment:
-      DB_HOST: database
-      POSTGRES_DB: 'tea-coffee-db'
-      POSTGRES_PASSWORD: '1234'
-      POSTGRES_USER: 'postgres'
+      MONGO_INITDB_ROOT_USERNAME: 'mongo'
+      MONGO_INITDB_ROOT_PASSWORD: 'mongo'
+      MONGO_INITDB_DATABASE: 'agendazap'
+    volumes:
+      - ./docker-entrypoint-initdb.d/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
     healthcheck:
-      test: ['CMD-SHELL', 'pg_isready -U postgres']
+      test: ["CMD", "mongo", "--eval", "db.adminCommand('ping')"]
       interval: 10s
       timeout: 5s
       retries: 5
