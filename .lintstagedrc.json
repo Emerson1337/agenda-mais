@@ -1,4 +1,4 @@
 {
-  "./backend/**/*.ts": ["npm run lint:backend", "npm run testBackend:staged"],
-  "./frontend/**/*.ts": ["npm run testFrontend:staged"]
+  "./backend/**/*.ts": ["yarn lint:backend", "yarn testBE:staged"],
+  "./frontend/**/*.ts": ["yarn testFE:staged"]
 }
