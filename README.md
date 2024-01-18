@@ -10,13 +10,13 @@ There are two ways to run the project:
 
 Obs: it might take some time by the first time.
 
-For these two ways, you have to run `npm install` on the source of the project `./` .
+For these two ways, you have to run `yarn` on the source of the project `./` .
 
 - Frontend
 - backend
 - package.json
 
-run npm install here.
+run yarn install here.
 
 1. You will only need Docker and Docker-compose installed on your local machine.
 
@@ -25,11 +25,8 @@ run npm install here.
    ```jsx
    //1. env variables (on frontend and backend)
    remember to copy, paste and rename the .env.example file to .env
-   
-   //2. env variables (on frontend and backend)
-   run yarn
 
-   //3. configure husky
+   //2. configure husky
    run yarn prepare
 
    //3. run the docker-compose (you will get the API, the frontend, and
