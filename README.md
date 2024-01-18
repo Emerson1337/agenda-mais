@@ -27,12 +27,10 @@ run npm install here.
    remember to copy, paste and rename the .env.example file to .env
    
    //2. env variables (on frontend and backend)
-   run
-   yarn
+   run yarn
 
    //3. configure husky
-   run
-   yarn prepare
+   run yarn prepare
 
    //3. run the docker-compose (you will get the API, the frontend, and
    //also the database running). You won't need Node or any dependency installed
