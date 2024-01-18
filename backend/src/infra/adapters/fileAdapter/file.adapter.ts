@@ -1,7 +1,6 @@
 import { MulterOptions } from '@nestjs/platform-express/multer/interfaces/multer-options.interface';
 import { diskStorage } from 'multer';
 import { extname } from 'path';
-import { MissingParamError } from '../../../presentation/errors';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { NestInterceptor, Type } from '@nestjs/common';
 
@@ -23,7 +22,7 @@ export class FileAdapter {
       };
     } catch (error) {
       console.log('entrei');
-      throw new MissingParamError('picture');
+      throw new Error('picture');
     }
   }
 

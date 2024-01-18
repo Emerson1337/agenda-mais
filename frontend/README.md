@@ -17,6 +17,20 @@ ist/compiled/webpack/bundle5.js:68407:5 {
 
 so run
 
+first try:
+
+On Unix-like (Linux, macOS, Git bash, etc.):
+```
+npm_config_yes=true npx yarn-audit-fix
+```
+
+On PowerShell:
+```
+$env:npm_config_yes = 1; npx yarn-audit-fix
+```
+
+If those above don't work, try these right below:
+
 On Unix-like (Linux, macOS, Git bash, etc.):
 ```
 export NODE_OPTIONS=--openssl-legacy-provider
