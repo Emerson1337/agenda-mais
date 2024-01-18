@@ -5,14 +5,14 @@
     "lint-staged": "^13.2.2"
   },
   "scripts": {
-    "lint:backend": "cd ./backend && npm run lint",
-    "test:backend": "cd ./backend && npm run test",
-    "testBE:staged": "cd ./backend && npm run test -- --findRelatedTests",
-    "test:frontend": "cd ./frontend && npm run test",
-    "lint:frontend": "cd ./frontend && npm run lint",
-    "testFE:staged": "cd ./frontend && npm run test -- --findRelatedTests",
+    "lint:backend": "cd ./backend && yarn lint",
+    "test:backend": "cd ./backend && yarn test",
+    "testBE:staged": "cd ./backend && yarn test -- --findRelatedTests",
+    "test:frontend": "cd ./frontend && yarn test",
+    "lint:frontend": "cd ./frontend && yarn lint",
+    "testFE:staged": "cd ./frontend && yarn test -- --findRelatedTests",
     "prepare": "husky install",
     "lint-staged": "lint-staged",
-    "start-app": "concurrently \"cd ./backend && npm run start:dev\" \"cd ./frontend && npm run dev\""
+    "start-app": "concurrently \"cd ./backend && yarn start:dev\" \"cd ./frontend && yarn dev\""
   }
 }

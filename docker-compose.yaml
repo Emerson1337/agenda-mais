@@ -9,7 +9,7 @@ services:
       - "3000:3000"
     volumes:
       - .:/app
-    command: sh -c "cd frontend && npm install && cd ../backend && npm install && cd .. && npm run start-app"
+    command: sh -c "cd frontend && npm install && cd ../backend && npm install && cd .. && yarn start-app"
     networks:
       - default
   database:

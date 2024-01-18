@@ -10,9 +10,9 @@ $ npm install
 
 ```bash
 # development
-$ npm run start:dev:db
+$ yarn start:dev:db
 
-$ npm run start:dev
+$ yarn start:dev
 ```
 
 ## Running the database configuring it by yourself.
@@ -30,17 +30,17 @@ database: 'mvst-coffee-tea-challenge-db'
 
 ## Running the project
 
-npm run start
+yarn start
 
 ## Test
 
 ```bash
 # unit tests
-$ npm run test
+$ yarn test
 
 # e2e tests
-$ npm run test:e2e
+$ yarn test:e2e
 
 # test coverage
-$ npm run test:cov
+$ yarn test:cov
 ```
