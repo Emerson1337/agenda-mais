@@ -9,7 +9,7 @@ services:
       - "3000:3000"
     volumes:
       - .:/app
-    command: sh -c "cd frontend && yarn install && cd ../backend && yarn install && cd .. && yarn start-app"
+    command: sh -c "cd frontend && yarn install && cd ../backend && yarn install --ignore-engines && cd .. && yarn start-app"
     networks:
       - default
   database:
