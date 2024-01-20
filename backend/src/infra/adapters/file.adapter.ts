@@ -21,7 +21,6 @@ export class FileAdapter {
         }),
       };
     } catch (error) {
-      console.log('entrei');
       throw new Error('picture');
     }
   }

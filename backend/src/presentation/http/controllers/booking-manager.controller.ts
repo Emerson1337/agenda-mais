@@ -50,8 +50,6 @@ export class BookingManagerController {
         .status(201)
         .send(ok(await this.bookingManagersService.update(userId, manager)));
     } catch (error) {
-      console.log(error);
-
       return response.status(error.status).send(handleError(error));
     }
   }
