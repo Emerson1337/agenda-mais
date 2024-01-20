@@ -6,6 +6,8 @@ import { BookingManagersService } from '../booking-managers/booking-managers.ser
 import { TokenAdapter } from '@src/infra/adapters/token.adapter';
 import { FileAdapter } from '@src/infra/adapters/file.adapter';
 import { EncryptAdapter } from '@src/infra/adapters/encrypt.adapter';
+import { JwtAuthGuard } from './guard/jwt-auth.guard';
+import { APP_GUARD } from '@nestjs/core';
 
 @Module({
   imports: [DatabaseModule],
@@ -16,6 +18,10 @@ import { EncryptAdapter } from '@src/infra/adapters/encrypt.adapter';
     EncryptAdapter,
     FileAdapter,
     TokenAdapter,
+    {
+      provide: APP_GUARD,
+      useClass: JwtAuthGuard,
+    },
   ],
 })
 export class AuthModule {}

@@ -3,6 +3,7 @@ import { handleError, ok } from '@presentation/helpers/http.helper';
 import { Response } from 'express';
 import { BookingManagersService } from '@application/booking-managers/booking-managers.service';
 import { CreateUpdateManagerDto } from '@src/application/booking-managers/dtos/create-update-manager-dto';
+import { AuthRequired } from '@src/application/auth/decorators/auth-required.decorator';
 
 @Controller('dashboard/managers')
 export class BookingManagerController {
@@ -36,6 +37,7 @@ export class BookingManagerController {
   }
 
   @Put()
+  @AuthRequired()
   async update(
     @Body() manager: CreateUpdateManagerDto,
     @Res() response: Response,

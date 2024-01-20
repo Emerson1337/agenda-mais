@@ -25,7 +25,7 @@ export class MultipleErrors extends Error {
     super('Multiple errors occurred');
     this.name = errorCodes.MULTIPLE_INVALID_PARAM_ERRORS;
     this.status = HttpStatus.UNPROCESSABLE_ENTITY;
-    this.stack = 'MultipleErrors';
+    this.stack = errorCodes.MULTIPLE_INVALID_PARAM_ERRORS;
     this.errors = errors;
   }
 }

@@ -131,13 +131,15 @@ export class AuthService {
         throw new Error();
       }
 
-      const user = await this.bookingManagersService.getManagerById(
-        decoded.sub,
-      );
+      const user = await this.validateDecodedUser(decoded);
 
       return this.login(user);
     } catch {
       throw new UnauthorizedError('refreshToken', 'Invalid refresh token.');
     }
+  }
+
+  async validateDecodedUser(decodedUser: TokenPayload) {
+    return await this.bookingManagersService.getManagerById(decodedUser.sub);
   }
 }
