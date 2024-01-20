@@ -48,6 +48,8 @@ If you did once, only `yarn db:dev` should be enough.
 
 # **BACKEND**
 
+Make sure you copy and paste .env.example with right values.
+
 - Setup
 
 run the following commands:
@@ -60,6 +62,8 @@ $ yarn start:dev
 ```
 
 # **FRONTEND**
+
+Make sure you copy and paste .env.example with right values.
 
 - Setup
 
