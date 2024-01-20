@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Put, Res } from '@nestjs/common';
+import { Body, Controller, Get, Post, Put, Req, Res } from '@nestjs/common';
 import { handleError, ok } from '@presentation/helpers/http.helper';
 import { Response } from 'express';
 import { BookingManagersService } from '@application/booking-managers/booking-managers.service';
@@ -39,14 +39,19 @@ export class BookingManagerController {
   @Put()
   @AuthRequired()
   async update(
+    @Req() request: Request,
     @Body() manager: CreateUpdateManagerDto,
     @Res() response: Response,
   ) {
     try {
+      const userId = request['user'].id;
+
       return response
         .status(201)
-        .send(ok(await this.bookingManagersService.create(manager)));
+        .send(ok(await this.bookingManagersService.update(userId, manager)));
     } catch (error) {
+      console.log(error);
+
       return response.status(error.status).send(handleError(error));
     }
   }

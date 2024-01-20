@@ -4,6 +4,7 @@ import { CreateUpdateManagerDto } from '@src/application/booking-managers/dtos/c
 import { BookingManagersRepository } from '../../domain/repositories/booking-managers.repository';
 import { BookingManagers } from '@src/domain/entities/booking-managers.entity';
 import { EncryptAdapter } from '@src/infra/adapters/encrypt.adapter';
+import { UserDto } from '../auth/dtos/user-dto';
 
 @Injectable()
 export class BookingManagersService {
@@ -52,18 +53,28 @@ export class BookingManagersService {
   }
 
   async update(
+    managerId: string,
     manager: CreateUpdateManagerDto,
   ): Promise<BookingManagers | Error> {
     const errors: InvalidParamError[] = [];
 
     const managerUsernameAlreadyExists =
-      await this.bookingManagersRepository.findByUsername(manager.username);
+      await this.bookingManagersRepository.findByUsernameInUse(
+        managerId,
+        manager.username,
+      );
 
     const managerEmailAlreadyExists =
-      await this.bookingManagersRepository.findByEmail(manager.email);
+      await this.bookingManagersRepository.findByEmailInUse(
+        managerId,
+        manager.email,
+      );
 
     const managerPhoneAlreadyExists =
-      await this.bookingManagersRepository.findByPhone(manager.phone);
+      await this.bookingManagersRepository.findByPhoneInUse(
+        managerId,
+        manager.phone,
+      );
 
     if (managerUsernameAlreadyExists)
       errors.push(
@@ -80,7 +91,7 @@ export class BookingManagersService {
       throw new MultipleErrors(errors);
     }
 
-    return await this.bookingManagersRepository.create(manager);
+    return await this.bookingManagersRepository.update(managerId, manager);
   }
 
   async list(): Promise<Array<BookingManagers> | Error> {
@@ -91,7 +102,7 @@ export class BookingManagersService {
     return await this.bookingManagersRepository.findByEmail(email);
   }
 
-  async getManagerById(id: string): Promise<BookingManagers> {
-    return await this.bookingManagersRepository.findById(id);
+  async getManagerById(id: string): Promise<UserDto> {
+    return await this.bookingManagersRepository.findByIdWithoutPassword(id);
   }
 }
