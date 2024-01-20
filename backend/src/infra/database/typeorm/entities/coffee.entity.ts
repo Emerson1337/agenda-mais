@@ -1,10 +1,9 @@
-import { Coffee } from '@src/domain/entities/coffee.entity';
 import { Column, Entity } from 'typeorm';
 
 import BaseEntityMDB from './config/base.entity';
 
-@Entity('coffees')
-export class CoffeeMDB extends BaseEntityMDB implements Coffee {
+@Entity('Coffees')
+export class CoffeeMDB extends BaseEntityMDB {
   @Column({ unique: true })
   name: string;
 

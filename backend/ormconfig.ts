@@ -12,9 +12,7 @@ export default {
   logging: true,
   debug: true,
   entities: [join(__dirname, '**', '*.entity.{ts,js}')],
-  migrations: ['src/infra/database/typeorm/migrations/**/*.ts'],
   cli: {
     entitiesDir: [join(__dirname, '/src/infra/database/typeorm/entities')],
-    migrationsDir: 'src/infra/database/typeorm/migrations',
   },
 };

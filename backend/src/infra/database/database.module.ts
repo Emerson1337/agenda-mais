@@ -1,17 +1,17 @@
 import { Module } from '@nestjs/common';
 import { CoffeeRepository } from '@src/application/use-cases/coffee/repositories/coffee.repository';
 
-import { PrismaService } from './prisma/prisma.service';
-import { PrismaCoffeeRepository } from './prisma/repositories/coffee.repository';
+import { TypeOrmCoffeeRepository } from './typeorm/repositories/coffee.repository';
+import { TypeormService } from './typeorm/typeorm.service';
 
 @Module({
   providers: [
-    PrismaService,
+    TypeormService,
     {
       provide: CoffeeRepository,
-      useClass: PrismaCoffeeRepository,
+      useClass: TypeOrmCoffeeRepository,
     },
   ],
-  exports: [CoffeeRepository, PrismaService],
+  exports: [CoffeeRepository, TypeormService],
 })
 export class DatabaseModule {}

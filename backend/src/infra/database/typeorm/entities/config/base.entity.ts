@@ -1,13 +1,15 @@
+import { OmitType } from '@nestjs/swagger';
 import BaseEntity from '@src/domain/entities/config/base.entity';
-import { randomUUID } from 'crypto';
 import {
-  PrimaryGeneratedColumn,
   CreateDateColumn,
+  ObjectIdColumn,
+  PrimaryColumn,
   UpdateDateColumn,
 } from 'typeorm';
 
-class BaseEntityMDB implements BaseEntity {
-  @PrimaryGeneratedColumn('uuid')
+class BaseEntityMDB extends OmitType(BaseEntity, ['id'] as const) {
+  @PrimaryColumn()
+  @ObjectIdColumn()
   id: string;
 
   @CreateDateColumn()
@@ -15,12 +17,6 @@ class BaseEntityMDB implements BaseEntity {
 
   @UpdateDateColumn()
   updatedAt: Date;
-
-  constructor() {
-    if (!this.id) {
-      this.id = randomUUID();
-    }
-  }
 }
 
 export default BaseEntityMDB;
