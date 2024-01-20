@@ -1,5 +1,5 @@
 import { HttpStatus } from '@nestjs/common';
-import { ErrorCodes } from './error-codes';
+import { errorCodes } from './error-codes';
 
 export class InvalidParamError extends Error {
   status: number;
@@ -11,7 +11,7 @@ export class InvalidParamError extends Error {
   ) {
     super(`Invalid param: ${paramName}. ${message}`);
     this.name = paramName;
-    this.stack = ErrorCodes.INVALID_PARAM_ERROR;
+    this.stack = errorCodes.INVALID_PARAM_ERROR;
     this.message = `${message}`;
     this.status = statusCode;
   }
@@ -23,7 +23,7 @@ export class MultipleErrors extends Error {
 
   constructor(errors: InvalidParamError[]) {
     super('Multiple errors occurred');
-    this.name = ErrorCodes.MULTIPLE_INVALID_PARAM_ERRORS;
+    this.name = errorCodes.MULTIPLE_INVALID_PARAM_ERRORS;
     this.status = HttpStatus.UNPROCESSABLE_ENTITY;
     this.stack = 'MultipleErrors';
     this.errors = errors;

@@ -1,14 +1,10 @@
-import {
-  // BadRequestException,
-  // HttpException,
-  Injectable,
-  UnauthorizedException,
-} from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { UserDto } from './dtos/user-dto';
 import { TokenPayload, TokenResponse } from './dtos/token-dto';
 import { TokenAdapter } from '@src/infra/adapters/token.adapter';
 import { BookingManagersService } from '../booking-managers/booking-managers.service';
 import { EncryptAdapter } from '@src/infra/adapters/encrypt.adapter';
+import { UnauthorizedError } from '@src/presentation/errors/unauthorized-error';
 
 export interface SocialUserDto {
   id: number | string;
@@ -30,13 +26,13 @@ export class AuthService {
     const user = await this.bookingManagersService.getManagerByEmail(email);
 
     if (!user) {
-      throw new UnauthorizedException('Invalid credentials.');
+      throw new UnauthorizedError('email/password', 'Invalid credentials.');
     }
 
     if (
       !(await this.encryptAdapter.validatePassword(password, user.password))
     ) {
-      throw new UnauthorizedException('Invalid credentials.');
+      throw new UnauthorizedError('email/password', 'Invalid credentials.');
     }
 
     return user;
@@ -141,7 +137,7 @@ export class AuthService {
 
       return this.login(user);
     } catch {
-      throw new UnauthorizedException('Invalid refresh token.');
+      throw new UnauthorizedError('refreshToken', 'Invalid refresh token.');
     }
   }
 }

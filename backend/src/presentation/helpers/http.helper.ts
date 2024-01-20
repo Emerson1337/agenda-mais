@@ -1,4 +1,5 @@
 import { ServerError } from '../errors';
+import { errorCodes } from '../errors/error-codes';
 import { HttpResponse } from '../http/protocols/http.protocols';
 
 type IBadRequest = {
@@ -46,11 +47,17 @@ export const ok = <T>(data: T): HttpResponse<T> => ({
 });
 
 export const handleError = (error: Error) => {
-  if (['MultipleErrors'].includes(error.stack)) {
+  if ([errorCodes.MULTIPLE_INVALID_PARAM_ERRORS].includes(error.stack)) {
     return multipleBadRequest(error['errors'] as Error[]);
   }
 
-  if (['MissingParamError', 'InvalidParamError'].includes(error.stack)) {
+  if (
+    [
+      errorCodes.MISSING_PARAM_ERROR,
+      errorCodes.INVALID_PARAM_ERROR,
+      errorCodes.UNAUTHORIZED_ERROR,
+    ].includes(error.stack)
+  ) {
     return badRequest(error);
   } else return serverError(error);
 };
