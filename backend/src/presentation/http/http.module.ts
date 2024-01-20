@@ -1,12 +1,11 @@
 import { Module } from '@nestjs/common';
-import { ValidatorsModule } from '@domain/validators/validator.module';
-import { CoffeeService } from '@src/application/use-cases/coffee/coffee.service';
-import { CoffeeController } from './controllers/coffee.controller';
 import { DatabaseModule } from '@src/infra/database/database.module';
+import { BookingManagerController } from './controllers/booking-manager.controller';
+import { BookingManagersService } from '@src/application/booking-managers/booking-managers.service';
 
 @Module({
-  imports: [DatabaseModule, ValidatorsModule],
-  controllers: [CoffeeController],
-  providers: [CoffeeService],
+  imports: [DatabaseModule],
+  controllers: [BookingManagerController],
+  providers: [BookingManagersService],
 })
 export class HttpModule {}

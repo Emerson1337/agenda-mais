@@ -3,6 +3,7 @@ import { HttpResponse } from '../http/protocols/http.protocols';
 
 type IBadRequest = {
   name: string;
+  stack: string;
   message: string;
 };
 
@@ -14,8 +15,23 @@ export const badRequest = (
   body: {
     error: {
       name: error.name,
+      stack: error.stack,
       message: error.message,
     },
+  },
+});
+
+export const multipleBadRequest = (
+  errors: Error[],
+): HttpResponse<{
+  errors: IBadRequest[];
+}> => ({
+  body: {
+    errors: errors.map((error) => ({
+      name: error.name,
+      stack: error.stack,
+      message: error.message,
+    })),
   },
 });
 
@@ -30,7 +46,11 @@ export const ok = <T>(data: T): HttpResponse<T> => ({
 });
 
 export const handleError = (error: Error) => {
-  if (['MissingParamError', 'InvalidParamError'].includes(error.name))
+  if (['MultipleErrors'].includes(error.stack)) {
+    return multipleBadRequest(error['errors'] as Error[]);
+  }
+
+  if (['MissingParamError', 'InvalidParamError'].includes(error.stack)) {
     return badRequest(error);
-  else return serverError(error);
+  } else return serverError(error);
 };

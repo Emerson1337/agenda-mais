@@ -1,7 +1,7 @@
 import { Injectable, OnModuleInit } from '@nestjs/common';
 import { DataSource } from 'typeorm';
 import 'dotenv/config';
-import { CoffeeMDB } from './entities/coffee.entity';
+import { BookingManagersMDB } from './entities/booking-managers-db.entity';
 
 @Injectable()
 export class TypeormService extends DataSource implements OnModuleInit {
@@ -14,7 +14,7 @@ export class TypeormService extends DataSource implements OnModuleInit {
       password: process.env.DB_PASSWORD,
       database: process.env.DB_DATABASE,
       logging: true,
-      entities: [CoffeeMDB],
+      entities: [BookingManagersMDB],
     });
   }
   onModuleInit() {
