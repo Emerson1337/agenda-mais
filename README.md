@@ -6,62 +6,100 @@ MongoDB
 
 # **Requirements to run the project**
 
-There are two ways to run the project:
-
 Obs: it might take some time by the first time.
 
-For these two ways, you have to run `yarn` on the source of the project `./` .
+# **DATABASE**
 
-- Frontend
-- backend
-- package.json
+1. On the root of the project, run:
 
-run yarn install here.
+```
+yarn db:dev
+```
 
-1. You will only need Docker and Docker-compose installed on your local machine.
+if it is your first time running the database, it might close due to volumes folder missing. If it happens, run
+the command again.
 
-   Commands needed:
+Once you have the container running, you need to set the replicate option because of prisma needs it.
 
-   ```jsx
-   //1. env variables (on frontend and backend)
-   remember to copy, paste and rename the .env.example file to .env
+With the container running, do:
 
-   //2. configure husky
-   run yarn prepare
+```
+# list containers running
+$ docker ps
 
-   //3. run the docker-compose (you will get the API, the frontend, and
-   //also the database running). You won't need Node or any dependency installed
-   //locally. Changes in code are reflected inside the container (bind mount)
-   docker-compose up
-   ```
+# enter in the db container
+$ docker exec -it <container_id> bash
 
-Once the app is running, we will have:
+# enter in mongosh inside the container
+$ mongosh
+
+# paste it
+$ rs.initiate({_id: "rs0", members: [{_id: 0, host: "127.0.0.1:27017"}] })
+```
+
+Close the bash by typing exit multiple times. Once on your bash, restart the container:
+
+```
+docker restart <container_id>
+```
+
+If you did once, only `yarn db:dev` should be enough.
+
+
+# **BACKEND**
+
+- Setup
+
+run the following commands:
+
+```
+$ yarn install
+
+# to run the app
+$ yarn start:dev
+```
+
+# **FRONTEND**
+
+- Setup
+
+run the following commands:
+
+```
+$ yarn install
+
+# to run the app
+$ yarn dev
+```
+
+At the end, you will have:
 
 API: localhost:3000
+
 Frontend app: localhost:4000
+
 database: localhost:27017
 
 # **Errors prevention**
 
 We have on the app Husky and Lintstaged configured. It means: any commit sending a broken service already covered by a test won’t be accepted to go to the repository. And also a “lint” command is run to fix and detect problems related to coding out the pattern.
 
-examples while the development process:
-
-![image](https://github.com/andersongomes/banksystem/assets/58860863/6f173c45-57e0-464f-986f-e603f97f4371)
-
-![image](https://github.com/andersongomes/banksystem/assets/58860863/fb92d583-6dc1-4979-8874-6e894291841f)
 
 # **Troubleshooting:**
 
-Node version problem (required v16.20.0)
+Database problems
+
+If you get this
 
 ```jsx
-Error: error:0308010C:digital envelope routines::unsupported
+Error: NotYetInitialized: Cannot use non-local read concern until replica set is finished initializing.
 ```
+Means the replicate set is not configured on your container, so you must open the container, go inside mongosh and run:
 
-If you get problems with the crypt version when you try to run the app on a container
-
-- Remember to delete `node_modules` folders from the backend and frontend if you are using an OS different from Linux before to run for the first time the docker-compose up command.
+```
+# paste it
+$ rs.initiate({_id: "rs0", members: [{_id: 0, host: "127.0.0.1:27017"}] })
+```
 
 # **Postman collection for API endpoints:**
 - Soon

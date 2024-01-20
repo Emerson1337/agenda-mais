@@ -14,7 +14,7 @@ export default {
   entities: [join(__dirname, '**', '*.entity.{ts,js}')],
   migrations: ['src/infra/database/typeorm/migrations/**/*.ts'],
   cli: {
-    entitiesDir: 'src/infra/database/typeorm/entities',
+    entitiesDir: [join(__dirname, '/src/infra/database/typeorm/entities')],
     migrationsDir: 'src/infra/database/typeorm/migrations',
   },
 };

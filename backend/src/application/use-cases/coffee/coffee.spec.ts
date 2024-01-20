@@ -24,22 +24,6 @@ const makeSut = (): SutTypes => {
 };
 
 describe('Coffee service', () => {
-  test('Should not be able to create coffee if no picture is provided', async () => {
-    const { sut } = makeSut();
-    const coffeeRequest = {
-      name: 'valid_name',
-      picture: '',
-      type: 'ROBUSTA',
-      description: 'valid_description',
-    };
-
-    const coffeeResponse = async () => await sut.create(coffeeRequest);
-
-    await expect(coffeeResponse).rejects.toThrow(
-      new MissingParamError('picture'),
-    );
-  });
-
   test('Should not be able to create coffee if empty description is provided', async () => {
     const { sut } = makeSut();
     const coffeeRequest = {
@@ -123,7 +107,6 @@ describe('Coffee service', () => {
 
     const httpResponse = await sut.create({
       name: 'Coffee',
-      picture: 'coffe.png',
       type: 'ROBUSTA',
       description: 'desc',
     });

@@ -3,17 +3,17 @@ export class Coffee {
   description: string;
   picture: string;
   type: "ROBUSTA" | "ARABIC";
-  created_at?: Date;
+  createdAt?: Date;
 
   constructor(data: Coffee) {
     this.name = data.name;
     this.description = data.description;
     this.picture = data.picture;
     this.type = data.type;
-    this.created_at = data.created_at;
+    this.createdAt = data.createdAt;
   }
 
   public getDate?(): string {
-    return this.created_at.toString();
+    return this.createdAt.toString();
   }
 }

@@ -7,7 +7,7 @@ it("is a valid Coffee", () => {
       description: "test",
       picture: "/assets/image.png",
       type: "ARABIC",
-      created_at: new Date(2012, 1, 1),
+      createdAt: new Date(2012, 1, 1),
     }).name
   ).toEqual("GEPA Chiapas with two lines");
 
@@ -17,7 +17,7 @@ it("is a valid Coffee", () => {
       description: "test",
       picture: "/assets/image.png",
       type: "ARABIC",
-      created_at: new Date(2012, 1, 1),
+      createdAt: new Date(2012, 1, 1),
     }).name
   ).toEqual("good for espresso in Italy");
 });
@@ -30,7 +30,7 @@ it.skip("getDate", () => {
       description: "test",
       picture: "/assets/image.png",
       type: "ARABIC",
-      created_at: new Date(2012, 1, 1),
+      createdAt: new Date(2012, 1, 1),
     }).getDate()
   ).toEqual("2012-01-31T23:00:00.000Z");
 });

@@ -1,24 +1,20 @@
 import { CoffeeRepository } from '@src/application/use-cases/coffee/repositories/coffee.repository';
 
-import { CoffeeMDB } from '../entities/coffee.entity';
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
+import { Coffee } from '@src/domain/entities/coffee.entity';
 
 @Injectable()
-export class TypeOrmCoffeeRepository implements CoffeeRepository {
+export class PrismaCoffeeRepository implements CoffeeRepository {
   constructor(private prisma: PrismaService) {}
 
-  async create(coffee: CoffeeMDB): Promise<CoffeeMDB> {
+  async create(coffee: Coffee): Promise<Coffee> {
     return this.prisma.coffees.create({
       data: coffee,
     });
   }
 
-  async getAll(): Promise<Array<CoffeeMDB>> {
-    console.log('#####################################');
-    console.log(this.prisma);
-    console.log('#####################################');
-
+  async getAll(): Promise<Array<Coffee>> {
     try {
       return this.prisma.coffees.findMany();
     } catch (error) {
@@ -26,7 +22,7 @@ export class TypeOrmCoffeeRepository implements CoffeeRepository {
     }
   }
 
-  async findByName(name: string): Promise<CoffeeMDB> {
+  async findByName(name: string): Promise<Coffee> {
     return this.prisma.coffees.findUnique({
       where: { name },
     });
