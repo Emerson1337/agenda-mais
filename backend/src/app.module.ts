@@ -1,7 +1,8 @@
 import { Module } from '@nestjs/common';
-import { HttpModule } from './presentation/http/http.module';
+import { BookingManagersModule } from './application/booking-managers/booking-managers.module';
+import { AuthModule } from './application/auth/auth.module';
 
 @Module({
-  imports: [HttpModule],
+  imports: [BookingManagersModule, AuthModule],
 })
 export class AppModule {}

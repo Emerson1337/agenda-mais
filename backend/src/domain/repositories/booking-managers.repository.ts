@@ -7,4 +7,5 @@ export abstract class BookingManagersRepository {
   abstract findByUsername(username: string): Promise<BookingManagers>;
   abstract findByEmail(email: string): Promise<BookingManagers>;
   abstract findByPhone(phone: string): Promise<BookingManagers>;
+  abstract findById(id: string): Promise<BookingManagers>;
 }

@@ -11,6 +11,7 @@ export class BookingManagers extends BaseEntity {
   phone: string;
   profilePhoto?: string;
   appointmentsPerPhone?: number;
-  password: string;
+  googleId?: string;
+  password?: string;
   status: ManagerStatus;
 }

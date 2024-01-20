@@ -3,10 +3,14 @@ import { InvalidParamError, MultipleErrors } from '@presentation/errors';
 import { CreateUpdateManagerDto } from '@src/application/booking-managers/dtos/create-update-manager-dto';
 import { BookingManagersRepository } from '../../domain/repositories/booking-managers.repository';
 import { BookingManagers } from '@src/domain/entities/booking-managers.entity';
+import { EncryptAdapter } from '@src/infra/adapters/encrypt.adapter';
 
 @Injectable()
 export class BookingManagersService {
-  constructor(private bookingManagersRepository: BookingManagersRepository) {}
+  constructor(
+    private bookingManagersRepository: BookingManagersRepository,
+    private encryptAdapter: EncryptAdapter,
+  ) {}
 
   async create(
     manager: CreateUpdateManagerDto,
@@ -37,7 +41,14 @@ export class BookingManagersService {
       throw new MultipleErrors(errors);
     }
 
-    return await this.bookingManagersRepository.create(manager);
+    const passwordHashed = await this.encryptAdapter.encryptPassword(
+      manager.password,
+    );
+
+    return await this.bookingManagersRepository.create({
+      ...manager,
+      password: passwordHashed,
+    });
   }
 
   async update(
@@ -74,5 +85,13 @@ export class BookingManagersService {
 
   async list(): Promise<Array<BookingManagers> | Error> {
     return await this.bookingManagersRepository.getAll();
+  }
+
+  async getManagerByEmail(email: string): Promise<BookingManagers> {
+    return await this.bookingManagersRepository.findByEmail(email);
+  }
+
+  async getManagerById(id: string): Promise<BookingManagers> {
+    return await this.bookingManagersRepository.findById(id);
   }
 }

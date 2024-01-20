@@ -33,6 +33,9 @@ export class BookingManagersMDB
   @Column({ type: 'int', nullable: true })
   appointmentsPerPhone?: number;
 
+  @Column({ type: 'string', nullable: true })
+  googleId?: string;
+
   @Column({ type: 'string' })
   password: string;
 
