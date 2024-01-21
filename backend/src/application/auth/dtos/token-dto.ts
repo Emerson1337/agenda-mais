@@ -7,10 +7,10 @@ export interface TokenResponse {
 }
 
 export interface TokenPayload {
-  sub: string;
-  username: string;
-  email: string;
-  roles: string[];
-  plan: string;
-  status: string;
+  sub?: string;
+  username?: string;
+  email?: string;
+  roles?: string[];
+  plan?: string;
+  status?: string;
 }

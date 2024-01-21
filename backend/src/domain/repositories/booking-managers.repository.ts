@@ -15,6 +15,10 @@ export abstract class BookingManagersRepository {
     id: string,
     manager: UpdateManagerAdminDto,
   ): Promise<BookingManagers>;
+  abstract updatePasswordById(
+    id: string,
+    password: string,
+  ): Promise<BookingManagers>;
   abstract getAll(): Promise<Array<BookingManagers>>;
   abstract findByUsername(username: string): Promise<BookingManagers>;
   abstract findByEmail(email: string): Promise<BookingManagers>;

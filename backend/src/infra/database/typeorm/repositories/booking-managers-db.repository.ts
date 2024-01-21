@@ -19,6 +19,17 @@ export class TypeOrmBookingManagersRepository
   constructor(private typeormService: TypeormService) {
     this.repository = typeormService.getMongoRepository(BookingManagersMDB);
   }
+
+  async updatePasswordById(
+    id: string,
+    password: string,
+  ): Promise<BookingManagers> {
+    return (await this.repository.updateOne(
+      { _id: new ObjectId(id) },
+      { $set: { password } },
+    )) as BookingManagers;
+  }
+
   async update(
     id: string,
     managerUpdated: UpdateManagerDto,

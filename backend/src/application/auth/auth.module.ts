@@ -8,7 +8,7 @@ import { FileAdapter } from '@src/infra/adapters/file.adapter';
 import { EncryptAdapter } from '@src/infra/adapters/encrypt.adapter';
 import { JwtAuthGuard } from './guard/jwt-auth.guard';
 import { APP_GUARD } from '@nestjs/core';
-
+import { MailSenderAdapter } from '@src/infra/adapters/mail-sender.adapter';
 @Module({
   imports: [DatabaseModule],
   controllers: [AuthController],
@@ -18,6 +18,7 @@ import { APP_GUARD } from '@nestjs/core';
     EncryptAdapter,
     FileAdapter,
     TokenAdapter,
+    MailSenderAdapter,
     {
       provide: APP_GUARD,
       useClass: JwtAuthGuard,

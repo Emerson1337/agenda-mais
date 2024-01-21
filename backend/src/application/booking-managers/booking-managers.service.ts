@@ -145,6 +145,18 @@ export class BookingManagersService {
     });
   }
 
+  async updatePasswordById(managerId: string, password: string) {
+    const manager = await this.bookingManagersRepository.findById(managerId);
+
+    if (!manager)
+      throw new InvalidParamError('managerId', 'Manager not found.');
+
+    return await this.bookingManagersRepository.updatePasswordById(
+      managerId,
+      password,
+    );
+  }
+
   async list(): Promise<Array<BookingManagers> | Error> {
     return (await this.bookingManagersRepository.getAll()).map((manager) =>
       this.removePassword(manager),
