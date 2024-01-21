@@ -55,7 +55,7 @@ export class AuthService {
     );
 
     return {
-      user,
+      user: { ...user, password: undefined },
       access_token: await this.tokenService.generateToken(payload),
       refresh_token,
     };

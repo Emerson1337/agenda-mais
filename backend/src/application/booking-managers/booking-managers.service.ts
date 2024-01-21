@@ -119,11 +119,15 @@ export class BookingManagersService {
   }
 
   async list(): Promise<Array<BookingManagers> | Error> {
-    return await this.bookingManagersRepository.getAll();
+    return (await this.bookingManagersRepository.getAll()).map((manager) =>
+      this.removePassword(manager),
+    );
   }
 
   async listManager(id: string): Promise<BookingManagers | Error> {
-    return await this.bookingManagersRepository.findById(id);
+    return this.removePassword(
+      await this.bookingManagersRepository.findById(id),
+    );
   }
 
   async getManagerByEmail(email: string): Promise<BookingManagers> {
@@ -131,6 +135,12 @@ export class BookingManagersService {
   }
 
   async getManagerById(id: string): Promise<UserDto> {
-    return await this.bookingManagersRepository.findByIdWithoutPassword(id);
+    return this.removePassword(
+      await this.bookingManagersRepository.findById(id),
+    );
+  }
+
+  private removePassword(manager: BookingManagers) {
+    return Object.assign({}, manager, { password: undefined });
   }
 }
