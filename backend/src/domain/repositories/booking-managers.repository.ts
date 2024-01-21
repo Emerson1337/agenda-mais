@@ -10,6 +10,7 @@ export abstract class BookingManagersRepository {
     id: string,
     manager: UpdateManagerDto,
   ): Promise<BookingManagers>;
+  abstract updatePicture(id: string, picture: string): Promise<BookingManagers>;
   abstract updateAsAdmin(
     id: string,
     manager: UpdateManagerAdminDto,

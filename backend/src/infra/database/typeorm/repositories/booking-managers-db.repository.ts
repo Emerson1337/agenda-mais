@@ -36,6 +36,17 @@ export class TypeOrmBookingManagersRepository
     });
   }
 
+  async updatePicture(id: string, picture: string): Promise<BookingManagers> {
+    const manager = await this.repository.findOne({
+      where: { _id: new ObjectId(id) },
+    });
+
+    return this.repository.save({
+      ...manager,
+      profilePhoto: picture,
+    });
+  }
+
   async updateAsAdmin(
     id: string,
     managerUpdated: UpdateManagerDto,

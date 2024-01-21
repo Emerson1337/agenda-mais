@@ -1,9 +1,22 @@
 import { BookingManagersService } from '@application/booking-managers/booking-managers.service';
-import { Body, Controller, Get, Post, Put, Req, Res } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Patch,
+  Post,
+  Put,
+  Req,
+  Res,
+  UseInterceptors,
+} from '@nestjs/common';
+import { FileInterceptor } from '@nestjs/platform-express';
 import { handleError, ok } from '@presentation/helpers/http.helper';
 import { CreateManagerDto } from '@src/application/booking-managers/dtos/create-manager-dto';
 import { UpdateManagerDto } from '@src/application/booking-managers/dtos/update-manager-dto';
+import { UploadPictureDto } from '@src/application/booking-managers/dtos/upload-picture-manager-dto';
 import { AuthRequired } from '@src/application/shared/decorators/auth-required.decorator';
+import { FileAdapter } from '@src/infra/adapters/file.adapter';
 import { Response } from 'express';
 
 @Controller('dashboard/managers')
@@ -50,6 +63,33 @@ export class BookingManagerController {
       return response
         .status(201)
         .send(ok(await this.bookingManagersService.update(userId, manager)));
+    } catch (error) {
+      return response.status(error.status).send(handleError(error));
+    }
+  }
+
+  @Patch('picture')
+  @AuthRequired()
+  @UseInterceptors(FileInterceptor('picture', new FileAdapter().saveFile()))
+  async updateProfilePhoto(
+    @Req() request: Request,
+    @Body() _: UploadPictureDto,
+    @Res() response: Response,
+  ) {
+    try {
+      const userId = request['user'].id;
+
+      return response
+        .status(201)
+        .send(
+          ok(
+            await this.bookingManagersService.updatePicture(
+              userId,
+              request['file'].path as string,
+              request['file'].filename as string,
+            ),
+          ),
+        );
     } catch (error) {
       return response.status(error.status).send(handleError(error));
     }

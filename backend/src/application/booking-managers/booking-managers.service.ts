@@ -11,12 +11,14 @@ import { BookingManagersRepository } from '../../domain/repositories/booking-man
 import { UserDto } from '../auth/dtos/user-dto';
 import { UpdateManagerAdminDto } from './dtos/update-manager-admin-dto';
 import { UpdateManagerDto } from './dtos/update-manager-dto';
+import { FileAdapter } from '@src/infra/adapters/file.adapter';
 
 @Injectable()
 export class BookingManagersService {
   constructor(
     private bookingManagersRepository: BookingManagersRepository,
     private encryptAdapter: EncryptAdapter,
+    private fileAdapter: FileAdapter,
   ) {}
 
   async create(manager: CreateManagerDto): Promise<BookingManagers | Error> {
@@ -99,6 +101,31 @@ export class BookingManagersService {
     }
 
     return await this.bookingManagersRepository.update(managerId, manager);
+  }
+
+  async updatePicture(
+    managerId: string,
+    picturePath: string,
+    filename: string,
+  ): Promise<BookingManagers | Error> {
+    if (!picturePath)
+      throw new InvalidParamError(
+        'picture',
+        "Picture wasn't provided or it's not an image",
+      );
+
+    picturePath = await this.fileAdapter.moveFile(
+      picturePath,
+      `public/${managerId}/${filename}`,
+    );
+
+    const manager = await this.bookingManagersRepository.findById(managerId);
+    manager.profilePhoto && this.fileAdapter.removeFile(manager.profilePhoto);
+
+    return await this.bookingManagersRepository.updatePicture(
+      managerId,
+      picturePath,
+    );
   }
 
   async updateManagerAsAdmin(
