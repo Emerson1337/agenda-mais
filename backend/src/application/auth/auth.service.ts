@@ -1,10 +1,11 @@
 import { Injectable } from '@nestjs/common';
-import { UserDto } from './dtos/user-dto';
-import { TokenPayload, TokenResponse } from './dtos/token-dto';
-import { TokenAdapter } from '@src/infra/adapters/token.adapter';
-import { BookingManagersService } from '../booking-managers/booking-managers.service';
 import { EncryptAdapter } from '@src/infra/adapters/encrypt.adapter';
+import { TokenAdapter } from '@src/infra/adapters/token.adapter';
 import { UnauthorizedError } from '@src/presentation/errors/unauthorized-error';
+
+import { BookingManagersService } from '../booking-managers/booking-managers.service';
+import { TokenPayload, TokenResponse } from './dtos/token-dto';
+import { UserDto } from './dtos/user-dto';
 
 export interface SocialUserDto {
   id: number | string;
@@ -43,7 +44,9 @@ export class AuthService {
       sub: user.id,
       username: user.username,
       email: user.email,
-      permission: 'static',
+      roles: user.roles,
+      plan: user.plan,
+      status: user.status,
     };
 
     const refresh_token = await this.tokenService.generateToken(
@@ -52,6 +55,7 @@ export class AuthService {
     );
 
     return {
+      user,
       access_token: await this.tokenService.generateToken(payload),
       refresh_token,
     };

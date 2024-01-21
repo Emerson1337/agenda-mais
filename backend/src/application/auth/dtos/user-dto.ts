@@ -8,4 +8,5 @@ export type UserDto = {
   googleId?: string;
   roles: string[];
   plan: string;
+  status: string;
 };

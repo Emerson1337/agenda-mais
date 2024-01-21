@@ -1,13 +1,14 @@
 import { Injectable } from '@nestjs/common';
+import { UserDto } from '@src/application/auth/dtos/user-dto';
+import { CreateManagerDto } from '@src/application/booking-managers/dtos/create-manager-dto';
+import { UpdateManagerDto } from '@src/application/booking-managers/dtos/update-manager-dto';
+import { BookingManagers } from '@src/domain/entities/booking-managers.entity';
 import { BookingManagersRepository } from '@src/domain/repositories/booking-managers.repository';
+import { ObjectId } from 'mongodb';
 import { MongoRepository } from 'typeorm';
 
 import { BookingManagersMDB } from '../entities/booking-managers-db.entity';
 import { TypeormService } from '../typeorm.service';
-import { BookingManagers } from '@src/domain/entities/booking-managers.entity';
-import { ObjectId } from 'mongodb';
-import { UserDto } from '@src/application/auth/dtos/user-dto';
-import { CreateUpdateManagerDto } from '@src/application/booking-managers/dtos/create-update-manager-dto';
 
 @Injectable()
 export class TypeOrmBookingManagersRepository
@@ -20,7 +21,7 @@ export class TypeOrmBookingManagersRepository
   }
   async update(
     id: string,
-    managerUpdated: CreateUpdateManagerDto,
+    managerUpdated: UpdateManagerDto,
   ): Promise<BookingManagers> {
     const manager = await this.repository.findOne({
       where: { _id: new ObjectId(id) },
@@ -32,6 +33,20 @@ export class TypeOrmBookingManagersRepository
       plan: manager.plan,
       roles: manager.roles,
       status: manager.status,
+    });
+  }
+
+  async updateAsAdmin(
+    id: string,
+    managerUpdated: UpdateManagerDto,
+  ): Promise<BookingManagers> {
+    const manager = await this.repository.findOne({
+      where: { _id: new ObjectId(id) },
+    });
+
+    return this.repository.save({
+      ...manager,
+      ...managerUpdated,
     });
   }
 
@@ -86,7 +101,7 @@ export class TypeOrmBookingManagersRepository
     return await this.repository.findOneBy({ username });
   }
 
-  async create(data: BookingManagersMDB): Promise<BookingManagersMDB> {
+  async create(data: CreateManagerDto): Promise<BookingManagersMDB> {
     return await this.repository.save(data);
   }
 

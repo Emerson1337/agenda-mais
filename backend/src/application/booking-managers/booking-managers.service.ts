@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InvalidParamError, MultipleErrors } from '@presentation/errors';
-import { CreateUpdateManagerDto } from '@src/application/booking-managers/dtos/create-update-manager-dto';
+import { CreateManagerDto } from '@src/application/booking-managers/dtos/create-manager-dto';
 import { BookingManagers } from '@src/domain/entities/booking-managers.entity';
 import { ManagersPlansEnum } from '@src/domain/entities/enums/managers-plans.enum';
 import { ManagersRolesEnum } from '@src/domain/entities/enums/managers-roles.enum';
@@ -9,6 +9,8 @@ import { EncryptAdapter } from '@src/infra/adapters/encrypt.adapter';
 
 import { BookingManagersRepository } from '../../domain/repositories/booking-managers.repository';
 import { UserDto } from '../auth/dtos/user-dto';
+import { UpdateManagerAdminDto } from './dtos/update-manager-admin-dto';
+import { UpdateManagerDto } from './dtos/update-manager-dto';
 
 @Injectable()
 export class BookingManagersService {
@@ -17,9 +19,7 @@ export class BookingManagersService {
     private encryptAdapter: EncryptAdapter,
   ) {}
 
-  async create(
-    manager: CreateUpdateManagerDto,
-  ): Promise<BookingManagers | Error> {
+  async create(manager: CreateManagerDto): Promise<BookingManagers | Error> {
     const errors: InvalidParamError[] = [];
 
     const managerUsernameAlreadyExists =
@@ -61,7 +61,7 @@ export class BookingManagersService {
 
   async update(
     managerId: string,
-    manager: CreateUpdateManagerDto,
+    manager: UpdateManagerDto,
   ): Promise<BookingManagers | Error> {
     const errors: InvalidParamError[] = [];
 
@@ -99,6 +99,23 @@ export class BookingManagersService {
     }
 
     return await this.bookingManagersRepository.update(managerId, manager);
+  }
+
+  async updateManagerAsAdmin(
+    managerId: string,
+    managerData: UpdateManagerAdminDto,
+  ): Promise<BookingManagers | Error> {
+    const manager = await this.bookingManagersRepository.findById(managerId);
+
+    if (!manager)
+      throw new InvalidParamError('managerId', 'Manager not found.');
+
+    return await this.bookingManagersRepository.updateAsAdmin(managerId, {
+      ...manager,
+      plan: managerData.plan,
+      roles: managerData.roles,
+      status: managerData.status,
+    });
   }
 
   async list(): Promise<Array<BookingManagers> | Error> {

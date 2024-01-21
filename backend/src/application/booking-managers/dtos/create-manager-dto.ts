@@ -13,7 +13,7 @@ import {
   IsStrongPassword,
 } from 'class-validator';
 
-export class CreateUpdateManagerDto {
+export class CreateManagerDto {
   @IsString()
   @IsOptional()
   @Transform((object) => (object === null ? undefined : object.value))
