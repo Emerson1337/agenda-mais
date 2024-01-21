@@ -67,61 +67,6 @@ export class AuthService {
     };
   }
 
-  // async loginWithThirdParty(
-  //   fieldId: keyof UserDto,
-  //   getSocialUserDto: GetSocialUserDtoHandler,
-  //   currentUserDto?: UserDto,
-  //   customName?: string,
-  // ) {
-  //   try {
-  //     const { name, email, id } = await getSocialUserDto();
-
-  //     const existentUserDto = await this.bookingManagersService.getUserDtoBy({
-  //       [fieldId]: id,
-  //     });
-
-  //     if (existentUserDto && !currentUserDto) {
-  //       return this.login(existentUserDto);
-  //     }
-
-  //     if (existentUserDto && currentUserDto) {
-  //       throw new BadRequestException(`${fieldId} already exists`);
-  //     }
-
-  //     if (
-  //       !currentUserDto &&
-  //       (await this.bookingManagersService.getUserDtoByEmail(email))
-  //     ) {
-  //       throw new BadRequestException('Email already exists');
-  //     }
-
-  //     if (currentUserDto) {
-  //       currentUserDto[fieldId as string] = id;
-  //       await currentUserDto.save();
-
-  //       return this.login(currentUserDto);
-  //     }
-
-  //     const username = await this.bookingManagersService.generateUserDtoname(
-  //       customName || name,
-  //     );
-
-  //     const user = await this.bookingManagersService.create({
-  //       username,
-  //       email,
-  //       [fieldId]: id,
-  //     });
-
-  //     return this.login(user);
-  //   } catch (e) {
-  //     if (e instanceof HttpException) {
-  //       throw e;
-  //     }
-
-  //     throw new UnauthorizedException('Invalid access token');
-  //   }
-  // }
-
   async loginWithRefreshToken(refreshToken: string) {
     try {
       const validToken = await this.tokenService.verifyToken(
