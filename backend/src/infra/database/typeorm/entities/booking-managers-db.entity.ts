@@ -1,4 +1,6 @@
 import { BookingManagers } from '@src/domain/entities/booking-managers.entity';
+import { ManagersPlansEnum } from '@src/domain/entities/enums/managers-plans.enum';
+import { ManagersRolesEnum } from '@src/domain/entities/enums/managers-roles.enum';
 import { ManagerStatus } from '@src/domain/entities/enums/managers-status.enum';
 import { Column, Entity } from 'typeorm';
 
@@ -41,4 +43,14 @@ export class BookingManagersMDB
 
   @Column({ type: 'enum', enum: ManagerStatus, default: ManagerStatus.PENDING })
   status: ManagerStatus;
+
+  @Column({ type: 'array', default: [ManagersRolesEnum.USER] })
+  roles: ManagersRolesEnum[];
+
+  @Column({
+    type: 'enum',
+    enum: ManagersPlansEnum,
+    default: ManagersPlansEnum.BASIC,
+  })
+  plan: ManagersPlansEnum;
 }

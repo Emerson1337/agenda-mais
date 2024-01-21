@@ -1,9 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { InvalidParamError, MultipleErrors } from '@presentation/errors';
 import { CreateUpdateManagerDto } from '@src/application/booking-managers/dtos/create-update-manager-dto';
-import { BookingManagersRepository } from '../../domain/repositories/booking-managers.repository';
 import { BookingManagers } from '@src/domain/entities/booking-managers.entity';
+import { ManagersPlansEnum } from '@src/domain/entities/enums/managers-plans.enum';
+import { ManagersRolesEnum } from '@src/domain/entities/enums/managers-roles.enum';
+import { ManagerStatus } from '@src/domain/entities/enums/managers-status.enum';
 import { EncryptAdapter } from '@src/infra/adapters/encrypt.adapter';
+
+import { BookingManagersRepository } from '../../domain/repositories/booking-managers.repository';
 import { UserDto } from '../auth/dtos/user-dto';
 
 @Injectable()
@@ -48,6 +52,9 @@ export class BookingManagersService {
 
     return await this.bookingManagersRepository.create({
       ...manager,
+      status: ManagerStatus.PENDING,
+      roles: [ManagersRolesEnum.USER],
+      plan: ManagersPlansEnum.BASIC,
       password: passwordHashed,
     });
   }
@@ -96,6 +103,10 @@ export class BookingManagersService {
 
   async list(): Promise<Array<BookingManagers> | Error> {
     return await this.bookingManagersRepository.getAll();
+  }
+
+  async listManager(id: string): Promise<BookingManagers | Error> {
+    return await this.bookingManagersRepository.findById(id);
   }
 
   async getManagerByEmail(email: string): Promise<BookingManagers> {

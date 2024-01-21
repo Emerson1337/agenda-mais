@@ -6,4 +6,6 @@ export type UserDto = {
   email: string;
   password?: string;
   googleId?: string;
+  roles: string[];
+  plan: string;
 };

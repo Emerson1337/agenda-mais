@@ -1,9 +1,11 @@
+import { BookingManagersService } from '@application/booking-managers/booking-managers.service';
 import { Body, Controller, Get, Post, Put, Req, Res } from '@nestjs/common';
 import { handleError, ok } from '@presentation/helpers/http.helper';
-import { Response } from 'express';
-import { BookingManagersService } from '@application/booking-managers/booking-managers.service';
 import { CreateUpdateManagerDto } from '@src/application/booking-managers/dtos/create-update-manager-dto';
-import { AuthRequired } from '@src/application/auth/decorators/auth-required.decorator';
+import { AuthRequired } from '@src/application/shared/decorators/auth-required.decorator';
+import { RolesAllowed } from '@src/application/shared/decorators/auth-roles-required.decorator';
+import { ManagersRolesEnum } from '@src/domain/entities/enums/managers-roles.enum';
+import { Response } from 'express';
 
 @Controller('dashboard/managers')
 export class BookingManagerController {
@@ -26,11 +28,27 @@ export class BookingManagerController {
   }
 
   @Get()
+  @AuthRequired()
+  @RolesAllowed([ManagersRolesEnum.ADMIN])
   async list(@Res() response: Response) {
     try {
       return response
         .status(200)
         .send(ok(await this.bookingManagersService.list()));
+    } catch (error) {
+      return response.status(error.status).send(handleError(error));
+    }
+  }
+
+  @Get('me')
+  @AuthRequired()
+  async listManager(@Req() request: Request, @Res() response: Response) {
+    try {
+      const userId = request['user'].id;
+
+      return response
+        .status(200)
+        .send(ok(await this.bookingManagersService.listManager(userId)));
     } catch (error) {
       return response.status(error.status).send(handleError(error));
     }

@@ -139,7 +139,7 @@ export class AuthService {
     }
   }
 
-  async validateDecodedUser(decodedUser: TokenPayload) {
+  async validateDecodedUser(decodedUser: TokenPayload): Promise<UserDto> {
     return await this.bookingManagersService.getManagerById(decodedUser.sub);
   }
 }

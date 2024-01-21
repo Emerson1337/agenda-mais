@@ -1,15 +1,16 @@
+import { ManagersPlansEnum } from '@src/domain/entities/enums/managers-plans.enum';
+import { ManagersRolesEnum } from '@src/domain/entities/enums/managers-roles.enum';
 import { ManagerStatus } from '@src/domain/entities/enums/managers-status.enum';
 import { Transform } from 'class-transformer';
 import {
-  IsNotEmpty,
-  IsString,
   IsEmail,
-  IsPhoneNumber,
+  IsNotEmpty,
   IsNumber,
-  IsPositive,
-  IsStrongPassword,
-  IsEnum,
   IsOptional,
+  IsPhoneNumber,
+  IsPositive,
+  IsString,
+  IsStrongPassword,
 } from 'class-validator';
 
 export class CreateUpdateManagerDto {
@@ -53,7 +54,12 @@ export class CreateUpdateManagerDto {
   @IsNotEmpty()
   password: string;
 
-  @IsNotEmpty()
-  @IsEnum(ManagerStatus)
+  @IsOptional()
   status: ManagerStatus;
+
+  @IsOptional()
+  roles: ManagersRolesEnum[];
+
+  @IsOptional()
+  plan: ManagersPlansEnum;
 }

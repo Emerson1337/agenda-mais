@@ -29,6 +29,9 @@ export class TypeOrmBookingManagersRepository
     return this.repository.save({
       ...manager,
       ...managerUpdated,
+      plan: manager.plan,
+      roles: manager.roles,
+      status: manager.status,
     });
   }
 
@@ -58,7 +61,16 @@ export class TypeOrmBookingManagersRepository
   async findByIdWithoutPassword(id: string): Promise<UserDto> {
     return await this.repository.findOne({
       where: { _id: new ObjectId(id) },
-      select: ['id', 'email', 'firstName', 'lastName', 'username', 'googleId'],
+      select: [
+        'id',
+        'email',
+        'firstName',
+        'lastName',
+        'username',
+        'googleId',
+        'roles',
+        'plan',
+      ],
     });
   }
 

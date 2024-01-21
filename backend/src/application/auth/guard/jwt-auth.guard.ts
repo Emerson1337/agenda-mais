@@ -1,11 +1,12 @@
 import {
-  Injectable,
   CanActivate,
   ExecutionContext,
+  Injectable,
   UnauthorizedException,
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { TokenAdapter } from '@src/infra/adapters/token.adapter';
+
 import { AuthService } from '../auth.service';
 
 export interface Token {
@@ -49,11 +50,45 @@ export class JwtAuthGuard implements CanActivate {
 
       const user = await this.authService.validateDecodedUser(payload);
 
+      await this.checkRoles(user.roles, context);
+
+      await this.checkPlan(user.plan, context);
+
       request['user'] = user;
     } catch {
       throw new UnauthorizedException();
     }
     return true;
+  }
+
+  private async checkRoles(userRoles: string[], context: ExecutionContext) {
+    const rolesAllowed = this.reflector.get<string[]>(
+      'rolesAllowed',
+      context.getHandler(),
+    );
+
+    if (!rolesAllowed) return true;
+
+    const validRole = userRoles.some((userRole) =>
+      rolesAllowed.includes(userRole),
+    );
+
+    if (validRole) return true;
+
+    throw new Error();
+  }
+
+  private async checkPlan(userPlan: string, context: ExecutionContext) {
+    const authPlanRequired = this.reflector.get<string>(
+      'authPlanRequired',
+      context.getHandler(),
+    );
+
+    if (!authPlanRequired || authPlanRequired === userPlan) {
+      return authPlanRequired;
+    }
+
+    throw new Error();
   }
 
   private extractTokenFromHeader(request: Request): string | undefined {
