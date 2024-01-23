@@ -4,7 +4,6 @@ import { ForgotDto } from '@src/application/auth/dtos/forgot-password-dto';
 import { LoginDto } from '@src/application/auth/dtos/login-dto';
 import { ResetDto } from '@src/application/auth/dtos/reset-password-dto';
 import { handleError, ok } from '@src/presentation/helpers/http.helper';
-
 import { Response } from 'express';
 
 @Controller('auth')
@@ -52,8 +51,6 @@ export class AuthController {
           ok(await this.authService.resetPassword(body.password, query.token)),
         );
     } catch (error) {
-      console.log(error);
-
       return response.status(error.status).send(handleError(error));
     }
   }
