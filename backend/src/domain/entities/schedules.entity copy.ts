@@ -8,5 +8,5 @@ export class SchedulesTime {
 
 export class Schedules extends BaseEntity {
   date: string;
-  times: SchedulesTime;
+  times: SchedulesTime[];
 }

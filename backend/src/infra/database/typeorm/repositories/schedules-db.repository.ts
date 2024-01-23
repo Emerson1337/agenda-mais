@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { CreateScheduleDto } from '@src/application/schedules/dtos/create-schedule.dto';
 import { Schedules } from '@src/domain/entities/schedules.entity copy';
 import { SchedulesRepository } from '@src/domain/repositories/schedules.repository';
 import { MongoRepository } from 'typeorm';
@@ -14,7 +15,21 @@ export class TypeOrmSchedulesRepository implements SchedulesRepository {
     this.repository = typeormService.getMongoRepository(SchedulesMDB);
   }
 
-  async create(scheduleData: Schedules): Promise<Schedules> {
+  async createOrUpdate(
+    managerId: string,
+    scheduleData: CreateScheduleDto,
+  ): Promise<Schedules> {
+    const existingSchedule = await this.repository.findOne({
+      where: {
+        managerId,
+        date: scheduleData.date,
+      },
+    });
+
+    if (existingSchedule) {
+      scheduleData = Object.assign(existingSchedule, scheduleData);
+    }
+
     return await this.repository.save(scheduleData);
   }
 }

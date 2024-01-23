@@ -19,6 +19,6 @@ export class SchedulesMDB extends BaseEntityMDB implements Schedules {
   @Column({ type: 'string' })
   date: string;
 
-  @Column({ type: 'string' })
-  times: SchedulesTime;
+  @Column({ type: 'array' })
+  times: SchedulesTime[];
 }
