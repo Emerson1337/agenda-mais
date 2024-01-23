@@ -1,0 +1,74 @@
+import { Body, Controller, Post, Query, Res } from '@nestjs/common';
+import { AuthService } from '@src/application/auth/auth.service';
+import { ForgotDto } from '@src/application/auth/dtos/forgot-password-dto';
+import { LoginDto } from '@src/application/auth/dtos/login-dto';
+import { ResetDto } from '@src/application/auth/dtos/reset-password-dto';
+import { handleError, ok } from '@src/presentation/helpers/http.helper';
+
+import { Response } from 'express';
+
+@Controller('auth')
+export class AuthController {
+  constructor(private authService: AuthService) {}
+
+  @Post('login')
+  async login(@Body() body: LoginDto, @Res() response: Response) {
+    try {
+      return response
+        .status(201)
+        .send(
+          ok(
+            await this.authService.login(
+              await this.authService.validate(body.email, body.password),
+            ),
+          ),
+        );
+    } catch (error) {
+      return response.status(error.status).send(handleError(error));
+    }
+  }
+
+  @Post('forgot-password')
+  async forgotPassword(@Body() body: ForgotDto, @Res() response: Response) {
+    try {
+      return response
+        .status(201)
+        .send(ok(await this.authService.forgotPassword(body.email)));
+    } catch (error) {
+      return response.status(error.status).send(handleError(error));
+    }
+  }
+
+  @Post('reset-password')
+  async resetPassword(
+    @Body() body: ResetDto,
+    @Query() query: { token: string },
+    @Res() response: Response,
+  ) {
+    try {
+      return response
+        .status(201)
+        .send(
+          ok(await this.authService.resetPassword(body.password, query.token)),
+        );
+    } catch (error) {
+      console.log(error);
+
+      return response.status(error.status).send(handleError(error));
+    }
+  }
+
+  @Post('refresh-token')
+  async refreshToken(
+    @Body('refreshToken') refreshToken: string,
+    @Res() response: Response,
+  ) {
+    try {
+      return response
+        .status(201)
+        .send(ok(await this.authService.loginWithRefreshToken(refreshToken)));
+    } catch (error) {
+      return response.status(error.status).send(handleError(error));
+    }
+  }
+}

@@ -10,11 +10,28 @@ datasource db {
   url      = env("DB_URL")
 }
 
-model Coffees {
-  id          String   @id @default(auto()) @map("_id") @db.ObjectId
-  name        String   @unique
-  description String
-  type        String
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @default(now())
+enum ManagerStatus {
+  PENDING
+  ACTIVE
+  DISABLED
+  SUSPENDED
+}
+
+model BookingManagers {
+  id                   String        @id @default(auto()) @map("_id") @db.ObjectId
+  name                 String        @unique
+  description          String
+  type                 String
+  createdAt            DateTime      @default(now())
+  updatedAt            DateTime      @default(now())
+  welcomeMessage       String
+  username             String
+  firstName            String
+  lastName             String?
+  email                String
+  phone                String
+  profilePhoto         String?
+  appointmentsPerPhone Int?
+  password             String
+  status               ManagerStatus
 }
