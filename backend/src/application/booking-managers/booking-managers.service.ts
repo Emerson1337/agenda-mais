@@ -6,12 +6,12 @@ import { ManagersPlansEnum } from '@src/domain/entities/enums/managers-plans.enu
 import { ManagersRolesEnum } from '@src/domain/entities/enums/managers-roles.enum';
 import { ManagerStatus } from '@src/domain/entities/enums/managers-status.enum';
 import { EncryptAdapter } from '@src/infra/adapters/encrypt.adapter';
+import { FileAdapter } from '@src/infra/adapters/file.adapter';
 
 import { BookingManagersRepository } from '../../domain/repositories/booking-managers.repository';
 import { UserDto } from '../auth/dtos/user-dto';
 import { UpdateManagerAdminDto } from './dtos/update-manager-admin-dto';
 import { UpdateManagerDto } from './dtos/update-manager-dto';
-import { FileAdapter } from '@src/infra/adapters/file.adapter';
 
 @Injectable()
 export class BookingManagersService {
@@ -151,9 +151,11 @@ export class BookingManagersService {
     if (!manager)
       throw new InvalidParamError('managerId', 'Manager not found.');
 
+    const passwordHashed = await this.encryptAdapter.encryptPassword(password);
+
     return await this.bookingManagersRepository.updatePasswordById(
       managerId,
-      password,
+      passwordHashed,
     );
   }
 
