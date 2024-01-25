@@ -32,4 +32,12 @@ export class TypeOrmSchedulesRepository implements SchedulesRepository {
 
     return await this.repository.save(scheduleData);
   }
+
+  async getAll(managerId: string): Promise<Schedules[]> {
+    return await this.repository.find({
+      where: {
+        managerId,
+      },
+    });
+  }
 }

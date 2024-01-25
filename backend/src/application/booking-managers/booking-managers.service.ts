@@ -12,6 +12,7 @@ import { BookingManagersRepository } from '../../domain/repositories/booking-man
 import { UserDto } from '../auth/dtos/user-dto';
 import { UpdateManagerAdminDto } from './dtos/update-manager-admin-dto';
 import { UpdateManagerDto } from './dtos/update-manager-dto';
+import { removeAttributes } from '../shared/utils/objectFormatter';
 
 @Injectable()
 export class BookingManagersService {
@@ -161,13 +162,14 @@ export class BookingManagersService {
 
   async list(): Promise<Array<BookingManagers> | Error> {
     return (await this.bookingManagersRepository.getAll()).map((manager) =>
-      this.removePassword(manager),
+      removeAttributes<BookingManagers>(manager, ['password']),
     );
   }
 
   async listManager(id: string): Promise<BookingManagers | Error> {
-    return this.removePassword(
+    return removeAttributes<BookingManagers>(
       await this.bookingManagersRepository.findById(id),
+      ['password'],
     );
   }
 
@@ -176,12 +178,9 @@ export class BookingManagersService {
   }
 
   async getManagerById(id: string): Promise<UserDto> {
-    return this.removePassword(
+    return removeAttributes<BookingManagers>(
       await this.bookingManagersRepository.findById(id),
+      ['password'],
     );
-  }
-
-  private removePassword(manager: BookingManagers) {
-    return Object.assign({}, manager, { password: undefined });
   }
 }

@@ -1,4 +1,4 @@
-import { Body, Controller, Post, Req, Res } from '@nestjs/common';
+import { Body, Controller, Get, Post, Req, Res } from '@nestjs/common';
 import { handleError, ok } from '@presentation/helpers/http.helper';
 import { CreateScheduleDto } from '@src/application/schedules/dtos/create-schedule.dto';
 import { SchedulesService } from '@src/application/schedules/schedules.service';
@@ -21,12 +21,26 @@ export class SchedulesController {
 
       return response.status(201).send(
         ok(
-          await this.schedulesService.create({
+          await this.schedulesService.createOrUpdate({
             ...schedule,
             managerId: userId,
           }),
         ),
       );
+    } catch (error) {
+      return response.status(error.status).send(handleError(error));
+    }
+  }
+
+  @Get()
+  @AuthRequired()
+  async list(@Req() request: Request, @Res() response: Response) {
+    try {
+      const userId = request['user'].id;
+
+      return response
+        .status(201)
+        .send(ok(await this.schedulesService.list(userId)));
     } catch (error) {
       return response.status(error.status).send(handleError(error));
     }

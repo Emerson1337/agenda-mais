@@ -9,7 +9,9 @@ import { CreateScheduleDto, SchedulesTime } from './dtos/create-schedule.dto';
 export class SchedulesService {
   constructor(private schedulesRepository: SchedulesRepository) {}
 
-  async create(schedule: CreateScheduleDto): Promise<Schedules | Error> {
+  async createOrUpdate(
+    schedule: CreateScheduleDto,
+  ): Promise<Schedules | Error> {
     if (this.hasTimeDuplicated(schedule.times))
       throw new InvalidParamError('Times', 'Duplicated times not allowed');
 
@@ -17,6 +19,10 @@ export class SchedulesService {
       schedule.managerId,
       schedule,
     );
+  }
+
+  async list(managerId: string): Promise<Schedules[] | Error> {
+    return await this.schedulesRepository.getAll(managerId);
   }
 
   private hasTimeDuplicated(times: SchedulesTime[]) {
