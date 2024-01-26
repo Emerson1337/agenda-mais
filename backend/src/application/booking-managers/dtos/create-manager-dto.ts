@@ -1,3 +1,4 @@
+import { IsValidUsername } from '@src/application/shared/decorators/username-validator.decorator';
 import { ManagersPlansEnum } from '@src/domain/entities/enums/managers-plans.enum';
 import { ManagersRolesEnum } from '@src/domain/entities/enums/managers-roles.enum';
 import { ManagerStatus } from '@src/domain/entities/enums/managers-status.enum';
@@ -21,6 +22,7 @@ export class CreateManagerDto {
 
   @IsString()
   @IsNotEmpty()
+  @IsValidUsername()
   username: string;
 
   @IsString()
