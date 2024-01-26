@@ -4,6 +4,8 @@ import {
   ValidationError,
 } from '@nestjs/common';
 
+import { errorCodes } from '../error-codes';
+
 type InvidivualErrorConstraint = {
   name: string;
   stack: string;
@@ -79,10 +81,10 @@ function nestObjects({
         typeof message === 'string' || message === undefined
           ? message
           : Object.values(message)[0],
-      stack: 'test',
+      stack: errorCodes.INVALID_PARAM_ERROR,
     });
   } catch (error) {
-    console.log(error);
+    console.error(error);
   }
 
   return paths;
