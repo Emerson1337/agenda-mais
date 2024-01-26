@@ -17,8 +17,6 @@ export class PublicRoutesController {
         .status(201)
         .send(ok(await this.availableDatesService.list(managerUsername)));
     } catch (error) {
-      console.log(error);
-
       return response.status(error.status).send(handleError(error));
     }
   }

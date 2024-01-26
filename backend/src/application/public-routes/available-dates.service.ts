@@ -4,6 +4,7 @@ import { Schedules } from '@src/domain/entities/schedules.entity copy';
 import { BookingManagersRepository } from '@src/domain/repositories/booking-managers.repository';
 import { SchedulesRepository } from '@src/domain/repositories/schedules.repository';
 import { InvalidParamError } from '@src/presentation/errors';
+
 import { removeAttributes } from '../shared/utils/objectFormatter';
 
 @Injectable()
@@ -41,7 +42,7 @@ export class AvailableDatesService {
     const schedules = (await this.scheduleRepository.getAll(manager.id)).map(
       (schedule) => {
         return {
-          ...schedule,
+          ...removeAttributes<Schedules>(schedule, ['createdAt', 'updatedAt']),
           times: schedule.times.filter((time) => time.available),
         };
       },
