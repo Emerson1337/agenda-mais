@@ -48,7 +48,6 @@ function getAllErrorsKey(errors: ValidationError[]): NestedObject {
           errorPath: json.property,
           message: json.constraints,
         });
-        console.log(json.property);
 
         return;
       }

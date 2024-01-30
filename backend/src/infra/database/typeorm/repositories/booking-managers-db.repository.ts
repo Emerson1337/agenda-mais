@@ -24,7 +24,7 @@ export class TypeOrmBookingManagersRepository
     id: string,
     password: string,
   ): Promise<BookingManagers> {
-    return (await this.repository.updateOne(
+    return (await this.repository.findOneAndUpdate(
       { _id: new ObjectId(id) },
       { $set: { password } },
     )) as BookingManagers;

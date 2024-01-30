@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Schedules } from '@src/domain/entities/schedules.entity copy';
+import { Schedules } from '@src/domain/entities/schedules.entity';
 import { BookingManagersRepository } from '@src/domain/repositories/booking-managers.repository';
 import { SchedulesRepository } from '@src/domain/repositories/schedules.repository';
 
