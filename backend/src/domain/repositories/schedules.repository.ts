@@ -1,6 +1,6 @@
 import { CreateScheduleDto } from '@src/application/schedules/dtos/create-schedule.dto';
 
-import { Schedules } from '../entities/schedules.entity copy';
+import { Schedules } from '../entities/schedules.entity';
 
 export abstract class SchedulesRepository {
   abstract createOrUpdate(

@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Schedules } from '@src/domain/entities/schedules.entity copy';
+import { Schedules } from '@src/domain/entities/schedules.entity';
 import { SchedulesRepository } from '@src/domain/repositories/schedules.repository';
 import { InvalidParamError } from '@src/presentation/errors';
 

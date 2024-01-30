@@ -7,7 +7,7 @@ import { Response } from 'express';
 export class PublicRoutesController {
   constructor(private readonly availableDatesService: AvailableDatesService) {}
 
-  @Get()
+  @Get('times')
   async create(
     @Param('managerUsername') managerUsername: string,
     @Query() query: { date: string },

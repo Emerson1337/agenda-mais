@@ -2,6 +2,7 @@ import { Injectable, OnModuleInit } from '@nestjs/common';
 import { DataSource } from 'typeorm';
 
 import { BookingManagersMDB } from './entities/booking-managers-db.entity';
+import { ManagerServicesMDB } from './entities/manager-service-db.entity';
 import { ResetPasswordTokensMDB } from './entities/reset-password-tokens-db.entity';
 import { SchedulesMDB } from './entities/schedules-db.entity';
 
@@ -18,7 +19,12 @@ export class TypeormService extends DataSource implements OnModuleInit {
       password: process.env.DB_PASSWORD,
       database: process.env.DB_DATABASE,
       logging: true,
-      entities: [BookingManagersMDB, ResetPasswordTokensMDB, SchedulesMDB],
+      entities: [
+        BookingManagersMDB,
+        ResetPasswordTokensMDB,
+        SchedulesMDB,
+        ManagerServicesMDB,
+      ],
     });
   }
   onModuleInit() {
