@@ -41,18 +41,19 @@ function getAllErrorsKey(errors: ValidationError[]): NestedObject {
         throw new Error();
       }
 
-      errorPath = pushKeyVisited(errorPath, json.property);
-
       //end of nested objects
       if (json.children && !json.children.length) {
-        paths = nestObjects({ paths, errorPath, message: json.constraints });
-        errorPath = removeLastKeyVisited(errorPath, json.property);
+        paths = nestObjects({
+          paths,
+          errorPath: json.property,
+          message: json.constraints,
+        });
+        console.log(json.property);
+
         return;
       }
 
       trackAttributesErrorPathRecursively(json.children ?? [], errorPath);
-
-      errorPath = removeLastKeyVisited(errorPath, json.property);
     });
   }
 
@@ -76,7 +77,7 @@ function nestObjects({
 }): ErrorConstraint {
   try {
     paths.errors.push({
-      name: errorPath.replace(/^data\./, ''),
+      name: errorPath,
       message:
         typeof message === 'string' || message === undefined
           ? message
@@ -88,12 +89,4 @@ function nestObjects({
   }
 
   return paths;
-}
-
-function removeLastKeyVisited(errorPath: string, lastKeyVisited: string) {
-  return errorPath.replace(`.${lastKeyVisited}`, '');
-}
-
-function pushKeyVisited(errorPath: string, keyVisited: string) {
-  return `${errorPath.length ? errorPath + '.' + keyVisited : keyVisited}`;
 }
