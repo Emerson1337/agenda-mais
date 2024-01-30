@@ -11,6 +11,7 @@ export abstract class ManagerServicesRepository {
     managerServiceData: CreateUpdateManagerServiceDto,
     managerId: string,
   ): Promise<ManagerServices>;
+  abstract getByManagerId(managerId: string): Promise<ManagerServices[]>;
   abstract findByName(
     name: string,
     managerId: string,

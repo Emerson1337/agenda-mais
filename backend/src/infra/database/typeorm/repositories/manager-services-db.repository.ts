@@ -17,6 +17,13 @@ export class TypeOrmManagerServicesRepository
   constructor(private typeormService: TypeormService) {
     this.repository = typeormService.getMongoRepository(ManagerServicesMDB);
   }
+
+  async getByManagerId(managerId: string): Promise<ManagerServices[]> {
+    return await this.repository.find({
+      where: { managerId },
+    });
+  }
+
   async deleteById(managerServiceId: string, managerId: string): Promise<void> {
     await this.repository.deleteOne({
       managerId,
