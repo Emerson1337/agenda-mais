@@ -8,4 +8,5 @@ export abstract class SchedulesRepository {
     scheduleDate: CreateScheduleDto,
   ): Promise<Schedules>;
   abstract getAll(managerId: string): Promise<Schedules[]>;
+  abstract getAllByDate(managerId: string, date: string): Promise<Schedules[]>;
 }
