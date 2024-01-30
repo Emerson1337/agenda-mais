@@ -45,4 +45,18 @@ export class SchedulesController {
       return response.status(error.status).send(handleError(error));
     }
   }
+
+  @Get('appointments')
+  @AuthRequired()
+  async listAppointments(@Req() request: Request, @Res() response: Response) {
+    try {
+      const userId = request['user'].id;
+
+      return response
+        .status(201)
+        .send(ok(await this.schedulesService.listAppointments(userId)));
+    } catch (error) {
+      return response.status(error.status).send(handleError(error));
+    }
+  }
 }

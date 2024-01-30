@@ -14,6 +14,16 @@ export class TypeOrmSchedulesRepository implements SchedulesRepository {
   constructor(private typeormService: TypeormService) {
     this.repository = typeormService.getMongoRepository(SchedulesMDB);
   }
+
+  async getAllNotAvailable(managerId: string): Promise<Schedules[]> {
+    return await this.repository.find({
+      where: {
+        managerId,
+        'times.available': false,
+      },
+    });
+  }
+
   async getAllByDate(managerId: string, date: string): Promise<Schedules[]> {
     const query: { managerId: string; date?: string } = {
       managerId,
