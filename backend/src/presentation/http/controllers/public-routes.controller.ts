@@ -7,6 +7,22 @@ import { Response } from 'express';
 export class PublicRoutesController {
   constructor(private readonly availableDatesService: AvailableDatesService) {}
 
+  @Get('')
+  async getBusinessData(
+    @Param('managerUsername') managerUsername: string,
+    @Res() response: Response,
+  ) {
+    try {
+      return response
+        .status(201)
+        .send(
+          ok(await this.availableDatesService.getBusinessData(managerUsername)),
+        );
+    } catch (error) {
+      return response.status(error.status).send(handleError(error));
+    }
+  }
+
   @Get('times')
   async create(
     @Param('managerUsername') managerUsername: string,
