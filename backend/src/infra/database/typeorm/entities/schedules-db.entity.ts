@@ -1,4 +1,4 @@
-import { Schedules } from '@src/domain/entities/schedules.entity copy';
+import { Schedules } from '@src/domain/entities/schedules.entity';
 import { Column, Entity } from 'typeorm';
 
 import BaseEntityMDB from './config/base.entity';

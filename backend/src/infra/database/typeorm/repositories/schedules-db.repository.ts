@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { CreateScheduleDto } from '@src/application/schedules/dtos/create-schedule.dto';
-import { Schedules } from '@src/domain/entities/schedules.entity copy';
+import { Schedules } from '@src/domain/entities/schedules.entity';
 import { SchedulesRepository } from '@src/domain/repositories/schedules.repository';
 import { MongoRepository } from 'typeorm';
 
