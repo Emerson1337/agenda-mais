@@ -7,6 +7,7 @@ import { ResetPasswordTokensMDB } from './entities/reset-password-tokens-db.enti
 import { SchedulesMDB } from './entities/schedules-db.entity';
 
 import 'dotenv/config';
+import { AppointmentsMDB } from './entities/appointments-db.entity';
 
 @Injectable()
 export class TypeormService extends DataSource implements OnModuleInit {
@@ -24,6 +25,7 @@ export class TypeormService extends DataSource implements OnModuleInit {
         ResetPasswordTokensMDB,
         SchedulesMDB,
         ManagerServicesMDB,
+        AppointmentsMDB,
       ],
     });
   }

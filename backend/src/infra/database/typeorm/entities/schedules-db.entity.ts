@@ -9,9 +9,6 @@ class SchedulesTime {
 
   @Column({ type: 'boolean' })
   available: boolean;
-
-  @Column({ type: 'string', nullable: true })
-  appointmentId: boolean;
 }
 
 @Entity('Schedules')

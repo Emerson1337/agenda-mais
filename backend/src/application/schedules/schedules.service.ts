@@ -25,6 +25,18 @@ export class SchedulesService {
     return await this.schedulesRepository.getAll(managerId);
   }
 
+  async listAppointments(managerId: string): Promise<Schedules[] | Error> {
+    const schedules =
+      await this.schedulesRepository.getAllNotAvailable(managerId);
+
+    return schedules.map((schedule) => ({
+      ...schedule,
+      times: schedule.times.filter(this.filterTimesNotAvailable),
+      // appointment: data,
+      //add appointmentId filter
+    }));
+  }
+
   private hasTimeDuplicated(times: SchedulesTime[]) {
     const valueArr = times.map(function (item: SchedulesTime) {
       return item.time;
@@ -34,5 +46,9 @@ export class SchedulesService {
     );
 
     return isDuplicate;
+  }
+
+  private filterTimesNotAvailable(time: SchedulesTime): boolean {
+    return time.available == false;
   }
 }

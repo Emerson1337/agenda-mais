@@ -18,10 +18,6 @@ export class SchedulesTime {
   @IsNotEmpty()
   @IsBoolean()
   available: boolean;
-
-  @IsString()
-  @IsOptional()
-  appointmentId?: boolean;
 }
 
 export class CreateScheduleDto {

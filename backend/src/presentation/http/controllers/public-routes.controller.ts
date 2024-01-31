@@ -1,11 +1,40 @@
-import { Controller, Get, Param, Query, Res } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Query, Res } from '@nestjs/common';
 import { handleError, ok } from '@presentation/helpers/http.helper';
+import { AppointmentsService } from '@src/application/public-routes/appointments.service';
 import { AvailableDatesService } from '@src/application/public-routes/available-dates.service';
+import { CreateAppointmentDto } from '@src/application/public-routes/dtos/create-appointment-dto';
 import { Response } from 'express';
 
 @Controller('/:managerUsername')
 export class PublicRoutesController {
-  constructor(private readonly availableDatesService: AvailableDatesService) {}
+  constructor(
+    private readonly availableDatesService: AvailableDatesService,
+    private readonly appointmentsService: AppointmentsService,
+  ) {}
+
+  @Post('appointments')
+  async bookAppointment(
+    @Param('managerUsername') managerUsername: string,
+    @Body() appointmentData: CreateAppointmentDto,
+    @Res() response: Response,
+  ) {
+    try {
+      return response
+        .status(201)
+        .send(
+          ok(
+            await this.appointmentsService.bookAppointment(
+              managerUsername,
+              appointmentData,
+            ),
+          ),
+        );
+    } catch (error) {
+      console.log(error);
+
+      return response.status(error.status).send(handleError(error));
+    }
+  }
 
   @Get('')
   async getBusinessData(

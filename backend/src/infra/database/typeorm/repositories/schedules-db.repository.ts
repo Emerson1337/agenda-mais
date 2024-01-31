@@ -6,6 +6,7 @@ import { MongoRepository } from 'typeorm';
 
 import { SchedulesMDB } from '../entities/schedules-db.entity';
 import { TypeormService } from '../typeorm.service';
+import { ObjectId } from 'mongodb';
 
 @Injectable()
 export class TypeOrmSchedulesRepository implements SchedulesRepository {
@@ -14,6 +15,55 @@ export class TypeOrmSchedulesRepository implements SchedulesRepository {
   constructor(private typeormService: TypeormService) {
     this.repository = typeormService.getMongoRepository(SchedulesMDB);
   }
+
+  async updateTimeAvailabilityByIdAndTime({
+    id,
+    time,
+    managerId,
+  }: {
+    id: string;
+    time: string;
+    managerId: string;
+  }): Promise<Schedules> {
+    return (await this.repository.findOneAndUpdate(
+      { _id: new ObjectId(id), 'times.time': time, managerId },
+      { $set: { 'times.$.available': false } },
+      { returnDocument: 'after' },
+    )) as Schedules;
+  }
+
+  async findByIdAndTimeAvailable({
+    id,
+    time,
+    managerId,
+  }: {
+    id: string;
+    time: string;
+    managerId: string;
+  }): Promise<Schedules> {
+    return await this.repository.findOne({
+      where: {
+        _id: new ObjectId(id),
+        times: {
+          $elemMatch: {
+            time: time,
+            available: true,
+          },
+        },
+        managerId,
+      },
+    });
+  }
+
+  async getAllNotAvailable(managerId: string): Promise<Schedules[]> {
+    return await this.repository.find({
+      where: {
+        managerId,
+        'times.available': false,
+      },
+    });
+  }
+
   async getAllByDate(managerId: string, date: string): Promise<Schedules[]> {
     const query: { managerId: string; date?: string } = {
       managerId,

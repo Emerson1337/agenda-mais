@@ -31,6 +31,7 @@ export class TypeOrmManagerServicesRepository
     });
     return;
   }
+
   async create(
     managerServiceData: CreateUpdateManagerServiceDto,
   ): Promise<ManagerServices> {
