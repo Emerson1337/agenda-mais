@@ -12,13 +12,13 @@ import { removeAttributes } from '../shared/utils/objectFormatter';
 export class AvailableDatesService {
   constructor(
     private scheduleRepository: SchedulesRepository,
-    private bookingManagerRepository: BookingManagersRepository,
+    private bookingManagersRepository: BookingManagersRepository,
     private managerServicesRepository: ManagerServicesRepository,
   ) {}
 
   async list(username: string, query: { date: string }): Promise<Schedules[]> {
     const manager =
-      await this.bookingManagerRepository.findByUsername(username);
+      await this.bookingManagersRepository.findByUsername(username);
 
     const schedules = (
       await this.scheduleRepository.getAllByDate(manager.id, query.date)
@@ -38,7 +38,7 @@ export class AvailableDatesService {
     layout: string;
   }> {
     const manager =
-      await this.bookingManagerRepository.findByUsername(username);
+      await this.bookingManagersRepository.findByUsername(username);
 
     const services = await this.managerServicesRepository.getByManagerId(
       manager.id,

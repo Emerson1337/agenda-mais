@@ -9,6 +9,8 @@ import { TypeOrmManagerServicesRepository } from './typeorm/repositories/manager
 import { TypeOrmResetPasswordTokensRepository } from './typeorm/repositories/reset-password-tokens-db.repository';
 import { TypeOrmSchedulesRepository } from './typeorm/repositories/schedules-db.repository';
 import { TypeormService } from './typeorm/typeorm.service';
+import { AppointmentsRepository } from '@src/domain/repositories/appointments.repository';
+import { TypeOrmAppointmentsRepository } from './typeorm/repositories/appointments-db.repository';
 
 @Module({
   providers: [
@@ -29,12 +31,17 @@ import { TypeormService } from './typeorm/typeorm.service';
       provide: ManagerServicesRepository,
       useClass: TypeOrmManagerServicesRepository,
     },
+    {
+      provide: AppointmentsRepository,
+      useClass: TypeOrmAppointmentsRepository,
+    },
   ],
   exports: [
     BookingManagersRepository,
     SchedulesRepository,
     ResetPasswordTokensRepository,
     ManagerServicesRepository,
+    AppointmentsRepository,
     TypeormService,
   ],
 })
