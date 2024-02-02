@@ -30,8 +30,6 @@ export class PublicRoutesController {
           ),
         );
     } catch (error) {
-      console.log(error);
-
       return response.status(error.status).send(handleError(error));
     }
   }

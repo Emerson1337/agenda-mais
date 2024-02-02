@@ -4,6 +4,7 @@ import { Type } from 'class-transformer';
 import {
   IsBoolean,
   IsDateString,
+  IsMongoId,
   IsNotEmpty,
   IsOptional,
   IsString,
@@ -24,6 +25,7 @@ export class CreateScheduleDto {
   @IsNotEmpty()
   @IsString()
   @IsOptional()
+  @IsMongoId()
   managerId: string;
 
   @IsNotEmpty()
