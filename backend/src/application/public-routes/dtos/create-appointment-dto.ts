@@ -1,5 +1,6 @@
 import { IsTimeFormat } from '@src/application/shared/decorators/time-validator.decorator';
 import {
+  IsMongoId,
   IsNotEmpty,
   IsOptional,
   IsPhoneNumber,
@@ -8,6 +9,7 @@ import {
 
 export class CreateAppointmentDto {
   @IsOptional()
+  @IsMongoId()
   managerId?: string;
 
   @IsOptional()
@@ -23,6 +25,7 @@ export class CreateAppointmentDto {
 
   @IsString()
   @IsNotEmpty()
+  @IsMongoId()
   scheduleId: string;
 
   @IsTimeFormat()
