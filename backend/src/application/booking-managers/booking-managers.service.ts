@@ -128,7 +128,14 @@ export class BookingManagersService {
     );
 
     const manager = await this.bookingManagersRepository.findById(managerId);
-    manager.profilePhoto && this.fileAdapter.removeFile(manager.profilePhoto);
+
+    if (manager.profilePhoto) {
+      try {
+        this.fileAdapter.removeFile(manager.profilePhoto);
+      } catch (error) {
+        error; //file not found
+      }
+    }
 
     return await this.bookingManagersRepository.updatePicture(
       managerId,

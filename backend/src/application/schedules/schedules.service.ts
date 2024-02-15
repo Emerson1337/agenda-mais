@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { Schedules } from '@src/domain/entities/schedules.entity';
+import { AppointmentsRepository } from '@src/domain/repositories/appointments.repository';
 import { SchedulesRepository } from '@src/domain/repositories/schedules.repository';
 import { InvalidParamError } from '@src/presentation/errors';
 
@@ -8,7 +9,10 @@ import { DeleteScheduleDto } from './dtos/delete-schedule.dto';
 
 @Injectable()
 export class SchedulesService {
-  constructor(private schedulesRepository: SchedulesRepository) {}
+  constructor(
+    private schedulesRepository: SchedulesRepository,
+    private appointmentsRepository: AppointmentsRepository,
+  ) {}
 
   async createOrUpdate(
     schedule: CreateScheduleDto,
@@ -38,12 +42,15 @@ export class SchedulesService {
     const schedules =
       await this.schedulesRepository.getAllNotAvailable(managerId);
 
-    return schedules.map((schedule) => ({
-      ...schedule,
-      times: schedule.times.filter(this.filterTimesNotAvailable),
-      // appointment: data,
-      //add appointmentId filter
-    }));
+    return await Promise.all(
+      schedules.map(async (schedule) => ({
+        ...schedule,
+        times: schedule.times.filter(this.filterTimesNotAvailable),
+        appointment: await this.appointmentsRepository.getByScheduleId(
+          schedule.id,
+        ),
+      })),
+    );
   }
 
   private hasTimeDuplicated(times: SchedulesTime[]) {

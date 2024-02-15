@@ -28,7 +28,7 @@ export class AuthController {
     }
   }
 
-  @Post('forgot-password')
+  @Post('esqueci-senha')
   async forgotPassword(@Body() body: ForgotDto, @Res() response: Response) {
     try {
       return response
@@ -39,7 +39,7 @@ export class AuthController {
     }
   }
 
-  @Post('reset-password')
+  @Post('resetar-senha')
   async resetPassword(
     @Body() body: ResetDto,
     @Query() query: { token: string },

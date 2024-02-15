@@ -7,7 +7,7 @@ import { RolesAllowed } from '@src/application/shared/decorators/auth-roles-requ
 import { ManagersRolesEnum } from '@src/domain/entities/enums/managers-roles.enum';
 import { Response } from 'express';
 
-@Controller('admin/managers')
+@Controller('admin/usuarios')
 export class BookingManagerAdminController {
   constructor(
     private readonly bookingManagersService: BookingManagersService,

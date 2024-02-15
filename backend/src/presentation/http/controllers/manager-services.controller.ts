@@ -15,7 +15,7 @@ import { ManagerServicesService } from '@src/application/manager-services/manage
 import { AuthRequired } from '@src/application/shared/decorators/auth-required.decorator';
 import { Response } from 'express';
 
-@Controller('dashboard/services')
+@Controller('dashboard/servicos')
 export class ManagerServicesController {
   constructor(
     private readonly managerServicesService: ManagerServicesService,
