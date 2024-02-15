@@ -51,4 +51,19 @@ export class SchedulesService {
   private filterTimesNotAvailable(time: SchedulesTime): boolean {
     return time.available == false;
   }
+
+  async delete({
+    schedulesIds,
+    userId,
+  }: {
+    schedulesIds: string[];
+    userId: string;
+  }): Promise<{ message: string }> {
+    await this.schedulesRepository.deleteSchedules({
+      schedulesIds,
+      userId,
+    });
+
+    return { message: 'Schedules deleted successfully!' };
+  }
 }

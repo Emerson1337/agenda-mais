@@ -14,6 +14,9 @@ class SchedulesTime {
 @Entity('Schedules')
 export class SchedulesMDB extends BaseEntityMDB implements Schedules {
   @Column({ type: 'string' })
+  managerId: string;
+
+  @Column({ type: 'string' })
   date: string;
 
   @Column({ type: 'array' })

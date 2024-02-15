@@ -28,4 +28,11 @@ export abstract class SchedulesRepository {
     time: string;
     managerId: string;
   }): Promise<Schedules>;
+  abstract deleteSchedules({
+    schedulesIds,
+    userId,
+  }: {
+    schedulesIds: string[];
+    userId: string;
+  }): Promise<void>;
 }
