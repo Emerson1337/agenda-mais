@@ -2,11 +2,11 @@ import { Injectable } from '@nestjs/common';
 import { CreateScheduleDto } from '@src/application/schedules/dtos/create-schedule.dto';
 import { Schedules } from '@src/domain/entities/schedules.entity';
 import { SchedulesRepository } from '@src/domain/repositories/schedules.repository';
+import { ObjectId } from 'mongodb';
 import { MongoRepository } from 'typeorm';
 
 import { SchedulesMDB } from '../entities/schedules-db.entity';
 import { TypeormService } from '../typeorm.service';
-import { ObjectId } from 'mongodb';
 
 @Injectable()
 export class TypeOrmSchedulesRepository implements SchedulesRepository {
@@ -14,6 +14,21 @@ export class TypeOrmSchedulesRepository implements SchedulesRepository {
 
   constructor(private typeormService: TypeormService) {
     this.repository = typeormService.getMongoRepository(SchedulesMDB);
+  }
+
+  async deleteSchedules({
+    schedulesIds,
+    userId,
+  }: {
+    schedulesIds: string[];
+    userId: string;
+  }): Promise<void> {
+    await this.repository.deleteMany({
+      _id: {
+        $in: schedulesIds.map((scheduleId) => new ObjectId(scheduleId)),
+      },
+      managerId: userId,
+    });
   }
 
   async updateTimeAvailabilityByIdAndTime({
