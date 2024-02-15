@@ -10,9 +10,9 @@ import { FileAdapter } from '@src/infra/adapters/file.adapter';
 
 import { BookingManagersRepository } from '../../domain/repositories/booking-managers.repository';
 import { UserDto } from '../auth/dtos/user-dto';
+import { removeAttributes } from '../shared/utils/objectFormatter';
 import { UpdateManagerAdminDto } from './dtos/update-manager-admin-dto';
 import { UpdateManagerDto } from './dtos/update-manager-dto';
-import { removeAttributes } from '../shared/utils/objectFormatter';
 
 @Injectable()
 export class BookingManagersService {
@@ -62,10 +62,13 @@ export class BookingManagersService {
     });
   }
 
-  async update(
-    managerId: string,
-    manager: UpdateManagerDto,
-  ): Promise<BookingManagers | Error> {
+  async update({
+    managerId,
+    manager,
+  }: {
+    managerId: string;
+    manager: UpdateManagerDto;
+  }): Promise<BookingManagers | Error> {
     const errors: InvalidParamError[] = [];
 
     const managerUsernameAlreadyExists =
@@ -104,11 +107,15 @@ export class BookingManagersService {
     return await this.bookingManagersRepository.update(managerId, manager);
   }
 
-  async updatePicture(
-    managerId: string,
-    picturePath: string,
-    filename: string,
-  ): Promise<BookingManagers | Error> {
+  async updatePicture({
+    picturePath,
+    managerId,
+    filename,
+  }: {
+    managerId: string;
+    picturePath: string;
+    filename: string;
+  }): Promise<BookingManagers | Error> {
     if (!picturePath)
       throw new InvalidParamError(
         'picture',
@@ -129,10 +136,13 @@ export class BookingManagersService {
     );
   }
 
-  async updateManagerAsAdmin(
-    managerId: string,
-    managerData: UpdateManagerAdminDto,
-  ): Promise<BookingManagers | Error> {
+  async updateManagerAsAdmin({
+    managerId,
+    managerData,
+  }: {
+    managerId: string;
+    managerData: UpdateManagerAdminDto;
+  }): Promise<BookingManagers | Error> {
     const manager = await this.bookingManagersRepository.findById(managerId);
 
     if (!manager)
@@ -146,7 +156,13 @@ export class BookingManagersService {
     });
   }
 
-  async updatePasswordById(managerId: string, password: string) {
+  async updatePasswordById({
+    managerId,
+    password,
+  }: {
+    managerId: string;
+    password: string;
+  }) {
     const manager = await this.bookingManagersRepository.findById(managerId);
 
     if (!manager)

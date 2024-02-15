@@ -7,4 +7,6 @@ export class DeleteScheduleDto {
   @Type(() => String)
   @IsArrayOfMongoIds()
   schedulesIds: string[];
+
+  userId: string;
 }

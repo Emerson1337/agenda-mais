@@ -13,15 +13,16 @@ export class AuthController {
   @Post('login')
   async login(@Body() body: LoginDto, @Res() response: Response) {
     try {
-      return response
-        .status(201)
-        .send(
-          ok(
-            await this.authService.login(
-              await this.authService.validate(body.email, body.password),
-            ),
+      return response.status(201).send(
+        ok(
+          await this.authService.login(
+            await this.authService.validate({
+              email: body.email,
+              password: body.password,
+            }),
           ),
-        );
+        ),
+      );
     } catch (error) {
       return response.status(error.status).send(handleError(error));
     }
@@ -45,11 +46,14 @@ export class AuthController {
     @Res() response: Response,
   ) {
     try {
-      return response
-        .status(201)
-        .send(
-          ok(await this.authService.resetPassword(body.password, query.token)),
-        );
+      return response.status(201).send(
+        ok(
+          await this.authService.resetPassword({
+            password: body.password,
+            resetToken: query.token,
+          }),
+        ),
+      );
     } catch (error) {
       return response.status(error.status).send(handleError(error));
     }

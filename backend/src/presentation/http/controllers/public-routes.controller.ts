@@ -19,16 +19,14 @@ export class PublicRoutesController {
     @Res() response: Response,
   ) {
     try {
-      return response
-        .status(201)
-        .send(
-          ok(
-            await this.appointmentsService.bookAppointment(
-              managerUsername,
-              appointmentData,
-            ),
-          ),
-        );
+      return response.status(201).send(
+        ok(
+          await this.appointmentsService.bookAppointment({
+            username: managerUsername,
+            appointmentData,
+          }),
+        ),
+      );
     } catch (error) {
       return response.status(error.status).send(handleError(error));
     }
@@ -57,11 +55,14 @@ export class PublicRoutesController {
     @Res() response: Response,
   ) {
     try {
-      return response
-        .status(201)
-        .send(
-          ok(await this.availableDatesService.list(managerUsername, query)),
-        );
+      return response.status(201).send(
+        ok(
+          await this.availableDatesService.list({
+            username: managerUsername,
+            query,
+          }),
+        ),
+      );
     } catch (error) {
       return response.status(error.status).send(handleError(error));
     }

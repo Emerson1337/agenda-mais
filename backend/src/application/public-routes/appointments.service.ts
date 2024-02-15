@@ -4,9 +4,9 @@ import { BookingManagersRepository } from '@src/domain/repositories/booking-mana
 import { SchedulesRepository } from '@src/domain/repositories/schedules.repository';
 import { InvalidParamError } from '@src/presentation/errors';
 
+import { AppointmentsRepository } from '../../domain/repositories/appointments.repository';
 import { generateAppointmentCode } from '../shared/utils/dataGenerator';
 import { CreateAppointmentDto } from './dtos/create-appointment-dto';
-import { AppointmentsRepository } from '../../domain/repositories/appointments.repository';
 
 @Injectable()
 export class AppointmentsService {
@@ -16,10 +16,13 @@ export class AppointmentsService {
     private appointmentsRepository: AppointmentsRepository,
   ) {}
 
-  async bookAppointment(
-    username: string,
-    appointmentData: CreateAppointmentDto,
-  ): Promise<{
+  async bookAppointment({
+    username,
+    appointmentData,
+  }: {
+    username: string;
+    appointmentData: CreateAppointmentDto;
+  }): Promise<{
     appointment: Appointments;
     message: string;
   }> {
