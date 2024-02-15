@@ -4,6 +4,7 @@ import { SchedulesRepository } from '@src/domain/repositories/schedules.reposito
 import { InvalidParamError } from '@src/presentation/errors';
 
 import { CreateScheduleDto, SchedulesTime } from './dtos/create-schedule.dto';
+import { DeleteScheduleDto } from './dtos/delete-schedule.dto';
 
 @Injectable()
 export class SchedulesService {
@@ -21,11 +22,19 @@ export class SchedulesService {
     );
   }
 
-  async list(managerId: string): Promise<Schedules[] | Error> {
+  async list({
+    managerId,
+  }: {
+    managerId: string;
+  }): Promise<Schedules[] | Error> {
     return await this.schedulesRepository.getAll(managerId);
   }
 
-  async listAppointments(managerId: string): Promise<Schedules[] | Error> {
+  async listAppointments({
+    managerId,
+  }: {
+    managerId: string;
+  }): Promise<Schedules[] | Error> {
     const schedules =
       await this.schedulesRepository.getAllNotAvailable(managerId);
 
@@ -55,10 +64,7 @@ export class SchedulesService {
   async delete({
     schedulesIds,
     userId,
-  }: {
-    schedulesIds: string[];
-    userId: string;
-  }): Promise<{ message: string }> {
+  }: DeleteScheduleDto): Promise<{ message: string }> {
     await this.schedulesRepository.deleteSchedules({
       schedulesIds,
       userId,

@@ -60,9 +60,14 @@ export class BookingManagerController {
     try {
       const userId = request['user'].id;
 
-      return response
-        .status(201)
-        .send(ok(await this.bookingManagersService.update(userId, manager)));
+      return response.status(201).send(
+        ok(
+          await this.bookingManagersService.update({
+            managerId: userId,
+            manager,
+          }),
+        ),
+      );
     } catch (error) {
       return response.status(error.status).send(handleError(error));
     }
@@ -79,17 +84,15 @@ export class BookingManagerController {
     try {
       const userId = request['user'].id;
 
-      return response
-        .status(201)
-        .send(
-          ok(
-            await this.bookingManagersService.updatePicture(
-              userId,
-              request['file'].path as string,
-              request['file'].filename as string,
-            ),
-          ),
-        );
+      return response.status(201).send(
+        ok(
+          await this.bookingManagersService.updatePicture({
+            managerId: userId,
+            picturePath: request['file'].path as string,
+            filename: request['file'].filename as string,
+          }),
+        ),
+      );
     } catch (error) {
       return response.status(error.status).send(handleError(error));
     }

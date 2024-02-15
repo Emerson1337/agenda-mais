@@ -16,7 +16,13 @@ export class AvailableDatesService {
     private managerServicesRepository: ManagerServicesRepository,
   ) {}
 
-  async list(username: string, query: { date: string }): Promise<Schedules[]> {
+  async list({
+    username,
+    query,
+  }: {
+    username: string;
+    query: { date: string };
+  }): Promise<Schedules[]> {
     const manager =
       await this.bookingManagersRepository.findByUsername(username);
 

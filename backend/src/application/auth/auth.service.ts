@@ -1,15 +1,16 @@
 import { Injectable } from '@nestjs/common';
 import { EncryptAdapter } from '@src/infra/adapters/encrypt.adapter';
 import { TokenAdapter } from '@src/infra/adapters/token.adapter';
+import { InvalidParamError, ServerError } from '@src/presentation/errors';
 import { UnauthorizedError } from '@src/presentation/errors/unauthorized-error';
 
-import { BookingManagersService } from '../booking-managers/booking-managers.service';
-import { TokenPayload, TokenResponse } from './dtos/token-dto';
-import { UserDto } from './dtos/user-dto';
-import { InvalidParamError, ServerError } from '@src/presentation/errors';
 import { ResetPasswordTokensRepository } from '../../domain/repositories/reset-password-tokens.repository';
 import { MailSenderAdapter } from '../../infra/adapters/mail-sender.adapter';
+import { BookingManagersService } from '../booking-managers/booking-managers.service';
 import { generateFrontendUrl } from '../shared/utils/frontendPathGenerator';
+import { LoginDto, ResetPasswordDto } from './dtos/login-dto';
+import { TokenPayload, TokenResponse } from './dtos/token-dto';
+import { UserDto } from './dtos/user-dto';
 
 export interface SocialUserDto {
   id: number | string;
@@ -29,7 +30,7 @@ export class AuthService {
     private mailSenderAdapter: MailSenderAdapter,
   ) {}
 
-  async validate(email: string, password: string) {
+  async validate({ email, password }: LoginDto) {
     const user = await this.bookingManagersService.getManagerByEmail(email);
 
     if (!user) {
@@ -129,7 +130,10 @@ export class AuthService {
     }
   }
 
-  async resetPassword(password: string, resetToken: string): Promise<object> {
+  async resetPassword({
+    password,
+    resetToken,
+  }: ResetPasswordDto): Promise<object> {
     await this.tokenService.verifyToken(resetToken, 'resetToken');
 
     const tokenDecoded = this.tokenService.decodeToken(resetToken);
@@ -141,10 +145,10 @@ export class AuthService {
 
     await this.resetPasswordTokensRepository.deleteByToken(resetToken);
 
-    await this.bookingManagersService.updatePasswordById(
-      tokenDecoded.sub!,
+    await this.bookingManagersService.updatePasswordById({
+      managerId: tokenDecoded.sub!,
       password,
-    );
+    });
 
     try {
       await this.mailSenderAdapter.sendMail({

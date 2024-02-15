@@ -35,16 +35,14 @@ export class BookingManagerAdminController {
     @Res() response: Response,
   ) {
     try {
-      return response
-        .status(201)
-        .send(
-          ok(
-            await this.bookingManagersService.updateManagerAsAdmin(
-              managerId,
-              manager,
-            ),
-          ),
-        );
+      return response.status(201).send(
+        ok(
+          await this.bookingManagersService.updateManagerAsAdmin({
+            managerId,
+            managerData: manager,
+          }),
+        ),
+      );
     } catch (error) {
       return response.status(error.status).send(handleError(error));
     }
