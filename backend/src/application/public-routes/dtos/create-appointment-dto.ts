@@ -30,7 +30,7 @@ export class CreateAppointmentDto {
 
   @IsTimeFormat()
   @IsNotEmpty()
-  timeSelected: string;
+  time: string;
 
   @IsString()
   @IsNotEmpty()
