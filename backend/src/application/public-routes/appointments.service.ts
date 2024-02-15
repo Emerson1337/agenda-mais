@@ -26,15 +26,14 @@ export class AppointmentsService {
     appointment: Appointments;
     message: string;
   }> {
-    const { clientName, phone, scheduleId, notes, timeSelected } =
-      appointmentData;
+    const { clientName, phone, scheduleId, notes, time } = appointmentData;
 
     const manager =
       await this.bookingManagersRepository.findByUsername(username);
 
     const schedule = await this.scheduleRepository.findByIdAndTimeAvailable({
       id: scheduleId,
-      time: timeSelected,
+      time,
       managerId: manager.id,
     });
 
@@ -44,7 +43,7 @@ export class AppointmentsService {
 
     await this.scheduleRepository.updateTimeAvailabilityByIdAndTime({
       id: scheduleId,
-      time: timeSelected,
+      time,
       managerId: manager.id,
     });
 
@@ -53,7 +52,7 @@ export class AppointmentsService {
     const appointment = await this.appointmentsRepository.create({
       managerId: manager.id,
       scheduleId: schedule.id,
-      timeSelected,
+      time,
       clientName,
       code,
       notes,
@@ -63,6 +62,45 @@ export class AppointmentsService {
     return {
       appointment,
       message: 'Appointment booked!',
+    };
+  }
+
+  public async cancel({
+    username,
+    appointmentCode,
+  }: {
+    username: string;
+    appointmentCode: string;
+  }): Promise<{ appointment: Appointments; message: string }> {
+    const appointment =
+      await this.appointmentsRepository.deleteByAppointmentCode(
+        appointmentCode,
+      );
+
+    if (!appointment)
+      throw new InvalidParamError(
+        'appointmentCode',
+        'Invalid appointment code provided.',
+      );
+
+    const manager =
+      await this.bookingManagersRepository.findByUsername(username);
+
+    if (!manager)
+      throw new InvalidParamError(
+        'managerUsername',
+        'Invalid manager username provided.',
+      );
+
+    await this.scheduleRepository.makeScheduleAvailableByIdAndTime({
+      id: appointment.scheduleId,
+      managerId: manager.id,
+      time: appointment.time,
+    });
+
+    return {
+      appointment,
+      message: 'Appointment canceled!',
     };
   }
 }

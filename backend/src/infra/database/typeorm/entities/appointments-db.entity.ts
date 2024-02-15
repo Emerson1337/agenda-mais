@@ -1,7 +1,7 @@
+import { Appointments } from '@src/domain/entities/appointment.entity';
 import { Column, Entity } from 'typeorm';
 
 import BaseEntityMDB from './config/base.entity';
-import { Appointments } from '@src/domain/entities/appointment.entity';
 
 @Entity('Appointments')
 export class AppointmentsMDB extends BaseEntityMDB implements Appointments {
@@ -16,6 +16,9 @@ export class AppointmentsMDB extends BaseEntityMDB implements Appointments {
 
   @Column({ type: 'string' })
   scheduleId: string;
+
+  @Column({ type: 'string' })
+  code: string;
 
   @Column({ type: 'string' })
   time: string;

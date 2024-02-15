@@ -35,4 +35,13 @@ export abstract class SchedulesRepository {
     schedulesIds: string[];
     userId: string;
   }): Promise<void>;
+  abstract makeScheduleAvailableByIdAndTime({
+    id,
+    managerId,
+    time,
+  }: {
+    id: string;
+    managerId: string;
+    time: string;
+  }): Promise<Schedules>;
 }

@@ -1,4 +1,13 @@
-import { Body, Controller, Get, Param, Post, Query, Res } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Query,
+  Res,
+} from '@nestjs/common';
 import { handleError, ok } from '@presentation/helpers/http.helper';
 import { AppointmentsService } from '@src/application/public-routes/appointments.service';
 import { AvailableDatesService } from '@src/application/public-routes/available-dates.service';
@@ -32,7 +41,7 @@ export class PublicRoutesController {
     }
   }
 
-  @Get('')
+  @Get()
   async getBusinessData(
     @Param('managerUsername') managerUsername: string,
     @Res() response: Response,
@@ -64,6 +73,28 @@ export class PublicRoutesController {
         ),
       );
     } catch (error) {
+      return response.status(error.status).send(handleError(error));
+    }
+  }
+
+  @Delete('cancel-appointment/:appointmentCode')
+  async cancel(
+    @Param('appointmentCode') appointmentCode: string,
+    @Param('managerUsername') managerUsername: string,
+    @Res() response: Response,
+  ) {
+    try {
+      return response.status(201).send(
+        ok(
+          await this.appointmentsService.cancel({
+            appointmentCode,
+            username: managerUsername,
+          }),
+        ),
+      );
+    } catch (error) {
+      console.log(error);
+
       return response.status(error.status).send(handleError(error));
     }
   }

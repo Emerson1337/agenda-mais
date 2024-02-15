@@ -15,6 +15,22 @@ export class TypeOrmSchedulesRepository implements SchedulesRepository {
   constructor(private typeormService: TypeormService) {
     this.repository = typeormService.getMongoRepository(SchedulesMDB);
   }
+  async makeScheduleAvailableByIdAndTime({
+    id,
+    managerId,
+    time,
+  }: {
+    id: string;
+    managerId: string;
+    time: string;
+  }): Promise<Schedules> {
+    console.log({ _id: new ObjectId(id), 'times.time': time, managerId });
+    return (await this.repository.findOneAndUpdate(
+      { _id: new ObjectId(id), 'times.time': time, managerId },
+      { $set: { 'times.$.available': true } },
+      { returnDocument: 'after' },
+    )) as Schedules;
+  }
 
   async deleteSchedules({
     schedulesIds,
