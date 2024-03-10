@@ -1,0 +1,42 @@
+{
+  "INVALID_CREDENTIALS": "Invalid credentials.",
+  "INVALID_REFRESH_TOKEN": "Invalid refresh token.",
+  "INVALID_TOKEN": "Invalid token.",
+  "INVALID_EMAIL": "Invalid email.",
+  "CHANGE_PASSWORD": {
+    "SUBJECT": "Request to change password.",
+    "TEXT": "Click the button below to change your password.",
+    "REQUEST_SUCCESSFULLY": "A link to reset your password has been sent to your email."
+  },
+  "CHANGED_PASSWORD": {
+    "SUBJECT": "Password changed successfully!",
+    "TEXT": "Your password has been changed successfully. If this operation was not performed by you, please contact {mail_sender}.",
+    "REQUEST_SUCCESSFULLY": "Password changed successfully!"
+  },
+  "INVALID_FIELD": {
+    "ALREADY_EXISTS": {
+      "USERNAME": "This username has already been previously registered.",
+      "EMAIL": "This email has already been previously registered.",
+      "PHONE": "This phone number has already been previously registered.",
+      "NAME": "This name has already been previously registered.",
+      "TIMES": "Duplicate times are not allowed."
+    },
+    "MISSING_DATA": {
+      "PICTURE": "The image was not attached or is not an image.",
+      "APPOINTMENT": "Appointment not found.",
+      "MANAGER_ID": "Manager ID not found.",
+      "USERNAME": "Establishment not found.",
+      "GENERIC_NOT_FOUND": "Item not found."
+    }
+  },
+  "VALIDATORS": {
+    "VALID_MONGO_ID": "The provided identifiers need to be valid."
+  },
+  "APPOINTMENT": {
+    "CREATED": "Appointment scheduled successfully!",
+    "CANCELED": "Appointment canceled successfully!"
+  },
+  "SCHEDULES": {
+    "DELETED": "Schedule deleted successfully!"
+  }
+}

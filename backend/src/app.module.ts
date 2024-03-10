@@ -5,6 +5,7 @@ import { BookingManagersModule } from './application/booking-managers/booking-ma
 import { ManagerServicesModule } from './application/manager-services/manager-services.module';
 import { PublicRoutesModule } from './application/public-routes/public-routes.module';
 import { SchedulesModule } from './application/schedules/schedules.module';
+import { LocaleModule } from './presentation/locale/locale.module';
 
 @Module({
   imports: [
@@ -13,6 +14,7 @@ import { SchedulesModule } from './application/schedules/schedules.module';
     SchedulesModule,
     PublicRoutesModule,
     ManagerServicesModule,
+    LocaleModule,
   ],
 })
 export class AppModule {}

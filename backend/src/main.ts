@@ -4,6 +4,7 @@ import * as express from 'express';
 
 import { AppModule } from './app.module';
 import { classValidatorExceptionFactory } from './presentation/errors/exceptions/class-validator-factory.exception';
+import { I18nValidationPipe } from 'nestjs-i18n';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -16,6 +17,7 @@ async function bootstrap() {
       exceptionFactory: classValidatorExceptionFactory,
       stopAtFirstError: true,
     }),
+    new I18nValidationPipe(),
   );
   app.use('/public', express.static('public'));
   await app.listen(3000);

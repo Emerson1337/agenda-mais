@@ -9,8 +9,10 @@ import { EncryptAdapter } from '@src/infra/adapters/encrypt.adapter';
 import { JwtAuthGuard } from './guard/jwt-auth.guard';
 import { APP_GUARD } from '@nestjs/core';
 import { MailSenderAdapter } from '@src/infra/adapters/mail-sender.adapter';
+import { LocaleModule } from '@presentation/locale/locale.module';
+
 @Module({
-  imports: [DatabaseModule],
+  imports: [DatabaseModule, LocaleModule],
   controllers: [AuthController],
   providers: [
     AuthService,

@@ -6,19 +6,26 @@ import { InvalidParamError } from '@src/presentation/errors';
 
 import { CreateScheduleDto, SchedulesTime } from './dtos/create-schedule.dto';
 import { DeleteScheduleDto } from './dtos/delete-schedule.dto';
+import { I18nContext, I18nService } from 'nestjs-i18n';
 
 @Injectable()
 export class SchedulesService {
   constructor(
-    private schedulesRepository: SchedulesRepository,
-    private appointmentsRepository: AppointmentsRepository,
+    private readonly schedulesRepository: SchedulesRepository,
+    private readonly appointmentsRepository: AppointmentsRepository,
+    private readonly i18n: I18nService,
   ) {}
 
   async createOrUpdate(
     schedule: CreateScheduleDto,
   ): Promise<Schedules | Error> {
     if (this.hasTimeDuplicated(schedule.times))
-      throw new InvalidParamError('Times', 'Duplicated times not allowed');
+      throw new InvalidParamError(
+        'Times',
+        this.i18n.t('translations.INVALID_FIELD.ALREADY_EXISTS.TIMES', {
+          lang: I18nContext.current().lang,
+        }),
+      );
 
     return await this.schedulesRepository.createOrUpdate(
       schedule.managerId,
@@ -77,6 +84,10 @@ export class SchedulesService {
       userId,
     });
 
-    return { message: 'Schedules deleted successfully!' };
+    return {
+      message: this.i18n.t('translations.SCHEDULES.DELETED', {
+        lang: I18nContext.current().lang,
+      }),
+    };
   }
 }

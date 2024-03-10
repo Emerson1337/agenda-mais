@@ -7,13 +7,15 @@ import { ManagerServicesRepository } from '@src/domain/repositories/manager-serv
 import { SchedulesRepository } from '@src/domain/repositories/schedules.repository';
 
 import { removeAttributes } from '../shared/utils/objectFormatter';
+import { I18nService } from 'nestjs-i18n';
 
 @Injectable()
 export class AvailableDatesService {
   constructor(
-    private scheduleRepository: SchedulesRepository,
-    private bookingManagersRepository: BookingManagersRepository,
-    private managerServicesRepository: ManagerServicesRepository,
+    private readonly scheduleRepository: SchedulesRepository,
+    private readonly bookingManagersRepository: BookingManagersRepository,
+    private readonly managerServicesRepository: ManagerServicesRepository,
+    private readonly i18n: I18nService,
   ) {}
 
   async list({

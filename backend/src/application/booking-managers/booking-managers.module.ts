@@ -6,9 +6,10 @@ import { BookingManagerController } from '@src/presentation/http/controllers/boo
 
 import { BookingManagersService } from './booking-managers.service';
 import { FileAdapter } from '@src/infra/adapters/file.adapter';
+import { LocaleModule } from '@presentation/locale/locale.module';
 
 @Module({
-  imports: [DatabaseModule],
+  imports: [DatabaseModule, LocaleModule],
   controllers: [BookingManagerController, BookingManagerAdminController],
   providers: [BookingManagersService, EncryptAdapter, FileAdapter],
   exports: [BookingManagersService],
