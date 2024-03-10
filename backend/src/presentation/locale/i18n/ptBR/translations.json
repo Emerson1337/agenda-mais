@@ -1,8 +1,4 @@
 {
-  "INVALID_CREDENTIALS": "Credenciais inválidas.",
-  "INVALID_REFRESH_TOKEN": "Refresh token inválido.",
-  "INVALID_TOKEN": "Token inválido.",
-  "INVALID_EMAIL": "E-mail inválido.",
   "CHANGE_PASSWORD": {
     "SUBJECT": "Solicitação para alterar senha.",
     "TEXT": "Clique no botão abaixo para alterar a sua senha.",
@@ -27,7 +23,11 @@
       "MANAGER_ID": "Identificação do administrador não encontrado.",
       "USERNAME": "Estabelecimento não encontrado.",
       "GENERIC_NOT_FOUND": "Item não encontrado."
-    }
+    },
+    "INVALID_CREDENTIALS": "Credenciais inválidas.",
+    "INVALID_REFRESH_TOKEN": "Refresh token inválido.",
+    "INVALID_TOKEN": "Token inválido.",
+    "INVALID_EMAIL": "E-mail inválido."
   },
   "VALIDATORS": {
     "VALID_MONGO_ID": "Os identificadores fornecidos precisam ser válidos."

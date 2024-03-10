@@ -1,7 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { EncryptAdapter } from '@src/infra/adapters/encrypt.adapter';
 import { TokenAdapter } from '@src/infra/adapters/token.adapter';
-import { InvalidParamError, ServerError } from '@src/presentation/errors';
+import {
+  InvalidParamError,
+  MultipleErrors,
+  ServerError,
+} from '@src/presentation/errors';
 import { UnauthorizedError } from '@src/presentation/errors/unauthorized-error';
 
 import { ResetPasswordTokensRepository } from '../../domain/repositories/reset-password-tokens.repository';
@@ -36,23 +40,39 @@ export class AuthService {
     const user = await this.bookingManagersService.getManagerByEmail(email);
 
     if (!user) {
-      throw new UnauthorizedError(
-        'email/password',
-        this.i18n.t('translations.INVALID_CREDENTIALS', {
-          lang: I18nContext.current().lang,
-        }),
-      );
+      throw new MultipleErrors([
+        new UnauthorizedError(
+          'email',
+          this.i18n.t('translations.INVALID_FIELD.INVALID_CREDENTIALS', {
+            lang: I18nContext.current().lang,
+          }),
+        ),
+        new UnauthorizedError(
+          'password',
+          this.i18n.t('translations.INVALID_FIELD.INVALID_CREDENTIALS', {
+            lang: I18nContext.current().lang,
+          }),
+        ),
+      ]);
     }
 
     if (
       !(await this.encryptAdapter.validatePassword(password, user.password))
     ) {
-      throw new UnauthorizedError(
-        'email/password',
-        this.i18n.t('translations.INVALID_CREDENTIALS', {
-          lang: I18nContext.current().lang,
-        }),
-      );
+      throw new MultipleErrors([
+        new UnauthorizedError(
+          'email',
+          this.i18n.t('translations.INVALID_FIELD.INVALID_CREDENTIALS', {
+            lang: I18nContext.current().lang,
+          }),
+        ),
+        new UnauthorizedError(
+          'password',
+          this.i18n.t('translations.INVALID_FIELD.INVALID_CREDENTIALS', {
+            lang: I18nContext.current().lang,
+          }),
+        ),
+      ]);
     }
 
     return user;
