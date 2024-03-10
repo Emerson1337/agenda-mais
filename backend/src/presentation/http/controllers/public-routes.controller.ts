@@ -21,7 +21,7 @@ export class PublicRoutesController {
     private readonly appointmentsService: AppointmentsService,
   ) {}
 
-  @Post('appointments')
+  @Post('agendamentos')
   async bookAppointment(
     @Param('managerUsername') managerUsername: string,
     @Body() appointmentData: CreateAppointmentDto,
@@ -57,7 +57,7 @@ export class PublicRoutesController {
     }
   }
 
-  @Get('times')
+  @Get('horarios')
   async create(
     @Param('managerUsername') managerUsername: string,
     @Query() query: { date: string },
@@ -77,7 +77,7 @@ export class PublicRoutesController {
     }
   }
 
-  @Delete('cancel-appointment/:appointmentCode')
+  @Delete('cancelar-agendamento/:appointmentCode')
   async cancel(
     @Param('appointmentCode') appointmentCode: string,
     @Param('managerUsername') managerUsername: string,

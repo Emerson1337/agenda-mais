@@ -7,4 +7,5 @@ export abstract class AppointmentsRepository {
   abstract deleteByAppointmentCode(
     appointmentCode: string,
   ): Promise<Appointments | null>;
+  abstract getByScheduleId(scheduleId: string): Promise<Appointments>;
 }

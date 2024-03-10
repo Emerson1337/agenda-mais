@@ -1,4 +1,4 @@
-import { FileDto } from '@src/application/shared/dtos/filte.dto';
+import { FileDto } from '@src/application/shared/dtos/file.dto';
 import { Type } from 'class-transformer';
 
 export class UploadPictureDto {

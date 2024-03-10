@@ -4,10 +4,14 @@ import { ManagerServicesRepository } from '@src/domain/repositories/manager-serv
 import { InvalidParamError } from '@src/presentation/errors';
 
 import { CreateUpdateManagerServiceDto } from './dtos/create-update-manager-service.dto';
+import { I18nService, I18nContext } from 'nestjs-i18n';
 
 @Injectable()
 export class ManagerServicesService {
-  constructor(private managerServicesRepository: ManagerServicesRepository) {}
+  constructor(
+    private readonly managerServicesRepository: ManagerServicesRepository,
+    private readonly i18n: I18nService,
+  ) {}
 
   async create(
     managerService: CreateUpdateManagerServiceDto,
@@ -21,7 +25,9 @@ export class ManagerServicesService {
     if (managerWithSameName)
       throw new InvalidParamError(
         'name',
-        'Service with same name previously registered.',
+        this.i18n.t('translations.INVALID_FIELD.ALREADY_EXISTS.NAME', {
+          lang: I18nContext.current().lang,
+        }),
       );
 
     const managerServiceToSave = { ...managerService, managerId };
@@ -46,7 +52,9 @@ export class ManagerServicesService {
     if (managerWithSameName)
       throw new InvalidParamError(
         'name',
-        'Service with same name previously registered.',
+        this.i18n.t('translations.INVALID_FIELD.ALREADY_EXISTS.NAME', {
+          lang: I18nContext.current().lang,
+        }),
       );
 
     const managerServiceToSave = { ...managerService, managerId };
@@ -70,10 +78,13 @@ export class ManagerServicesService {
     if (!managerExists)
       throw new InvalidParamError(
         'managerServiceId',
-        'Service does not exists.',
+        this.i18n.t(
+          'translations.INVALID_FIELD.MISSING_DATE.GENERIC_NOT_FOUND',
+          {
+            lang: I18nContext.current().lang,
+          },
+        ),
       );
-
-    console.log('entrei');
 
     await this.managerServicesRepository.deleteById(
       managerServiceId,

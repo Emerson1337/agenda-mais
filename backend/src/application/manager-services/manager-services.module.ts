@@ -3,9 +3,10 @@ import { DatabaseModule } from '@src/infra/database/database.module';
 import { ManagerServicesController } from '@src/presentation/http/controllers/manager-services.controller';
 
 import { ManagerServicesService } from './manager-services.service';
+import { LocaleModule } from '@presentation/locale/locale.module';
 
 @Module({
-  imports: [DatabaseModule],
+  imports: [DatabaseModule, LocaleModule],
   controllers: [ManagerServicesController],
   providers: [ManagerServicesService],
   exports: [ManagerServicesService],

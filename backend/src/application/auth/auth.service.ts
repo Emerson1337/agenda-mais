@@ -1,7 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { EncryptAdapter } from '@src/infra/adapters/encrypt.adapter';
 import { TokenAdapter } from '@src/infra/adapters/token.adapter';
-import { InvalidParamError, ServerError } from '@src/presentation/errors';
+import {
+  InvalidParamError,
+  MultipleErrors,
+  ServerError,
+} from '@src/presentation/errors';
 import { UnauthorizedError } from '@src/presentation/errors/unauthorized-error';
 
 import { ResetPasswordTokensRepository } from '../../domain/repositories/reset-password-tokens.repository';
@@ -11,6 +15,7 @@ import { generateFrontendUrl } from '../shared/utils/frontendPathGenerator';
 import { LoginDto, ResetPasswordDto } from './dtos/login-dto';
 import { TokenPayload, TokenResponse } from './dtos/token-dto';
 import { UserDto } from './dtos/user-dto';
+import { I18nContext, I18nService } from 'nestjs-i18n';
 
 export interface SocialUserDto {
   id: number | string;
@@ -23,24 +28,51 @@ export type GetSocialUserDtoHandler = () => Promise<Partial<SocialUserDto>>;
 @Injectable()
 export class AuthService {
   constructor(
-    private bookingManagersService: BookingManagersService,
-    private tokenService: TokenAdapter,
-    private encryptAdapter: EncryptAdapter,
-    private resetPasswordTokensRepository: ResetPasswordTokensRepository,
-    private mailSenderAdapter: MailSenderAdapter,
+    private readonly bookingManagersService: BookingManagersService,
+    private readonly tokenService: TokenAdapter,
+    private readonly encryptAdapter: EncryptAdapter,
+    private readonly resetPasswordTokensRepository: ResetPasswordTokensRepository,
+    private readonly mailSenderAdapter: MailSenderAdapter,
+    private readonly i18n: I18nService,
   ) {}
 
   async validate({ email, password }: LoginDto) {
     const user = await this.bookingManagersService.getManagerByEmail(email);
 
     if (!user) {
-      throw new UnauthorizedError('email/password', 'Invalid credentials.');
+      throw new MultipleErrors([
+        new UnauthorizedError(
+          'email',
+          this.i18n.t('translations.INVALID_FIELD.INVALID_CREDENTIALS', {
+            lang: I18nContext.current().lang,
+          }),
+        ),
+        new UnauthorizedError(
+          'password',
+          this.i18n.t('translations.INVALID_FIELD.INVALID_CREDENTIALS', {
+            lang: I18nContext.current().lang,
+          }),
+        ),
+      ]);
     }
 
     if (
       !(await this.encryptAdapter.validatePassword(password, user.password))
     ) {
-      throw new UnauthorizedError('email/password', 'Invalid credentials.');
+      throw new MultipleErrors([
+        new UnauthorizedError(
+          'email',
+          this.i18n.t('translations.INVALID_FIELD.INVALID_CREDENTIALS', {
+            lang: I18nContext.current().lang,
+          }),
+        ),
+        new UnauthorizedError(
+          'password',
+          this.i18n.t('translations.INVALID_FIELD.INVALID_CREDENTIALS', {
+            lang: I18nContext.current().lang,
+          }),
+        ),
+      ]);
     }
 
     return user;
@@ -91,7 +123,12 @@ export class AuthService {
 
       return this.login(user);
     } catch {
-      throw new UnauthorizedError('refreshToken', 'Invalid refresh token.');
+      throw new UnauthorizedError(
+        'refreshToken',
+        this.i18n.t('translations.INVALID_REFRESH_TOKEN', {
+          lang: I18nContext.current().lang,
+        }),
+      );
     }
   }
 
@@ -100,7 +137,13 @@ export class AuthService {
   ): Promise<{ success: boolean; message: string }> {
     const user = await this.bookingManagersService.getManagerByEmail(email);
 
-    if (!user) throw new InvalidParamError('email', 'Invalid Email');
+    if (!user)
+      throw new InvalidParamError(
+        'email',
+        this.i18n.t('translations.INVALID_EMAIL', {
+          lang: I18nContext.current().lang,
+        }),
+      );
 
     const token = await this.tokenService.generateToken({
       sub: user.id,
@@ -112,8 +155,12 @@ export class AuthService {
     try {
       await this.mailSenderAdapter.sendMail({
         to: email,
-        subject: 'Solicitação para alterar senha',
-        text: 'Clique no botão abaixo para alterar a sua senha.',
+        subject: this.i18n.t('translations.CHANGE_PASSWORD.SUBJECT', {
+          lang: I18nContext.current().lang,
+        }),
+        text: this.i18n.t('translations.CHANGE_PASSWORD.TEXT', {
+          lang: I18nContext.current().lang,
+        }),
         variables: {
           resetLink: generateFrontendUrl(`/reset-password?token=${token}`),
         },
@@ -122,8 +169,12 @@ export class AuthService {
 
       return {
         success: true,
-        message:
-          'Um link para resetar a sua senha foi encaminhado para o seu email',
+        message: this.i18n.t(
+          'translations.CHANGE_PASSWORD.REQUEST_SUCCESSFULLY',
+          {
+            lang: I18nContext.current().lang,
+          },
+        ),
       };
     } catch (e) {
       throw new ServerError();
@@ -141,7 +192,13 @@ export class AuthService {
     const resetTokenData =
       await this.resetPasswordTokensRepository.getByToken(resetToken);
 
-    if (!resetTokenData) throw new InvalidParamError('token', 'Invalid token');
+    if (!resetTokenData)
+      throw new InvalidParamError(
+        'token',
+        this.i18n.t('translations.INVALID_TOKEN', {
+          lang: I18nContext.current().lang,
+        }),
+      );
 
     await this.resetPasswordTokensRepository.deleteByToken(resetToken);
 
@@ -153,14 +210,26 @@ export class AuthService {
     try {
       await this.mailSenderAdapter.sendMail({
         to: resetTokenData.email,
-        subject: 'Senha alterada com sucesso!',
-        text: `A sua senha foi alterada com sucesso. Caso esta operação não tenha sido realizada por você, entre em contato com ${process.env.MAIL_SENDER}`,
+        subject: this.i18n.t('translations.CHANGED_PASSWORD.SUBJECT', {
+          lang: I18nContext.current().lang,
+        }),
+        text: this.i18n.t('translations.CHANGED_PASSWORD.SUBJECT', {
+          lang: I18nContext.current().lang,
+          args: {
+            mail_sender: process.env.MAIL_SENDER,
+          },
+        }),
         view: 'password_changed',
       });
 
       return {
         success: true,
-        message: 'Senha alterada com sucesso!',
+        message: this.i18n.t(
+          'translations.CHANGED_PASSWORD.REQUEST_SUCCESSFULLY',
+          {
+            lang: I18nContext.current().lang,
+          },
+        ),
       };
     } catch (e) {
       throw new ServerError();

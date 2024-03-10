@@ -1,0 +1,42 @@
+{
+  "CHANGE_PASSWORD": {
+    "SUBJECT": "Solicitação para alterar senha.",
+    "TEXT": "Clique no botão abaixo para alterar a sua senha.",
+    "REQUEST_SUCCESSFULLY": "Um link para resetar a sua senha foi encaminhado para o seu email."
+  },
+  "CHANGED_PASSWORD": {
+    "SUBJECT": "Senha alterada com sucesso!",
+    "TEXT": "A sua senha foi alterada com sucesso. Caso esta operação não tenha sido realizada por você, entre em contato com {mail_sender}",
+    "REQUEST_SUCCESSFULLY": "Senha alterada com sucesso!"
+  },
+  "INVALID_FIELD": {
+    "ALREADY_EXISTS": {
+      "USERNAME": "Este nome de usuário já foi previamente cadastrado.",
+      "EMAIL": "Este e-mail já foi previamente cadastrado.",
+      "PHONE": "Este telefone já foi previamente cadastrado.",
+      "NAME": "Este nome já foi previamente cadastrado.",
+      "TIMES": "Horários duplicados não são permitidos."
+    },
+    "MISSING_DATA": {
+      "PICTURE": "A imagem não foi anexada ou não é uma imagem.",
+      "APPOINTMENT": "Agendamento não encontrado.",
+      "MANAGER_ID": "Identificação do administrador não encontrado.",
+      "USERNAME": "Estabelecimento não encontrado.",
+      "GENERIC_NOT_FOUND": "Item não encontrado."
+    },
+    "INVALID_CREDENTIALS": "Credenciais inválidas.",
+    "INVALID_REFRESH_TOKEN": "Refresh token inválido.",
+    "INVALID_TOKEN": "Token inválido.",
+    "INVALID_EMAIL": "E-mail inválido."
+  },
+  "VALIDATORS": {
+    "VALID_MONGO_ID": "Os identificadores fornecidos precisam ser válidos."
+  },
+  "APPOINTMENT": {
+    "CREATED": "Horário agendado com sucesso!",
+    "CANCELED": "Agendamento cancelado com sucesso!"
+  },
+  "SCHEDULES": {
+    "DELETED": "Agenda deletada com sucesso!"
+  }
+}

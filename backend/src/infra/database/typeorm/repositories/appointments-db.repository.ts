@@ -15,6 +15,10 @@ export class TypeOrmAppointmentsRepository implements AppointmentsRepository {
     this.repository = typeormService.getMongoRepository(AppointmentsMDB);
   }
 
+  async getByScheduleId(scheduleId: string): Promise<Appointments> {
+    return await this.repository.findOneBy({ scheduleId });
+  }
+
   async deleteByAppointmentCode(
     appointmentCode: string,
   ): Promise<Appointments | null> {

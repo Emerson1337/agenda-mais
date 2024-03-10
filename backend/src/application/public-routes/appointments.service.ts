@@ -7,13 +7,15 @@ import { InvalidParamError } from '@src/presentation/errors';
 import { AppointmentsRepository } from '../../domain/repositories/appointments.repository';
 import { generateAppointmentCode } from '../shared/utils/dataGenerator';
 import { CreateAppointmentDto } from './dtos/create-appointment-dto';
+import { I18nContext, I18nService } from 'nestjs-i18n';
 
 @Injectable()
 export class AppointmentsService {
   constructor(
-    private scheduleRepository: SchedulesRepository,
-    private bookingManagersRepository: BookingManagersRepository,
-    private appointmentsRepository: AppointmentsRepository,
+    private readonly scheduleRepository: SchedulesRepository,
+    private readonly bookingManagersRepository: BookingManagersRepository,
+    private readonly appointmentsRepository: AppointmentsRepository,
+    private readonly i18n: I18nService,
   ) {}
 
   async bookAppointment({
@@ -38,7 +40,15 @@ export class AppointmentsService {
     });
 
     if (!schedule) {
-      throw new InvalidParamError('scheduleId', 'Invalid schedule.');
+      throw new InvalidParamError(
+        'scheduleId',
+        this.i18n.t(
+          'translations.INVALID_FIELD.MISSING_DATA.GENERIC_NOT_FOUND',
+          {
+            lang: I18nContext.current().lang,
+          },
+        ),
+      );
     }
 
     await this.scheduleRepository.updateTimeAvailabilityByIdAndTime({
@@ -61,7 +71,9 @@ export class AppointmentsService {
 
     return {
       appointment,
-      message: 'Appointment booked!',
+      message: this.i18n.t('translations.APPOINTMENT.CREATED', {
+        lang: I18nContext.current().lang,
+      }),
     };
   }
 
@@ -80,7 +92,9 @@ export class AppointmentsService {
     if (!appointment)
       throw new InvalidParamError(
         'appointmentCode',
-        'Invalid appointment code provided.',
+        this.i18n.t('translations.INVALID_FIELD.MISSING_DATA.APPOINTMENT', {
+          lang: I18nContext.current().lang,
+        }),
       );
 
     const manager =
@@ -89,7 +103,9 @@ export class AppointmentsService {
     if (!manager)
       throw new InvalidParamError(
         'managerUsername',
-        'Invalid manager username provided.',
+        this.i18n.t('translations.INVALID_FIELD.MISSING_DATA.USERNAME', {
+          lang: I18nContext.current().lang,
+        }),
       );
 
     await this.scheduleRepository.makeScheduleAvailableByIdAndTime({
@@ -100,7 +116,9 @@ export class AppointmentsService {
 
     return {
       appointment,
-      message: 'Appointment canceled!',
+      message: this.i18n.t('translations.APPOINTMENT.CANCELED', {
+        lang: I18nContext.current().lang,
+      }),
     };
   }
 }

@@ -23,6 +23,11 @@ export class IsArrayOfMongoIdsConstraint
   }
 
   defaultMessage() {
+    // validationArguments?: ValidationArguments
+    // if (validationArguments) {
+    //   const errorMessageFn = i18nValidationMessage('VALIDATORS.VALID_MONGO_ID');
+    //   return errorMessageFn(validationArguments);
+    // }
     return 'Each element of the array must be a valid MongoDB ObjectId string.';
   }
 }

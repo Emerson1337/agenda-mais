@@ -6,7 +6,7 @@ import { SchedulesService } from '@src/application/schedules/schedules.service';
 import { AuthRequired } from '@src/application/shared/decorators/auth-required.decorator';
 import { Response } from 'express';
 
-@Controller('dashboard/schedules')
+@Controller('dashboard/agendas')
 export class SchedulesController {
   constructor(private readonly schedulesService: SchedulesService) {}
 
@@ -70,7 +70,7 @@ export class SchedulesController {
     }
   }
 
-  @Get('appointments')
+  @Get('agendamentos')
   @AuthRequired()
   async listAppointments(@Req() request: Request, @Res() response: Response) {
     try {
@@ -78,7 +78,11 @@ export class SchedulesController {
 
       return response
         .status(201)
-        .send(ok(await this.schedulesService.listAppointments(userId)));
+        .send(
+          ok(
+            await this.schedulesService.listAppointments({ managerId: userId }),
+          ),
+        );
     } catch (error) {
       return response.status(error.status).send(handleError(error));
     }

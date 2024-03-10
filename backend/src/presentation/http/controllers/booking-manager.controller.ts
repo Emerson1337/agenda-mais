@@ -19,7 +19,7 @@ import { AuthRequired } from '@src/application/shared/decorators/auth-required.d
 import { FileAdapter } from '@src/infra/adapters/file.adapter';
 import { Response } from 'express';
 
-@Controller('dashboard/managers')
+@Controller('dashboard/usuarios')
 export class BookingManagerController {
   constructor(
     private readonly bookingManagersService: BookingManagersService,
@@ -73,7 +73,7 @@ export class BookingManagerController {
     }
   }
 
-  @Patch('picture')
+  @Patch('foto')
   @AuthRequired()
   @UseInterceptors(FileInterceptor('picture', new FileAdapter().saveFile()))
   async updateProfilePhoto(
@@ -94,6 +94,7 @@ export class BookingManagerController {
         ),
       );
     } catch (error) {
+      console.log(error);
       return response.status(error.status).send(handleError(error));
     }
   }

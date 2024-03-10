@@ -13,6 +13,7 @@ import { UserDto } from '../auth/dtos/user-dto';
 import { removeAttributes } from '../shared/utils/objectFormatter';
 import { UpdateManagerAdminDto } from './dtos/update-manager-admin-dto';
 import { UpdateManagerDto } from './dtos/update-manager-dto';
+import { I18nContext, I18nService } from 'nestjs-i18n';
 
 @Injectable()
 export class BookingManagersService {
@@ -20,6 +21,7 @@ export class BookingManagersService {
     private bookingManagersRepository: BookingManagersRepository,
     private encryptAdapter: EncryptAdapter,
     private fileAdapter: FileAdapter,
+    private readonly i18n: I18nService,
   ) {}
 
   async create(manager: CreateManagerDto): Promise<BookingManagers | Error> {
@@ -36,14 +38,33 @@ export class BookingManagersService {
 
     if (managerUsernameAlreadyExists)
       errors.push(
-        new InvalidParamError('username', 'This username already exists!'),
+        new InvalidParamError(
+          'username',
+          this.i18n.t('translations.INVALID_FIELD.ALREADY_EXISTS.USERNAME', {
+            lang: I18nContext.current().lang,
+          }),
+        ),
       );
 
     if (managerEmailAlreadyExists)
-      errors.push(new InvalidParamError('email', 'This email already exists!'));
+      errors.push(
+        new InvalidParamError(
+          'email',
+          this.i18n.t('translations.INVALID_FIELD.ALREADY_EXISTS.EMAIL', {
+            lang: I18nContext.current().lang,
+          }),
+        ),
+      );
 
     if (managerPhoneAlreadyExists)
-      errors.push(new InvalidParamError('phone', 'This phone already exists!'));
+      errors.push(
+        new InvalidParamError(
+          'phone',
+          this.i18n.t('translations.INVALID_FIELD.ALREADY_EXISTS.PHONE', {
+            lang: I18nContext.current().lang,
+          }),
+        ),
+      );
 
     if (errors.length > 0) {
       throw new MultipleErrors(errors);
@@ -91,14 +112,33 @@ export class BookingManagersService {
 
     if (managerUsernameAlreadyExists)
       errors.push(
-        new InvalidParamError('username', 'This username already exists!'),
+        new InvalidParamError(
+          'username',
+          this.i18n.t('translations.INVALID_FIELD.ALREADY_EXISTS.USERNAME', {
+            lang: I18nContext.current().lang,
+          }),
+        ),
       );
 
     if (managerEmailAlreadyExists)
-      errors.push(new InvalidParamError('email', 'This email already exists!'));
+      errors.push(
+        new InvalidParamError(
+          'email',
+          this.i18n.t('translations.INVALID_FIELD.ALREADY_EXISTS.EMAIL', {
+            lang: I18nContext.current().lang,
+          }),
+        ),
+      );
 
     if (managerPhoneAlreadyExists)
-      errors.push(new InvalidParamError('phone', 'This phone already exists!'));
+      errors.push(
+        new InvalidParamError(
+          'phone',
+          this.i18n.t('translations.INVALID_FIELD.ALREADY_EXISTS.PHONE', {
+            lang: I18nContext.current().lang,
+          }),
+        ),
+      );
 
     if (errors.length > 0) {
       throw new MultipleErrors(errors);
@@ -119,7 +159,9 @@ export class BookingManagersService {
     if (!picturePath)
       throw new InvalidParamError(
         'picture',
-        "Picture wasn't provided or it's not an image",
+        this.i18n.t('translations.INVALID_FIELD.MISSING_DATA.PICTURE', {
+          lang: I18nContext.current().lang,
+        }),
       );
 
     picturePath = await this.fileAdapter.moveFile(
@@ -128,7 +170,14 @@ export class BookingManagersService {
     );
 
     const manager = await this.bookingManagersRepository.findById(managerId);
-    manager.profilePhoto && this.fileAdapter.removeFile(manager.profilePhoto);
+
+    if (manager.profilePhoto) {
+      try {
+        this.fileAdapter.removeFile(manager.profilePhoto);
+      } catch (error) {
+        error; //file not found
+      }
+    }
 
     return await this.bookingManagersRepository.updatePicture(
       managerId,
@@ -146,7 +195,12 @@ export class BookingManagersService {
     const manager = await this.bookingManagersRepository.findById(managerId);
 
     if (!manager)
-      throw new InvalidParamError('managerId', 'Manager not found.');
+      throw new InvalidParamError(
+        'managerId',
+        this.i18n.t('translations.INVALID_FIELD.MISSING_DATA.MANAGER_ID', {
+          lang: I18nContext.current().lang,
+        }),
+      );
 
     return await this.bookingManagersRepository.updateAsAdmin(managerId, {
       ...manager,
@@ -166,7 +220,12 @@ export class BookingManagersService {
     const manager = await this.bookingManagersRepository.findById(managerId);
 
     if (!manager)
-      throw new InvalidParamError('managerId', 'Manager not found.');
+      throw new InvalidParamError(
+        'managerId',
+        this.i18n.t('translations.INVALID_FIELD.MISSING_DATA.MANAGER_ID', {
+          lang: I18nContext.current().lang,
+        }),
+      );
 
     const passwordHashed = await this.encryptAdapter.encryptPassword(password);
 
