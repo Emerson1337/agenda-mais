@@ -24,7 +24,6 @@ export class TypeOrmSchedulesRepository implements SchedulesRepository {
     managerId: string;
     time: string;
   }): Promise<Schedules> {
-    console.log({ _id: new ObjectId(id), 'times.time': time, managerId });
     return (await this.repository.findOneAndUpdate(
       { _id: new ObjectId(id), 'times.time': time, managerId },
       { $set: { 'times.$.available': true } },

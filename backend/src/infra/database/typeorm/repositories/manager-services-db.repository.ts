@@ -71,10 +71,13 @@ export class TypeOrmManagerServicesRepository
     return await this.repository.find({ managerId });
   }
 
-  async findById(
-    managerServiceId: string,
-    managerId: string,
-  ): Promise<ManagerServices> {
+  async findById({
+    managerServiceId,
+    managerId,
+  }: {
+    managerServiceId: string;
+    managerId: string;
+  }): Promise<ManagerServices> {
     return await this.repository.findOneBy({
       _id: new ObjectId(managerServiceId),
       managerId,

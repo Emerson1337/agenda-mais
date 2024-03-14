@@ -41,7 +41,7 @@ export class SchedulesController {
 
       return response
         .status(201)
-        .send(ok(await this.schedulesService.list(userId)));
+        .send(ok(await this.schedulesService.list({ managerId: userId })));
     } catch (error) {
       return response.status(error.status).send(handleError(error));
     }

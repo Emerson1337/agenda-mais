@@ -8,6 +8,7 @@ import { SchedulesMDB } from './entities/schedules-db.entity';
 
 import 'dotenv/config';
 import { AppointmentsMDB } from './entities/appointments-db.entity';
+import { SalesReportMDB } from './entities/sales-report-db.entity';
 
 @Injectable()
 export class TypeormService extends DataSource implements OnModuleInit {
@@ -26,6 +27,7 @@ export class TypeormService extends DataSource implements OnModuleInit {
         SchedulesMDB,
         ManagerServicesMDB,
         AppointmentsMDB,
+        SalesReportMDB,
       ],
     });
   }

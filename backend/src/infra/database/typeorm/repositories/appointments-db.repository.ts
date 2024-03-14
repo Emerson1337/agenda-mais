@@ -6,6 +6,7 @@ import { MongoRepository } from 'typeorm';
 
 import { AppointmentsMDB } from '../entities/appointments-db.entity';
 import { TypeormService } from '../typeorm.service';
+import { AppointmentStatus } from '@domain/entities/enums/appointment-status.enum';
 
 @Injectable()
 export class TypeOrmAppointmentsRepository implements AppointmentsRepository {
@@ -19,12 +20,27 @@ export class TypeOrmAppointmentsRepository implements AppointmentsRepository {
     return await this.repository.findOneBy({ scheduleId });
   }
 
+  async findActiveByAppointmentCode({
+    code,
+    managerId,
+  }: {
+    code: string;
+    managerId: string;
+  }): Promise<Appointments | null> {
+    return (await this.repository.findOne({
+      where: { code, managerId, status: AppointmentStatus.ACTIVE },
+    })) as Appointments;
+  }
+
   async deleteByAppointmentCode(
     appointmentCode: string,
   ): Promise<Appointments | null> {
-    return (await this.repository.findOneAndDelete({
-      code: appointmentCode,
-    })) as Appointments;
+    return (await this.repository.findOneAndUpdate(
+      {
+        code: appointmentCode,
+      },
+      { $set: { status: AppointmentStatus.CANCELED } },
+    )) as Appointments;
   }
 
   async create(appointment: CreateAppointmentDto): Promise<Appointments> {

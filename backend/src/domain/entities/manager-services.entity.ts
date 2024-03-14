@@ -2,7 +2,7 @@ import BaseEntity from './config/base.entity';
 
 export class ManagerServices extends BaseEntity {
   name: string;
-  price: string;
+  price: number;
   description: string;
   timeDuration: string;
 }

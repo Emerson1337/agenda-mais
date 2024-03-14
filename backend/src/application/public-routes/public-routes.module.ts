@@ -5,11 +5,12 @@ import { PublicRoutesController } from '@src/presentation/http/controllers/publi
 import { AvailableDatesService } from './available-dates.service';
 import { AppointmentsService } from './appointments.service';
 import { LocaleModule } from '@presentation/locale/locale.module';
+import { SalesReportService } from '../sales-report/sales-report.service';
 
 @Module({
   imports: [DatabaseModule, LocaleModule],
   controllers: [PublicRoutesController],
-  providers: [AvailableDatesService, AppointmentsService],
+  providers: [AvailableDatesService, AppointmentsService, SalesReportService],
   exports: [AvailableDatesService, AppointmentsService],
 })
 export class PublicRoutesModule {}

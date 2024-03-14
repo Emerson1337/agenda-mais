@@ -38,6 +38,8 @@ export class SchedulesService {
   }: {
     managerId: string;
   }): Promise<Schedules[] | Error> {
+    console.log(`🟢🟢🟢🟢 ${managerId}`);
+
     return await this.schedulesRepository.getAll(managerId);
   }
 

@@ -3,7 +3,6 @@ import { BookingManagersRepository } from '@src/domain/repositories/booking-mana
 import { ManagerServicesRepository } from '@src/domain/repositories/manager-services.repository';
 import { ResetPasswordTokensRepository } from '@src/domain/repositories/reset-password-tokens.repository';
 import { SchedulesRepository } from '@src/domain/repositories/schedules.repository';
-
 import { TypeOrmBookingManagersRepository } from './typeorm/repositories/booking-managers-db.repository';
 import { TypeOrmManagerServicesRepository } from './typeorm/repositories/manager-services-db.repository';
 import { TypeOrmResetPasswordTokensRepository } from './typeorm/repositories/reset-password-tokens-db.repository';
@@ -11,6 +10,8 @@ import { TypeOrmSchedulesRepository } from './typeorm/repositories/schedules-db.
 import { TypeormService } from './typeorm/typeorm.service';
 import { AppointmentsRepository } from '@src/domain/repositories/appointments.repository';
 import { TypeOrmAppointmentsRepository } from './typeorm/repositories/appointments-db.repository';
+import { SalesReportRepository } from '@domain/repositories/sales-report.repository';
+import { TypeOrmSalesReportRepository } from './typeorm/repositories/sales-report-db.repository';
 
 @Module({
   providers: [
@@ -35,6 +36,10 @@ import { TypeOrmAppointmentsRepository } from './typeorm/repositories/appointmen
       provide: AppointmentsRepository,
       useClass: TypeOrmAppointmentsRepository,
     },
+    {
+      provide: SalesReportRepository,
+      useClass: TypeOrmSalesReportRepository,
+    },
   ],
   exports: [
     BookingManagersRepository,
@@ -43,6 +48,7 @@ import { TypeOrmAppointmentsRepository } from './typeorm/repositories/appointmen
     ManagerServicesRepository,
     AppointmentsRepository,
     TypeormService,
+    SalesReportRepository,
   ],
 })
 export class DatabaseModule {}

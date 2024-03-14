@@ -14,8 +14,8 @@ export class ManagerServicesMDB
   @Column({ type: 'string' })
   name: string;
 
-  @Column({ type: 'string' })
-  price: string;
+  @Column({ type: 'number' })
+  price: number;
 
   @Column({ type: 'string' })
   description: string;

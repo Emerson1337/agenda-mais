@@ -6,6 +6,7 @@ import { ManagerServicesModule } from './application/manager-services/manager-se
 import { PublicRoutesModule } from './application/public-routes/public-routes.module';
 import { SchedulesModule } from './application/schedules/schedules.module';
 import { LocaleModule } from './presentation/locale/locale.module';
+import { SalesReportModule } from './application/sales-report/sales-report.module';
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { LocaleModule } from './presentation/locale/locale.module';
     PublicRoutesModule,
     ManagerServicesModule,
     LocaleModule,
+    SalesReportModule,
   ],
 })
 export class AppModule {}

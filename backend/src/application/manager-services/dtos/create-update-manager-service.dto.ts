@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsString } from 'class-validator';
+import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
 
 export class CreateUpdateManagerServiceDto {
   @IsNotEmpty()
@@ -6,8 +6,8 @@ export class CreateUpdateManagerServiceDto {
   name: string;
 
   @IsNotEmpty()
-  @IsString()
-  price: string;
+  @IsNumber()
+  price: number;
 
   @IsNotEmpty()
   @IsString()

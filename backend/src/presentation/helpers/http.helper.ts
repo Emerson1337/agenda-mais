@@ -51,6 +51,9 @@ export const handleError = (error: Error) => {
     return multipleBadRequest(error['errors'] as Error[]);
   }
 
+  if (process.env.NODE_ENV === 'development')
+    console.log(`🟢🟢🟢🟢 ${error.stack} 🟢🟢🟢🟢`);
+
   if (
     [
       errorCodes.MISSING_PARAM_ERROR,

@@ -70,10 +70,10 @@ export class ManagerServicesService {
     managerServiceId: string,
     managerId: string,
   ): Promise<void | Error> {
-    const managerExists = await this.managerServicesRepository.findById(
+    const managerExists = await this.managerServicesRepository.findById({
       managerServiceId,
       managerId,
-    );
+    });
 
     if (!managerExists)
       throw new InvalidParamError(
@@ -102,9 +102,9 @@ export class ManagerServicesService {
     managerServiceId: string,
     managerId: string,
   ): Promise<ManagerServices | Error> {
-    return await this.managerServicesRepository.findById(
+    return await this.managerServicesRepository.findById({
       managerServiceId,
       managerId,
-    );
+    });
   }
 }

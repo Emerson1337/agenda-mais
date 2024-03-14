@@ -1,4 +1,5 @@
 import BaseEntity from './config/base.entity';
+import { AppointmentStatus } from './enums/appointment-status.enum';
 
 export class Appointments extends BaseEntity {
   clientName: string;
@@ -6,4 +7,6 @@ export class Appointments extends BaseEntity {
   scheduleId: string;
   time: string;
   notes: string;
+  code: string;
+  status: AppointmentStatus;
 }

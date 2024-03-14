@@ -22,10 +22,13 @@ export abstract class ManagerServicesRepository {
     managerId: string,
   ): Promise<ManagerServices>;
   abstract getAll(managerId: string): Promise<ManagerServices[]>;
-  abstract findById(
-    managerServiceId: string,
-    managerId: string,
-  ): Promise<ManagerServices>;
+  abstract findById({
+    managerServiceId,
+    managerId,
+  }: {
+    managerServiceId: string;
+    managerId: string;
+  }): Promise<ManagerServices>;
   abstract deleteById(
     managerServiceId: string,
     managerId: string,

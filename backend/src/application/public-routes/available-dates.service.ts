@@ -7,7 +7,8 @@ import { ManagerServicesRepository } from '@src/domain/repositories/manager-serv
 import { SchedulesRepository } from '@src/domain/repositories/schedules.repository';
 
 import { removeAttributes } from '../shared/utils/objectFormatter';
-import { I18nService } from 'nestjs-i18n';
+import { I18nContext, I18nService } from 'nestjs-i18n';
+import { InvalidParamError } from '../../presentation/errors';
 
 @Injectable()
 export class AvailableDatesService {
@@ -28,6 +29,14 @@ export class AvailableDatesService {
     const manager =
       await this.bookingManagersRepository.findByUsername(username);
 
+    if (!manager) {
+      throw new InvalidParamError(
+        'managerUsername',
+        this.i18n.t('translations.INVALID_FIELD.MISSING_DATA.USERNAME', {
+          lang: I18nContext.current().lang,
+        }),
+      );
+    }
     const schedules = (
       await this.scheduleRepository.getAllByDate(manager.id, query.date)
     ).map((schedule) => {
@@ -47,6 +56,15 @@ export class AvailableDatesService {
   }> {
     const manager =
       await this.bookingManagersRepository.findByUsername(username);
+
+    if (!manager) {
+      throw new InvalidParamError(
+        'managerUsername',
+        this.i18n.t('translations.INVALID_FIELD.MISSING_DATA.USERNAME', {
+          lang: I18nContext.current().lang,
+        }),
+      );
+    }
 
     const services = await this.managerServicesRepository.getByManagerId(
       manager.id,
