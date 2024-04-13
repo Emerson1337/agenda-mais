@@ -4,6 +4,7 @@ import "./globals.css";
 import { ThemeProvider } from "@/components/ui/theme-provider";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { Sidebar } from "@/components/ui/sidebar";
+import Header from "./dashboard/presentation/components/Header";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -31,6 +32,7 @@ export default function RootLayout({ children }: Readonly<RootLayoutprops>) {
               <Sidebar />
             </TooltipProvider>
             <div className="flex flex-col sm:gap-4 sm:py-4 sm:pl-14">
+              <Header />
               {children}
             </div>
           </div>
