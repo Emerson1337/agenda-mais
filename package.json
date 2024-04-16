@@ -8,10 +8,9 @@
     "db:dev": "./local-dev/start_dev_db.sh",
     "lint:backend": "cd ./backend && yarn lint",
     "test:backend": "cd ./backend && yarn test",
-    "testBE:staged": "cd ./backend && yarn test as-is --findRelatedTests",
+    "testBE:staged": "cd ./backend && yarn test --findRelatedTests",
     "test:frontend": "cd ./frontend && yarn test",
     "lint:frontend": "cd ./frontend && yarn lint",
-    "testFE:staged": "cd ./frontend && yarn test as-is --findRelatedTests",
     "prepare": "husky install",
     "lint-staged": "lint-staged",
     "start-app": "concurrently \"cd ./backend && yarn start:dev\" \"cd ./frontend && yarn dev\""
