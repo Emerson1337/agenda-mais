@@ -27,7 +27,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import Image from "next/image";
-import { useActivePath } from "@/lib/hooks";
+import { useActivePath } from "@/shared/lib/hooks";
 
 export default function Header() {
   const checkActivePath = useActivePath();

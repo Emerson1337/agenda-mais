@@ -5,6 +5,7 @@ import { ThemeProvider } from "@/components/ui/theme-provider";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { Sidebar } from "@/components/ui/sidebar";
 import Header from "./dashboard/presentation/components/Header";
+import { Provider } from "../shared/util/Providers";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -21,22 +22,24 @@ export default function RootLayout({ children }: Readonly<RootLayoutprops>) {
   return (
     <html lang="en">
       <body className={inter.className}>
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
-          <div className="flex min-h-screen w-full flex-col bg-muted/40">
-            <TooltipProvider>
-              <Sidebar />
-            </TooltipProvider>
-            <div className="flex flex-col sm:gap-4 sm:py-4 sm:pl-14">
-              <Header />
-              {children}
+        <Provider>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+            <div className="flex min-h-screen w-full flex-col bg-muted/40">
+              <TooltipProvider>
+                <Sidebar />
+              </TooltipProvider>
+              <div className="flex flex-col sm:gap-4 sm:py-4 sm:pl-14">
+                <Header />
+                {children}
+              </div>
             </div>
-          </div>
-        </ThemeProvider>
+          </ThemeProvider>
+        </Provider>
       </body>
     </html>
   );

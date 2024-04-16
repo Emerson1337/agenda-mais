@@ -33,7 +33,7 @@
     "**/*.tsx",
     ".next/types/**/*.ts",
     ".next/types/app/dashboard/page.tsx"
-  ],
+, "src/app/dashboard/application/fetchAppointmentts"  ],
   "exclude": [
     "node_modules"
   ]

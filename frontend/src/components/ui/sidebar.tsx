@@ -1,3 +1,5 @@
+"use client";
+
 import { Home, Package2, Settings, ShoppingCart } from "lucide-react";
 import Link from "next/link";
 import {
@@ -6,8 +8,11 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
+import { useActivePath } from "@/shared/lib/hooks";
 
 export function Sidebar() {
+  const checkActivePath = useActivePath();
+
   const menus = [
     {
       icon: <Home className="h-5 w-5" />,
@@ -36,7 +41,10 @@ export function Sidebar() {
             <TooltipTrigger asChild>
               <Link
                 href={menu.url}
-                className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
+                className={`flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8 ${
+                  checkActivePath(menu.url) &&
+                  "bg-accent text-accent-foreground"
+                }`}
               >
                 {menu.icon}
                 <span className="sr-only">{menu.title}</span>
@@ -51,8 +59,11 @@ export function Sidebar() {
           <ThemeToggle />
           <TooltipTrigger asChild>
             <Link
-              href="#"
-              className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
+              href="/settings"
+              className={`flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8 ${
+                checkActivePath("/settings") &&
+                "bg-accent text-accent-foreground"
+              }`}
             >
               <Settings className="h-5 w-5" />
               <span className="sr-only">Settings</span>
