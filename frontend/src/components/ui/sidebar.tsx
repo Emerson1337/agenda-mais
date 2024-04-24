@@ -8,7 +8,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
-import { useActivePath } from "@/shared/lib/hooks";
+import { useActivePath } from "@/lib/hooks";
 
 export function Sidebar() {
   const checkActivePath = useActivePath();

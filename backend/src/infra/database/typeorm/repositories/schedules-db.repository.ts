@@ -119,6 +119,8 @@ export class TypeOrmSchedulesRepository implements SchedulesRepository {
       },
     });
 
+    // TODO: Verify if an appointment must be cancelled and contact user somehow
+
     if (existingSchedule) {
       scheduleData = Object.assign(existingSchedule, scheduleData);
     }
