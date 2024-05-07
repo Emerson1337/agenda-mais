@@ -24,6 +24,9 @@
     "paths": {
       "@/*": [
         "./src/*"
+      ],
+      "@/private/*": [
+        "./src/app/(private)/*"
       ]
     }
   },
@@ -32,8 +35,9 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    ".next/types/app/dashboard/page.tsx"
-, "src/app/dashboard/application/fetchAppointmentts"  ],
+    ".next/types/app/dashboard/page.tsx",
+    "src/app/dashboard/application/fetchAppointmentts"
+  ],
   "exclude": [
     "node_modules"
   ]

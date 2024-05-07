@@ -8,9 +8,10 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { format } from "date-fns";
+import { Button } from "@/components/ui/button";
 
 export interface DaysExceptionModalProps {
   open: boolean;
@@ -27,10 +28,14 @@ export function DaysExceptionModal({
   date,
   times,
 }: DaysExceptionModalProps) {
-  const [timesAvailable, setTimesAvailable] = useState<string[]>();
+  const [timesAvailable, setTimesAvailable] = useState<string[]>(times);
+
+  const reset = () => {
+    setTimesAvailable(times);
+  };
 
   return (
-    <AlertDialog open={open}>
+    <AlertDialog onOpenChange={reset} open={open}>
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>Definir indisponibilidade</AlertDialogTitle>
@@ -42,7 +47,7 @@ export function DaysExceptionModal({
             <ToggleGroup
               type="multiple"
               variant="outline"
-              defaultValue={times}
+              value={timesAvailable}
               className="justify-center max-w-screen-sm mb-6 flex-wrap"
               onValueChange={(value) => {
                 setTimesAvailable(value);
@@ -54,6 +59,15 @@ export function DaysExceptionModal({
                 </ToggleGroupItem>
               ))}
             </ToggleGroup>
+            <div className="flex justify-center">
+              <Button
+                onClick={() => setTimesAvailable([])}
+                variant="destructive"
+                className="self-center"
+              >
+                Desmarcar todos os dias
+              </Button>
+            </div>
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
@@ -61,6 +75,7 @@ export function DaysExceptionModal({
             Descartar
           </AlertDialogCancel>
           <AlertDialogAction
+            className="text-white"
             disabled={
               !timesAvailable || times.length === timesAvailable?.length
             }

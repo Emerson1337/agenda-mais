@@ -5,7 +5,7 @@ import { ThemeProvider } from "@/components/ui/theme-provider";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { Sidebar } from "@/components/ui/sidebar";
 import Header from "./dashboard/presentation/components/Header";
-import { Provider } from "@/shared/util/Providers";
+import { Provider } from "@/shared/utils/Providers";
 
 const inter = Inter({ subsets: ["latin"] });
 

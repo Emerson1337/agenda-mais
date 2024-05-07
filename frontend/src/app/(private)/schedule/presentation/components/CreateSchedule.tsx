@@ -1,5 +1,6 @@
 "use client";
 
+import { Bounce, toast, ToastContainer } from "react-toastify";
 import { CalendarIcon } from "lucide-react";
 import {
   Card,
@@ -10,13 +11,12 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
-import { useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import {
   Select,
   SelectContent,
   SelectGroup,
   SelectItem,
-  SelectLabel,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
@@ -40,21 +40,25 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { IDateExceptions, ITimeRange } from "@/shared/types/schedule";
+import { useScheduleMutation } from "@/private/schedule/application/hooks/useScheduleMutation";
+import { ReloadIcon } from "@radix-ui/react-icons";
 
 export default function CreateSchedule() {
   const form = useForm();
+  const { mutate, isPending, isSuccess, error } = useScheduleMutation();
 
-  const [timeRange, setTimeRange] = useState<{
-    start?: string;
-    end?: string;
-  }>();
-  const [weekDays, setWeekDays] = useState<string[]>();
-  const [times, setTimes] = useState<string[]>();
-  const [dateExceptions, setDateExceptions] = useState<
-    { date: string; times: string[] }[]
-  >([]);
+  const [timeRange, setTimeRange] = useState<ITimeRange>({
+    start: "",
+    end: "",
+  });
+  const [weekDays, setWeekDays] = useState<string[]>([]);
+  const [times, setTimes] = useState<string[]>([]);
+  const [dateExceptions, setDateExceptions] = useState<IDateExceptions[]>([]);
 
-  const getTimesInRange = (timeRange?: { start?: string; end?: string }) => {
+  const isSubmitEnabled = weekDays?.length && !!times?.length;
+
+  const getTimesInRange = (timeRange?: ITimeRange) => {
     if (!timeRange || !timeRange.start || !timeRange.end) return [];
 
     const hourStart = stringUtils.getHourNumber(timeRange.start);
@@ -72,38 +76,64 @@ export default function CreateSchedule() {
     23
   );
 
-  const returnTimesCard = () => {
+  useEffect(() => {
+    setTimes(timesInRangeSelected);
+  }, [timesInRangeSelected]);
+
+  const returnTimesCard = useCallback(() => {
     if (!timesInRangeSelected.length) return <></>;
 
     return (
-      <div className="flex-row text-center">
-        <div className="my-4">
-          <p>Esses são os horários que você pré-definiu.</p>
-          <p>
-            Agora, selecione os horários que deseja disponibilizar para
-            agendamento.
-          </p>
+      <ToggleGroup
+        type="multiple"
+        variant="outline"
+        className="justify-center max-w-screen-sm"
+        defaultValue={timesInRangeSelected}
+        onValueChange={(value) => {
+          setTimes(value);
+        }}
+      >
+        <div className="flex-row text-center">
+          <div className="my-4">
+            <p>Esses são os horários que você pré-definiu.</p>
+            <p>
+              Agora, selecione os horários que deseja disponibilizar para
+              agendamento.
+            </p>
+          </div>
+          {timesInRangeSelected.map((time, key) => (
+            <ToggleGroupItem className="m-1" key={key} value={time}>
+              {time}
+            </ToggleGroupItem>
+          ))}
         </div>
-        {timesInRangeSelected.map((time, key) => (
-          <ToggleGroupItem className="m-1" key={key} value={time}>
-            {time}
-          </ToggleGroupItem>
-        ))}
-      </div>
+      </ToggleGroup>
     );
-  };
+  }, [timesInRangeSelected]);
+
+  useEffect(() => {
+    setDateExceptions(dateUtils.sortByDate(dateExceptions));
+  }, [dateExceptions]);
 
   function onSubmit() {
-    // const weekDays = weekDays;
-    console.log(weekDays);
-    console.log(timeRange);
-    console.log(times);
-    console.log(dateExceptions);
+    if (timeRange)
+      mutate({ weekDays, exceptions: dateExceptions, timeRange, times });
   }
+
+  useEffect(() => {
+    toast.success("Agenda salva com sucesso!");
+  }, [isSuccess]);
+
+  useEffect(() => {
+    toast.error(error?.message);
+  }, [error]);
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="space-y-8 max-w-2xl"
+      >
         <Card>
           <CardHeader>
             <CardTitle>Cadastrar agendas</CardTitle>
@@ -130,7 +160,7 @@ export default function CreateSchedule() {
               <ToggleGroupItem value="6">Sabado</ToggleGroupItem>
             </ToggleGroup>
           </CardContent>
-          {weekDays?.length && (
+          {!!weekDays?.length && (
             <>
               <CardContent className="flex justify-center gap-4 mt-10">
                 <div>Qual será o seu horário de atendimento?</div>
@@ -173,21 +203,10 @@ export default function CreateSchedule() {
                   </SelectContent>
                 </Select>
               </CardContent>
-              <CardContent className="justify-center gap-4">
-                <ToggleGroup
-                  type="multiple"
-                  variant="outline"
-                  className="justify-center max-w-screen-sm"
-                  defaultValue={times}
-                  defaultChecked={true}
-                  onValueChange={(value) => {
-                    setTimes(value);
-                  }}
-                >
-                  {returnTimesCard()}
-                </ToggleGroup>
+              <CardContent className="justify-center flex gap-4">
+                {returnTimesCard()}
               </CardContent>
-              {times?.length && (
+              {!!times?.length && (
                 <>
                   <Accordion type="single" collapsible>
                     <AccordionItem value="item-1">
@@ -235,8 +254,10 @@ export default function CreateSchedule() {
                     <Table>
                       <TableHeader>
                         <TableRow>
-                          <TableHead className="text-center">Dias</TableHead>
-                          <TableHead className="text-center">
+                          <TableHead className="text-center w-1/3">
+                            Dias
+                          </TableHead>
+                          <TableHead className="text-center w-2/3">
                             Horários
                           </TableHead>
                         </TableRow>
@@ -247,7 +268,7 @@ export default function CreateSchedule() {
                             <TableCell className="font-medium text-center">
                               {exception.date}
                             </TableCell>
-                            <TableCell className="flex gap-2 flex-wrap justify-center">
+                            <TableCell className="flex gap-2 flex-wrap justify-center max-w-fit">
                               {exception.times.map((time, key) => (
                                 <div
                                   key={key}
@@ -271,11 +292,18 @@ export default function CreateSchedule() {
               )}
             </>
           )}
-          <div className="flex justify-center mb-4">
-            <Button className="text-white" type="submit">
-              ENVIAR
+          <div className="flex justify-center mb-4 items-center">
+            <Button
+              disabled={!isSubmitEnabled || isPending}
+              className="text-white w-28"
+              type="submit"
+            >
+              Salvar
             </Button>
           </div>
+          <CardFooter className="flex justify-center h-10">
+            {isPending && <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />}
+          </CardFooter>
         </Card>
       </form>
     </Form>
