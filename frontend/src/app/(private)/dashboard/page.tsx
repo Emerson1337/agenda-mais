@@ -1,12 +1,11 @@
-import Orders from "@/app/dashboard/presentation/components/Orders";
-import GoalCard from "@/app/dashboard/presentation/components/GoalCard";
-import AppointmentsList from "@/app/dashboard/presentation/components/AppointmentsList";
-import TotalRevenue from "@/app/dashboard/presentation/components/TotalRevenue";
-import TotalAppointments from "@/app/dashboard/presentation/components/TotalAppointments";
-import TotalAppointmentsScheduled from "@/app/dashboard/presentation/components/TotalAppointmentsScheduled";
-import TotalAppointmentsFinished from "@/app/dashboard/presentation/components/TotalAppointmentsFinished";
-import TopClients from "@/app/dashboard/presentation/components/TopClients";
-import { Suspense } from "react";
+import Orders from "./presentation/components/Orders";
+import GoalCard from "./presentation/components/GoalCard";
+import TotalRevenue from "./presentation/components/TotalRevenue";
+import TotalAppointments from "./presentation/components/TotalAppointments";
+import TotalAppointmentsScheduled from "./presentation/components/TotalAppointmentsScheduled";
+import TotalAppointmentsFinished from "./presentation/components/TotalAppointmentsFinished";
+import AppointmentsList from "./presentation/components/AppointmentsList";
+import TopClients from "./presentation/components/TopClients";
 
 export default function Dashboard() {
   return (

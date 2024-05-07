@@ -1,4 +1,4 @@
-import CreateSchedule from "@/app/schedule/presentation/components/CreateSchedule";
+import CreateSchedule from "./presentation/components/CreateSchedule";
 
 export default function Schedule() {
   return (
