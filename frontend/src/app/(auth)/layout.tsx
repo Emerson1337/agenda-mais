@@ -16,7 +16,7 @@ interface RootLayoutprops {
 
 export default function RootLayout({ children }: Readonly<RootLayoutprops>) {
   return (
-    <html lang="en">
+    <html suppressHydrationWarning lang="en">
       <body className={inter.className}>
         <Provider>{children}</Provider>
       </body>

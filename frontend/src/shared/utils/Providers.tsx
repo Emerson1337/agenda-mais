@@ -31,7 +31,7 @@ export function Provider({ children }: ProviderProps) {
       <ToastContainer
         toastClassName={(context) =>
           contextClass[context?.type || "default"] +
-          " relative flex p-1 min-h-10 rounded-md justify-between overflow-hidden cursor-pointer"
+          " relative flex p-1 min-h-10 rounded-md justify-between overflow-hidden cursor-pointer text-foreground"
         }
         closeOnClick
         bodyClassName={() => "text-sm font-white font-med block p-3 flex"}

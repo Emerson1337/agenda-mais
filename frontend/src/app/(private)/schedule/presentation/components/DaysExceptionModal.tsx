@@ -40,10 +40,10 @@ export function DaysExceptionModal({
         <AlertDialogHeader>
           <AlertDialogTitle>Definir indisponibilidade</AlertDialogTitle>
           <AlertDialogDescription>
-            <div className="mb-4">
+            <span className="mb-4">
               Desmarque os horários que você não estará disponível no dia{" "}
               {format(date, "dd/MM/yyyy")}.
-            </div>
+            </span>
             <ToggleGroup
               type="multiple"
               variant="outline"
@@ -59,7 +59,7 @@ export function DaysExceptionModal({
                 </ToggleGroupItem>
               ))}
             </ToggleGroup>
-            <div className="flex justify-center">
+            <span className="flex justify-center">
               <Button
                 onClick={() => setTimesAvailable([])}
                 variant="destructive"
@@ -67,7 +67,7 @@ export function DaysExceptionModal({
               >
                 Desmarcar todos os dias
               </Button>
-            </div>
+            </span>
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
@@ -75,7 +75,7 @@ export function DaysExceptionModal({
             Descartar
           </AlertDialogCancel>
           <AlertDialogAction
-            className="text-white"
+            className="text-foreground"
             disabled={
               !timesAvailable || times.length === timesAvailable?.length
             }

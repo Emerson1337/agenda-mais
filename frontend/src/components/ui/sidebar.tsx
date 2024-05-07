@@ -1,6 +1,6 @@
 "use client";
 
-import { Home, Package2, Settings, ShoppingCart } from "lucide-react";
+import { Home, Package2, Settings, Calendar } from "lucide-react";
 import Link from "next/link";
 import {
   Tooltip,
@@ -20,7 +20,7 @@ export function Sidebar() {
       url: "/dashboard",
     },
     {
-      icon: <ShoppingCart className="h-5 w-5" />,
+      icon: <Calendar className="h-5 w-5" />,
       title: "Agendas",
       url: "/schedule",
     },

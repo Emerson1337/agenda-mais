@@ -1,6 +1,6 @@
 "use client";
 
-import { Bounce, toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 import { CalendarIcon } from "lucide-react";
 import {
   Card,
@@ -111,22 +111,15 @@ export default function CreateSchedule() {
     );
   }, [timesInRangeSelected]);
 
-  useEffect(() => {
-    setDateExceptions(dateUtils.sortByDate(dateExceptions));
-  }, [dateExceptions]);
-
   function onSubmit() {
     if (timeRange)
       mutate({ weekDays, exceptions: dateExceptions, timeRange, times });
   }
 
   useEffect(() => {
-    toast.success("Agenda salva com sucesso!");
-  }, [isSuccess]);
-
-  useEffect(() => {
-    toast.error(error?.message);
-  }, [error]);
+    isSuccess && toast.success("Agenda salva com sucesso!");
+    error?.message && toast.error(error?.message);
+  }, [error?.message, isSuccess]);
 
   return (
     <Form {...form}>
@@ -136,7 +129,7 @@ export default function CreateSchedule() {
       >
         <Card>
           <CardHeader>
-            <CardTitle>Cadastrar agendas</CardTitle>
+            <CardTitle>Atualizar agenda</CardTitle>
             <CardDescription>
               Para quais dias da semana você deseja deixar a agenda aberta?
             </CardDescription>
@@ -263,23 +256,25 @@ export default function CreateSchedule() {
                         </TableRow>
                       </TableHeader>
                       <TableBody>
-                        {dateExceptions.map((exception, key) => (
-                          <TableRow key={key}>
-                            <TableCell className="font-medium text-center">
-                              {exception.date}
-                            </TableCell>
-                            <TableCell className="flex gap-2 flex-wrap justify-center max-w-fit">
-                              {exception.times.map((time, key) => (
-                                <div
-                                  key={key}
-                                  className="border bg-secondary p-2 rounded-sm"
-                                >
-                                  {time}
-                                </div>
-                              ))}
-                            </TableCell>
-                          </TableRow>
-                        ))}
+                        {dateUtils
+                          .sortByDate(dateExceptions)
+                          .map((exception, key) => (
+                            <TableRow key={key}>
+                              <TableCell className="font-medium text-center">
+                                {exception.date}
+                              </TableCell>
+                              <TableCell className="flex gap-2 flex-wrap">
+                                {exception.times.map((time, key) => (
+                                  <div
+                                    key={key}
+                                    className="border bg-secondary p-2 rounded-sm w-16 text-center"
+                                  >
+                                    {time}
+                                  </div>
+                                ))}
+                              </TableCell>
+                            </TableRow>
+                          ))}
                       </TableBody>
                     </Table>
                   </CardContent>
@@ -295,7 +290,7 @@ export default function CreateSchedule() {
           <div className="flex justify-center mb-4 items-center">
             <Button
               disabled={!isSubmitEnabled || isPending}
-              className="text-white w-28"
+              className="text-foreground w-28"
               type="submit"
             >
               Salvar

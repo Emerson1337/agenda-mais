@@ -15,11 +15,12 @@ export namespace dateUtils {
     return array.sort((a: IDateExceptions, b: IDateExceptions) => {
       const [dayA, monthA, yearA] = a.date.split("/").map(Number);
       const [dayB, monthB, yearB] = b.date.split("/").map(Number);
+      // Months are zero-indexed in JavaScript's Date constructor
+      const dateA = new Date(yearA, monthA - 1, dayA);
+      const dateB = new Date(yearB, monthB - 1, dayB);
 
-      return (
-        new Date(dayA, monthA, yearA).getTime() -
-        new Date(dayB, monthB, yearB).getTime()
-      );
+      // Compare timestamps of the two dates
+      return dateA.getTime() - dateB.getTime();
     });
   };
 }
