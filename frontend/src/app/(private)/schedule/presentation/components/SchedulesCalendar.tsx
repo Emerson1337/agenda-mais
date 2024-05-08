@@ -4,6 +4,7 @@ import { Calendar } from "@/components/ui/calendar";
 import { useState } from "react";
 import { DaysExceptionModal } from "./DaysExceptionModal";
 import { format } from "date-fns";
+import { dateUtils } from "@/shared/utils/dateUtils";
 
 export interface SchedulesCalendarProps {
   times: string[];
@@ -25,6 +26,7 @@ export function SchedulesCalendar({
     <>
       <Calendar
         mode="multiple"
+        disabled={dateUtils.getPastDaysFromToday()}
         selected={dates}
         fromDate={new Date()}
         fromMonth={new Date()}

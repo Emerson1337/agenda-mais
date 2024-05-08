@@ -23,4 +23,18 @@ export namespace dateUtils {
       return dateA.getTime() - dateB.getTime();
     });
   };
+
+  export const getPastDaysFromToday = (): Date[] => {
+    const dates: Date[] = [];
+    const today = new Date();
+
+    // Iterate over the last 30 days
+    for (let i = 0; i < 30; i++) {
+      const date = new Date(today);
+      date.setDate(today.getDate() - i);
+      dates.push(date);
+    }
+
+    return dates;
+  };
 }
