@@ -3,6 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import {
+  Calendar,
   Home,
   Package2,
   PanelLeft,
@@ -39,7 +40,7 @@ export default function Header() {
       url: "/dashboard",
     },
     {
-      icon: <ShoppingCart className="h-5 w-5" />,
+      icon: <Calendar className="h-5 w-5" />,
       title: "Agendas",
       url: "/schedule",
     },
