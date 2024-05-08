@@ -3,12 +3,11 @@ import {
   AlertDialogAction,
   AlertDialogCancel,
   AlertDialogContent,
-  AlertDialogDescription,
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { format } from "date-fns";
 import { Button } from "@/components/ui/button";
@@ -39,37 +38,37 @@ export function DaysExceptionModal({
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>Definir indisponibilidade</AlertDialogTitle>
-          <AlertDialogDescription>
-            <span className="mb-4">
-              Desmarque os horários que você não estará disponível no dia{" "}
-              {format(date, "dd/MM/yyyy")}.
-            </span>
-            <ToggleGroup
-              type="multiple"
-              variant="outline"
-              value={timesAvailable}
-              className="justify-center max-w-screen-sm mb-6 flex-wrap"
-              onValueChange={(value) => {
-                setTimesAvailable(value);
-              }}
-            >
-              {times.map((time, key) => (
-                <ToggleGroupItem className="m-1" key={key} value={time}>
-                  {time}
-                </ToggleGroupItem>
-              ))}
-            </ToggleGroup>
-            <span className="flex justify-center">
-              <Button
-                onClick={() => setTimesAvailable([])}
-                variant="destructive"
-                className="self-center"
-              >
-                Desmarcar todos os dias
-              </Button>
-            </span>
-          </AlertDialogDescription>
         </AlertDialogHeader>
+        <>
+          <span className="mb-4">
+            Desmarque os horários que você não estará disponível no dia{" "}
+            {format(date, "dd/MM/yyyy")}.
+          </span>
+          <ToggleGroup
+            type="multiple"
+            variant="outline"
+            value={timesAvailable}
+            className="justify-center max-w-screen-sm mb-6 flex-wrap"
+            onValueChange={(value) => {
+              setTimesAvailable(value);
+            }}
+          >
+            {times.map((time, key) => (
+              <ToggleGroupItem className="m-1" key={key} value={time}>
+                {time}
+              </ToggleGroupItem>
+            ))}
+          </ToggleGroup>
+          <span className="flex justify-center mb-4">
+            <Button
+              onClick={() => setTimesAvailable([])}
+              variant="destructive"
+              className="self-center"
+            >
+              Desmarcar todos os dias
+            </Button>
+          </span>
+        </>
         <AlertDialogFooter>
           <AlertDialogCancel onClick={() => dismiss(date)}>
             Descartar

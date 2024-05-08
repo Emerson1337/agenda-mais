@@ -70,7 +70,7 @@ export default function CreateSchedule() {
                   end: "",
                 }}
               />
-              {timeRange.start && timeRange.end && <TimesSelector />}
+              {timeRange?.start && timeRange?.end && <TimesSelector />}
             </>
           )}
         </CardContent>
