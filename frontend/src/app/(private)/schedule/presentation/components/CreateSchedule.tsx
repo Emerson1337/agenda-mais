@@ -1,5 +1,6 @@
-import { PlusCircle } from "lucide-react";
-import { Button } from "@/components/ui/button";
+"use client";
+
+import { toast } from "react-toastify";
 import {
   Card,
   CardContent,
@@ -8,118 +9,84 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import { useEffect } from "react";
+import { useForm } from "react-hook-form";
+import { Button } from "@/components/ui/button";
+import { CustomForm } from "@/components/ui/form";
+import { useScheduleMutation } from "@/private/schedule/application/hooks/useScheduleMutation";
+import { ReloadIcon } from "@radix-ui/react-icons";
+import { WeekdaysCards } from "./WeekdaysCards";
+import { TimesSelector } from "./TimesSelector";
+import { TimeRangeSelector } from "./TimeRangeSelector";
 import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
-import { Calendar } from "@/components/ui/calendar";
-import { SchedulesCalendar } from "./SchedulesCalendar";
+  ScheduleData,
+  scheduleFormSchema,
+} from "@/private/schedule/domain/schedule.schema";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 export default function CreateSchedule() {
+  const form = useForm<ScheduleData>({
+    resolver: zodResolver(scheduleFormSchema),
+  });
+  const { getValues, watch } = form;
+  const [times, weekDays, timeRange] = watch([
+    "times",
+    "weekDays",
+    "timeRange",
+  ]);
+  const isSubmitEnabled = weekDays?.length && !!times?.length;
+  const { mutate, isPending, isSuccess, error } = useScheduleMutation();
+
+  function onSubmit() {
+    console.log(`🟢🟢🟢 ${JSON.stringify(getValues())} 🟢🟢🟢`);
+    mutate(getValues());
+  }
+
+  useEffect(() => {
+    isSuccess && toast.success("Agenda salva com sucesso!");
+    error?.message && toast.error(error?.message);
+  }, [error?.message, isSuccess]);
+
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Cadastrar agendas</CardTitle>
-        <CardDescription>
-          Selecione os dias que deseja abrir a agenda
-        </CardDescription>
-      </CardHeader>
-      <CardContent>
-        <SchedulesCalendar />
-      </CardContent>
-      <CardContent>
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead className="w-[100px]">SKU</TableHead>
-              <TableHead>Stock</TableHead>
-              <TableHead>Price</TableHead>
-              <TableHead className="w-[100px]">Size</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            <TableRow>
-              <TableCell className="font-semibold">GGPC-001</TableCell>
-              <TableCell>
-                <Label htmlFor="stock-1" className="sr-only">
-                  Stock
-                </Label>
-                <Input id="stock-1" type="number" defaultValue="100" />
-              </TableCell>
-              <TableCell>
-                <Label htmlFor="price-1" className="sr-only">
-                  Price
-                </Label>
-                <Input id="price-1" type="number" defaultValue="99.99" />
-              </TableCell>
-              <TableCell>
-                <ToggleGroup type="single" defaultValue="s" variant="outline">
-                  <ToggleGroupItem value="s">S</ToggleGroupItem>
-                  <ToggleGroupItem value="m">M</ToggleGroupItem>
-                  <ToggleGroupItem value="l">L</ToggleGroupItem>
-                </ToggleGroup>
-              </TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell className="font-semibold">GGPC-002</TableCell>
-              <TableCell>
-                <Label htmlFor="stock-2" className="sr-only">
-                  Stock
-                </Label>
-                <Input id="stock-2" type="number" defaultValue="143" />
-              </TableCell>
-              <TableCell>
-                <Label htmlFor="price-2" className="sr-only">
-                  Price
-                </Label>
-                <Input id="price-2" type="number" defaultValue="99.99" />
-              </TableCell>
-              <TableCell>
-                <ToggleGroup type="single" defaultValue="m" variant="outline">
-                  <ToggleGroupItem value="s">S</ToggleGroupItem>
-                  <ToggleGroupItem value="m">M</ToggleGroupItem>
-                  <ToggleGroupItem value="l">L</ToggleGroupItem>
-                </ToggleGroup>
-              </TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell className="font-semibold">GGPC-003</TableCell>
-              <TableCell>
-                <Label htmlFor="stock-3" className="sr-only">
-                  Stock
-                </Label>
-                <Input id="stock-3" type="number" defaultValue="32" />
-              </TableCell>
-              <TableCell>
-                <Label htmlFor="price-3" className="sr-only">
-                  Stock
-                </Label>
-                <Input id="price-3" type="number" defaultValue="99.99" />
-              </TableCell>
-              <TableCell>
-                <ToggleGroup type="single" defaultValue="s" variant="outline">
-                  <ToggleGroupItem value="s">S</ToggleGroupItem>
-                  <ToggleGroupItem value="m">M</ToggleGroupItem>
-                  <ToggleGroupItem value="l">L</ToggleGroupItem>
-                </ToggleGroup>
-              </TableCell>
-            </TableRow>
-          </TableBody>
-        </Table>
-      </CardContent>
-      <CardFooter className="justify-center border-t p-4">
-        <Button size="sm" variant="ghost" className="gap-1">
-          <PlusCircle className="h-3.5 w-3.5" />
-          Add Variant
-        </Button>
-      </CardFooter>
-    </Card>
+    <CustomForm
+      form={form}
+      onSubmit={onSubmit}
+      className="space-y-8 max-w-screen-md"
+    >
+      <Card>
+        <CardHeader>
+          <CardTitle>Atualizar agenda</CardTitle>
+          <CardDescription>
+            Para quais dias da semana você deseja deixar a agenda aberta?
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <WeekdaysCards defaultValue={weekDays} />
+          {!!weekDays?.length && (
+            <>
+              <TimeRangeSelector
+                defaultValue={{
+                  start: "",
+                  end: "",
+                }}
+              />
+              {timeRange?.start && timeRange?.end && <TimesSelector />}
+            </>
+          )}
+        </CardContent>
+        <div className="flex justify-center mb-4 items-center">
+          <Button
+            disabled={!isSubmitEnabled || isPending}
+            className="text-foreground w-28"
+            type="submit"
+          >
+            Salvar
+          </Button>
+        </div>
+        <CardFooter className="flex justify-center h-10">
+          {isPending && <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />}
+        </CardFooter>
+      </Card>
+    </CustomForm>
   );
 }

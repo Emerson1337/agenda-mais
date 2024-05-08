@@ -1,4 +1,4 @@
-import { apiUrls } from "@/shared/lib/apiUrls";
+import { apiUrls } from "@/lib/apiUrls";
 import { useQuery } from "@tanstack/react-query";
 import { API } from "@/shared/services/config/config";
 import { Appointment } from "@/shared/types/appointment";

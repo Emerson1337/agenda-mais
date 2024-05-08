@@ -8,7 +8,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { useAppointmentFacade } from "@/app/dashboard/application/appointment.facade";
+import { useAppointmentFacade } from "@/private/dashboard/application/appointment.facade";
 
 export default function Orders() {
   const { data: appointment, isPending } = useAppointmentFacade();

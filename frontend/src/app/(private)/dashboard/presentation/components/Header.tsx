@@ -3,6 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import {
+  Calendar,
   Home,
   Package2,
   PanelLeft,
@@ -27,7 +28,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import Image from "next/image";
-import { useActivePath } from "@/shared/lib/hooks";
+import { useActivePath } from "@/lib/hooks";
 
 export default function Header() {
   const checkActivePath = useActivePath();
@@ -39,7 +40,7 @@ export default function Header() {
       url: "/dashboard",
     },
     {
-      icon: <ShoppingCart className="h-5 w-5" />,
+      icon: <Calendar className="h-5 w-5" />,
       title: "Agendas",
       url: "/schedule",
     },
@@ -93,18 +94,14 @@ export default function Header() {
         <BreadcrumbList>
           <BreadcrumbItem>
             <BreadcrumbLink asChild>
-              <Link href="#">Dashboard</Link>
+              <Link href="#">Agendas</Link>
             </BreadcrumbLink>
           </BreadcrumbItem>
           <BreadcrumbSeparator />
           <BreadcrumbItem>
             <BreadcrumbLink asChild>
-              <Link href="#">Orders</Link>
+              <Link href="#">Atualizar agenda</Link>
             </BreadcrumbLink>
-          </BreadcrumbItem>
-          <BreadcrumbSeparator />
-          <BreadcrumbItem>
-            <BreadcrumbPage>Recent Orders</BreadcrumbPage>
           </BreadcrumbItem>
         </BreadcrumbList>
       </Breadcrumb>

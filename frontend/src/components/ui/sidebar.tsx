@@ -1,6 +1,6 @@
 "use client";
 
-import { Home, Package2, Settings, ShoppingCart } from "lucide-react";
+import { Home, Package2, Settings, Calendar } from "lucide-react";
 import Link from "next/link";
 import {
   Tooltip,
@@ -8,7 +8,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
-import { useActivePath } from "@/shared/lib/hooks";
+import { useActivePath } from "@/lib/hooks";
 
 export function Sidebar() {
   const checkActivePath = useActivePath();
@@ -20,7 +20,7 @@ export function Sidebar() {
       url: "/dashboard",
     },
     {
-      icon: <ShoppingCart className="h-5 w-5" />,
+      icon: <Calendar className="h-5 w-5" />,
       title: "Agendas",
       url: "/schedule",
     },
