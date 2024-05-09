@@ -6,7 +6,6 @@ import { MongoRepository } from 'typeorm';
 
 import { AppointmentsMDB } from '../entities/appointments-db.entity';
 import { TypeormService } from '../typeorm.service';
-import { AppointmentStatus } from '@domain/entities/enums/appointment-status.enum';
 
 @Injectable()
 export class TypeOrmAppointmentsRepository implements AppointmentsRepository {
@@ -16,8 +15,39 @@ export class TypeOrmAppointmentsRepository implements AppointmentsRepository {
     this.repository = typeormService.getMongoRepository(AppointmentsMDB);
   }
 
-  async getByScheduleId(scheduleId: string): Promise<Appointments> {
-    return await this.repository.findOneBy({ scheduleId });
+  async findByTimeAndDateAndManagerId({
+    time,
+    date,
+    managerId,
+  }: {
+    time: string;
+    date: string;
+    managerId: string;
+  }): Promise<Appointments> {
+    return await this.repository.findOneBy({
+      time,
+      date,
+      managerId,
+    });
+  }
+
+  async getByManagerId(managerId: string): Promise<Appointments[]> {
+    return await this.repository.find({
+      where: { managerId },
+    });
+  }
+
+  async getByScheduleId({
+    scheduleId,
+    managerId,
+  }: {
+    scheduleId: string;
+    managerId: string;
+  }): Promise<Appointments> {
+    return await this.repository.findOneBy({
+      scheduleId,
+      managerId,
+    });
   }
 
   async findActiveByAppointmentCode({
@@ -28,19 +58,19 @@ export class TypeOrmAppointmentsRepository implements AppointmentsRepository {
     managerId: string;
   }): Promise<Appointments | null> {
     return (await this.repository.findOne({
-      where: { code, managerId, status: AppointmentStatus.ACTIVE },
+      where: {
+        code,
+        managerId,
+      },
     })) as Appointments;
   }
 
   async deleteByAppointmentCode(
     appointmentCode: string,
   ): Promise<Appointments | null> {
-    return (await this.repository.findOneAndUpdate(
-      {
-        code: appointmentCode,
-      },
-      { $set: { status: AppointmentStatus.CANCELED } },
-    )) as Appointments;
+    return (await this.repository.findOneAndDelete({
+      code: appointmentCode,
+    })) as Appointments;
   }
 
   async create(appointment: CreateAppointmentDto): Promise<Appointments> {

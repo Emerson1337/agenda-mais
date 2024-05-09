@@ -10,14 +10,15 @@ export abstract class SchedulesRepository {
   abstract findByIdAndTimeAvailable({
     id,
     time,
+    weekDay,
     managerId,
   }: {
     id: string;
     time: string;
+    weekDay: number;
     managerId: string;
   }): Promise<Schedules>;
   abstract getAll(managerId: string): Promise<Schedules[]>;
-  abstract getAllNotAvailable(managerId: string): Promise<Schedules[]>;
   abstract getAllByDate(managerId: string, date: string): Promise<Schedules[]>;
   abstract updateTimeAvailabilityByIdAndTime({
     id,

@@ -1,7 +1,8 @@
-import { Column, CreateDateColumn, Entity } from 'typeorm';
+import { Column, Entity } from 'typeorm';
 
-import BaseEntityMDB from './config/base.entity';
 import { SalesReport } from '@domain/entities/sales-report.entity';
+import { AppointmentStatus } from '@src/domain/entities/enums/appointment-status.enum';
+import BaseEntityMDB from './config/base.entity';
 
 @Entity('SalesReport')
 export class SalesReportMDB extends BaseEntityMDB implements SalesReport {
@@ -21,8 +22,15 @@ export class SalesReportMDB extends BaseEntityMDB implements SalesReport {
   appointmentId: string;
 
   @Column({ type: 'string' })
-  id: string;
+  date: string;
 
-  @CreateDateColumn()
-  dateSelected: Date;
+  @Column({ type: 'string' })
+  time: string;
+
+  @Column({
+    type: 'enum',
+    enum: AppointmentStatus,
+    default: AppointmentStatus.ACTIVE,
+  })
+  status: AppointmentStatus;
 }

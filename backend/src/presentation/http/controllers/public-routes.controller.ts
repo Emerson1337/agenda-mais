@@ -5,19 +5,18 @@ import {
   Get,
   Param,
   Post,
-  Query,
   Res,
 } from '@nestjs/common';
 import { handleError, ok } from '@presentation/helpers/http.helper';
 import { AppointmentsService } from '@src/application/public-routes/appointments.service';
-import { AvailableDatesService } from '@src/application/public-routes/available-dates.service';
+import { DatesService } from '@src/application/public-routes/dates.service';
 import { CreateAppointmentDto } from '@src/application/public-routes/dtos/create-appointment-dto';
 import { Response } from 'express';
 
 @Controller('/:managerUsername')
 export class PublicRoutesController {
   constructor(
-    private readonly availableDatesService: AvailableDatesService,
+    private readonly datesService: DatesService,
     private readonly appointmentsService: AppointmentsService,
   ) {}
 
@@ -49,33 +48,31 @@ export class PublicRoutesController {
     try {
       return response
         .status(201)
-        .send(
-          ok(await this.availableDatesService.getBusinessData(managerUsername)),
-        );
+        .send(ok(await this.datesService.getBusinessData(managerUsername)));
     } catch (error) {
       return response.status(error.status).send(handleError(error));
     }
   }
 
-  @Get('horarios')
-  async create(
-    @Param('managerUsername') managerUsername: string,
-    @Query() query: { date: string },
-    @Res() response: Response,
-  ) {
-    try {
-      return response.status(201).send(
-        ok(
-          await this.availableDatesService.list({
-            username: managerUsername,
-            query,
-          }),
-        ),
-      );
-    } catch (error) {
-      return response.status(error.status).send(handleError(error));
-    }
-  }
+  // @Get('horarios')
+  // async create(
+  //   @Param('managerUsername') managerUsername: string,
+  //   @Query() query: { date: string },
+  //   @Res() response: Response,
+  // ) {
+  //   try {
+  //     return response.status(201).send(
+  //       ok(
+  //         await this.availableDatesService.list({
+  //           username: managerUsername,
+  //           query,
+  //         }),
+  //       ),
+  //     );
+  //   } catch (error) {
+  //     return response.status(error.status).send(handleError(error));
+  //   }
+  // }
 
   @Delete('cancelar-agendamento/:appointmentCode')
   async cancel(

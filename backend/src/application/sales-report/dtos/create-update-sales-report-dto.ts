@@ -1,0 +1,36 @@
+import {
+  IsEnum,
+  IsMongoId,
+  IsNumber,
+  IsOptional,
+  IsPhoneNumber,
+  IsString,
+} from 'class-validator';
+import { AppointmentStatus } from '@src/domain/entities/enums/appointment-status.enum';
+import { IsDateFormat } from '@src/application/shared/decorators/date-validator.decorator';
+import { IsTimeFormat } from '@src/application/shared/decorators/time-validator.decorator';
+
+export class CreateOrUpdateSalesReportDto {
+  @IsString()
+  @IsMongoId()
+  managerId: string;
+
+  @IsNumber()
+  price: number;
+
+  @IsDateFormat()
+  date: string;
+
+  @IsTimeFormat()
+  time: string;
+
+  @IsPhoneNumber()
+  phone: string;
+
+  @IsOptional()
+  timeDuration?: string;
+
+  @IsOptional()
+  @IsEnum(AppointmentStatus)
+  status?: AppointmentStatus;
+}

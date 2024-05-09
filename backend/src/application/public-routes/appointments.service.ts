@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { Appointments } from '@src/domain/entities/appointment.entity';
 import { BookingManagersRepository } from '@src/domain/repositories/booking-managers.repository';
-import { SchedulesRepository } from '@src/domain/repositories/schedules.repository';
 import { InvalidParamError } from '@src/presentation/errors';
 
 import { AppointmentsRepository } from '@domain/repositories/appointments.repository';
@@ -10,14 +9,13 @@ import { CreateAppointmentDto } from './dtos/create-appointment-dto';
 import { I18nContext, I18nService } from 'nestjs-i18n';
 import { SalesReportService } from '../sales-report/sales-report.service';
 import { ManagerServicesRepository } from '@domain/repositories/manager-services.repository';
-import { SalesReportRepository } from '@domain/repositories/sales-report.repository';
-import { AppointmentStatus } from '@domain/entities/enums/appointment-status.enum';
+import { DatesService } from './dates.service';
+import { AppointmentStatus } from '../../domain/entities/enums/appointment-status.enum';
 
 @Injectable()
 export class AppointmentsService {
   constructor(
-    private readonly scheduleRepository: SchedulesRepository,
-    private readonly salesReportRepository: SalesReportRepository,
+    private readonly datesService: DatesService,
     private readonly managerServicesRepository: ManagerServicesRepository,
     private readonly bookingManagersRepository: BookingManagersRepository,
     private readonly appointmentsRepository: AppointmentsRepository,
@@ -35,7 +33,7 @@ export class AppointmentsService {
     appointment: Appointments;
     message: string;
   }> {
-    const { clientName, phone, scheduleId, notes, time, serviceId } =
+    const { clientName, phone, scheduleId, notes, time, date, serviceId } =
       appointmentData;
 
     const manager =
@@ -50,13 +48,15 @@ export class AppointmentsService {
       );
     }
 
-    const schedule = await this.scheduleRepository.findByIdAndTimeAvailable({
-      id: scheduleId,
-      time,
-      managerId: manager.id,
-    });
+    const { isTimeAvailable, schedule } =
+      await this.datesService.checkTimeAvailability({
+        id: scheduleId,
+        time,
+        managerId: manager.id,
+        date: appointmentData.date,
+      });
 
-    if (!schedule) {
+    if (!isTimeAvailable) {
       throw new InvalidParamError(
         'scheduleId',
         this.i18n.t(
@@ -85,32 +85,28 @@ export class AppointmentsService {
       );
     }
 
-    await this.scheduleRepository.updateTimeAvailabilityByIdAndTime({
-      id: scheduleId,
-      time,
-      managerId: manager.id,
-    });
-
     const code = generateAppointmentCode(4);
 
     const appointment = await this.appointmentsRepository.create({
       managerId: manager.id,
       scheduleId: schedule.id,
-      serviceId,
+      serviceId: service.id,
       time,
       clientName,
-      status: AppointmentStatus.ACTIVE,
+      date,
       code,
       notes,
       phone,
     });
 
+    // save appointment as an active one
     await this.salesReportService.create({
-      dateSelected: new Date(schedule.date),
+      date: appointment.date,
+      time: appointment.time,
       managerId: manager.id,
       phone: phone,
       price: service.price,
-      appointmentId: appointment.id,
+      timeDuration: service.timeDuration,
     });
 
     return {
@@ -155,13 +151,19 @@ export class AppointmentsService {
 
     await this.appointmentsRepository.deleteByAppointmentCode(appointmentCode);
 
-    await this.scheduleRepository.makeScheduleAvailableByIdAndTime({
-      id: appointment.scheduleId,
+    const service = await this.managerServicesRepository.findById({
       managerId: manager.id,
-      time: appointment.time,
+      managerServiceId: appointment.serviceId,
     });
 
-    await this.salesReportRepository.cancelSellByAppointmentId(appointment.id);
+    await this.salesReportService.update({
+      managerId: manager.id,
+      phone: appointment.phone,
+      price: service.price,
+      date: appointment.date,
+      time: appointment.time,
+      status: AppointmentStatus.CANCELED,
+    });
 
     return {
       appointment,

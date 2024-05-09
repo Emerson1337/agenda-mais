@@ -1,13 +1,12 @@
 import { IsTimeFormat } from '@src/application/shared/decorators/time-validator.decorator';
 import {
-  IsEnum,
   IsMongoId,
   IsNotEmpty,
   IsOptional,
   IsPhoneNumber,
   IsString,
 } from 'class-validator';
-import { AppointmentStatus } from '@domain/entities/enums/appointment-status.enum';
+import { IsDateFormat } from '@src/application/shared/decorators/date-validator.decorator';
 
 export class CreateAppointmentDto {
   @IsOptional()
@@ -37,11 +36,11 @@ export class CreateAppointmentDto {
   @IsNotEmpty()
   time: string;
 
+  @IsDateFormat()
+  @IsNotEmpty()
+  date: string;
+
   @IsString()
   @IsNotEmpty()
   notes: string;
-
-  @IsOptional()
-  @IsEnum(AppointmentStatus)
-  status?: AppointmentStatus;
 }

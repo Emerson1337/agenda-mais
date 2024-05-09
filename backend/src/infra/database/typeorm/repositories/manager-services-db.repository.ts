@@ -64,7 +64,11 @@ export class TypeOrmManagerServicesRepository
     managerId: string,
   ): Promise<ManagerServices> {
     return await this.repository.findOne({
-      where: { _id: { $ne: new ObjectId(managerServiceId) }, managerId, name },
+      where: {
+        _id: { $ne: new ObjectId(managerServiceId) },
+        managerId,
+        name,
+      },
     });
   }
   async getAll(managerId: string): Promise<ManagerServices[]> {
