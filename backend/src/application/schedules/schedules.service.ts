@@ -1,12 +1,12 @@
 import { Injectable } from '@nestjs/common';
-import { Schedules } from '@src/domain/entities/schedules.entity';
-import { AppointmentsRepository } from '@src/domain/repositories/appointments.repository';
-import { SchedulesRepository } from '@src/domain/repositories/schedules.repository';
-import { InvalidParamError } from '@src/presentation/errors';
-
-import { CreateScheduleDto, SchedulesTime } from './dtos/create-schedule.dto';
+import { Schedules } from '@/domain/entities/schedules.entity';
+import { AppointmentsRepository } from '@/domain/repositories/appointments.repository';
+import { SchedulesRepository } from '@/domain/repositories/schedules.repository';
+import { CreateScheduleDto } from './dtos/create-schedule.dto';
 import { DeleteScheduleDto } from './dtos/delete-schedule.dto';
 import { I18nContext, I18nService } from 'nestjs-i18n';
+import { Appointments } from '@/domain/entities/appointment.entity';
+import { IDelete } from './dtos/types';
 
 @Injectable()
 export class SchedulesService {
@@ -19,14 +19,6 @@ export class SchedulesService {
   async createOrUpdate(
     schedule: CreateScheduleDto,
   ): Promise<Schedules | Error> {
-    if (this.hasTimeDuplicated(schedule.times))
-      throw new InvalidParamError(
-        'Times',
-        this.i18n.t('translations.INVALID_FIELD.ALREADY_EXISTS.TIMES', {
-          lang: I18nContext.current().lang,
-        }),
-      );
-
     return await this.schedulesRepository.createOrUpdate(
       schedule.managerId,
       schedule,
@@ -38,8 +30,6 @@ export class SchedulesService {
   }: {
     managerId: string;
   }): Promise<Schedules[] | Error> {
-    console.log(`🟢🟢🟢🟢 ${managerId}`);
-
     return await this.schedulesRepository.getAll(managerId);
   }
 
@@ -47,40 +37,14 @@ export class SchedulesService {
     managerId,
   }: {
     managerId: string;
-  }): Promise<Schedules[] | Error> {
-    const schedules =
-      await this.schedulesRepository.getAllNotAvailable(managerId);
-
-    return await Promise.all(
-      schedules.map(async (schedule) => ({
-        ...schedule,
-        times: schedule.times.filter(this.filterTimesNotAvailable),
-        appointment: await this.appointmentsRepository.getByScheduleId(
-          schedule.id,
-        ),
-      })),
-    );
-  }
-
-  private hasTimeDuplicated(times: SchedulesTime[]) {
-    const valueArr = times.map(function (item: SchedulesTime) {
-      return item.time;
-    });
-    const isDuplicate = valueArr.some(
-      (item: string, idx: number) => valueArr.indexOf(item) != idx,
-    );
-
-    return isDuplicate;
-  }
-
-  private filterTimesNotAvailable(time: SchedulesTime): boolean {
-    return time.available == false;
+  }): Promise<Appointments[] | Error> {
+    return await this.appointmentsRepository.getByManagerId(managerId);
   }
 
   async delete({
     schedulesIds,
     userId,
-  }: DeleteScheduleDto): Promise<{ message: string }> {
+  }: DeleteScheduleDto): Promise<IDelete | Error> {
     await this.schedulesRepository.deleteSchedules({
       schedulesIds,
       userId,

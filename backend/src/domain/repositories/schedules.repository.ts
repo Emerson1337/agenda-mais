@@ -1,4 +1,4 @@
-import { CreateScheduleDto } from '@src/application/schedules/dtos/create-schedule.dto';
+import { CreateScheduleDto } from '@/application/schedules/dtos/create-schedule.dto';
 
 import { Schedules } from '../entities/schedules.entity';
 
@@ -7,17 +7,19 @@ export abstract class SchedulesRepository {
     managerId: string,
     scheduleDate: CreateScheduleDto,
   ): Promise<Schedules>;
+  abstract findByManagerId(managerId: string);
   abstract findByIdAndTimeAvailable({
     id,
     time,
+    weekDay,
     managerId,
   }: {
     id: string;
     time: string;
+    weekDay: number;
     managerId: string;
   }): Promise<Schedules>;
   abstract getAll(managerId: string): Promise<Schedules[]>;
-  abstract getAllNotAvailable(managerId: string): Promise<Schedules[]>;
   abstract getAllByDate(managerId: string, date: string): Promise<Schedules[]>;
   abstract updateTimeAvailabilityByIdAndTime({
     id,

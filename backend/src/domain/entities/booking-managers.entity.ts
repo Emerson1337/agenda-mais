@@ -1,4 +1,4 @@
-import { ManagerStatus } from '@src/domain/entities/enums/managers-status.enum';
+import { ManagerStatus } from '@/domain/entities/enums/managers-status.enum';
 
 import BaseEntity from './config/base.entity';
 import { ManagersPlansEnum } from './enums/managers-plans.enum';

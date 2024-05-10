@@ -11,7 +11,7 @@ const jestConfig: JestConfigWithTsJest = {
   coverageDirectory: '../coverage',
   testEnvironment: 'node',
   moduleNameMapper: {
-    '^@src(.*)$': '<rootDir>/src$1',
+    '^@(.*)$': '<rootDir>/src$1',
     '^@presentation(.*)$': '<rootDir>/presentation$1',
     '^@infra(.*)$': '<rootDir>/infra$1',
     '^@domain(.*)$': '<rootDir>/domain$1',

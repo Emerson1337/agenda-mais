@@ -1,40 +1,75 @@
-import { IsDateFormat } from '@src/application/shared/decorators/date-validator.decorator';
-import { IsTimeFormat } from '@src/application/shared/decorators/time-validator.decorator';
+import { IsDateFormat } from '@/application/shared/decorators/date-validator.decorator';
+import { IsTimeFormat } from '@/application/shared/decorators/time-validator.decorator';
 import { Type } from 'class-transformer';
 import {
-  IsBoolean,
-  IsDateString,
+  ArrayMaxSize,
+  ArrayMinSize,
+  IsArray,
   IsMongoId,
   IsNotEmpty,
+  IsNumber,
   IsOptional,
-  IsString,
+  Max,
+  Min,
   ValidateNested,
 } from 'class-validator';
+import { IsArrayTimeFormat } from '@/application/shared/decorators/time-array-validator.decorator';
 
 export class SchedulesTime {
   @IsNotEmpty()
   @IsTimeFormat()
-  time: string;
+  start: string;
 
   @IsNotEmpty()
-  @IsBoolean()
-  available: boolean;
+  @IsTimeFormat()
+  end: string;
+}
+
+export class SchedulesDateExceptions {
+  @IsNotEmpty()
+  @IsDateFormat()
+  date: string;
+
+  @IsNotEmpty()
+  @IsArrayTimeFormat()
+  @ArrayMinSize(1)
+  @ArrayMaxSize(24)
+  times: string[];
 }
 
 export class CreateScheduleDto {
   @IsNotEmpty()
-  @IsString()
   @IsOptional()
   @IsMongoId()
   managerId: string;
 
   @IsNotEmpty()
-  @IsDateString()
-  @IsDateFormat()
-  date: string;
+  @ArrayMinSize(1)
+  @ArrayMaxSize(7)
+  @IsArray()
+  @IsNumber({}, { each: true })
+  weekDays: number[];
 
   @IsNotEmpty()
   @ValidateNested()
   @Type(() => SchedulesTime)
-  times: SchedulesTime[];
+  timeRange: SchedulesTime;
+
+  @IsNotEmpty()
+  @IsArrayTimeFormat()
+  @ArrayMinSize(1)
+  @ArrayMaxSize(24)
+  @IsArray()
+  times: string[];
+
+  @IsNotEmpty()
+  @IsNumber()
+  @Max(12)
+  @Min(1)
+  monthsAhead: number;
+
+  @IsOptional()
+  @ValidateNested()
+  @Type(() => SchedulesDateExceptions)
+  dateExceptions?: SchedulesDateExceptions[];
 }

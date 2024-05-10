@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
-import { DatabaseModule } from '@src/infra/database/database.module';
-import { ManagerServicesController } from '@src/presentation/http/controllers/manager-services.controller';
+import { DatabaseModule } from '@/infra/database/database.module';
+import { ManagerServicesController } from '@/presentation/http/controllers/manager-services.controller';
 
 import { ManagerServicesService } from './manager-services.service';
 import { LocaleModule } from '@presentation/locale/locale.module';

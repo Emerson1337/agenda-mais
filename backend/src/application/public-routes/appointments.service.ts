@@ -1,25 +1,31 @@
 import { Injectable } from '@nestjs/common';
-import { Appointments } from '@src/domain/entities/appointment.entity';
-import { BookingManagersRepository } from '@src/domain/repositories/booking-managers.repository';
-import { SchedulesRepository } from '@src/domain/repositories/schedules.repository';
-import { InvalidParamError } from '@src/presentation/errors';
+import { BookingManagersRepository } from '@/domain/repositories/booking-managers.repository';
+import { InvalidParamError } from '@/presentation/errors';
 
 import { AppointmentsRepository } from '@domain/repositories/appointments.repository';
 import { generateAppointmentCode } from '../shared/utils/dataGenerator';
-import { CreateAppointmentDto } from './dtos/create-appointment-dto';
 import { I18nContext, I18nService } from 'nestjs-i18n';
 import { SalesReportService } from '../sales-report/sales-report.service';
 import { ManagerServicesRepository } from '@domain/repositories/manager-services.repository';
-import { SalesReportRepository } from '@domain/repositories/sales-report.repository';
-import { AppointmentStatus } from '@domain/entities/enums/appointment-status.enum';
+import { DatesService } from './dates.service';
+import { AppointmentStatus } from '@/domain/entities/enums/appointment-status.enum';
+import { SchedulesRepository } from '@/domain/repositories/schedules.repository';
+import {
+  IBookAppointment,
+  ICancel,
+  IGetSlotAvailable,
+  IOBookAppointment,
+  IOCancel,
+  ISlots,
+} from './dtos/type';
 
 @Injectable()
 export class AppointmentsService {
   constructor(
-    private readonly scheduleRepository: SchedulesRepository,
-    private readonly salesReportRepository: SalesReportRepository,
+    private readonly datesService: DatesService,
     private readonly managerServicesRepository: ManagerServicesRepository,
     private readonly bookingManagersRepository: BookingManagersRepository,
+    private readonly scheduleRepository: SchedulesRepository,
     private readonly appointmentsRepository: AppointmentsRepository,
     private readonly salesReportService: SalesReportService,
     private readonly i18n: I18nService,
@@ -28,14 +34,8 @@ export class AppointmentsService {
   async bookAppointment({
     username,
     appointmentData,
-  }: {
-    username: string;
-    appointmentData: CreateAppointmentDto;
-  }): Promise<{
-    appointment: Appointments;
-    message: string;
-  }> {
-    const { clientName, phone, scheduleId, notes, time, serviceId } =
+  }: IBookAppointment): Promise<IOBookAppointment | Error> {
+    const { clientName, phone, scheduleId, notes, time, date, serviceId } =
       appointmentData;
 
     const manager =
@@ -50,13 +50,15 @@ export class AppointmentsService {
       );
     }
 
-    const schedule = await this.scheduleRepository.findByIdAndTimeAvailable({
-      id: scheduleId,
-      time,
-      managerId: manager.id,
-    });
+    const { isTimeAvailable, schedule } =
+      await this.datesService.checkTimeAvailability({
+        id: scheduleId,
+        time,
+        managerId: manager.id,
+        date: appointmentData.date,
+      });
 
-    if (!schedule) {
+    if (!isTimeAvailable) {
       throw new InvalidParamError(
         'scheduleId',
         this.i18n.t(
@@ -85,32 +87,28 @@ export class AppointmentsService {
       );
     }
 
-    await this.scheduleRepository.updateTimeAvailabilityByIdAndTime({
-      id: scheduleId,
-      time,
-      managerId: manager.id,
-    });
-
     const code = generateAppointmentCode(4);
 
     const appointment = await this.appointmentsRepository.create({
       managerId: manager.id,
       scheduleId: schedule.id,
-      serviceId,
+      serviceId: service.id,
       time,
       clientName,
-      status: AppointmentStatus.ACTIVE,
+      date,
       code,
       notes,
       phone,
     });
 
+    // save appointment as an active one
     await this.salesReportService.create({
-      dateSelected: new Date(schedule.date),
+      date: appointment.date,
+      time: appointment.time,
       managerId: manager.id,
       phone: phone,
       price: service.price,
-      appointmentId: appointment.id,
+      timeDuration: service.timeDuration,
     });
 
     return {
@@ -121,13 +119,54 @@ export class AppointmentsService {
     };
   }
 
+  async getSlotsAvailable({
+    username,
+  }: IGetSlotAvailable): Promise<ISlots[] | Error> {
+    const manager =
+      await this.bookingManagersRepository.findByUsername(username);
+
+    if (!manager)
+      throw new InvalidParamError(
+        'username',
+        this.i18n.t('translations.INVALID_FIELD.MISSING_DATA.USERNAME', {
+          lang: I18nContext.current().lang,
+        }),
+      );
+
+    const schedule = await this.scheduleRepository.findByManagerId(manager.id);
+
+    const monthsAhead = schedule.monthsAhead;
+
+    // get all slots based in the agenda
+    const slotsAvailableBySchedule =
+      await this.datesService.createDateAndTimeSlots({
+        schedule,
+        monthsAhead,
+      });
+
+    const appointments = await this.appointmentsRepository.getByManagerId(
+      manager.id,
+    );
+
+    // remove slots already taken by someone
+    const slots = slotsAvailableBySchedule.flatMap((slot) => {
+      const appointmentInDate = appointments.find(
+        (appointment) => appointment.date === slot.date,
+      );
+
+      return {
+        date: slot.date,
+        times: slot.times.filter((time) => time !== appointmentInDate?.time),
+      };
+    });
+
+    return slots;
+  }
+
   public async cancel({
     username,
     appointmentCode,
-  }: {
-    username: string;
-    appointmentCode: string;
-  }): Promise<{ appointment: Appointments; message: string }> {
+  }: ICancel): Promise<IOCancel | Error> {
     const manager =
       await this.bookingManagersRepository.findByUsername(username);
 
@@ -155,13 +194,19 @@ export class AppointmentsService {
 
     await this.appointmentsRepository.deleteByAppointmentCode(appointmentCode);
 
-    await this.scheduleRepository.makeScheduleAvailableByIdAndTime({
-      id: appointment.scheduleId,
+    const service = await this.managerServicesRepository.findById({
       managerId: manager.id,
-      time: appointment.time,
+      managerServiceId: appointment.serviceId,
     });
 
-    await this.salesReportRepository.cancelSellByAppointmentId(appointment.id);
+    await this.salesReportService.update({
+      managerId: manager.id,
+      phone: appointment.phone,
+      price: service.price,
+      date: appointment.date,
+      time: appointment.time,
+      status: AppointmentStatus.CANCELED,
+    });
 
     return {
       appointment,

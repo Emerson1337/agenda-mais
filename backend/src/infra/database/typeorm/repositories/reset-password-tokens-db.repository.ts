@@ -2,9 +2,9 @@ import { Injectable } from '@nestjs/common';
 import { MongoRepository } from 'typeorm';
 
 import { TypeormService } from '../typeorm.service';
-import { ResetPasswordTokensRepository } from '@src/domain/repositories/reset-password-tokens.repository';
+import { ResetPasswordTokensRepository } from '@/domain/repositories/reset-password-tokens.repository';
 import { ResetPasswordTokensMDB } from '../entities/reset-password-tokens-db.entity';
-import { ResetPasswordTokens } from '@src/domain/entities/reset-password-tokens.entity';
+import { ResetPasswordTokens } from '@/domain/entities/reset-password-tokens.entity';
 
 @Injectable()
 export class TypeOrmResetPasswordTokensRepository

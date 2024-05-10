@@ -1,19 +1,23 @@
 import { Injectable } from '@nestjs/common';
 import { InvalidParamError, MultipleErrors } from '@presentation/errors';
-import { CreateManagerDto } from '@src/application/booking-managers/dtos/create-manager-dto';
-import { BookingManagers } from '@src/domain/entities/booking-managers.entity';
-import { ManagersPlansEnum } from '@src/domain/entities/enums/managers-plans.enum';
-import { ManagersRolesEnum } from '@src/domain/entities/enums/managers-roles.enum';
-import { ManagerStatus } from '@src/domain/entities/enums/managers-status.enum';
-import { EncryptAdapter } from '@src/infra/adapters/encrypt.adapter';
-import { FileAdapter } from '@src/infra/adapters/file.adapter';
+import { CreateManagerDto } from '@/application/booking-managers/dtos/create-manager-dto';
+import { BookingManagers } from '@/domain/entities/booking-managers.entity';
+import { ManagersPlansEnum } from '@/domain/entities/enums/managers-plans.enum';
+import { ManagersRolesEnum } from '@/domain/entities/enums/managers-roles.enum';
+import { ManagerStatus } from '@/domain/entities/enums/managers-status.enum';
+import { EncryptAdapter } from '@/infra/adapters/encrypt.adapter';
+import { FileAdapter } from '@/infra/adapters/file.adapter';
 
-import { BookingManagersRepository } from '../../domain/repositories/booking-managers.repository';
-import { UserDto } from '../auth/dtos/user-dto';
-import { removeAttributes } from '../shared/utils/objectFormatter';
-import { UpdateManagerAdminDto } from './dtos/update-manager-admin-dto';
-import { UpdateManagerDto } from './dtos/update-manager-dto';
+import { BookingManagersRepository } from '@/domain/repositories/booking-managers.repository';
+import { UserDto } from '@/application/auth/dtos/user-dto';
+import { removeAttributes } from '@/application/shared/utils/objectFormatter';
 import { I18nContext, I18nService } from 'nestjs-i18n';
+import {
+  IUpdate,
+  IUpdateManagerAsAdmin,
+  IUpdatePasswordById,
+  IUpdatePicture,
+} from './dtos/types';
 
 @Injectable()
 export class BookingManagersService {
@@ -86,10 +90,7 @@ export class BookingManagersService {
   async update({
     managerId,
     manager,
-  }: {
-    managerId: string;
-    manager: UpdateManagerDto;
-  }): Promise<BookingManagers | Error> {
+  }: IUpdate): Promise<BookingManagers | Error> {
     const errors: InvalidParamError[] = [];
 
     const managerUsernameAlreadyExists =
@@ -151,11 +152,7 @@ export class BookingManagersService {
     picturePath,
     managerId,
     filename,
-  }: {
-    managerId: string;
-    picturePath: string;
-    filename: string;
-  }): Promise<BookingManagers | Error> {
+  }: IUpdatePicture): Promise<BookingManagers | Error> {
     if (!picturePath)
       throw new InvalidParamError(
         'picture',
@@ -188,10 +185,7 @@ export class BookingManagersService {
   async updateManagerAsAdmin({
     managerId,
     managerData,
-  }: {
-    managerId: string;
-    managerData: UpdateManagerAdminDto;
-  }): Promise<BookingManagers | Error> {
+  }: IUpdateManagerAsAdmin): Promise<BookingManagers | Error> {
     const manager = await this.bookingManagersRepository.findById(managerId);
 
     if (!manager)
@@ -213,10 +207,7 @@ export class BookingManagersService {
   async updatePasswordById({
     managerId,
     password,
-  }: {
-    managerId: string;
-    password: string;
-  }) {
+  }: IUpdatePasswordById): Promise<BookingManagers> {
     const manager = await this.bookingManagersRepository.findById(managerId);
 
     if (!manager)

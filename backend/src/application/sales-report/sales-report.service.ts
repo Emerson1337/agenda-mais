@@ -1,7 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { I18nService } from 'nestjs-i18n';
-import { CreateSalesReportDto } from './dtos/create-sales-report-dto';
+import { CreateOrUpdateSalesReportDto } from './dtos/create-update-sales-report-dto';
 import { SalesReportRepository } from '@domain/repositories/sales-report.repository';
+import { AppointmentStatus } from '@/domain/entities/enums/appointment-status.enum';
+import { IGetSales } from './dtos/types';
 
 @Injectable()
 export class SalesReportService {
@@ -14,21 +16,43 @@ export class SalesReportService {
     managerId,
     phone,
     price,
-    dateSelected,
+    date,
+    time,
     timeDuration,
-    appointmentId,
-  }: CreateSalesReportDto) {
+    status = AppointmentStatus.ACTIVE,
+  }: CreateOrUpdateSalesReportDto): Promise<boolean> {
     return await this.salesReportRepository.create({
       managerId,
       phone,
       price,
-      dateSelected,
+      date,
       timeDuration,
-      appointmentId,
+      status,
+      time,
     });
   }
 
-  async getSales({ managerId, date }: { managerId: string; date: string }) {
+  async update({
+    managerId,
+    phone,
+    price,
+    date,
+    time,
+    timeDuration,
+    status = AppointmentStatus.ACTIVE,
+  }: CreateOrUpdateSalesReportDto): Promise<boolean> {
+    return await this.salesReportRepository.update({
+      managerId,
+      phone,
+      price,
+      date,
+      timeDuration,
+      status,
+      time,
+    });
+  }
+
+  async getSales({ managerId, date }: IGetSales) {
     return await this.salesReportRepository.getSalesByMonth({
       managerId,
       date,

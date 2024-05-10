@@ -1,11 +1,11 @@
 import { Module } from '@nestjs/common';
-import { EncryptAdapter } from '@src/infra/adapters/encrypt.adapter';
-import { DatabaseModule } from '@src/infra/database/database.module';
-import { BookingManagerAdminController } from '@src/presentation/http/controllers/booking-manager-admin.controller';
-import { BookingManagerController } from '@src/presentation/http/controllers/booking-manager.controller';
+import { EncryptAdapter } from '@/infra/adapters/encrypt.adapter';
+import { DatabaseModule } from '@/infra/database/database.module';
+import { BookingManagerAdminController } from '@/presentation/http/controllers/booking-manager-admin.controller';
+import { BookingManagerController } from '@/presentation/http/controllers/booking-manager.controller';
 
 import { BookingManagersService } from './booking-managers.service';
-import { FileAdapter } from '@src/infra/adapters/file.adapter';
+import { FileAdapter } from '@/infra/adapters/file.adapter';
 import { LocaleModule } from '@presentation/locale/locale.module';
 
 @Module({

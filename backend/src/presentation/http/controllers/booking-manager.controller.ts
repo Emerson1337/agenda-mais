@@ -12,11 +12,11 @@ import {
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { handleError, ok } from '@presentation/helpers/http.helper';
-import { CreateManagerDto } from '@src/application/booking-managers/dtos/create-manager-dto';
-import { UpdateManagerDto } from '@src/application/booking-managers/dtos/update-manager-dto';
-import { UploadPictureDto } from '@src/application/booking-managers/dtos/upload-picture-manager-dto';
-import { AuthRequired } from '@src/application/shared/decorators/auth-required.decorator';
-import { FileAdapter } from '@src/infra/adapters/file.adapter';
+import { CreateManagerDto } from '@/application/booking-managers/dtos/create-manager-dto';
+import { UpdateManagerDto } from '@/application/booking-managers/dtos/update-manager-dto';
+import { UploadPictureDto } from '@/application/booking-managers/dtos/upload-picture-manager-dto';
+import { AuthRequired } from '@/application/shared/decorators/auth-required.decorator';
+import { FileAdapter } from '@/infra/adapters/file.adapter';
 import { Response } from 'express';
 
 @Controller('dashboard/usuarios')

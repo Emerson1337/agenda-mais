@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
-import { CreateScheduleDto } from '@src/application/schedules/dtos/create-schedule.dto';
-import { Schedules } from '@src/domain/entities/schedules.entity';
-import { SchedulesRepository } from '@src/domain/repositories/schedules.repository';
+import { CreateScheduleDto } from '@/application/schedules/dtos/create-schedule.dto';
+import { Schedules } from '@/domain/entities/schedules.entity';
+import { SchedulesRepository } from '@/domain/repositories/schedules.repository';
 import { ObjectId } from 'mongodb';
 import { MongoRepository } from 'typeorm';
 
@@ -15,6 +15,11 @@ export class TypeOrmSchedulesRepository implements SchedulesRepository {
   constructor(private typeormService: TypeormService) {
     this.repository = typeormService.getMongoRepository(SchedulesMDB);
   }
+
+  async findByManagerId(managerId: string): Promise<Schedules> {
+    return await this.repository.findOneBy({ managerId });
+  }
+
   async makeScheduleAvailableByIdAndTime({
     id,
     managerId,
@@ -65,31 +70,22 @@ export class TypeOrmSchedulesRepository implements SchedulesRepository {
   async findByIdAndTimeAvailable({
     id,
     time,
+    weekDay,
     managerId,
   }: {
     id: string;
     time: string;
+    weekDay: number;
     managerId: string;
   }): Promise<Schedules> {
     return await this.repository.findOne({
       where: {
         _id: new ObjectId(id),
-        times: {
-          $elemMatch: {
-            time: time,
-            available: true,
-          },
+        times: { $in: [time] },
+        weekDays: {
+          $in: [weekDay],
         },
         managerId,
-      },
-    });
-  }
-
-  async getAllNotAvailable(managerId: string): Promise<Schedules[]> {
-    return await this.repository.find({
-      where: {
-        managerId,
-        'times.available': false,
       },
     });
   }
@@ -115,17 +111,14 @@ export class TypeOrmSchedulesRepository implements SchedulesRepository {
     const existingSchedule = await this.repository.findOne({
       where: {
         managerId,
-        date: scheduleData.date,
       },
     });
 
-    // TODO: Verify if an appointment must be cancelled and contact user somehow
-
-    if (existingSchedule) {
-      scheduleData = Object.assign(existingSchedule, scheduleData);
-    }
-
-    return await this.repository.save(scheduleData);
+    return await this.repository.save({
+      id: existingSchedule?.id,
+      dateExceptions: scheduleData.dateExceptions ?? [],
+      ...scheduleData,
+    });
   }
 
   async getAll(managerId: string): Promise<Schedules[]> {

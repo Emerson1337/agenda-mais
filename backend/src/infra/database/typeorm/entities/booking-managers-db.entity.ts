@@ -1,7 +1,7 @@
-import { BookingManagers } from '@src/domain/entities/booking-managers.entity';
-import { ManagersPlansEnum } from '@src/domain/entities/enums/managers-plans.enum';
-import { ManagersRolesEnum } from '@src/domain/entities/enums/managers-roles.enum';
-import { ManagerStatus } from '@src/domain/entities/enums/managers-status.enum';
+import { BookingManagers } from '@/domain/entities/booking-managers.entity';
+import { ManagersPlansEnum } from '@/domain/entities/enums/managers-plans.enum';
+import { ManagersRolesEnum } from '@/domain/entities/enums/managers-roles.enum';
+import { ManagerStatus } from '@/domain/entities/enums/managers-status.enum';
 import { Column, Entity } from 'typeorm';
 
 import BaseEntityMDB from './config/base.entity';

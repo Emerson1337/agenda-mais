@@ -1,6 +1,6 @@
 import { Controller, Get, Param, Req, Res } from '@nestjs/common';
 import { handleError, ok } from '@presentation/helpers/http.helper';
-import { AuthRequired } from '@src/application/shared/decorators/auth-required.decorator';
+import { AuthRequired } from '@/application/shared/decorators/auth-required.decorator';
 import { Response } from 'express';
 import { SalesReportService } from '@application/sales-report/sales-report.service';
 

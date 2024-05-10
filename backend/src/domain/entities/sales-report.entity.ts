@@ -1,9 +1,12 @@
-import BaseEntity from './config/base.entity';
+import BaseEntity from '@/domain/entities/config/base.entity';
+import { AppointmentStatus } from '@/domain/entities/enums/appointment-status.enum';
 
 export class SalesReport extends BaseEntity {
   managerId: string;
   price: number;
-  dateSelected: Date;
+  date: string;
+  time: string;
   phone: string;
   timeDuration?: string;
+  status: AppointmentStatus;
 }

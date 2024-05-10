@@ -1,11 +1,20 @@
 import BaseEntity from './config/base.entity';
 
-export class SchedulesTime {
-  time: string;
-  available: boolean;
+export class SchedulesTimeRange {
+  start: string;
+  end: string;
+}
+
+export class SchedulesDateException {
+  date: string;
+  times: string[];
 }
 
 export class Schedules extends BaseEntity {
-  date: string;
-  times: SchedulesTime[];
+  managerId: string;
+  weekDays: number[];
+  times: string[];
+  monthsAhead: number;
+  timeRange: SchedulesTimeRange;
+  dateExceptions?: SchedulesDateException[];
 }

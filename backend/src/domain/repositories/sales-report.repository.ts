@@ -1,8 +1,9 @@
-import { CreateSalesReportDto } from '@application/sales-report/dtos/create-sales-report-dto';
+import { CreateOrUpdateSalesReportDto } from '@application/sales-report/dtos/create-update-sales-report-dto';
 import { SalesReport } from '../entities/sales-report.entity';
 
 export abstract class SalesReportRepository {
-  abstract create(report: CreateSalesReportDto): Promise<boolean>;
+  abstract create(report: CreateOrUpdateSalesReportDto): Promise<boolean>;
+  abstract update(report: CreateOrUpdateSalesReportDto): Promise<boolean>;
   abstract getSalesByMonth({
     date,
     managerId,

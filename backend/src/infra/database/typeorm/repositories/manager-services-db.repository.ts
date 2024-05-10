@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
-import { CreateUpdateManagerServiceDto } from '@src/application/manager-services/dtos/create-update-manager-service.dto';
-import { ManagerServices } from '@src/domain/entities/manager-services.entity';
-import { ManagerServicesRepository } from '@src/domain/repositories/manager-services.repository';
+import { CreateUpdateManagerServiceDto } from '@/application/manager-services/dtos/create-update-manager-service.dto';
+import { ManagerServices } from '@/domain/entities/manager-services.entity';
+import { ManagerServicesRepository } from '@/domain/repositories/manager-services.repository';
 import { ObjectId } from 'mongodb';
 import { MongoRepository } from 'typeorm';
 
@@ -64,7 +64,11 @@ export class TypeOrmManagerServicesRepository
     managerId: string,
   ): Promise<ManagerServices> {
     return await this.repository.findOne({
-      where: { _id: { $ne: new ObjectId(managerServiceId) }, managerId, name },
+      where: {
+        _id: { $ne: new ObjectId(managerServiceId) },
+        managerId,
+        name,
+      },
     });
   }
   async getAll(managerId: string): Promise<ManagerServices[]> {

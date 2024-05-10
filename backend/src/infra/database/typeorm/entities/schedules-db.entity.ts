@@ -1,14 +1,22 @@
-import { Schedules } from '@src/domain/entities/schedules.entity';
+import { Schedules } from '@/domain/entities/schedules.entity';
 import { Column, Entity } from 'typeorm';
 
 import BaseEntityMDB from './config/base.entity';
 
-class SchedulesTime {
+class SchedulesTimeRange {
   @Column({ type: 'string' })
-  time: string;
+  start: string;
 
-  @Column({ type: 'boolean' })
-  available: boolean;
+  @Column({ type: 'string' })
+  end: string;
+}
+
+class SchedulesDateException {
+  @Column({ type: 'string' })
+  date: string;
+
+  @Column({ type: 'array' })
+  times: string[];
 }
 
 @Entity('Schedules')
@@ -16,9 +24,18 @@ export class SchedulesMDB extends BaseEntityMDB implements Schedules {
   @Column({ type: 'string' })
   managerId: string;
 
-  @Column({ type: 'string' })
-  date: string;
+  @Column({ type: 'array' })
+  weekDays: number[];
 
   @Column({ type: 'array' })
-  times: SchedulesTime[];
+  times: string[];
+
+  @Column({ type: 'array' })
+  timeRange: SchedulesTimeRange;
+
+  @Column({ type: 'int' })
+  monthsAhead: number;
+
+  @Column({ type: 'array' })
+  dateExceptions?: SchedulesDateException[];
 }

@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { MongoRepository } from 'typeorm';
 import { TypeormService } from '../typeorm.service';
 import { SalesReportRepository } from '@domain/repositories/sales-report.repository';
-import { CreateSalesReportDto } from '@application/sales-report/dtos/create-sales-report-dto';
+import { CreateOrUpdateSalesReportDto } from '@application/sales-report/dtos/create-update-sales-report-dto';
 import { SalesReportMDB } from '../entities/sales-report-db.entity';
 import { SalesReport } from '@domain/entities/sales-report.entity';
 
@@ -44,7 +44,19 @@ export class TypeOrmSalesReportRepository implements SalesReportRepository {
     return await this.repository.find({ managerId });
   }
 
-  async create(report: CreateSalesReportDto): Promise<boolean> {
+  async create(report: CreateOrUpdateSalesReportDto): Promise<boolean> {
     return !!(await this.repository.save(report));
+  }
+
+  async update(report: CreateOrUpdateSalesReportDto): Promise<boolean> {
+    return !!(await this.repository.findOneAndUpdate(
+      {
+        managerId: report.managerId,
+        time: report.time,
+        date: report.date,
+        phone: report.phone,
+      },
+      { $set: report },
+    ));
   }
 }

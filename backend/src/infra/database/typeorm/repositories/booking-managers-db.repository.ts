@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import { UserDto } from '@src/application/auth/dtos/user-dto';
-import { CreateManagerDto } from '@src/application/booking-managers/dtos/create-manager-dto';
-import { UpdateManagerDto } from '@src/application/booking-managers/dtos/update-manager-dto';
-import { BookingManagers } from '@src/domain/entities/booking-managers.entity';
-import { BookingManagersRepository } from '@src/domain/repositories/booking-managers.repository';
+import { UserDto } from '@/application/auth/dtos/user-dto';
+import { CreateManagerDto } from '@/application/booking-managers/dtos/create-manager-dto';
+import { UpdateManagerDto } from '@/application/booking-managers/dtos/update-manager-dto';
+import { BookingManagers } from '@/domain/entities/booking-managers.entity';
+import { BookingManagersRepository } from '@/domain/repositories/booking-managers.repository';
 import { ObjectId } from 'mongodb';
 import { MongoRepository } from 'typeorm';
 
