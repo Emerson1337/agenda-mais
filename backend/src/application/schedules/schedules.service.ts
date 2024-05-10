@@ -6,6 +6,7 @@ import { CreateScheduleDto } from './dtos/create-schedule.dto';
 import { DeleteScheduleDto } from './dtos/delete-schedule.dto';
 import { I18nContext, I18nService } from 'nestjs-i18n';
 import { Appointments } from '@/domain/entities/appointment.entity';
+import { IDelete } from './dtos/types';
 
 @Injectable()
 export class SchedulesService {
@@ -43,7 +44,7 @@ export class SchedulesService {
   async delete({
     schedulesIds,
     userId,
-  }: DeleteScheduleDto): Promise<{ message: string }> {
+  }: DeleteScheduleDto): Promise<IDelete | Error> {
     await this.schedulesRepository.deleteSchedules({
       schedulesIds,
       userId,
