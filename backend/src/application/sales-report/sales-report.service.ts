@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { I18nService } from 'nestjs-i18n';
 import { CreateOrUpdateSalesReportDto } from './dtos/create-update-sales-report-dto';
 import { SalesReportRepository } from '@domain/repositories/sales-report.repository';
-import { AppointmentStatus } from '@src/domain/entities/enums/appointment-status.enum';
+import { AppointmentStatus } from '@/domain/entities/enums/appointment-status.enum';
 
 @Injectable()
 export class SalesReportService {

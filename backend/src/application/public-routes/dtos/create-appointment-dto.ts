@@ -1,4 +1,4 @@
-import { IsTimeFormat } from '@src/application/shared/decorators/time-validator.decorator';
+import { IsTimeFormat } from '@/application/shared/decorators/time-validator.decorator';
 import {
   IsMongoId,
   IsNotEmpty,
@@ -6,7 +6,7 @@ import {
   IsPhoneNumber,
   IsString,
 } from 'class-validator';
-import { IsDateFormat } from '@src/application/shared/decorators/date-validator.decorator';
+import { IsDateFormat } from '@/application/shared/decorators/date-validator.decorator';
 
 export class CreateAppointmentDto {
   @IsOptional()

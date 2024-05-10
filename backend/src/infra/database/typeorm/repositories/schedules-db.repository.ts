@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
-import { CreateScheduleDto } from '@src/application/schedules/dtos/create-schedule.dto';
-import { Schedules } from '@src/domain/entities/schedules.entity';
-import { SchedulesRepository } from '@src/domain/repositories/schedules.repository';
+import { CreateScheduleDto } from '@/application/schedules/dtos/create-schedule.dto';
+import { Schedules } from '@/domain/entities/schedules.entity';
+import { SchedulesRepository } from '@/domain/repositories/schedules.repository';
 import { ObjectId } from 'mongodb';
 import { MongoRepository } from 'typeorm';
 
@@ -14,6 +14,10 @@ export class TypeOrmSchedulesRepository implements SchedulesRepository {
 
   constructor(private typeormService: TypeormService) {
     this.repository = typeormService.getMongoRepository(SchedulesMDB);
+  }
+
+  async findByManagerId(managerId: string): Promise<Schedules> {
+    return await this.repository.findOneBy({ managerId });
   }
 
   async makeScheduleAvailableByIdAndTime({

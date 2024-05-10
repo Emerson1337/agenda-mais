@@ -1,4 +1,4 @@
-import { ManagerServices } from '@src/domain/entities/manager-services.entity';
+import { ManagerServices } from '@/domain/entities/manager-services.entity';
 import { Column, Entity } from 'typeorm';
 
 import BaseEntityMDB from './config/base.entity';

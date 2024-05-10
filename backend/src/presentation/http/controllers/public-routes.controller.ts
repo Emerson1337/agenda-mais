@@ -8,9 +8,9 @@ import {
   Res,
 } from '@nestjs/common';
 import { handleError, ok } from '@presentation/helpers/http.helper';
-import { AppointmentsService } from '@src/application/public-routes/appointments.service';
-import { DatesService } from '@src/application/public-routes/dates.service';
-import { CreateAppointmentDto } from '@src/application/public-routes/dtos/create-appointment-dto';
+import { AppointmentsService } from '@/application/public-routes/appointments.service';
+import { DatesService } from '@/application/public-routes/dates.service';
+import { CreateAppointmentDto } from '@/application/public-routes/dtos/create-appointment-dto';
 import { Response } from 'express';
 
 @Controller('/:managerUsername')
@@ -54,25 +54,23 @@ export class PublicRoutesController {
     }
   }
 
-  // @Get('horarios')
-  // async create(
-  //   @Param('managerUsername') managerUsername: string,
-  //   @Query() query: { date: string },
-  //   @Res() response: Response,
-  // ) {
-  //   try {
-  //     return response.status(201).send(
-  //       ok(
-  //         await this.availableDatesService.list({
-  //           username: managerUsername,
-  //           query,
-  //         }),
-  //       ),
-  //     );
-  //   } catch (error) {
-  //     return response.status(error.status).send(handleError(error));
-  //   }
-  // }
+  @Get('horarios')
+  async create(
+    @Param('managerUsername') managerUsername: string,
+    @Res() response: Response,
+  ) {
+    try {
+      return response.status(201).send(
+        ok(
+          await this.appointmentsService.getSlotsAvailable({
+            username: managerUsername,
+          }),
+        ),
+      );
+    } catch (error) {
+      return response.status(error.status).send(handleError(error));
+    }
+  }
 
   @Delete('cancelar-agendamento/:appointmentCode')
   async cancel(

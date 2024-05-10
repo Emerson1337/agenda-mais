@@ -6,9 +6,9 @@ import {
   IsPhoneNumber,
   IsString,
 } from 'class-validator';
-import { AppointmentStatus } from '@src/domain/entities/enums/appointment-status.enum';
-import { IsDateFormat } from '@src/application/shared/decorators/date-validator.decorator';
-import { IsTimeFormat } from '@src/application/shared/decorators/time-validator.decorator';
+import { AppointmentStatus } from '@/domain/entities/enums/appointment-status.enum';
+import { IsDateFormat } from '@/application/shared/decorators/date-validator.decorator';
+import { IsTimeFormat } from '@/application/shared/decorators/time-validator.decorator';
 
 export class CreateOrUpdateSalesReportDto {
   @IsString()

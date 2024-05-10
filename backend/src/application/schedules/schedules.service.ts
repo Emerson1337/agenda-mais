@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common';
-import { Schedules } from '@src/domain/entities/schedules.entity';
-import { AppointmentsRepository } from '@src/domain/repositories/appointments.repository';
-import { SchedulesRepository } from '@src/domain/repositories/schedules.repository';
+import { Schedules } from '@/domain/entities/schedules.entity';
+import { AppointmentsRepository } from '@/domain/repositories/appointments.repository';
+import { SchedulesRepository } from '@/domain/repositories/schedules.repository';
 import { CreateScheduleDto } from './dtos/create-schedule.dto';
 import { DeleteScheduleDto } from './dtos/delete-schedule.dto';
 import { I18nContext, I18nService } from 'nestjs-i18n';
-import { Appointments } from '@src/domain/entities/appointment.entity';
+import { Appointments } from '@/domain/entities/appointment.entity';
 
 @Injectable()
 export class SchedulesService {

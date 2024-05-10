@@ -1,4 +1,4 @@
-import { Appointments } from '@src/domain/entities/appointment.entity';
+import { Appointments } from '@/domain/entities/appointment.entity';
 import { Column, Entity } from 'typeorm';
 
 import BaseEntityMDB from './config/base.entity';

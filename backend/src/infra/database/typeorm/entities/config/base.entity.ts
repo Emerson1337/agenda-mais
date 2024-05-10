@@ -1,5 +1,5 @@
 import { OmitType } from '@nestjs/swagger';
-import BaseEntity from '@src/domain/entities/config/base.entity';
+import BaseEntity from '@/domain/entities/config/base.entity';
 import {
   CreateDateColumn,
   ObjectIdColumn,

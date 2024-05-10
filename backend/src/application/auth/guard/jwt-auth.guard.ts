@@ -5,7 +5,7 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
-import { TokenAdapter } from '@src/infra/adapters/token.adapter';
+import { TokenAdapter } from '@/infra/adapters/token.adapter';
 
 import { AuthService } from '../auth.service';
 

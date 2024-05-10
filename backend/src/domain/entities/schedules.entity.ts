@@ -14,6 +14,7 @@ export class Schedules extends BaseEntity {
   managerId: string;
   weekDays: number[];
   times: string[];
+  monthsAhead: number;
   timeRange: SchedulesTimeRange;
   dateExceptions?: SchedulesDateException[];
 }

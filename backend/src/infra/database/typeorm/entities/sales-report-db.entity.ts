@@ -1,7 +1,7 @@
 import { Column, Entity } from 'typeorm';
 
 import { SalesReport } from '@domain/entities/sales-report.entity';
-import { AppointmentStatus } from '@src/domain/entities/enums/appointment-status.enum';
+import { AppointmentStatus } from '@/domain/entities/enums/appointment-status.enum';
 import BaseEntityMDB from './config/base.entity';
 
 @Entity('SalesReport')

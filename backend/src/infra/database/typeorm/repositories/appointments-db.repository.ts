@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
-import { CreateAppointmentDto } from '@src/application/public-routes/dtos/create-appointment-dto';
-import { Appointments } from '@src/domain/entities/appointment.entity';
-import { AppointmentsRepository } from '@src/domain/repositories/appointments.repository';
+import { CreateAppointmentDto } from '@/application/public-routes/dtos/create-appointment-dto';
+import { Appointments } from '@/domain/entities/appointment.entity';
+import { AppointmentsRepository } from '@/domain/repositories/appointments.repository';
 import { MongoRepository } from 'typeorm';
 
 import { AppointmentsMDB } from '../entities/appointments-db.entity';

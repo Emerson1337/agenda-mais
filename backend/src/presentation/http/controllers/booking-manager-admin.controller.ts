@@ -1,10 +1,10 @@
 import { BookingManagersService } from '@application/booking-managers/booking-managers.service';
 import { Body, Controller, Get, Param, Patch, Res } from '@nestjs/common';
 import { handleError, ok } from '@presentation/helpers/http.helper';
-import { UpdateManagerAdminDto } from '@src/application/booking-managers/dtos/update-manager-admin-dto';
-import { AuthRequired } from '@src/application/shared/decorators/auth-required.decorator';
-import { RolesAllowed } from '@src/application/shared/decorators/auth-roles-required.decorator';
-import { ManagersRolesEnum } from '@src/domain/entities/enums/managers-roles.enum';
+import { UpdateManagerAdminDto } from '@/application/booking-managers/dtos/update-manager-admin-dto';
+import { AuthRequired } from '@/application/shared/decorators/auth-required.decorator';
+import { RolesAllowed } from '@/application/shared/decorators/auth-roles-required.decorator';
+import { ManagersRolesEnum } from '@/domain/entities/enums/managers-roles.enum';
 import { Response } from 'express';
 
 @Controller('admin/usuarios')

@@ -1,4 +1,4 @@
-import { Schedules } from '@src/domain/entities/schedules.entity';
+import { Schedules } from '@/domain/entities/schedules.entity';
 import { Column, Entity } from 'typeorm';
 
 import BaseEntityMDB from './config/base.entity';
@@ -32,6 +32,9 @@ export class SchedulesMDB extends BaseEntityMDB implements Schedules {
 
   @Column({ type: 'array' })
   timeRange: SchedulesTimeRange;
+
+  @Column({ type: 'int' })
+  monthsAhead: number;
 
   @Column({ type: 'array' })
   dateExceptions?: SchedulesDateException[];

@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
-import { ManagerServices } from '@src/domain/entities/manager-services.entity';
-import { ManagerServicesRepository } from '@src/domain/repositories/manager-services.repository';
-import { InvalidParamError } from '@src/presentation/errors';
+import { ManagerServices } from '@/domain/entities/manager-services.entity';
+import { ManagerServicesRepository } from '@/domain/repositories/manager-services.repository';
+import { InvalidParamError } from '@/presentation/errors';
 
 import { CreateUpdateManagerServiceDto } from './dtos/create-update-manager-service.dto';
 import { I18nService, I18nContext } from 'nestjs-i18n';

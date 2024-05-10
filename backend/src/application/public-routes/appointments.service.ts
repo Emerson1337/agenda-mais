@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
-import { Appointments } from '@src/domain/entities/appointment.entity';
-import { BookingManagersRepository } from '@src/domain/repositories/booking-managers.repository';
-import { InvalidParamError } from '@src/presentation/errors';
+import { Appointments } from '@/domain/entities/appointment.entity';
+import { BookingManagersRepository } from '@/domain/repositories/booking-managers.repository';
+import { InvalidParamError } from '@/presentation/errors';
 
 import { AppointmentsRepository } from '@domain/repositories/appointments.repository';
 import { generateAppointmentCode } from '../shared/utils/dataGenerator';
@@ -10,7 +10,9 @@ import { I18nContext, I18nService } from 'nestjs-i18n';
 import { SalesReportService } from '../sales-report/sales-report.service';
 import { ManagerServicesRepository } from '@domain/repositories/manager-services.repository';
 import { DatesService } from './dates.service';
-import { AppointmentStatus } from '../../domain/entities/enums/appointment-status.enum';
+import { AppointmentStatus } from '@/domain/entities/enums/appointment-status.enum';
+import { SchedulesRepository } from '@/domain/repositories/schedules.repository';
+import { ISlots } from './dtos/type';
 
 @Injectable()
 export class AppointmentsService {
@@ -18,6 +20,7 @@ export class AppointmentsService {
     private readonly datesService: DatesService,
     private readonly managerServicesRepository: ManagerServicesRepository,
     private readonly bookingManagersRepository: BookingManagersRepository,
+    private readonly scheduleRepository: SchedulesRepository,
     private readonly appointmentsRepository: AppointmentsRepository,
     private readonly salesReportService: SalesReportService,
     private readonly i18n: I18nService,
@@ -115,6 +118,52 @@ export class AppointmentsService {
         lang: I18nContext.current().lang,
       }),
     };
+  }
+
+  async getSlotsAvailable({
+    username,
+  }: {
+    username: string;
+  }): Promise<ISlots[]> {
+    const manager =
+      await this.bookingManagersRepository.findByUsername(username);
+
+    if (!manager)
+      throw new InvalidParamError(
+        'username',
+        this.i18n.t('translations.INVALID_FIELD.MISSING_DATA.USERNAME', {
+          lang: I18nContext.current().lang,
+        }),
+      );
+
+    const schedule = await this.scheduleRepository.findByManagerId(manager.id);
+
+    const monthsAhead = schedule.monthsAhead;
+
+    // get all slots based in the agenda
+    const slotsAvailableBySchedule =
+      await this.datesService.createDateAndTimeSlots({
+        schedule,
+        monthsAhead,
+      });
+
+    const appointments = await this.appointmentsRepository.getByManagerId(
+      manager.id,
+    );
+
+    // remove slots already taken by someone
+    const slots = slotsAvailableBySchedule.flatMap((slot) => {
+      const appointmentInDate = appointments.find(
+        (appointment) => appointment.date === slot.date,
+      );
+
+      return {
+        date: slot.date,
+        times: slot.times.filter((time) => time !== appointmentInDate?.time),
+      };
+    });
+
+    return slots;
   }
 
   public async cancel({

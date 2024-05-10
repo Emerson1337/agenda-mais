@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
-import { DatabaseModule } from '@src/infra/database/database.module';
-import { PublicRoutesController } from '@src/presentation/http/controllers/public-routes.controller';
+import { DatabaseModule } from '@/infra/database/database.module';
+import { PublicRoutesController } from '@/presentation/http/controllers/public-routes.controller';
 
 import { DatesService } from './dates.service';
 import { AppointmentsService } from './appointments.service';

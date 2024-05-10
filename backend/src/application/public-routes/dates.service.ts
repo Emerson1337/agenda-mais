@@ -1,23 +1,27 @@
 import { Injectable } from '@nestjs/common';
-import { BookingManagers } from '@src/domain/entities/booking-managers.entity';
-import { ManagerServices } from '@src/domain/entities/manager-services.entity';
-import { BookingManagersRepository } from '@src/domain/repositories/booking-managers.repository';
-import { ManagerServicesRepository } from '@src/domain/repositories/manager-services.repository';
-import { SchedulesRepository } from '@src/domain/repositories/schedules.repository';
-
-import { removeAttributes } from '../shared/utils/objectFormatter';
+import { BookingManagers } from '@/domain/entities/booking-managers.entity';
+import { BookingManagersRepository } from '@/domain/repositories/booking-managers.repository';
+import { ManagerServicesRepository } from '@/domain/repositories/manager-services.repository';
+import { SchedulesRepository } from '@/domain/repositories/schedules.repository';
+import { removeAttributes } from '@/application/shared/utils/objectFormatter';
 import { I18nContext, I18nService } from 'nestjs-i18n';
-import { InvalidParamError } from '../../presentation/errors';
-import { format } from 'date-fns';
-import { Schedules } from '../../domain/entities/schedules.entity';
-import { AppointmentsRepository } from '../../domain/repositories/appointments.repository';
-
-interface ITimeAvailability {
-  id: string;
-  time: string;
-  managerId: string;
-  date: string;
-}
+import { InvalidParamError } from '@/presentation/errors';
+import {
+  addDays,
+  addMonths,
+  differenceInDays,
+  endOfToday,
+  format,
+  getDay,
+} from 'date-fns';
+import { AppointmentsRepository } from '@/domain/repositories/appointments.repository';
+import {
+  IBusinessData,
+  ICheckTimeAvailability,
+  ICreateDateAndTimeSlots,
+  ISlots,
+  ITimeAvailability,
+} from './dtos/type';
 
 @Injectable()
 export class DatesService {
@@ -34,10 +38,7 @@ export class DatesService {
     time,
     managerId,
     date,
-  }: ITimeAvailability): Promise<{
-    isTimeAvailable: boolean;
-    schedule?: Schedules;
-  }> {
+  }: ICheckTimeAvailability): Promise<ITimeAvailability> {
     const weekDay = Number(format(date, 'e'));
 
     const schedule = await this.scheduleRepository.findByIdAndTimeAvailable({
@@ -68,11 +69,46 @@ export class DatesService {
     };
   }
 
-  async getBusinessData(username: string): Promise<{
-    services: ManagerServices[];
-    business: BookingManagers;
-    layout: string;
-  }> {
+  async createDateAndTimeSlots({
+    schedule,
+    monthsAhead,
+  }: ICreateDateAndTimeSlots): Promise<ISlots[]> {
+    const now = endOfToday();
+    const end = addMonths(now, monthsAhead);
+
+    const differenceBetweenDatesInDays = differenceInDays(end, now);
+    const datesInSchedule: ISlots[] = [];
+
+    // Create all dates available for scheduling
+    for (let index = 0; index <= differenceBetweenDatesInDays; index++) {
+      const date = format(addDays(now, index), 'yyyy-MM-dd');
+
+      // 0 - monday, 6 - sunday
+      if (schedule.weekDays.includes(getDay(date)))
+        datesInSchedule.push({
+          date,
+          times: schedule.times,
+        });
+    }
+
+    // Remove slots that matches the exception times
+    const filteredDates = datesInSchedule.flatMap((dateInSchedule) => {
+      const exceptionDate = schedule.dateExceptions.find(
+        (exception) => exception.date === dateInSchedule.date,
+      );
+
+      return {
+        date: dateInSchedule.date,
+        times: dateInSchedule.times.filter(
+          (time) => !exceptionDate?.times.includes(time),
+        ),
+      };
+    });
+
+    return filteredDates.filter((date) => date.times.length);
+  }
+
+  async getBusinessData(username: string): Promise<IBusinessData> {
     const manager =
       await this.bookingManagersRepository.findByUsername(username);
 

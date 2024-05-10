@@ -1,4 +1,4 @@
-import { Match } from '@src/application/shared/decorators/match.decorator';
+import { Match } from '@/application/shared/decorators/match.decorator';
 import { IsNotEmpty, IsString, IsStrongPassword } from 'class-validator';
 
 export class ResetDto {

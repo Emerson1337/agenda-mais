@@ -1,9 +1,9 @@
 import { Body, Controller, Post, Query, Res } from '@nestjs/common';
-import { AuthService } from '@src/application/auth/auth.service';
-import { ForgotDto } from '@src/application/auth/dtos/forgot-password-dto';
-import { LoginDto } from '@src/application/auth/dtos/login-dto';
-import { ResetDto } from '@src/application/auth/dtos/reset-password-dto';
-import { handleError, ok } from '@src/presentation/helpers/http.helper';
+import { AuthService } from '@/application/auth/auth.service';
+import { ForgotDto } from '@/application/auth/dtos/forgot-password-dto';
+import { LoginDto } from '@/application/auth/dtos/login-dto';
+import { ResetDto } from '@/application/auth/dtos/reset-password-dto';
+import { handleError, ok } from '@/presentation/helpers/http.helper';
 import { Response } from 'express';
 
 @Controller('auth')

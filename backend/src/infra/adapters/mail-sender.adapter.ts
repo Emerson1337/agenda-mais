@@ -1,4 +1,4 @@
-import { generateHtml } from '@src/application/shared/utils/generateHtml';
+import { generateHtml } from '@/application/shared/utils/generateHtml';
 import * as nodemailer from 'nodemailer';
 
 export class MailSenderAdapter {

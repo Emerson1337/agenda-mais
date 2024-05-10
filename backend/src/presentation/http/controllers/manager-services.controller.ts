@@ -10,9 +10,9 @@ import {
   Res,
 } from '@nestjs/common';
 import { handleError, ok } from '@presentation/helpers/http.helper';
-import { CreateUpdateManagerServiceDto } from '@src/application/manager-services/dtos/create-update-manager-service.dto';
-import { ManagerServicesService } from '@src/application/manager-services/manager-services.service';
-import { AuthRequired } from '@src/application/shared/decorators/auth-required.decorator';
+import { CreateUpdateManagerServiceDto } from '@/application/manager-services/dtos/create-update-manager-service.dto';
+import { ManagerServicesService } from '@/application/manager-services/manager-services.service';
+import { AuthRequired } from '@/application/shared/decorators/auth-required.decorator';
 import { Response } from 'express';
 
 @Controller('dashboard/servicos')

@@ -1,4 +1,4 @@
-import { CreateUpdateManagerServiceDto } from '@src/application/manager-services/dtos/create-update-manager-service.dto';
+import { CreateUpdateManagerServiceDto } from '@/application/manager-services/dtos/create-update-manager-service.dto';
 
 import { ManagerServices } from '../entities/manager-services.entity';
 

@@ -1,5 +1,5 @@
 import { JwtService } from '@nestjs/jwt';
-import { TokenPayload } from '@src/application/auth/dtos/token-dto';
+import { TokenPayload } from '@/application/auth/dtos/token-dto';
 
 export class TokenAdapter {
   async generateToken(

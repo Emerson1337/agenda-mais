@@ -1,12 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { InvalidParamError, MultipleErrors } from '@presentation/errors';
-import { CreateManagerDto } from '@src/application/booking-managers/dtos/create-manager-dto';
-import { BookingManagers } from '@src/domain/entities/booking-managers.entity';
-import { ManagersPlansEnum } from '@src/domain/entities/enums/managers-plans.enum';
-import { ManagersRolesEnum } from '@src/domain/entities/enums/managers-roles.enum';
-import { ManagerStatus } from '@src/domain/entities/enums/managers-status.enum';
-import { EncryptAdapter } from '@src/infra/adapters/encrypt.adapter';
-import { FileAdapter } from '@src/infra/adapters/file.adapter';
+import { CreateManagerDto } from '@/application/booking-managers/dtos/create-manager-dto';
+import { BookingManagers } from '@/domain/entities/booking-managers.entity';
+import { ManagersPlansEnum } from '@/domain/entities/enums/managers-plans.enum';
+import { ManagersRolesEnum } from '@/domain/entities/enums/managers-roles.enum';
+import { ManagerStatus } from '@/domain/entities/enums/managers-status.enum';
+import { EncryptAdapter } from '@/infra/adapters/encrypt.adapter';
+import { FileAdapter } from '@/infra/adapters/file.adapter';
 
 import { BookingManagersRepository } from '../../domain/repositories/booking-managers.repository';
 import { UserDto } from '../auth/dtos/user-dto';

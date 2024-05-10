@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { BookingManagers } from '@src/domain/entities/booking-managers.entity';
+import { BookingManagers } from '@/domain/entities/booking-managers.entity';
 
 import { PrismaService } from '../../prisma/prisma.service';
 

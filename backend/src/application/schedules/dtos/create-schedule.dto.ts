@@ -1,5 +1,5 @@
-import { IsDateFormat } from '@src/application/shared/decorators/date-validator.decorator';
-import { IsTimeFormat } from '@src/application/shared/decorators/time-validator.decorator';
+import { IsDateFormat } from '@/application/shared/decorators/date-validator.decorator';
+import { IsTimeFormat } from '@/application/shared/decorators/time-validator.decorator';
 import { Type } from 'class-transformer';
 import {
   ArrayMaxSize,
@@ -9,9 +9,11 @@ import {
   IsNotEmpty,
   IsNumber,
   IsOptional,
+  Max,
+  Min,
   ValidateNested,
 } from 'class-validator';
-import { IsArrayTimeFormat } from '@src/application/shared/decorators/time-array-validator.decorator';
+import { IsArrayTimeFormat } from '@/application/shared/decorators/time-array-validator.decorator';
 
 export class SchedulesTime {
   @IsNotEmpty()
@@ -59,6 +61,12 @@ export class CreateScheduleDto {
   @ArrayMaxSize(24)
   @IsArray()
   times: string[];
+
+  @IsNotEmpty()
+  @IsNumber()
+  @Max(12)
+  @Min(1)
+  monthsAhead: number;
 
   @IsOptional()
   @ValidateNested()

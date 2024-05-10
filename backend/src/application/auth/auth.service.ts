@@ -1,12 +1,12 @@
 import { Injectable } from '@nestjs/common';
-import { EncryptAdapter } from '@src/infra/adapters/encrypt.adapter';
-import { TokenAdapter } from '@src/infra/adapters/token.adapter';
+import { EncryptAdapter } from '@/infra/adapters/encrypt.adapter';
+import { TokenAdapter } from '@/infra/adapters/token.adapter';
 import {
   InvalidParamError,
   MultipleErrors,
   ServerError,
-} from '@src/presentation/errors';
-import { UnauthorizedError } from '@src/presentation/errors/unauthorized-error';
+} from '@/presentation/errors';
+import { UnauthorizedError } from '@/presentation/errors/unauthorized-error';
 
 import { ResetPasswordTokensRepository } from '../../domain/repositories/reset-password-tokens.repository';
 import { MailSenderAdapter } from '../../infra/adapters/mail-sender.adapter';

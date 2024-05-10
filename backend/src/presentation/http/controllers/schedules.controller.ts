@@ -1,9 +1,9 @@
 import { Body, Controller, Delete, Get, Post, Req, Res } from '@nestjs/common';
 import { handleError, ok } from '@presentation/helpers/http.helper';
-import { CreateScheduleDto } from '@src/application/schedules/dtos/create-schedule.dto';
-import { DeleteScheduleDto } from '@src/application/schedules/dtos/delete-schedule.dto';
-import { SchedulesService } from '@src/application/schedules/schedules.service';
-import { AuthRequired } from '@src/application/shared/decorators/auth-required.decorator';
+import { CreateScheduleDto } from '@/application/schedules/dtos/create-schedule.dto';
+import { DeleteScheduleDto } from '@/application/schedules/dtos/delete-schedule.dto';
+import { SchedulesService } from '@/application/schedules/schedules.service';
+import { AuthRequired } from '@/application/shared/decorators/auth-required.decorator';
 import { Response } from 'express';
 
 @Controller('dashboard/agendas')

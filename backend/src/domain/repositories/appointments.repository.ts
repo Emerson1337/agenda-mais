@@ -1,4 +1,4 @@
-import { CreateAppointmentDto } from '@src/application/public-routes/dtos/create-appointment-dto';
+import { CreateAppointmentDto } from '@/application/public-routes/dtos/create-appointment-dto';
 
 import { Appointments } from '../entities/appointment.entity';
 
