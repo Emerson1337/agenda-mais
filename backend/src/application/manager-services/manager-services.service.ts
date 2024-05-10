@@ -5,6 +5,7 @@ import { InvalidParamError } from '@/presentation/errors';
 
 import { CreateUpdateManagerServiceDto } from './dtos/create-update-manager-service.dto';
 import { I18nService, I18nContext } from 'nestjs-i18n';
+import { IUpdate } from './dtos/types';
 
 @Injectable()
 export class ManagerServicesService {
@@ -37,10 +38,7 @@ export class ManagerServicesService {
 
   async update(
     managerService: CreateUpdateManagerServiceDto,
-    {
-      managerServiceId,
-      managerId,
-    }: { managerServiceId: string; managerId: string },
+    { managerServiceId, managerId }: IUpdate,
   ): Promise<ManagerServices | Error> {
     const managerWithSameName =
       await this.managerServicesRepository.findByNameInUse(

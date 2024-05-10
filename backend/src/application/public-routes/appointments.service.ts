@@ -1,18 +1,23 @@
 import { Injectable } from '@nestjs/common';
-import { Appointments } from '@/domain/entities/appointment.entity';
 import { BookingManagersRepository } from '@/domain/repositories/booking-managers.repository';
 import { InvalidParamError } from '@/presentation/errors';
 
 import { AppointmentsRepository } from '@domain/repositories/appointments.repository';
 import { generateAppointmentCode } from '../shared/utils/dataGenerator';
-import { CreateAppointmentDto } from './dtos/create-appointment-dto';
 import { I18nContext, I18nService } from 'nestjs-i18n';
 import { SalesReportService } from '../sales-report/sales-report.service';
 import { ManagerServicesRepository } from '@domain/repositories/manager-services.repository';
 import { DatesService } from './dates.service';
 import { AppointmentStatus } from '@/domain/entities/enums/appointment-status.enum';
 import { SchedulesRepository } from '@/domain/repositories/schedules.repository';
-import { ISlots } from './dtos/type';
+import {
+  IBookAppointment,
+  ICancel,
+  IGetSlotAvailable,
+  IOBookAppointment,
+  IOCancel,
+  ISlots,
+} from './dtos/type';
 
 @Injectable()
 export class AppointmentsService {
@@ -29,13 +34,7 @@ export class AppointmentsService {
   async bookAppointment({
     username,
     appointmentData,
-  }: {
-    username: string;
-    appointmentData: CreateAppointmentDto;
-  }): Promise<{
-    appointment: Appointments;
-    message: string;
-  }> {
+  }: IBookAppointment): Promise<IOBookAppointment | Error> {
     const { clientName, phone, scheduleId, notes, time, date, serviceId } =
       appointmentData;
 
@@ -122,9 +121,7 @@ export class AppointmentsService {
 
   async getSlotsAvailable({
     username,
-  }: {
-    username: string;
-  }): Promise<ISlots[]> {
+  }: IGetSlotAvailable): Promise<ISlots[] | Error> {
     const manager =
       await this.bookingManagersRepository.findByUsername(username);
 
@@ -169,10 +166,7 @@ export class AppointmentsService {
   public async cancel({
     username,
     appointmentCode,
-  }: {
-    username: string;
-    appointmentCode: string;
-  }): Promise<{ appointment: Appointments; message: string }> {
+  }: ICancel): Promise<IOCancel | Error> {
     const manager =
       await this.bookingManagersRepository.findByUsername(username);
 
