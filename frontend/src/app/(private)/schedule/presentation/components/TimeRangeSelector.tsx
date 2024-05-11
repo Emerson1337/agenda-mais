@@ -10,19 +10,17 @@ import { useFormContext } from "react-hook-form";
 import { dateUtils } from "@/shared/utils/dateUtils";
 import { stringUtils } from "@/shared/utils/stringUtils";
 import { TimeRange } from "@/private/schedule/domain/schedule.schema";
-import { useEffect } from "react";
 
 export interface TimeRangeSelectorProps {
   defaultValue?: TimeRange;
   onChange?: (value: TimeRange) => void;
 }
 
-export function TimeRangeSelector({ onChange }: TimeRangeSelectorProps) {
+export function TimeRangeSelector({
+  onChange,
+  defaultValue,
+}: TimeRangeSelectorProps) {
   const { setValue, getValues } = useFormContext();
-
-  useEffect(() => {
-    setValue("timeRange", undefined);
-  }, [setValue]);
 
   const allTimes = dateUtils.getTimes(stringUtils.getHourNumber("00:00"), 23);
 
@@ -38,6 +36,7 @@ export function TimeRangeSelector({ onChange }: TimeRangeSelectorProps) {
       </div>
       <div className="flex gap-4 justify-center mb-10">
         <Select
+          defaultValue={defaultValue?.start}
           onValueChange={(value) => {
             setValue("timeRange", { ...getValues().timeRange, start: value });
             onChange?.({ ...getValues().timeRange, start: value });
@@ -57,6 +56,7 @@ export function TimeRangeSelector({ onChange }: TimeRangeSelectorProps) {
           </SelectContent>
         </Select>
         <Select
+          defaultValue={defaultValue?.end}
           onValueChange={(value) => {
             setValue("timeRange", { ...getValues().timeRange, end: value });
             onChange?.({ ...getValues().timeRange, end: value });

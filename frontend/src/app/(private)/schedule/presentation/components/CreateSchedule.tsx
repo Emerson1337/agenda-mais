@@ -23,22 +23,28 @@ import {
   scheduleFormSchema,
 } from "@/private/schedule/domain/schedule.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { MonthsAheadSelector } from "./MonthsAheadSelector";
+import { useGetScheduleQuery } from "@/private/schedule/infrastructure/schedule.api";
 
 export default function CreateSchedule() {
+  const { mutate, isPending, isSuccess, error } = useScheduleMutation();
+  const { data, isFetching } = useGetScheduleQuery();
   const form = useForm<ScheduleData>({
     resolver: zodResolver(scheduleFormSchema),
+    defaultValues: data,
   });
   const { getValues, watch } = form;
-  const [times, weekDays, timeRange] = watch([
+  const [times, weekDays, timeRange, monthsAhead] = watch([
     "times",
     "weekDays",
     "timeRange",
+    "monthsAhead",
   ]);
-  const isSubmitEnabled = weekDays?.length && !!times?.length;
-  const { mutate, isPending, isSuccess, error } = useScheduleMutation();
+
+  const isSubmitEnabled =
+    weekDays?.length && !!times?.length && monthsAhead !== undefined;
 
   function onSubmit() {
-    console.log(`🟢🟢🟢 ${JSON.stringify(getValues())} 🟢🟢🟢`);
     mutate(getValues());
   }
 
@@ -46,6 +52,13 @@ export default function CreateSchedule() {
     isSuccess && toast.success("Agenda salva com sucesso!");
     error?.message && toast.error(error?.message);
   }, [error?.message, isSuccess]);
+
+  useEffect(() => {
+    // Reset the form whenever data changes
+    form.reset(data);
+  }, [form, data]);
+
+  if (isFetching) return <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />;
 
   return (
     <CustomForm
@@ -64,13 +77,13 @@ export default function CreateSchedule() {
           <WeekdaysCards defaultValue={weekDays} />
           {!!weekDays?.length && (
             <>
-              <TimeRangeSelector
-                defaultValue={{
-                  start: "",
-                  end: "",
-                }}
-              />
-              {timeRange?.start && timeRange?.end && <TimesSelector />}
+              <TimeRangeSelector defaultValue={timeRange} />
+              {timeRange?.start && timeRange?.end && (
+                <TimesSelector defaultValue={times} />
+              )}
+              {timeRange?.start && timeRange?.end && (
+                <MonthsAheadSelector defaultValue={monthsAhead} />
+              )}
             </>
           )}
         </CardContent>

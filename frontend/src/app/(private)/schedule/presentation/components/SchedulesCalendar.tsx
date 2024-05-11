@@ -3,22 +3,39 @@
 import { Calendar } from "@/components/ui/calendar";
 import { useState } from "react";
 import { DaysExceptionModal } from "./DaysExceptionModal";
-import { format } from "date-fns";
+import {
+  endOfDay,
+  format,
+  formatISO,
+  isSameDay,
+  parseISO,
+  startOfDay,
+  startOfToday,
+} from "date-fns";
 import { dateUtils } from "@/shared/utils/dateUtils";
+import { useFormContext } from "react-hook-form";
+import {
+  DateExceptions,
+  ScheduleData,
+} from "@/private/schedule/domain/schedule.schema";
 
 export interface SchedulesCalendarProps {
   times: string[];
   onConfirm: (exception: { date: string; times: string[] }) => void;
   onDismiss: (exception: { date: string }) => void;
+  defaultValue?: DateExceptions[];
 }
 
 export function SchedulesCalendar({
   onConfirm,
   times,
   onDismiss,
+  defaultValue,
 }: SchedulesCalendarProps) {
   const [open, setOpen] = useState<boolean>(false);
-  const [dates, setDates] = useState<Date[]>([]);
+  const [dates, setDates] = useState<Date[]>(
+    defaultValue?.map((value) => startOfDay(parseISO(value.date))) ?? []
+  );
 
   const [exceptionDate, setExceptionDate] = useState<Date | undefined>();
 
@@ -28,22 +45,20 @@ export function SchedulesCalendar({
         mode="multiple"
         disabled={dateUtils.getPastDaysFromToday()}
         selected={dates}
-        fromDate={new Date()}
-        fromMonth={new Date()}
+        fromDate={startOfToday()}
+        fromMonth={startOfToday()}
         onDayClick={(datum) => {
           if (!datum) return;
 
-          if (dates.some((date) => date.getTime() === datum.getTime())) {
-            setDates(
-              dates.filter((date) => date.getTime() !== datum?.getTime())
-            );
+          if (dates.some((date) => isSameDay(date, datum))) {
+            setDates(dates.filter((date) => !isSameDay(date, datum)));
             onDismiss({
-              date: format(datum, "dd/MM/yyyy"),
+              date: format(datum, "yyyy-MM-dd"),
             });
             return setExceptionDate(undefined);
           }
 
-          setExceptionDate(datum);
+          setExceptionDate(startOfDay(datum));
           setOpen(true);
         }}
         onSelect={(datum) => {
@@ -60,7 +75,7 @@ export function SchedulesCalendar({
           onConfirm={(timesAvailable: string[]) => {
             exceptionDate &&
               onConfirm({
-                date: format(exceptionDate, "dd/MM/yyyy"),
+                date: format(exceptionDate, "yyyy-MM-dd"),
                 times: timesAvailable,
               });
             setOpen(false);
@@ -68,12 +83,12 @@ export function SchedulesCalendar({
           dismiss={(exceptionDate) => {
             setDates(
               dates.filter(
-                (date) => date.getTime() !== exceptionDate?.getTime()
+                (date) => exceptionDate && !isSameDay(date, exceptionDate)
               )
             );
             exceptionDate &&
               onDismiss({
-                date: format(exceptionDate, "dd/MM/yyyy"),
+                date: format(exceptionDate, "yyyy-MM-dd"),
               });
             setOpen(false);
           }}

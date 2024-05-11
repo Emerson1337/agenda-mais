@@ -2,13 +2,18 @@ import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { dateUtils } from "@/shared/utils/dateUtils";
 import { useFormContext } from "react-hook-form";
 import { stringUtils } from "@/shared/utils/stringUtils";
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { TimesExceptionSelector } from "./TimesExceptionSelector";
 import { ScheduleData } from "@/private/schedule/domain/schedule.schema";
 
-export function TimesSelector() {
+interface Props {
+  defaultValue: string[];
+}
+
+export function TimesSelector({ defaultValue }: Props) {
   const { setValue, watch } = useFormContext<ScheduleData>();
   const [timeRange] = watch(["timeRange"]);
+  const [times, setTimes] = useState<string[]>(defaultValue ?? []);
 
   const getTimesInRange = useCallback(() => {
     if (!timeRange || !timeRange.start || !timeRange.end) return [];
@@ -20,13 +25,15 @@ export function TimesSelector() {
   }, [timeRange]);
 
   useEffect(() => {
-    setValue("times", getTimesInRange());
+    const timesRange = getTimesInRange();
+    setValue("times", timesRange);
+    setTimes(timesRange);
   }, [getTimesInRange, setValue]);
 
   return (
     <>
       <div className="justify-center flex gap-4 mb-10">
-        <TimesCards timesInRangeSelected={getTimesInRange()} />
+        <TimesCards timesInRangeSelected={times} />
       </div>
       <TimesExceptionSelector />
     </>

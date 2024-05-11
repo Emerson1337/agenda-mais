@@ -18,6 +18,7 @@ export interface DaysExceptionModalProps {
   onConfirm: (timesAvailable: string[]) => void;
   date: Date;
   times: string[];
+  defaultValue?: string[];
 }
 
 export function DaysExceptionModal({
@@ -61,11 +62,20 @@ export function DaysExceptionModal({
           </ToggleGroup>
           <span className="flex justify-center mb-4">
             <Button
+              onClick={reset}
+              variant="default"
+              className="self-center text-white"
+            >
+              Remarcar todos os horários
+            </Button>
+          </span>
+          <span className="flex justify-center mb-4">
+            <Button
               onClick={() => setTimesAvailable([])}
               variant="destructive"
               className="self-center"
             >
-              Desmarcar todos os dias
+              Desmarcar todos os horários
             </Button>
           </span>
         </>
@@ -75,10 +85,11 @@ export function DaysExceptionModal({
           </AlertDialogCancel>
           <AlertDialogAction
             className="text-foreground"
-            disabled={
-              !timesAvailable || times.length === timesAvailable?.length
+            onClick={() =>
+              times.length === timesAvailable?.length
+                ? dismiss(date)
+                : onConfirm(timesAvailable)
             }
-            onClick={() => timesAvailable && onConfirm(timesAvailable)}
           >
             Confirmar
           </AlertDialogAction>

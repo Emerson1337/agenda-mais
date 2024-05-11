@@ -1,4 +1,5 @@
-import { IDateExceptions } from "@/shared/types/schedule";
+import { startOfToday, subDays } from "date-fns";
+import { DateExceptions } from "@/private/schedule/domain/schedule.schema";
 
 export namespace dateUtils {
   export const getTimes = (start: number, end: number): string[] => {
@@ -11,8 +12,8 @@ export namespace dateUtils {
     return times;
   };
 
-  export const sortByDate = (array: IDateExceptions[]): IDateExceptions[] => {
-    return array.sort((a: IDateExceptions, b: IDateExceptions) => {
+  export const sortByDate = (array: DateExceptions[]): DateExceptions[] => {
+    return array.sort((a: DateExceptions, b: DateExceptions) => {
       const [dayA, monthA, yearA] = a.date.split("/").map(Number);
       const [dayB, monthB, yearB] = b.date.split("/").map(Number);
       // Months are zero-indexed in JavaScript's Date constructor
@@ -26,13 +27,11 @@ export namespace dateUtils {
 
   export const getPastDaysFromToday = (): Date[] => {
     const dates: Date[] = [];
-    const today = new Date();
+    const today = startOfToday();
 
     // Iterate over the last 30 days
-    for (let i = 0; i < 30; i++) {
-      const date = new Date(today);
-      date.setDate(today.getDate() - i);
-      dates.push(date);
+    for (let i = 1; i < 30; i++) {
+      dates.push(subDays(today, i));
     }
 
     return dates;

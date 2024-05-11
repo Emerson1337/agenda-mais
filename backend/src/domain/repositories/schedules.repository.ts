@@ -7,7 +7,7 @@ export abstract class SchedulesRepository {
     managerId: string,
     scheduleDate: CreateScheduleDto,
   ): Promise<Schedules>;
-  abstract findByManagerId(managerId: string);
+  abstract findByManagerId(managerId: string): Promise<Schedules>;
   abstract findByIdAndTimeAvailable({
     id,
     time,

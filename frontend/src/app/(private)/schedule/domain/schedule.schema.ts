@@ -13,9 +13,10 @@ export const TimeRangeSchema = z.object({
 export type TimeRange = z.infer<typeof TimeRangeSchema>;
 
 export const scheduleFormSchema = z.object({
-  weekDays: z.array(z.string()).min(1).max(7),
+  weekDays: z.array(z.number()).min(1).max(7),
   timeRange: TimeRangeSchema,
   times: z.array(z.string()),
   dateExceptions: z.array(DateExceptionsSchema).default([]),
+  monthsAhead: z.number(),
 });
 export type ScheduleData = z.infer<typeof scheduleFormSchema>;

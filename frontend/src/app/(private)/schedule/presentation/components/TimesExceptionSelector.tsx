@@ -6,20 +6,26 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { SchedulesCalendar } from "./SchedulesCalendar";
-import { useState } from "react";
-import { IDateExceptions } from "@/shared/types/schedule";
+import { useEffect, useState } from "react";
 import { useFormContext } from "react-hook-form";
 import {
   DateExceptions,
   ScheduleData,
 } from "@/private/schedule/domain/schedule.schema";
 import { TimesExceptionList } from "./TimesExceptionList";
+import { isSameDay } from "date-fns";
 
 export function TimesExceptionSelector() {
   const { setValue, getValues, watch } = useFormContext<ScheduleData>();
   const times = watch("times");
 
-  const [dateExceptions, setDateExceptions] = useState<DateExceptions[]>([]);
+  const [dateExceptions, setDateExceptions] = useState<DateExceptions[]>(
+    watch("dateExceptions") ?? []
+  );
+
+  useEffect(() => {
+    setValue("dateExceptions", dateExceptions);
+  }, [dateExceptions, setValue]);
 
   if (!times?.length) return <></>;
 
@@ -36,6 +42,7 @@ export function TimesExceptionSelector() {
           <AccordionContent className="flex justify-center">
             <div className="border-2 max-w-fit">
               <SchedulesCalendar
+                defaultValue={dateExceptions}
                 times={times}
                 onConfirm={(data) => {
                   const exceptions = [
@@ -46,12 +53,13 @@ export function TimesExceptionSelector() {
                     },
                   ];
 
-                  setValue("dateExceptions", exceptions);
                   setDateExceptions(exceptions);
                 }}
                 onDismiss={(data) =>
                   setDateExceptions(
-                    dateExceptions.filter((date) => date.date !== data.date)
+                    dateExceptions.filter(
+                      (date) => !isSameDay(date.date, data.date)
+                    )
                   )
                 }
               />
