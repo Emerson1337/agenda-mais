@@ -25,12 +25,8 @@ export class SchedulesService {
     );
   }
 
-  async list({
-    managerId,
-  }: {
-    managerId: string;
-  }): Promise<Schedules[] | Error> {
-    return await this.schedulesRepository.getAll(managerId);
+  async list({ managerId }: { managerId: string }): Promise<Schedules | Error> {
+    return await this.schedulesRepository.findByManagerId(managerId);
   }
 
   async listAppointments({

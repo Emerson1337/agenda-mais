@@ -114,10 +114,29 @@ export class TypeOrmSchedulesRepository implements SchedulesRepository {
       },
     });
 
+    if (existingSchedule)
+      return (await this.repository.findOneAndUpdate(
+        { _id: existingSchedule.id },
+        {
+          $set: {
+            times: scheduleData.times,
+            timeRange: scheduleData.timeRange,
+            weekDays: scheduleData.weekDays,
+            monthsAhead: scheduleData.monthsAhead,
+            managerId: existingSchedule.managerId,
+            dateExceptions: scheduleData.dateExceptions ?? [],
+          },
+        },
+        { returnDocument: 'after' },
+      )) as Schedules;
+
     return await this.repository.save({
-      id: existingSchedule?.id,
       dateExceptions: scheduleData.dateExceptions ?? [],
-      ...scheduleData,
+      times: scheduleData.times,
+      timeRange: scheduleData.timeRange,
+      weekDays: scheduleData.weekDays,
+      managerId: scheduleData.managerId,
+      monthsAhead: scheduleData.monthsAhead,
     });
   }
 

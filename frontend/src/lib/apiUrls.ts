@@ -1,8 +1,9 @@
 export const apiUrls = {
   appointment: {
-    getAll: (): string => `/appointment`,
+    getAll: (): string => `/api/appointment`,
   },
   schedule: {
-    create: (): string => `/dashboard/agendas`,
+    create: (): string => `/api/dashboard/agendas`,
+    get: (): string => `/api/dashboard/agendas`,
   },
 };

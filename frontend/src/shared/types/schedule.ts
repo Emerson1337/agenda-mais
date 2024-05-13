@@ -1,7 +1,7 @@
-export interface IDateExceptions {
-  date: string;
-  times: string[];
-}
+import {
+  TimeRange,
+  DateExceptions,
+} from "@/private/schedule/domain/schedule.schema";
 
 export type IScheduleResponse = {
   body: IBody;
@@ -19,4 +19,12 @@ export type IBody = {
 export type ITime = {
   time: string;
   available: boolean;
+};
+
+export type IScheduleRequest = {
+  weekDays: number[];
+  timeRange: TimeRange;
+  times: string[];
+  dateExceptions: DateExceptions[];
+  monthsAhead: number;
 };
