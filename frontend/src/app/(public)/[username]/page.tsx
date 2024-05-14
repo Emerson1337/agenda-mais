@@ -3,7 +3,7 @@
 import { notFound, useParams } from "next/navigation";
 import { BusinessProvider } from "./agenda/application/context/BusinessDataContext";
 import { useBusinessFacade } from "./agenda/application/business.facade";
-import Appointment from "./agenda/presentation/screens/Appointment";
+import Welcome from "./bem-vindo/presentation/screens/Welcome";
 
 export default function Page() {
   const { username }: { username: string } = useParams();
@@ -17,7 +17,7 @@ export default function Page() {
 
   return (
     <BusinessProvider initialData={data!}>
-      <Appointment />
+      <Welcome />
     </BusinessProvider>
   );
 }
