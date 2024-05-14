@@ -1,4 +1,4 @@
-import { useGetAppointmentQuery } from "../infrasctructure/appointment.api";
+import { useGetAppointmentQuery } from "../infrastructure/appointment.api";
 
 export const useAppointmentFacade = () => {
   const { isPending, error, data, isFetching } = useGetAppointmentQuery();
