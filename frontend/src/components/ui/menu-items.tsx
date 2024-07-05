@@ -1,0 +1,109 @@
+"use client";
+
+import React from "react";
+import { Home, Calendar, AlarmCheck, Settings } from "lucide-react";
+import { Tooltip, TooltipContent, TooltipTrigger } from "./tooltip";
+import { useActivePath } from "@/lib/hooks";
+import Link from "next/link";
+import { ThemeToggle } from "./theme-toggle";
+
+interface Props {
+  tooltip?: boolean;
+}
+
+export function MenuItems({ tooltip = false }: Props) {
+  const checkActivePath = useActivePath();
+
+  const menus = [
+    {
+      icon: <Home className="h-5 w-5" />,
+      title: "Dashboard",
+      url: "/dashboard",
+    },
+    {
+      icon: <Calendar className="h-5 w-5" />,
+      title: "Agendas",
+      url: "/agenda",
+    },
+    {
+      icon: <AlarmCheck className="h-5 w-5" />,
+      title: "Agendamentos",
+      url: "/agendamentos",
+    },
+  ];
+
+  return (
+    <>
+      {menus.map((menu, key) =>
+        tooltip ? (
+          <Tooltip key={key}>
+            <TooltipTrigger asChild>
+              <Link
+                href={menu.url}
+                className={`flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8 ${
+                  checkActivePath(menu.url) &&
+                  "bg-accent text-accent-foreground"
+                }`}
+              >
+                {menu.icon}
+                <span className="sr-only">{menu.title}</span>
+              </Link>
+            </TooltipTrigger>
+            <TooltipContent side="right">{menu.title}</TooltipContent>
+          </Tooltip>
+        ) : (
+          <Link
+            key={key}
+            href={menu.url}
+            className={`flex items-center gap-4 p-2.5 rounded-lg text-muted-foreground hover:text-foreground ${
+              checkActivePath(menu.url) && "bg-accent text-accent-foreground"
+            }`}
+          >
+            {menu.icon}
+            {menu.title}
+          </Link>
+        )
+      )}
+    </>
+  );
+}
+
+export function SettingsItem({ tooltip = false }: Props) {
+  const checkActivePath = useActivePath();
+
+  return (
+    <>
+      {tooltip ? (
+        <Tooltip>
+          <ThemeToggle />
+          <TooltipTrigger asChild>
+            <Link
+              href="/settings"
+              className={`flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8 ${
+                checkActivePath("/settings") &&
+                "bg-accent text-accent-foreground"
+              }`}
+            >
+              <Settings className="h-5 w-5" />
+              <span className="sr-only">Configurações</span>
+            </Link>
+          </TooltipTrigger>
+          <TooltipContent side="right">Configurações</TooltipContent>
+        </Tooltip>
+      ) : (
+        <>
+          <ThemeToggle />
+          <Link
+            href="/settings"
+            className={`flex items-center gap-4 p-2.5 text-muted-foreground hover:text-foreground ${
+              checkActivePath("/settings") && "bg-accent text-accent-foreground"
+            }`}
+          >
+            <Settings className="h-5 w-5 transition-all group-hover:scale-110" />
+            Configurações
+          </Link>
+        </>
+      )}
+    </>
+  );
+}
