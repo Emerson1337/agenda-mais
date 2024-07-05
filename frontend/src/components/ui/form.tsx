@@ -15,7 +15,7 @@ import { cn } from "@/lib/utils";
 import { Label } from "@/components/ui/label";
 
 interface CustomFormProps<T extends FieldValues> {
-  className: string;
+  className?: string;
   form: UseFormReturn<T>;
   onSubmit: (values: unknown) => void;
   children: React.ReactNode;
