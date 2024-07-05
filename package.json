@@ -6,13 +6,19 @@
   },
   "scripts": {
     "db:dev": "./local-dev/start_dev_db.sh",
-    "lint:backend": "cd ./backend && yarn lint",
+    "lint:backend": "cd ./backend && yarn lint:fix",
     "test:backend": "cd ./backend && yarn test",
     "testBE:staged": "cd ./backend && yarn test --findRelatedTests",
     "test:frontend": "cd ./frontend && yarn test",
-    "lint:frontend": "cd ./frontend && yarn lint",
+    "lint:frontend": "cd ./frontend && yarn lint:fix",
     "prepare": "husky install",
     "lint-staged": "lint-staged",
     "start-app": "concurrently \"cd ./backend && yarn start:dev\" \"cd ./frontend && yarn dev\""
+  },
+  "dependencies": {
+    "@babel/preset-env": "^7.24.7",
+    "@babel/preset-react": "^7.24.7",
+    "babel-loader": "^9.1.3",
+    "next": "^14.2.4"
   }
 }
