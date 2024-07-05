@@ -32,9 +32,21 @@ export class TypeOrmAppointmentsRepository implements AppointmentsRepository {
   }
 
   async getByManagerId(managerId: string): Promise<Appointments[]> {
-    return await this.repository.find({
-      where: { managerId },
-    });
+    return await this.repository
+      .aggregate([
+        {
+          $match: { managerId },
+        },
+        {
+          $lookup: {
+            from: 'ManagerServices',
+            localField: 'serviceId',
+            foreignField: '_id',
+            as: 'service',
+          },
+        },
+      ])
+      .toArray();
   }
 
   async getByScheduleId({

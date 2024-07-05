@@ -1,7 +1,8 @@
 import { Appointments } from '@/domain/entities/appointment.entity';
-import { Column, Entity } from 'typeorm';
+import { Column, Entity, JoinColumn, OneToOne } from 'typeorm';
 
 import BaseEntityMDB from './config/base.entity';
+import { ManagerServicesMDB } from './manager-service-db.entity';
 
 @Entity('Appointments')
 export class AppointmentsMDB extends BaseEntityMDB implements Appointments {
@@ -10,6 +11,10 @@ export class AppointmentsMDB extends BaseEntityMDB implements Appointments {
 
   @Column({ type: 'string' })
   phone: string;
+
+  @OneToOne(() => ManagerServicesMDB)
+  @JoinColumn()
+  service: ManagerServicesMDB;
 
   @Column({ type: 'string' })
   serviceId: string;
