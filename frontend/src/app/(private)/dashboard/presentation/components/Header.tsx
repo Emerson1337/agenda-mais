@@ -42,7 +42,7 @@ export default function Header() {
     {
       icon: <Calendar className="h-5 w-5" />,
       title: "Agendas",
-      url: "/schedule",
+      url: "/agenda",
     },
   ];
 

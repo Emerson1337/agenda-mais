@@ -9,4 +9,7 @@ export const apiUrls = {
   business: {
     get: (username: string): string => `/api/${username}`,
   },
+  availableTimes: {
+    get: (username: string): string => `/api/${username}/horarios`,
+  },
 };

@@ -22,7 +22,7 @@ export function Sidebar() {
     {
       icon: <Calendar className="h-5 w-5" />,
       title: "Agendas",
-      url: "/schedule",
+      url: "/agenda",
     },
   ];
 
