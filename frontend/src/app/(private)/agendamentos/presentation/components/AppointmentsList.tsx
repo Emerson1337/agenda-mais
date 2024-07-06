@@ -25,6 +25,7 @@ import { Button } from "@/components/ui/button";
 import { Modal } from "@/components/ui/modal";
 import { useState } from "react";
 import { AppointmentData } from "@/shared/types/appointment";
+import { WhatsappService } from "@/shared/services/whatsapp.service";
 
 export default function AppointmentsList() {
   const { data, isFetching } = useAppointment();
@@ -32,7 +33,8 @@ export default function AppointmentsList() {
   const [appointmentFocused, setAppointmentFocused] =
     useState<AppointmentData>();
 
-  if (isFetching) return <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />;
+  if (isFetching)
+    return <ReloadIcon className="mr-2 h-4 animate-spin w-full" />;
 
   return (
     <Card>
@@ -95,8 +97,20 @@ export default function AppointmentsList() {
       </CardContent>
       <Modal
         open={open}
-        confirm={() => setOpen(false)}
-        dismiss={() => setOpen(false)}
+        confirm={() => {
+          setOpen(false);
+        }}
+        dismiss={() => {
+          setOpen(false);
+          appointmentFocused &&
+            WhatsappService.warnCancelAppointment({
+              name: appointmentFocused?.clientName,
+              code: appointmentFocused?.code,
+              day: format(appointmentFocused?.date, "dd/MM/yyyy"),
+              time: appointmentFocused?.time,
+              phone: appointmentFocused.phone,
+            });
+        }}
         cancelStyle="bg-destructive"
         title={"Detalhes do agendamento"}
         cancelButton="Cancelar agendamento"
@@ -108,9 +122,14 @@ export default function AppointmentsList() {
               <span className="font-semibold">Cliente:</span>{" "}
               {appointmentFocused.clientName}
             </div>
-            <div className="mb-4 flex  items-center">
+            <div className="mb-4 flex items-center">
               <span className="font-semibold">Phone:</span>
-              <Button variant={"link"}>
+              <Button
+                variant={"link"}
+                onClick={() =>
+                  WhatsappService.openChatWith(appointmentFocused.phone)
+                }
+              >
                 <MobileIcon />
                 {stringUtils.addPhoneMask(appointmentFocused.phone)}
               </Button>

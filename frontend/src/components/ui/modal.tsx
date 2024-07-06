@@ -33,7 +33,7 @@ export function Modal({
     <AlertDialog open={open}>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>{title}</AlertDialogTitle>
+          <AlertDialogTitle className="text-center">{title}</AlertDialogTitle>
         </AlertDialogHeader>
         <>{children}</>
         <AlertDialogFooter>
