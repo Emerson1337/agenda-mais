@@ -45,6 +45,9 @@ export class TypeOrmAppointmentsRepository implements AppointmentsRepository {
             as: 'service',
           },
         },
+        {
+          $unwind: '$service',
+        },
       ])
       .toArray();
   }

@@ -1,3 +1,5 @@
+"use client";
+
 import { Badge } from "@/components/ui/badge";
 import {
   Card,
@@ -14,30 +16,16 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { useAppointment } from "@/private/agendamentos/application/hooks/useAppointment";
+import { ReloadIcon } from "@radix-ui/react-icons";
+import { format } from "date-fns";
+import { stringUtils } from "@/shared/utils/stringUtils";
+import { numberUtils } from "@/shared/utils/numberUtils";
 
 export default function AppointmentsList() {
-  const rows = [
-    {
-      customer: {
-        name: "Liam Johnson",
-        phone: "(85) 98616-0507",
-      },
-      type: "Sale",
-      status: "Fulfilled",
-      date: "2023-06-23",
-      amount: "$250.00",
-    },
-    {
-      customer: {
-        name: "Olivia Smith",
-        phone: "(85) 98616-0507",
-      },
-      type: "Refund",
-      status: "Declined",
-      date: "2023-06-24",
-      amount: "$150.00",
-    },
-  ];
+  const { data, isFetching } = useAppointment();
+
+  if (isFetching) return <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />;
 
   return (
     <Card>
@@ -52,36 +40,36 @@ export default function AppointmentsList() {
           <TableHeader>
             <TableRow>
               <TableHead>Cliente</TableHead>
-              <TableHead className="hidden sm:table-cell">Tipo</TableHead>
-              <TableHead className="hidden sm:table-cell">Status</TableHead>
+              <TableHead className="hidden sm:table-cell">Serviço</TableHead>
+              <TableHead className="hidden sm:table-cell">Código</TableHead>
               <TableHead className="hidden md:table-cell">Data</TableHead>
               <TableHead className="text-right">Valor</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
-            {rows.map((row, index) => (
+            {data?.map((row, index) => (
               <TableRow
                 key={index}
                 className={index % 2 === 0 ? "bg-accent" : ""}
               >
                 <TableCell>
-                  <div className="font-medium">{row.customer.name}</div>
+                  <div className="font-medium">{row.clientName}</div>
                   <div className="hidden text-sm text-muted-foreground md:inline">
-                    {row.customer.phone}
+                    {stringUtils.addPhoneMask(row.phone)}
                   </div>
                 </TableCell>
                 <TableCell className="hidden sm:table-cell">
-                  {row.type}
+                  {row.service.name}
                 </TableCell>
                 <TableCell className="hidden sm:table-cell">
-                  <Badge className="text-xs" variant="secondary">
-                    {row.status}
-                  </Badge>
+                  <Badge className="text-xs">{row.code}</Badge>
                 </TableCell>
                 <TableCell className="hidden md:table-cell">
-                  {row.date}
+                  {format(row.date, "dd/MM/yyyy")} às {row.time}
                 </TableCell>
-                <TableCell className="text-right">{row.amount}</TableCell>
+                <TableCell className="text-right">
+                  {numberUtils.convertToMonetaryBRL(row.service.price)}
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>
