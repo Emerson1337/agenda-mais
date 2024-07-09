@@ -11,7 +11,7 @@ export const useGetTimesAvailableQuery = ({
   return useQuery<TimesAvailable[]>({
     queryKey: ["timesAvailable", username],
     queryFn: () =>
-      API.get(apiUrls.availableTimes.get(username)).then(
+      API.get(apiUrls.public.availableTimes.get(username)).then(
         (response) => response.data.body
       ),
   });

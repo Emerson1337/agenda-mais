@@ -1,3 +1,5 @@
+"use client"
+
 import { useGetAppointmentQuery } from "@/private/agendamentos/infrastructure/appointment.api";
 
 export const useAppointment = () => {

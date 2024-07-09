@@ -205,12 +205,12 @@ export class AppointmentsService {
       price: service.price,
       date: appointment.date,
       time: appointment.time,
-      status: AppointmentStatus.CANCELED,
+      status: AppointmentStatus.CANCELLED,
     });
 
     return {
       appointment,
-      message: this.i18n.t('translations.APPOINTMENT.CANCELED', {
+      message: this.i18n.t('translations.APPOINTMENT.CANCELLED', {
         lang: I18nContext.current().lang,
       }),
     };

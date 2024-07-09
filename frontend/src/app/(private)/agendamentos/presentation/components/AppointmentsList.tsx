@@ -23,18 +23,52 @@ import { stringUtils } from "@/shared/utils/stringUtils";
 import { numberUtils } from "@/shared/utils/numberUtils";
 import { Button } from "@/components/ui/button";
 import { Modal } from "@/components/ui/modal";
-import { useState } from "react";
+import {  useState } from "react";
 import { AppointmentData } from "@/shared/types/appointment";
 import { WhatsappService } from "@/shared/services/whatsapp.service";
+import { useAppointmentMutation } from "@/private/agendamentos/application/hooks/useAppointmentMutation";
+import { toast } from "react-toastify";
+import { AxiosError } from "axios";
+import { useBusinessContext } from "@/app/(private)/utils/context/BusinessDataContext";
+
+const ONE_SECOND = 1000;
 
 export default function AppointmentsList() {
   const { data, isFetching } = useAppointment();
+  const { mutateAsync } = useAppointmentMutation();
   const [open, setOpen] = useState<boolean>(false);
   const [appointmentFocused, setAppointmentFocused] =
     useState<AppointmentData>();
+  const { id: managerId } = useBusinessContext();
 
   if (isFetching)
     return <ReloadIcon className="mr-2 h-4 animate-spin w-full" />;
+
+  const handleCancelAppointment = async (appointment: AppointmentData) => {
+    try {
+      const response = await mutateAsync({
+        managerId: managerId,
+        appointmentId: appointment._id 
+      });
+      
+      toast.success(response.data.body.message);
+      setOpen(false);
+
+      setTimeout(() => {
+        WhatsappService.warnCancelAppointment({
+          name: appointment?.clientName,
+          code: appointment?.code,
+          day: format(appointment?.date, "dd/MM/yyyy"),
+          time: appointment?.time,
+          phone: appointment.phone,
+        });
+      }, ONE_SECOND);
+    } catch (error: AxiosError | any) {
+      toast.error(
+        error?.response?.data?.message || "Erro ao cancelar agendamento"
+      );
+    }
+  };
 
   return (
     <Card>
@@ -100,17 +134,9 @@ export default function AppointmentsList() {
         confirm={() => {
           setOpen(false);
         }}
-        dismiss={() => {
-          setOpen(false);
-          appointmentFocused &&
-            WhatsappService.warnCancelAppointment({
-              name: appointmentFocused?.clientName,
-              code: appointmentFocused?.code,
-              day: format(appointmentFocused?.date, "dd/MM/yyyy"),
-              time: appointmentFocused?.time,
-              phone: appointmentFocused.phone,
-            });
-        }}
+        dismiss={() =>
+          appointmentFocused && handleCancelAppointment(appointmentFocused)
+        }
         cancelStyle="bg-destructive"
         title={"Detalhes do agendamento"}
         cancelButton="Cancelar agendamento"

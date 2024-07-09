@@ -7,7 +7,7 @@ import { ScheduleData } from "@/private/agenda/domain/schedule.schema";
 export const usePostScheduleQuery = () =>
   useMutation({
     mutationFn: (data: IScheduleRequest) => {
-      return API.post(apiUrls.schedule.create(), data);
+      return API.post(apiUrls.internal.schedule.create(), data);
     },
   });
 
@@ -15,6 +15,6 @@ export const useGetScheduleQuery = () => {
   return useQuery<ScheduleData>({
     queryKey: ["schedule"],
     queryFn: () =>
-      API.get(apiUrls.schedule.get()).then((response) => response.data.body),
+      API.get(apiUrls.internal.schedule.get()).then((response) => response.data.body),
   });
 };
