@@ -52,4 +52,23 @@ export class SchedulesService {
       }),
     };
   }
+
+  async cancelAppointment({
+    appointmentId,
+    userId,
+  }: {
+    appointmentId: string;
+    userId: string;
+  }): Promise<IDelete | Error> {
+    await this.appointmentsRepository.deleteById({
+      id: appointmentId,
+      managerId: userId,
+    });
+
+    return {
+      message: this.i18n.t('translations.APPOINTMENT.CANCELLED', {
+        lang: I18nContext.current().lang,
+      }),
+    };
+  }
 }

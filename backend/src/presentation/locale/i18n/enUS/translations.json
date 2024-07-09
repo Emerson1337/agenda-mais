@@ -34,7 +34,7 @@
   },
   "APPOINTMENT": {
     "CREATED": "Appointment scheduled successfully!",
-    "CANCELED": "Appointment canceled successfully!"
+    "CANCELLED": "Appointment CANCELLED successfully!"
   },
   "SCHEDULES": {
     "DELETED": "Schedule deleted successfully!"

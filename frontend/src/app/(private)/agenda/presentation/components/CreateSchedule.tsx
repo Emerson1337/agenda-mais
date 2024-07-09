@@ -63,11 +63,7 @@ export default function CreateSchedule() {
   const title = data ? "Atualizar agenda" : "Criar agenda";
 
   return (
-    <CustomForm
-      form={form}
-      onSubmit={onSubmit}
-      className="space-y-8 max-w-screen-md"
-    >
+    <CustomForm form={form} onSubmit={onSubmit}>
       <Card>
         <CardHeader>
           <CardTitle>{title}</CardTitle>

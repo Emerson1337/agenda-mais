@@ -6,6 +6,7 @@ import { MongoRepository } from 'typeorm';
 
 import { AppointmentsMDB } from '../entities/appointments-db.entity';
 import { TypeormService } from '../typeorm.service';
+import { ObjectId } from 'mongodb';
 
 @Injectable()
 export class TypeOrmAppointmentsRepository implements AppointmentsRepository {
@@ -13,6 +14,18 @@ export class TypeOrmAppointmentsRepository implements AppointmentsRepository {
 
   constructor(private typeormService: TypeormService) {
     this.repository = typeormService.getMongoRepository(AppointmentsMDB);
+  }
+  async deleteById({
+    id,
+    managerId,
+  }: {
+    id: string;
+    managerId: string;
+  }): Promise<Appointments | null> {
+    return (await this.repository.findOneAndDelete({
+      _id: new ObjectId(id),
+      managerId: new ObjectId(managerId),
+    })) as Appointments;
   }
 
   async findByTimeAndDateAndManagerId({
@@ -32,9 +45,24 @@ export class TypeOrmAppointmentsRepository implements AppointmentsRepository {
   }
 
   async getByManagerId(managerId: string): Promise<Appointments[]> {
-    return await this.repository.find({
-      where: { managerId },
-    });
+    return await this.repository
+      .aggregate([
+        {
+          $match: { managerId },
+        },
+        {
+          $lookup: {
+            from: 'ManagerServices',
+            localField: 'serviceId',
+            foreignField: '_id',
+            as: 'service',
+          },
+        },
+        {
+          $unwind: '$service',
+        },
+      ])
+      .toArray();
   }
 
   async getByScheduleId({

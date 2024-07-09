@@ -1,31 +1,8 @@
-"use client";
-
-import { Home, Package2, Settings, Calendar } from "lucide-react";
+import { Package2 } from "lucide-react";
 import Link from "next/link";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
-import { ThemeToggle } from "@/components/ui/theme-toggle";
-import { useActivePath } from "@/lib/hooks";
+import { MenuItems, SettingsItem } from "./menu-items";
 
 export function Sidebar() {
-  const checkActivePath = useActivePath();
-
-  const menus = [
-    {
-      icon: <Home className="h-5 w-5" />,
-      title: "Dashboard",
-      url: "/dashboard",
-    },
-    {
-      icon: <Calendar className="h-5 w-5" />,
-      title: "Agendas",
-      url: "/agenda",
-    },
-  ];
-
   return (
     <aside className="fixed inset-y-0 left-0 z-10 hidden w-14 flex-col border-r bg-background sm:flex">
       <nav className="flex flex-col items-center gap-4 px-2 sm:py-4">
@@ -36,41 +13,10 @@ export function Sidebar() {
           <Package2 className="h-4 w-4 transition-all group-hover:scale-110" />
           <span className="sr-only">Acme Inc</span>
         </Link>
-        {menus.map((menu, key) => (
-          <Tooltip key={key}>
-            <TooltipTrigger asChild>
-              <Link
-                href={menu.url}
-                className={`flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8 ${
-                  checkActivePath(menu.url) &&
-                  "bg-accent text-accent-foreground"
-                }`}
-              >
-                {menu.icon}
-                <span className="sr-only">{menu.title}</span>
-              </Link>
-            </TooltipTrigger>
-            <TooltipContent side="right">{menu.title}</TooltipContent>
-          </Tooltip>
-        ))}
+        <MenuItems tooltip />
       </nav>
       <nav className="mt-auto flex flex-col items-center gap-4 px-2 sm:py-4">
-        <Tooltip>
-          <ThemeToggle />
-          <TooltipTrigger asChild>
-            <Link
-              href="/settings"
-              className={`flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8 ${
-                checkActivePath("/settings") &&
-                "bg-accent text-accent-foreground"
-              }`}
-            >
-              <Settings className="h-5 w-5" />
-              <span className="sr-only">Settings</span>
-            </Link>
-          </TooltipTrigger>
-          <TooltipContent side="right">Settings</TooltipContent>
-        </Tooltip>
+        <SettingsItem tooltip />
       </nav>
     </aside>
   );

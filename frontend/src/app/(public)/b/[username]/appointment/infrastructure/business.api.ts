@@ -7,7 +7,7 @@ export const useGetBusinessQuery = ({ username }: { username: string }) => {
   return useQuery<BusinessType>({
     queryKey: ["business", username],
     queryFn: () =>
-      API.get(apiUrls.business.get(username)).then(
+      API.get(apiUrls.public.business.get(username)).then(
         (response) => response.data.body
       ),
   });

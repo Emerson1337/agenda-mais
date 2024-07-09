@@ -5,6 +5,7 @@ import { DeleteScheduleDto } from '@/application/schedules/dtos/delete-schedule.
 import { SchedulesService } from '@/application/schedules/schedules.service';
 import { AuthRequired } from '@/application/shared/decorators/auth-required.decorator';
 import { Response } from 'express';
+import { DeleteAppointmentDto } from '@/application/schedules/dtos/delete-appointment.dto';
 
 @Controller('dashboard/agendas')
 export class SchedulesController {
@@ -61,6 +62,29 @@ export class SchedulesController {
         ok(
           await this.schedulesService.delete({
             schedulesIds: payload.schedulesIds,
+            userId,
+          }),
+        ),
+      );
+    } catch (error) {
+      return response.status(error.status).send(handleError(error));
+    }
+  }
+
+  @Delete('/cancelar-agendamento')
+  @AuthRequired()
+  async deleteAppointment(
+    @Req() request: Request,
+    @Body() payload: DeleteAppointmentDto,
+    @Res() response: Response,
+  ) {
+    try {
+      const userId = request['user'].id;
+
+      return response.status(201).send(
+        ok(
+          await this.schedulesService.cancelAppointment({
+            appointmentId: payload.appointmentId,
             userId,
           }),
         ),

@@ -29,22 +29,10 @@ import {
 } from "@/components/ui/dropdown-menu";
 import Image from "next/image";
 import { useActivePath } from "@/lib/hooks";
+import { MenuItems } from "@/components/ui/menu-items";
 
 export default function Header() {
   const checkActivePath = useActivePath();
-
-  const menus = [
-    {
-      icon: <Home className="h-5 w-5" />,
-      title: "Dashboard",
-      url: "/dashboard",
-    },
-    {
-      icon: <Calendar className="h-5 w-5" />,
-      title: "Agendas",
-      url: "/agenda",
-    },
-  ];
 
   return (
     <header className="sticky top-0 z-30 flex h-14 items-center gap-4 border-b bg-background px-4 sm:static sm:h-auto sm:border-0 sm:bg-transparent sm:px-6">
@@ -64,19 +52,7 @@ export default function Header() {
               <Package2 className="h-5 w-5 transition-all group-hover:scale-110" />
               <span className="sr-only">Acme Inc</span>
             </Link>
-            {menus.map((menu, key) => (
-              <Link
-                key={key}
-                href={menu.url}
-                className={`flex items-center gap-4 p-2.5 rounded-lg text-muted-foreground hover:text-foreground ${
-                  checkActivePath(menu.url) &&
-                  "bg-accent text-accent-foreground"
-                }`}
-              >
-                {menu.icon}
-                {menu.title}
-              </Link>
-            ))}
+            <MenuItems />
             <Link
               href="/settings"
               className={`flex items-center gap-4 p-2.5 text-muted-foreground hover:text-foreground ${
