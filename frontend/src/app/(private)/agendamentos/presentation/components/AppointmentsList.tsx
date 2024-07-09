@@ -84,8 +84,8 @@ export default function AppointmentsList() {
             <TableRow>
               <TableHead>Cliente</TableHead>
               <TableHead className="hidden sm:table-cell">Serviço</TableHead>
-              <TableHead className="hidden sm:table-cell">Código</TableHead>
-              <TableHead className="hidden md:table-cell">Data</TableHead>
+              <TableHead className="hidden md:table-cell">Código</TableHead>
+              <TableHead className="text-center">Data</TableHead>
               <TableHead className="text-right">Valor</TableHead>
               <TableHead className="text-right">Ações</TableHead>
             </TableRow>
@@ -105,10 +105,10 @@ export default function AppointmentsList() {
                 <TableCell className="hidden sm:table-cell">
                   {row.service.name}
                 </TableCell>
-                <TableCell className="hidden sm:table-cell">
+                <TableCell className="hidden md:table-cell">
                   <Badge className="text-xs">{row.code}</Badge>
                 </TableCell>
-                <TableCell className="hidden md:table-cell">
+                <TableCell className="text-center">
                   {format(row.date, "dd/MM/yyyy")} às {row.time}
                 </TableCell>
                 <TableCell className="text-right">
