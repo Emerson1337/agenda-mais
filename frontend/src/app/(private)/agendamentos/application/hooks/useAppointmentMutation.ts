@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { useDeleteAppointmentQuery } from "@/private/agendamentos/infrastructure/appointment.api";
 
