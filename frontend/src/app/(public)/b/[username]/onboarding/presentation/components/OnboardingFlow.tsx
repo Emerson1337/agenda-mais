@@ -5,16 +5,11 @@ import StepOne from "./StepOne";
 import StepTwo from "./StepTwo";
 import StepThree from "./StepThree";
 import { useState } from "react";
-import { useParams, useRouter } from "next/navigation";
+import { useForm } from "react-hook-form";
+import { CustomForm } from "@/components/ui/form";
 
-interface Props {
-  onFinish: () => void;
-}
-
-const OnboardingFlow = ({ onFinish }: Props): JSX.Element => {
+const OnboardingFlow = (): JSX.Element => {
   const [step, setStep] = useState(1);
-  const router = useRouter();
-
   const nextStep = () => setStep((step) => Math.min(step + 1, 3));
   const previousStep = () => setStep((step) => Math.min(step - 1, 3));
 
@@ -25,7 +20,7 @@ const OnboardingFlow = ({ onFinish }: Props): JSX.Element => {
       case 2:
         return <StepTwo onNext={nextStep} onBack={previousStep} />;
       case 3:
-        return <StepThree onNext={onFinish} onBack={previousStep} />;
+        return <StepThree onBack={previousStep} />;
       default:
         return null;
     }
@@ -33,10 +28,22 @@ const OnboardingFlow = ({ onFinish }: Props): JSX.Element => {
 
   const progress = ((step - 1) / 3) * 100;
 
+  const form = useForm({
+    defaultValues: {
+      name: localStorage.getItem("name") || undefined,
+      phone: localStorage.getItem("phone") || undefined,
+    },
+  });
+  const onSubmit = (data: { phone: string; name: string }) => {
+    localStorage.setItem("onboarding", "1");
+    localStorage.setItem("phone", data.phone);
+    localStorage.setItem("name", data.name);
+  };
+
   return (
-    <>
+    <CustomForm form={form} onSubmit={onSubmit} className="space-y-8">
       <AnimatePresence>{renderStep()}</AnimatePresence>
-      <div className="absolute bottom-4 flex justify-center w-full">
+      <div className="flex justify-center">
         <div className="h-2 w-64 bg-secondary relative rounded">
           <div
             className="h-full bg-primary rounded transition-all"
@@ -44,7 +51,7 @@ const OnboardingFlow = ({ onFinish }: Props): JSX.Element => {
           />
         </div>
       </div>
-    </>
+    </CustomForm>
   );
 };
 

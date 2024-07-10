@@ -3,7 +3,7 @@
 import React, { createContext, FC, ReactNode, useContext } from "react";
 import { BusinessType } from "@/shared/types/business";
 import { useParams, useRouter } from "next/navigation";
-import { useGetBusiness } from "../../appointment/application/hooks/useGetBusiness";
+import { useGetBusiness } from "../../agendar/application/hooks/useGetBusiness";
 
 // Create a default value for the context
 const defaultValue: BusinessType = {

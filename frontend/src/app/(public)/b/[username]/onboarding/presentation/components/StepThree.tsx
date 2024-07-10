@@ -5,18 +5,17 @@ import { Button } from "@/components/ui/button";
 import { useFormContext } from "react-hook-form";
 
 interface StepThreeProps {
-  onNext: () => void;
   onBack: () => void;
 }
 
-const StepThree = ({ onNext, onBack }: StepThreeProps): JSX.Element => {
-  const { watch } = useFormContext();
+const StepThree = ({ onBack }: StepThreeProps): JSX.Element => {
+  const { watch, setValue } = useFormContext();
   const name = watch("name");
 
   return (
     <CustomMotion className="max-w-lg">
       <div className="px-8 w-full">
-        <FillName />
+        <FillName value={name} onChange={(value) => setValue("name", value)} />
         <div className="flex justify-between mt-12">
           <Button
             className="hover:bg-secondary hover:text-secondary-foreground text-primary-foreground bg-secondary-foreground h-12"
@@ -26,7 +25,7 @@ const StepThree = ({ onNext, onBack }: StepThreeProps): JSX.Element => {
           </Button>
           <Button
             disabled={name?.length <= 3}
-            onClick={onNext}
+            type="submit"
             className="gap-3 h-12"
           >
             Agendar horário

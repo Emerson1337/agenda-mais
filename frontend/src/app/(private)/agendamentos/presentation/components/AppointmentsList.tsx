@@ -90,6 +90,16 @@ export default function AppointmentsList() {
             </TableRow>
           </TableHeader>
           <TableBody>
+            {data?.length === 0 && (
+              <TableRow>
+                <TableCell
+                  colSpan={6}
+                  className="text-center text-sm text-muted-foreground"
+                >
+                  Nenhum agendamento encontrado.
+                </TableCell>
+              </TableRow>
+            )}
             {data?.map((row, index) => (
               <TableRow
                 key={index}

@@ -1,9 +1,11 @@
 import { Input } from "@/components/ui/input";
-import { useFormContext } from "react-hook-form";
 
-const FillName = (): JSX.Element => {
-  const { setValue } = useFormContext();
+interface Props {
+  onChange?: (value: string) => void;
+  value?: string;
+}
 
+const FillName = ({ onChange, value }: Props): JSX.Element => {
   return (
     <div>
       <div className="text-2xl text-center font-medium text-white dark:text-white mb-8">
@@ -11,9 +13,10 @@ const FillName = (): JSX.Element => {
         <div className="font-thin">Como podemos te chamar? 😁</div>
       </div>
       <Input
-        onChange={(value) => {
-          setValue("name", value);
+        onChange={(event) => {
+          onChange?.(event.target.value);
         }}
+        value={value}
         autoFocus
         className="text-xl text-center"
       />

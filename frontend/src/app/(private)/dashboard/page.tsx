@@ -4,7 +4,6 @@ import TotalRevenue from "./presentation/components/TotalRevenue";
 import TotalAppointments from "./presentation/components/TotalAppointments";
 import TotalAppointmentsScheduled from "./presentation/components/TotalAppointmentsScheduled";
 import TotalAppointmentsFinished from "./presentation/components/TotalAppointmentsFinished";
-import AppointmentsList from "./presentation/components/AppointmentsList";
 import TopClients from "./presentation/components/TopClients";
 
 export default function Dashboard() {
@@ -32,7 +31,6 @@ export default function Dashboard() {
           <TotalAppointmentsScheduled />
           <TotalAppointmentsFinished />
         </div>
-        <AppointmentsList />
       </div>
       <div>
         <TopClients />

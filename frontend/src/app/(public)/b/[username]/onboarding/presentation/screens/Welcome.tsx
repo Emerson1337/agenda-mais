@@ -3,11 +3,7 @@ import { SparklesCore } from "../components/SparklesCore";
 import OnboardingFlow from "../components/OnboardingFlow";
 import "@/app/globals.css";
 
-interface Props {
-  onFinish: () => void;
-}
-
-const Welcome = ({ onFinish }: Props): JSX.Element => {
+const Welcome = (): JSX.Element => {
   return (
     <div className="w-full h-screen flex flex-col items-center justify-center overflow-hidden relative">
       <div className="w-full h-40 absolute top-0">
@@ -22,7 +18,7 @@ const Welcome = ({ onFinish }: Props): JSX.Element => {
         />
         <div className="absolute inset-0 w-full h-full bg-background [mask-image:radial-gradient(350px_200px_at_top,transparent_30%,white)]" />
       </div>
-      <OnboardingFlow onFinish={onFinish} />
+      <OnboardingFlow />
     </div>
   );
 };
