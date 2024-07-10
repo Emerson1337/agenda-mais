@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "@/app/globals.css";
 import { Provider } from "@/shared/utils/Providers";
 import { ThemeProvider } from "@/components/ui/theme-provider";
+import { BusinessProvider } from "./utils/context/BusinessDataContext";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -20,13 +21,15 @@ export default function RootLayout({ children }: Readonly<RootLayoutProps>) {
     <html suppressHydrationWarning lang="en">
       <body className={inter.className}>
         <Provider>
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="dark"
-            disableTransitionOnChange
-          >
-            {children}
-          </ThemeProvider>
+          <BusinessProvider>
+            <ThemeProvider
+              attribute="class"
+              defaultTheme="dark"
+              disableTransitionOnChange
+            >
+              {children}
+            </ThemeProvider>
+          </BusinessProvider>
         </Provider>
       </body>
     </html>

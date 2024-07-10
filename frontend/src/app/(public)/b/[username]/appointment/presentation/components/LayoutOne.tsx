@@ -5,7 +5,7 @@ import { SocialNetwork } from "./SocialNetwork";
 import Image from "next/image";
 import { Calendar } from "@/components/ui/calendar";
 import { useGetTimesAvailable } from "../../application/hooks/useGetTimesAvailable";
-import { useBusinessContext } from "../../application/context/BusinessDataContext";
+import { useBusinessContext } from "../../../utils/context/BusinessDataContext";
 import {
   AlertDialog,
   AlertDialogAction,

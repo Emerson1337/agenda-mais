@@ -1,11 +1,9 @@
-import React, {
-  createContext,
-  FC,
-  ReactNode,
-  useContext,
-  useState,
-} from "react";
+"use client";
+
+import React, { createContext, FC, ReactNode, useContext } from "react";
 import { BusinessType } from "@/shared/types/business";
+import { useParams, useRouter } from "next/navigation";
+import { useGetBusiness } from "../../appointment/application/hooks/useGetBusiness";
 
 // Create a default value for the context
 const defaultValue: BusinessType = {
@@ -29,13 +27,16 @@ export const useBusinessContext = () => useContext(BusinessContext);
 
 // Provider component to wrap your app and provide the context value
 export const BusinessProvider: FC<{
-  initialData: BusinessType;
   children: ReactNode;
-}> = ({ initialData, children }) => {
-  const [businessData] = useState<BusinessType>(initialData);
+}> = ({ children }): ReactNode => {
+  const { username }: { username: string } = useParams();
+  const { data, isError } = useGetBusiness({ username });
+  const router = useRouter();
+
+  if (isError) router.replace("/not-found");
 
   return (
-    <BusinessContext.Provider value={businessData}>
+    <BusinessContext.Provider value={data ?? defaultValue}>
       {children}
     </BusinessContext.Provider>
   );
