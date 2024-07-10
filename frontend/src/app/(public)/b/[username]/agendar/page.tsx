@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import CustomMotion from "@/components/ui/custom-motion";
 import { ptBR } from "date-fns/locale";
 import { setDefaultOptions } from "date-fns";
@@ -10,7 +9,9 @@ setDefaultOptions({ locale: ptBR });
 export default function Page() {
   return (
     <CustomMotion>
-      <Appointment />
+      <div className="w-full h-screen flex flex-col items-center justify-center overflow-hidden relative">
+        <Appointment />
+      </div>
     </CustomMotion>
   );
 }

@@ -27,6 +27,9 @@
       ],
       "@/private/*": [
         "./src/app/(private)/*"
+      ],
+      "@/public/*": [
+        "./src/app/(public)/*"
       ]
     }
   },
@@ -36,8 +39,11 @@
     "**/*.tsx",
     ".next/types/**/*.ts",
     ".next/types/app/dashboard/page.tsx",
-    "src/app/dashboard/application/fetchAppointmentts"
-, "postcss.config.js", "postcss.config.js", "next.config.js"  ],
+    "src/app/dashboard/application/fetchAppointmentts",
+    "postcss.config.js",
+    "postcss.config.js",
+    "next.config.js"
+  ],
   "exclude": [
     "node_modules"
   ]
