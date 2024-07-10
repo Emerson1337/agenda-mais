@@ -23,7 +23,7 @@ import { stringUtils } from "@/shared/utils/stringUtils";
 import { numberUtils } from "@/shared/utils/numberUtils";
 import { Button } from "@/components/ui/button";
 import { Modal } from "@/components/ui/modal";
-import {  useState } from "react";
+import { useState } from "react";
 import { AppointmentData } from "@/shared/types/appointment";
 import { WhatsappService } from "@/shared/services/whatsapp.service";
 import { useAppointmentMutation } from "@/private/agendamentos/application/hooks/useAppointmentMutation";
@@ -48,12 +48,11 @@ export default function AppointmentsList() {
     try {
       const response = await mutateAsync({
         managerId: managerId,
-        appointmentId: appointment._id 
+        appointmentId: appointment._id,
       });
-      
+
       toast.success(response.data.body.message);
       setOpen(false);
-
       setTimeout(() => {
         WhatsappService.warnCancelAppointment({
           name: appointment?.clientName,
