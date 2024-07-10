@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { SocialNetwork } from "./SocialNetwork";
 import Image from "next/image";
 import { Calendar } from "@/components/ui/calendar";
-import { useAvailableTimesFacade } from "../../application/times-available.facade";
+import { useGetTimesAvailable } from "../../application/hooks/useGetTimesAvailable";
 import { useBusinessContext } from "../../application/context/BusinessDataContext";
 import {
   AlertDialog,
@@ -27,7 +27,7 @@ const LayoutOne = (): JSX.Element => {
   const { business } = useBusinessContext();
   const [open, setOpen] = useState<boolean>(false);
 
-  const { datesAvailable, data } = useAvailableTimesFacade({
+  const { datesAvailable, data } = useGetTimesAvailable({
     username: business.username,
   });
 

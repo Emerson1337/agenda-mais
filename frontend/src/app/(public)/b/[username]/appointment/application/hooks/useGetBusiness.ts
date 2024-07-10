@@ -1,6 +1,6 @@
-import { useGetBusinessQuery } from "../infrastructure/business.api";
+import { useGetBusinessQuery } from "../../infrastructure/business.api";
 
-export const useBusinessFacade = ({ username }: { username: string }) => {
+export const useGetBusiness = ({ username }: { username: string }) => {
   const { isPending, error, isError, data, isFetching } = useGetBusinessQuery({
     username,
   });

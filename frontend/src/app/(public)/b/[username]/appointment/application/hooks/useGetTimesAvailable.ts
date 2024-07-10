@@ -1,7 +1,7 @@
 import { parseISO } from "date-fns";
-import { useGetTimesAvailableQuery } from "../infrastructure/times-available.api";
+import { useGetTimesAvailableQuery } from "../../infrastructure/times-available.api";
 
-export const useAvailableTimesFacade = ({ username }: { username: string }) => {
+export const useGetTimesAvailable = ({ username }: { username: string }) => {
   const { isPending, error, isError, data, isFetching } =
     useGetTimesAvailableQuery({
       username,

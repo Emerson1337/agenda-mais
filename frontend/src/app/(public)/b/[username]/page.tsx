@@ -2,7 +2,7 @@
 
 import { useParams, useRouter } from "next/navigation";
 import { BusinessProvider } from "./appointment/application/context/BusinessDataContext";
-import { useBusinessFacade } from "./appointment/application/business.facade";
+import { useGetBusiness } from "./appointment/application/hooks/useGetBusiness";
 import Welcome from "./onboarding/presentation/screens/Welcome";
 import { useState } from "react";
 import Appointment from "./appointment/presentation/screens/Appointment";
@@ -15,7 +15,7 @@ setDefaultOptions({ locale: ptBR });
 
 export default function Page() {
   const { username }: { username: string } = useParams();
-  const { data, isPending, isError } = useBusinessFacade({ username });
+  const { data, isPending, isError } = useGetBusiness({ username });
   const router = useRouter();
   const form = useForm({
     defaultValues: data,
