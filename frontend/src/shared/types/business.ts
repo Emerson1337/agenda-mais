@@ -21,7 +21,7 @@ export interface Business {
 }
 
 // Define the type for the context value
-export interface BusinessType {
+export interface BusinessFullContext {
   services: Service[];
   business: Business;
   layout: string;

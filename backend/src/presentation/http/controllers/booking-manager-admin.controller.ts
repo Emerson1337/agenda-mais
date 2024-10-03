@@ -35,7 +35,7 @@ export class BookingManagerAdminController {
     @Res() response: Response,
   ) {
     try {
-      return response.status(201).send(
+      return response.status(200).send(
         ok(
           await this.bookingManagersService.updateManagerAsAdmin({
             managerId,

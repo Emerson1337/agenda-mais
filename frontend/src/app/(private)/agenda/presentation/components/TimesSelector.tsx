@@ -5,6 +5,7 @@ import { stringUtils } from "@/shared/utils/stringUtils";
 import { useCallback, useEffect, useState } from "react";
 import { TimesExceptionSelector } from "./TimesExceptionSelector";
 import { ScheduleData } from "@/private/agenda/domain/schedule.schema";
+import React from "react";
 
 interface Props {
   defaultValue: string[];

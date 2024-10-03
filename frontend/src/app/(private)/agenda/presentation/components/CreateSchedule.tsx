@@ -25,6 +25,7 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 import { MonthsAheadSelector } from "./MonthsAheadSelector";
 import { useGetScheduleQuery } from "@/private/agenda/infrastructure/schedule.api";
+import React from "react";
 
 export default function CreateSchedule() {
   const { mutate, isPending, isSuccess, error } = useScheduleMutation();

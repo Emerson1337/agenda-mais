@@ -32,7 +32,7 @@ export class ManagerServicesController {
       const userId = request['user'].id;
 
       return response
-        .status(201)
+        .status(200)
         .send(
           ok(await this.managerServicesService.create(managerService, userId)),
         );
@@ -52,7 +52,7 @@ export class ManagerServicesController {
       const userId = request['user'].id;
 
       return response
-        .status(201)
+        .status(200)
         .send(
           ok(await this.managerServicesService.get(managerServiceId, userId)),
         );
@@ -68,7 +68,7 @@ export class ManagerServicesController {
       const userId = request['user'].id;
 
       return response
-        .status(201)
+        .status(200)
         .send(ok(await this.managerServicesService.list(userId)));
     } catch (error) {
       return response.status(error.status).send(handleError(error));
@@ -86,7 +86,7 @@ export class ManagerServicesController {
     try {
       const userId = request['user'].id;
 
-      return response.status(201).send(
+      return response.status(200).send(
         ok(
           await this.managerServicesService.update(managerService, {
             managerServiceId,
@@ -112,7 +112,7 @@ export class ManagerServicesController {
       const userId = request['user'].id;
 
       return response
-        .status(201)
+        .status(200)
         .send(
           ok(
             await this.managerServicesService.delete(managerServiceId, userId),

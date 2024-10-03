@@ -13,7 +13,7 @@ export class AuthController {
   @Post('login')
   async login(@Body() body: LoginDto, @Res() response: Response) {
     try {
-      return response.status(201).send(
+      return response.status(200).send(
         ok(
           await this.authService.login(
             await this.authService.validate({
@@ -32,7 +32,7 @@ export class AuthController {
   async forgotPassword(@Body() body: ForgotDto, @Res() response: Response) {
     try {
       return response
-        .status(201)
+        .status(200)
         .send(ok(await this.authService.forgotPassword(body.email)));
     } catch (error) {
       return response.status(error.status).send(handleError(error));
@@ -46,7 +46,7 @@ export class AuthController {
     @Res() response: Response,
   ) {
     try {
-      return response.status(201).send(
+      return response.status(200).send(
         ok(
           await this.authService.resetPassword({
             password: body.password,
@@ -66,7 +66,7 @@ export class AuthController {
   ) {
     try {
       return response
-        .status(201)
+        .status(200)
         .send(ok(await this.authService.loginWithRefreshToken(refreshToken)));
     } catch (error) {
       return response.status(error.status).send(handleError(error));

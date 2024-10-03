@@ -1,22 +1,12 @@
 import LayoutOne from "../components/LayoutOne";
-import { useEffect } from "react";
-import { useRouter } from "next/navigation";
-import { useBusinessContext } from "@/public/b/[username]/utils/context/BusinessDataContext";
-import { ReloadIcon } from "@radix-ui/react-icons";
+import { TimesAvailable } from "@/shared/types/times-available";
 
-const Appointment = (): JSX.Element => {
-  const { business } = useBusinessContext();
-  const router = useRouter();
-  const isOnboarded = localStorage.getItem("onboarding");
+interface Props {
+  timesAvailable: TimesAvailable[];
+}
 
-  useEffect(() => {
-    if (!isOnboarded && business.username)
-      router.replace(`/b/${business.username}`);
-  }, [business, isOnboarded, router]);
-
-  if (!isOnboarded) return <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />;
-
-  return <LayoutOne />;
+const Appointment = ({ timesAvailable }: Props): JSX.Element => {
+  return <LayoutOne datesAvailable={timesAvailable} />;
 };
 
 export default Appointment;

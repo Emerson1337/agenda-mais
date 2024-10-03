@@ -1,14 +1,10 @@
-import { apiUrls } from "@/lib/apiUrls";
 import { useQuery } from "@tanstack/react-query";
-import { API } from "@/shared/services/config/config";
-import { BusinessType } from "@/shared/types/business";
+import { BusinessFullContext } from "@/shared/types/business";
+import { fetchBusinessData } from "@/server-actions/fetchBusinessData";
 
 export const useGetBusinessQuery = ({ username }: { username: string }) => {
-  return useQuery<BusinessType>({
+  return useQuery<BusinessFullContext>({
     queryKey: ["business", username],
-    queryFn: () =>
-      API.get(apiUrls.public.business.get(username)).then(
-        (response) => response.data.body
-      ),
+    queryFn: async () => await fetchBusinessData(username), //TODO: check how to handle errors using react query
   });
 };

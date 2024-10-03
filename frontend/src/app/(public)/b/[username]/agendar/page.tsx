@@ -1,16 +1,20 @@
-"use client";
-
 import CustomMotion from "@/components/ui/custom-motion";
 import { ptBR } from "date-fns/locale";
 import { setDefaultOptions } from "date-fns";
 import Appointment from "./presentation/screens/Appointment";
+import { fetchAvailableTimes } from "@/server-actions/fetchAvailableTimes";
 setDefaultOptions({ locale: ptBR });
 
-export default function Page() {
+interface Props {
+  params: { username: string };
+}
+
+export default async function Page({ params }: Props) {
+  const timesAvailable = await fetchAvailableTimes(params.username);
   return (
     <CustomMotion>
       <div className="w-full h-screen flex flex-col items-center justify-center overflow-hidden relative">
-        <Appointment />
+        <Appointment timesAvailable={timesAvailable} />
       </div>
     </CustomMotion>
   );

@@ -7,17 +7,41 @@ import StepThree from "./StepThree";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { CustomForm } from "@/components/ui/form";
-import { useRouter } from "next/navigation";
+import { notFound, useRouter } from "next/navigation";
 import { useBusinessContext } from "@/public/b/[username]/utils/context/BusinessDataContext";
 import { ReloadIcon } from "@radix-ui/react-icons";
 
-const OnboardingFlow = (): JSX.Element => {
+const OnboardingFlow = () => {
   const [step, setStep] = useState(1);
-  const nextStep = () => setStep((step) => Math.min(step + 1, 3));
-  const previousStep = () => setStep((step) => Math.min(step - 1, 3));
+  const [loading, setLoading] = useState(true);
+
   const { business } = useBusinessContext();
   const router = useRouter();
-  const isOnboarded = localStorage.getItem("onboarding");
+  const form = useForm({
+    defaultValues: {
+      name: "", // Empty initial values until local storage is loaded
+      phone: "",
+    },
+  });
+
+  // Check if localStorage values exist and update form state accordingly
+  useEffect(() => {
+    if (!business) notFound();
+
+    if (typeof window === "undefined") return;
+
+    const isOnboarded = localStorage.getItem("onboarding");
+    if (isOnboarded) {
+      return router.replace(`/b/${business.username}/agendar`);
+    }
+
+    form.setValue("name", localStorage.getItem("name") || "");
+    form.setValue("phone", localStorage.getItem("phone") || "");
+    setLoading(false);
+  }, [business, form, router]);
+
+  const nextStep = () => setStep((step) => Math.min(step + 1, 3));
+  const previousStep = () => setStep((step) => Math.max(step - 1, 1)); // Fixed range for decrementing
 
   const renderStep = () => {
     switch (step) {
@@ -32,28 +56,18 @@ const OnboardingFlow = (): JSX.Element => {
     }
   };
 
-  useEffect(() => {
-    if (isOnboarded && business.username)
-      router.replace(`/b/${business.username}/agendar`);
-  }, [business.username, isOnboarded, router]);
+  if (loading) return <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />;
 
-  const progress = ((step - 1) / 3) * 100;
-
-  const form = useForm({
-    defaultValues: {
-      name: localStorage.getItem("name") || undefined,
-      phone: localStorage.getItem("phone") || undefined,
-    },
-  });
   const onSubmit = (data: { phone: string; name: string }) => {
+    // Set values in local storage upon form submission
     localStorage.setItem("onboarding", "1");
     localStorage.setItem("phone", data.phone);
     localStorage.setItem("name", data.name);
 
-    router.replace(`/b/${business.username}/agendar`);
+    router.replace(`/b/${business?.username}/agendar`);
   };
 
-  if (isOnboarded) return <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />;
+  const progress = ((step - 1) / 3) * 100;
 
   return (
     <CustomForm form={form} onSubmit={onSubmit} className="space-y-8">

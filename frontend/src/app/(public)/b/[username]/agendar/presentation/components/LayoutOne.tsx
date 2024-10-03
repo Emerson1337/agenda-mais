@@ -1,10 +1,10 @@
+"use client";
+
 import { useState } from "react";
 import { format, parseISO } from "date-fns";
 import { SocialNetwork } from "./SocialNetwork";
 import Image from "next/image";
 import { Calendar } from "@/components/ui/calendar";
-import { useGetTimesAvailable } from "../../application/hooks/useGetTimesAvailable";
-import { useBusinessContext } from "../../../utils/context/BusinessDataContext";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -17,18 +17,38 @@ import {
 import { TimesAvailable } from "@/shared/types/times-available";
 import { ptBR } from "date-fns/locale";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
-import { useRouter } from "next/router";
+import { useEffect } from "react";
+import { notFound, useRouter } from "next/navigation";
+import { ReloadIcon } from "@radix-ui/react-icons";
+import { useBusinessContext } from "../../../utils/context/BusinessDataContext";
 
-const LayoutOne = (): JSX.Element => {
+interface Props {
+  datesAvailable: TimesAvailable[];
+}
+
+const LayoutOne = ({ datesAvailable }: Props): JSX.Element => {
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedDate, setSelectedDate] = useState<TimesAvailable>();
   const [selectedTime, setSelectedTime] = useState<string>();
-  const { business } = useBusinessContext();
   const [open, setOpen] = useState<boolean>(false);
+  const { business } = useBusinessContext();
+  const [loading, setLoading] = useState(true);
 
-  const { datesAvailable, data } = useGetTimesAvailable({
-    username: business.username,
-  });
+  if (!business) notFound();
+
+  const router = useRouter();
+  useEffect(() => {
+    const isOnboarded =
+      typeof window !== "undefined" && localStorage.getItem("onboarding");
+
+    if (!isOnboarded) {
+      router.replace(`/b/${business.username}`);
+    }
+
+    setLoading(false);
+  }, [business.username, router]);
+
+  if (loading) return <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />;
 
   const showModal = () => {
     setModalVisible(true);
@@ -107,9 +127,9 @@ const LayoutOne = (): JSX.Element => {
               head_cell: "w-12 font-light text-xs",
             }}
             mode="multiple"
-            selected={datesAvailable}
+            selected={datesAvailable.map((date) => parseISO(date.date))}
             onDayClick={(date) => {
-              const dateAvailable = data?.find(
+              const dateAvailable = datesAvailable.find(
                 (dateAvailable) =>
                   parseISO(dateAvailable.date).getTime() === date.getTime()
               );
