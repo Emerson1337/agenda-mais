@@ -15,12 +15,12 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { TimesAvailable } from "@/shared/types/times-available";
-import { ptBR } from "date-fns/locale";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { useEffect } from "react";
 import { notFound, useRouter } from "next/navigation";
 import { ReloadIcon } from "@radix-ui/react-icons";
 import { useBusinessContext } from "../../../utils/context/BusinessDataContext";
+import { ptBR } from "date-fns/locale";
 
 interface Props {
   datesAvailable: TimesAvailable[];
@@ -151,7 +151,9 @@ const LayoutOne = ({ datesAvailable }: Props): JSX.Element => {
               Agendamento para{" "}
               <strong>
                 {selectedDate?.date &&
-                  format(selectedDate.date, "EEEE, dd/MM/yyyy")}
+                  format(parseISO(selectedDate.date), "EEEE, dd/MM/yyyy", {
+                    locale: ptBR,
+                  })}
               </strong>
             </div>
             <ToggleGroup
