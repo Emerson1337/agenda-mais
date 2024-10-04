@@ -1,8 +1,8 @@
 import LayoutOne from "../components/LayoutOne";
-import { TimesAvailable } from "@/shared/types/times-available";
+import { BusinessSchedule } from "@/shared/types/times-available";
 
 interface Props {
-  timesAvailable: TimesAvailable[];
+  timesAvailable: BusinessSchedule;
 }
 
 const Appointment = ({ timesAvailable }: Props): JSX.Element => {

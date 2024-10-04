@@ -61,12 +61,9 @@ export class AppointmentsService {
     if (!isTimeAvailable) {
       throw new InvalidParamError(
         'scheduleId',
-        this.i18n.t(
-          'translations.INVALID_FIELD.MISSING_DATA.GENERIC_NOT_FOUND',
-          {
-            lang: I18nContext.current().lang,
-          },
-        ),
+        this.i18n.t('translations.APPOINTMENT.ERROR', {
+          lang: I18nContext.current().lang,
+        }),
       );
     }
 
@@ -121,7 +118,9 @@ export class AppointmentsService {
 
   async getSlotsAvailable({
     username,
-  }: IGetSlotAvailable): Promise<ISlots[] | Error> {
+  }: IGetSlotAvailable): Promise<
+    { scheduleId: string; slots: ISlots[] } | Error
+  > {
     const manager =
       await this.bookingManagersRepository.findByUsername(username);
 
@@ -160,7 +159,10 @@ export class AppointmentsService {
       };
     });
 
-    return slots;
+    return {
+      scheduleId: schedule.id,
+      slots,
+    };
   }
 
   public async cancel({

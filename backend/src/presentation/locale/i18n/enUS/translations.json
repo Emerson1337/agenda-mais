@@ -34,7 +34,8 @@
   },
   "APPOINTMENT": {
     "CREATED": "Appointment scheduled successfully!",
-    "CANCELLED": "Appointment CANCELLED successfully!"
+    "CANCELLED": "Appointment cancelled successfully!",
+    "ERROR": "Unable to schedule the appointment. It may have been booked by someone else while you were trying. Please try again."
   },
   "SCHEDULES": {
     "DELETED": "Schedule deleted successfully!"

@@ -1,38 +1,37 @@
 "use client";
 
-import { useState } from "react";
-import { format, parseISO } from "date-fns";
-import { SocialNetwork } from "./SocialNetwork";
+import { useState, useEffect } from "react";
 import Image from "next/image";
-import { Calendar } from "@/components/ui/calendar";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-} from "@/components/ui/alert-dialog";
-import { TimesAvailable } from "@/shared/types/times-available";
-import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
-import { useEffect } from "react";
+import { BusinessSchedule, Slots } from "@/shared/types/times-available";
 import { notFound, useRouter } from "next/navigation";
 import { ReloadIcon } from "@radix-ui/react-icons";
-import { useBusinessContext } from "../../../utils/context/BusinessDataContext";
-import { ptBR } from "date-fns/locale";
+import { useBusinessContext } from "@/public/b/[username]/utils/context/BusinessDataContext";
+import { SocialNetwork } from "@/public/b/[username]/agendar/presentation/components/SocialNetwork";
+import React from "react";
+import { Service } from "@/shared/types/business";
+import BookAppointment from "@/public/b/[username]/agendar/presentation/components/BookAppointment";
+import ChooseService from "@/public/b/[username]/agendar/presentation/components/ChooseService";
+import { BookAppointmentData } from "@/shared/types/appointment";
+import { bookAppointment } from "@/server-actions/bookAppointment";
+import { toast } from "react-toastify";
+import { parseRequestError } from "@/shared/utils/errorParser";
+import { WhatsappService } from "@/shared/services/whatsapp.service";
+import { format, parseISO } from "date-fns";
+import { numberUtils } from "@/shared/utils/numberUtils";
+import { dateUtils } from "@/shared/utils/dateUtils";
 
 interface Props {
-  datesAvailable: TimesAvailable[];
+  datesAvailable: BusinessSchedule;
 }
 
 const LayoutOne = ({ datesAvailable }: Props): JSX.Element => {
-  const [modalVisible, setModalVisible] = useState(false);
-  const [selectedDate, setSelectedDate] = useState<TimesAvailable>();
+  const [selectedDate, setSelectedDate] = useState<Slots>();
   const [selectedTime, setSelectedTime] = useState<string>();
   const [open, setOpen] = useState<boolean>(false);
-  const { business } = useBusinessContext();
   const [loading, setLoading] = useState(true);
+  const [step, setStep] = useState(1);
+  const [selectedService, setSelectedService] = useState<Service>();
+  const { business, services } = useBusinessContext();
 
   if (!business) notFound();
 
@@ -50,36 +49,53 @@ const LayoutOne = ({ datesAvailable }: Props): JSX.Element => {
 
   if (loading) return <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />;
 
-  const showModal = () => {
-    setModalVisible(true);
-  };
+  const finish = async ({
+    clientName,
+    phone,
+    date,
+    notes,
+    time,
+  }: Omit<BookAppointmentData, "scheduleId" | "serviceId">) => {
+    if (!selectedService) return toast.error("Serviço não selecionado");
 
-  const handleOk = () => {
-    setModalVisible(false);
-  };
+    try {
+      const response = await bookAppointment(business.username, {
+        clientName,
+        phone,
+        date,
+        notes,
+        time,
+        serviceId: selectedService.id,
+        scheduleId: datesAvailable.scheduleId,
+      });
 
-  const handleCancel = () => {
-    setModalVisible(false);
-  };
+      toast.success(response.message);
+      setOpen(false);
 
-  const finish = () => {
-    // {
-    //   "clientName": "Emerson",
-    //   "phone": "+5585986160705",
-    //   "scheduleId": "663c246b1811ea88abd74230",
-    //   "serviceId": "65f384cd22cfa592ab35d0f6",
-    //   "time": "18:00",
-    //   "notes": "notes",
-    //   "date": "2024-05-21"
-    // }
-
-    console.log(selectedDate);
-    console.log(selectedTime);
+      setTimeout(() => {
+        WhatsappService.sendAppointmentConfirmation({
+          name: clientName,
+          code: response.appointment.code,
+          day: format(parseISO(date), "dd/MM/yyyy"),
+          time,
+          phone,
+          service: {
+            name: selectedService.name,
+            price: numberUtils.convertToMonetaryBRL(selectedService.price),
+            notes: notes,
+            duration: dateUtils.convertToMinutes(selectedService.timeDuration),
+          },
+        });
+      }, 3000);
+    } catch (error) {
+      const parsedError = parseRequestError(error);
+      toast.error(parsedError.message);
+    }
   };
 
   return (
-    <div className="h-screen w-full flex flex-wrap items-center justify-center">
-      <div className="w-full h-screen shadow-lg transform duration-200 easy-in-out">
+    <div className="h-full w-full flex flex-wrap items-center justify-center">
+      <div className="shadow-lg transform duration-200 easy-in-out">
         <div className="h-32 overflow-hidden">
           <div className="absolute inset-x-0 top-16 h-16 bg-gradient-to-t from-background to-transparent pointer-events-none"></div>
           <Image
@@ -103,12 +119,13 @@ const LayoutOne = ({ datesAvailable }: Props): JSX.Element => {
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
               <span className="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span>
             </span>
-            <span className="font-bold text-xs text-green-500">
+            <span className="text-xs font-light text-primary">
               Atendendo agora
             </span>
           </div>
         </div>
-        <div className="px-14 mt-8">
+
+        <div className="mt-8">
           <div className="text-center mb-8">
             <p className="text-secondary-foreground text-xs font-thin">
               Serviço de qualidade e os melhores cortes de cabelo que você pode
@@ -117,79 +134,36 @@ const LayoutOne = ({ datesAvailable }: Props): JSX.Element => {
           </div>
         </div>
 
-        <div className="flex justify-center h-98">
-          <Calendar
-            locale={ptBR}
-            classNames={{
-              day: "m-1 p-2 rounded-lg w-10",
-              day_disabled: "bg-secondary",
-              cell: "w-12",
-              head_cell: "w-12 font-light text-xs",
-            }}
-            mode="multiple"
-            selected={datesAvailable.map((date) => parseISO(date.date))}
-            onDayClick={(date) => {
-              const dateAvailable = datesAvailable.find(
-                (dateAvailable) =>
-                  parseISO(dateAvailable.date).getTime() === date.getTime()
-              );
-              if (dateAvailable) {
-                setSelectedDate(dateAvailable);
-                setOpen(true);
-                setSelectedTime(undefined);
-              }
-            }}
-            className="rounded-md border shadow"
-          />
-        </div>
-        <AlertDialog open={open}>
-          <AlertDialogContent>
-            <AlertDialogHeader>
-              <AlertDialogTitle>Selecione o horário</AlertDialogTitle>
-            </AlertDialogHeader>
-            <div className="my-4 text-center font-thin">
-              Agendamento para{" "}
-              <strong>
-                {selectedDate?.date &&
-                  format(parseISO(selectedDate.date), "EEEE, dd/MM/yyyy", {
-                    locale: ptBR,
-                  })}
-              </strong>
-            </div>
-            <ToggleGroup
-              type="single"
-              variant="outline"
-              className="justify-center max-w-screen-sm flex-wrap"
-              defaultValue={selectedTime}
-              onValueChange={(time) => {
-                setSelectedTime(time);
+        <div className="px-8">
+          {/* Step 1: Choose Service */}
+          {step === 1 && (
+            <ChooseService
+              services={services}
+              onSelectService={(service) => {
+                setSelectedService(service);
+                setStep(2); // Move to the next step
               }}
-            >
-              {selectedDate?.times.map((time, key) => (
-                <ToggleGroupItem value={time} className="m-1" key={key}>
-                  {time}
-                </ToggleGroupItem>
-              ))}
-            </ToggleGroup>
-            {selectedTime && (
-              <div className="my-4 text-center font-thin">
-                Horário selecionado: <strong>{selectedTime}</strong>
-              </div>
-            )}
-            <AlertDialogFooter>
-              <AlertDialogCancel onClick={() => setOpen(false)}>
-                Cancelar
-              </AlertDialogCancel>
-              <AlertDialogAction onClick={finish} className="text-foreground">
-                Confirmar
-              </AlertDialogAction>
-            </AlertDialogFooter>
-          </AlertDialogContent>
-        </AlertDialog>
+            />
+          )}
 
-        <div className="w-full flex items-center justify-center mt-8 absolute bottom-10">
-          <SocialNetwork className="text-white h-8" />
+          {/* Step 2: Book Appointment */}
+          {step === 2 && (
+            <BookAppointment
+              datesAvailable={datesAvailable.slots}
+              selectedDate={selectedDate}
+              setSelectedDate={setSelectedDate}
+              selectedTime={selectedTime}
+              setSelectedTime={setSelectedTime}
+              moveBack={() => setStep(1)}
+              open={open}
+              setOpen={setOpen}
+              finish={finish}
+            />
+          )}
         </div>
+      </div>
+      <div className="w-full flex items-center justify-center mt-12 mb-8">
+        <SocialNetwork className="text-foreground h-8" />
       </div>
     </div>
   );

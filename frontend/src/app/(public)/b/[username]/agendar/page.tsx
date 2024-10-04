@@ -13,7 +13,7 @@ export default async function Page({ params }: Props) {
   const timesAvailable = await fetchAvailableTimes(params.username);
   return (
     <CustomMotion>
-      <div className="w-full h-screen flex flex-col items-center justify-center overflow-hidden relative">
+      <div className="w-full flex flex-col items-center justify-center relative">
         <Appointment timesAvailable={timesAvailable} />
       </div>
     </CustomMotion>
