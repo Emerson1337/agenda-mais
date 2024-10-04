@@ -1,13 +1,12 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import Image from "next/image";
-import { BusinessSchedule, Slots } from "@/shared/types/times-available";
+import { BusinessSchedule, Slot } from "@/shared/types/times-available";
 import { notFound, useRouter } from "next/navigation";
 import { ReloadIcon } from "@radix-ui/react-icons";
 import { useBusinessContext } from "@/public/b/[username]/utils/context/BusinessDataContext";
 import { SocialNetwork } from "@/public/b/[username]/agendar/presentation/components/SocialNetwork";
-import React from "react";
 import { Service } from "@/shared/types/business";
 import BookAppointment from "@/public/b/[username]/agendar/presentation/components/BookAppointment";
 import ChooseService from "@/public/b/[username]/agendar/presentation/components/ChooseService";
@@ -25,96 +24,107 @@ interface Props {
 }
 
 const LayoutOne = ({ datesAvailable }: Props): JSX.Element => {
-  const [selectedDate, setSelectedDate] = useState<Slots>();
+  const [selectedDate, setSelectedDate] = useState<Slot>();
   const [selectedTime, setSelectedTime] = useState<string>();
-  const [open, setOpen] = useState<boolean>(false);
-  const [loading, setLoading] = useState(true);
-  const [step, setStep] = useState(1);
+  const [step, setStep] = useState<number>(1);
   const [selectedService, setSelectedService] = useState<Service>();
-  const { business, services } = useBusinessContext();
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(true);
 
+  const { business, services } = useBusinessContext();
   if (!business) notFound();
 
   const router = useRouter();
-  useEffect(() => {
-    const isOnboarded =
-      typeof window !== "undefined" && localStorage.getItem("onboarding");
 
+  useEffect(() => {
+    const isOnboarded = localStorage.getItem("onboarding");
     if (!isOnboarded) {
       router.replace(`/b/${business.username}`);
     }
-
     setLoading(false);
-  }, [business.username, router]);
+  }, [business, router]);
 
-  if (loading) return <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />;
+  const handleFinish = useCallback(
+    async ({
+      clientName,
+      phone,
+      date,
+      notes,
+      time,
+    }: Omit<BookAppointmentData, "scheduleId" | "serviceId">) => {
+      if (!selectedService) {
+        return toast.error("Serviço não selecionado");
+      }
 
-  const finish = async ({
-    clientName,
-    phone,
-    date,
-    notes,
-    time,
-  }: Omit<BookAppointmentData, "scheduleId" | "serviceId">) => {
-    if (!selectedService) return toast.error("Serviço não selecionado");
-
-    try {
-      const response = await bookAppointment(business.username, {
-        clientName,
-        phone,
-        date,
-        notes,
-        time,
-        serviceId: selectedService.id,
-        scheduleId: datesAvailable.scheduleId,
-      });
-
-      toast.success(response.message);
-      setOpen(false);
-
-      setTimeout(() => {
-        WhatsappService.sendAppointmentConfirmation({
-          name: clientName,
-          code: response.appointment.code,
-          day: format(parseISO(date), "dd/MM/yyyy"),
-          time,
+      try {
+        const response = await bookAppointment(business.username, {
+          clientName,
           phone,
-          service: {
-            name: selectedService.name,
-            price: numberUtils.convertToMonetaryBRL(selectedService.price),
-            notes: notes,
-            duration: dateUtils.convertToMinutes(selectedService.timeDuration),
-          },
+          date,
+          notes,
+          time,
+          serviceId: selectedService.id,
+          scheduleId: datesAvailable.scheduleId,
         });
-      }, 3000);
-    } catch (error) {
-      const parsedError = parseRequestError(error);
-      toast.error(parsedError.message);
-    }
-  };
+
+        toast.success(response.message);
+        setIsOpen(false);
+
+        // Delay WhatsApp notification for better UX
+        setTimeout(() => {
+          WhatsappService.sendAppointmentConfirmation({
+            name: clientName,
+            code: response.appointment.code,
+            day: format(parseISO(date), "dd/MM/yyyy"),
+            time,
+            phone,
+            service: {
+              name: selectedService.name,
+              price: numberUtils.convertToMonetaryBRL(selectedService.price),
+              notes: notes,
+              duration: dateUtils.convertToMinutes(
+                selectedService.timeDuration
+              ),
+            },
+          });
+        }, 3000);
+      } catch (error) {
+        const parsedError = parseRequestError(error);
+        toast.error(parsedError.message);
+      }
+    },
+    [selectedService, business, datesAvailable.scheduleId]
+  );
+
+  if (loading) {
+    return <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />;
+  }
 
   return (
     <div className="h-full w-full flex flex-wrap items-center justify-center">
-      <div className="shadow-lg transform duration-200 easy-in-out w-full">
-        <div className="h-32 overflow-hidden">
-          <div className="absolute inset-x-0 top-16 h-16 bg-gradient-to-t from-background to-transparent pointer-events-none"></div>
+      <div className="shadow-lg transform duration-200 ease-in-out w-full">
+        {/* Header Section with Image */}
+        <div className="relative h-32 overflow-hidden">
           <Image
             className="w-full"
             src="https://images.unsplash.com/photo-1605379399642-870262d3d051?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=2000&q=80"
-            alt=""
-            width={200}
-            height={200}
+            alt="Business Cover"
+            layout="fill"
+            objectFit="cover"
           />
+          <div className="absolute inset-x-0 top-16 h-16 bg-gradient-to-t from-background to-transparent pointer-events-none"></div>
         </div>
-        <div className="flex flex-col items-center justify-center px-5 -mt-12 z-50">
+
+        {/* Profile Image & Status */}
+        <div className="flex flex-col items-center justify-center px-5 -mt-12 relative z-10">
           <Image
-            className="h-32 w-32 bg-background p-2 rounded-full relative"
+            className="h-32 w-32 bg-background p-2 rounded-full"
             src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=2000&q=80"
-            alt=""
+            alt="Profile Picture"
             width={200}
             height={200}
           />
-          <div className="flex gap-2">
+          <div className="flex gap-2 mt-2">
             <span className="relative flex h-3 w-3">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
               <span className="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span>
@@ -125,29 +135,25 @@ const LayoutOne = ({ datesAvailable }: Props): JSX.Element => {
           </div>
         </div>
 
-        <div className="mt-8 px-4">
-          <div className="text-center mb-8">
-            <p className="text-secondary-foreground text-xs font-thin">
-              Serviço de qualidade e os melhores cortes de cabelo que você pode
-              encontrar!
-            </p>
-          </div>
+        {/* Introduction Text */}
+        <div className="mt-8 px-4 text-center">
+          <p className="text-secondary-foreground text-xs font-thin">
+            Serviço de qualidade e os melhores cortes de cabelo que você pode
+            encontrar!
+          </p>
         </div>
 
-        <div className="md:px-8 px-1.5 w-fit mx-auto">
-          {/* Step 1: Choose Service */}
-          {step === 1 && (
+        {/* Main Content */}
+        <div className="md:px-8 px-1.5 w-full mx-auto">
+          {step === 1 ? (
             <ChooseService
               services={services}
               onSelectService={(service) => {
                 setSelectedService(service);
-                setStep(2); // Move to the next step
+                setStep(2);
               }}
             />
-          )}
-
-          {/* Step 2: Book Appointment */}
-          {step === 2 && (
+          ) : (
             <BookAppointment
               datesAvailable={datesAvailable.slots}
               selectedDate={selectedDate}
@@ -155,13 +161,15 @@ const LayoutOne = ({ datesAvailable }: Props): JSX.Element => {
               selectedTime={selectedTime}
               setSelectedTime={setSelectedTime}
               moveBack={() => setStep(1)}
-              open={open}
-              setOpen={setOpen}
-              finish={finish}
+              open={isOpen}
+              setOpen={setIsOpen}
+              finish={handleFinish}
             />
           )}
         </div>
       </div>
+
+      {/* Social Network */}
       <div className="w-full flex items-center justify-center mt-12 mb-8">
         <SocialNetwork className="text-foreground h-8" />
       </div>

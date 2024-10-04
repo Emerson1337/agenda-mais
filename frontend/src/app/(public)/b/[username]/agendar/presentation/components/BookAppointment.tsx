@@ -9,7 +9,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import { Slots } from "@/shared/types/times-available";
+import { Slot } from "@/shared/types/times-available";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { ptBR } from "date-fns/locale";
 import React, { useState, useEffect } from "react";
@@ -22,9 +22,9 @@ import { Input } from "@/components/ui/input";
 
 // Define the interface for the component props
 interface BookAppointmentProps {
-  datesAvailable: Slots[];
-  selectedDate?: Slots;
-  setSelectedDate: (date: Slots) => void;
+  datesAvailable: Slot[];
+  selectedDate?: Slot;
+  setSelectedDate: (date: Slot) => void;
   selectedTime?: string;
   setSelectedTime: (time?: string) => void;
   open: boolean;

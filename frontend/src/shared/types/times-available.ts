@@ -1,9 +1,9 @@
-export interface Slots {
+export interface Slot {
   date: string;
   times: string[];
 }
 
 export interface BusinessSchedule {
   scheduleId: string;
-  slots: Slots[];
+  slots: Slot[];
 }
