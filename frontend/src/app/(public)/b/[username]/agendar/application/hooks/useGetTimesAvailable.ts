@@ -1,5 +1,5 @@
 import { parseISO } from "date-fns";
-import { useGetTimesAvailableQuery } from "../../infrastructure/times-available.api";
+import { useGetTimesAvailableQuery } from "@/public/b/[username]/agendar/infrastructure/times-available.api";
 
 export const useGetTimesAvailable = ({ username }: { username: string }) => {
   const { isPending, error, isError, data, isFetching } =
