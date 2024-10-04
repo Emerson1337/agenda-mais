@@ -41,6 +41,6 @@ export class CreateAppointmentDto {
   date: string;
 
   @IsString()
-  @IsNotEmpty()
+  @IsOptional()
   notes: string;
 }

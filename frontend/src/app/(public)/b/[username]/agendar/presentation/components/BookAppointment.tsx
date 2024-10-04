@@ -9,7 +9,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import { BusinessSchedule, Slots } from "@/shared/types/times-available";
+import { Slots } from "@/shared/types/times-available";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { ptBR } from "date-fns/locale";
 import React, { useState, useEffect } from "react";
@@ -17,6 +17,9 @@ import { Button } from "@/components/ui/button";
 import { ArrowLeftIcon } from "@radix-ui/react-icons";
 import { Textarea } from "@/components/ui/textarea";
 import { BookAppointmentData, Service } from "@/shared/types/appointment";
+import FillPhoneNumber from "../../../onboarding/presentation/components/FillPhoneNumber";
+import { PhoneInput } from "../../../../../../../components/ui/phone-input";
+import { Input } from "../../../../../../../components/ui/input";
 
 // Define the interface for the component props
 interface BookAppointmentProps {
@@ -32,6 +35,19 @@ interface BookAppointmentProps {
   moveBack: () => void;
 }
 
+// Custom hook to manage client information from local storage
+const useClientInfo = () => {
+  const [clientName, setClientName] = useState("");
+  const [clientPhone, setClientPhone] = useState("");
+
+  useEffect(() => {
+    setClientName(localStorage.getItem("name") || "");
+    setClientPhone(localStorage.getItem("phone") || "");
+  }, []);
+
+  return { clientName, setClientName, clientPhone, setClientPhone };
+};
+
 const BookAppointment: React.FC<BookAppointmentProps> = ({
   datesAvailable,
   selectedDate,
@@ -43,24 +59,59 @@ const BookAppointment: React.FC<BookAppointmentProps> = ({
   finish,
   moveBack,
 }) => {
-  // State for the note in the Textarea
+  const { clientName, setClientName, clientPhone, setClientPhone } =
+    useClientInfo();
   const [notes, setNotes] = useState("");
-  const [clientName, setClientName] = useState("");
-  const [clientPhone, setClientPhone] = useState("");
+  const [confirmOpen, setConfirmOpen] = useState(false);
 
-  // Retrieve client information from localStorage
-  useEffect(() => {
-    const name = localStorage.getItem("name") || "";
-    const phone = localStorage.getItem("phone") || "";
-    setClientName(name);
-    setClientPhone(phone);
-  }, []);
+  // Handle calendar day click
+  const handleDayClick = (date: Date) => {
+    const dateAvailable = datesAvailable.find(
+      (dateAvailable) =>
+        parseISO(dateAvailable.date).getTime() === date.getTime()
+    );
+
+    if (dateAvailable) {
+      setSelectedDate(dateAvailable);
+      setOpen(true);
+      setSelectedTime(undefined);
+      setNotes("");
+    }
+  };
+
+  // Format the selected date for display
+  const formattedSelectedDate =
+    selectedDate?.date &&
+    format(parseISO(selectedDate.date), "EEEE, dd/MM/yyyy", { locale: ptBR });
+
+  // Handle form submission and open confirmation dialog
+  const handleConfirm = () => {
+    if (!selectedDate || !selectedTime) return;
+
+    setConfirmOpen(true); // Open confirmation modal
+  };
+
+  // Finalize appointment
+  const handleFinalize = () => {
+    finish({
+      date: selectedDate?.date || "", // Provide a default value if undefined
+      time: selectedTime || "", // Provide a default value if undefined
+      notes,
+      clientName,
+      phone: clientPhone,
+    });
+    setConfirmOpen(false); // Close confirmation modal
+    setOpen(false); // Close the main dialog
+  };
 
   return (
     <>
+      {/* Back Button */}
       <Button onClick={moveBack} className="flex gap-2 justify-between">
         <ArrowLeftIcon /> <span className="font-bold">Voltar</span>
       </Button>
+
+      {/* Calendar */}
       <div className="flex justify-center h-98 mt-8">
         <Calendar
           locale={ptBR}
@@ -72,52 +123,41 @@ const BookAppointment: React.FC<BookAppointmentProps> = ({
           }}
           mode="multiple"
           selected={datesAvailable.map((date) => parseISO(date.date))}
-          onDayClick={(date) => {
-            const dateAvailable = datesAvailable.find(
-              (dateAvailable) =>
-                parseISO(dateAvailable.date).getTime() === date.getTime()
-            );
-            if (dateAvailable) {
-              setSelectedDate(dateAvailable);
-              setOpen(true);
-              setSelectedTime(undefined);
-              setNotes(""); // Reset note on date change
-            }
-          }}
+          onDayClick={handleDayClick}
           className="rounded-md border shadow"
         />
       </div>
+
+      {/* Alert Dialog for Selecting Time */}
       <AlertDialog open={open}>
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle>Selecione o horário</AlertDialogTitle>
           </AlertDialogHeader>
+
+          {/* Selected Date Display */}
           <div className="my-4 text-center font-thin">
-            Agendamento para{" "}
-            <strong>
-              {selectedDate?.date &&
-                format(parseISO(selectedDate.date), "EEEE, dd/MM/yyyy", {
-                  locale: ptBR,
-                })}
-            </strong>
+            Agendamento para <strong>{formattedSelectedDate}</strong>
           </div>
+
+          {/* Time Selection */}
           <ToggleGroup
             type="single"
             variant="outline"
             className="justify-center max-w-screen-sm flex-wrap"
             defaultValue={selectedTime}
-            onValueChange={(time) => {
-              setSelectedTime(time);
-            }}
+            onValueChange={setSelectedTime}
           >
-            {selectedDate?.times.map((time, key) => (
-              <ToggleGroupItem value={time} className="m-1" key={key}>
+            {selectedDate?.times.map((time, index) => (
+              <ToggleGroupItem value={time} className="m-1" key={index}>
                 {time}
               </ToggleGroupItem>
             ))}
           </ToggleGroup>
+
+          {/* Note Input and Confirmation */}
           {selectedTime && (
-            <div>
+            <>
               <div className="my-4 text-center font-thin">
                 Horário selecionado: <strong>{selectedTime}</strong>
               </div>
@@ -128,28 +168,75 @@ const BookAppointment: React.FC<BookAppointmentProps> = ({
                 value={notes}
                 onChange={(e) => setNotes(e.target.value)}
               />
-            </div>
+            </>
           )}
+
+          {/* Dialog Footer with Actions */}
           <AlertDialogFooter>
             <AlertDialogCancel onClick={() => setOpen(false)}>
               Cancelar
             </AlertDialogCancel>
             <AlertDialogAction
-              disabled={!selectedDate || !selectedTime}
-              onClick={() =>
-                selectedDate &&
-                selectedTime &&
-                finish({
-                  date: selectedDate.date,
-                  time: selectedTime,
-                  notes,
-                  clientName: clientName,
-                  phone: clientPhone,
-                })
+              disabled={
+                !selectedDate || !selectedTime || !clientName || !clientPhone
               }
+              onClick={handleConfirm}
               className="text-primary-foreground"
             >
               Confirmar
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+
+      {/* Confirmation Dialog */}
+      <AlertDialog open={confirmOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Confirme os Dados</AlertDialogTitle>
+          </AlertDialogHeader>
+          <div className="my-4 text-center flex flex-col gap-2">
+            <p>
+              <strong>Data:</strong>
+              <span className="font-thin"> {formattedSelectedDate}</span>
+            </p>
+            <p>
+              <strong>Horário:</strong>
+              <span className="font-thin"> {selectedTime}</span>
+            </p>
+            <p>
+              <strong>Observações:</strong>
+              <span className="font-thin"> {notes || "Nenhuma"}</span>
+            </p>
+            <p className="mt-2">
+              <strong>Nome:</strong>
+              <Input
+                onChange={(event) => setClientName(event.target.value)}
+                value={clientName}
+                autoFocus
+                className="text-xl text-center"
+              />
+            </p>
+            <p className="mt-2">
+              <strong>Telefone:</strong>
+              <PhoneInput
+                value={clientPhone}
+                onChange={(value) => setClientPhone(value)}
+                countries={["BR"]}
+                defaultCountry="BR"
+                autoFocus
+              />
+            </p>
+          </div>
+          <AlertDialogFooter>
+            <AlertDialogCancel onClick={() => setConfirmOpen(false)}>
+              Voltar
+            </AlertDialogCancel>
+            <AlertDialogAction
+              onClick={handleFinalize}
+              className="text-primary-foreground"
+            >
+              Confirmar Agendamento
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

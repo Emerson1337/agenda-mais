@@ -95,7 +95,7 @@ const LayoutOne = ({ datesAvailable }: Props): JSX.Element => {
 
   return (
     <div className="h-full w-full flex flex-wrap items-center justify-center">
-      <div className="shadow-lg transform duration-200 easy-in-out">
+      <div className="shadow-lg transform duration-200 easy-in-out w-full">
         <div className="h-32 overflow-hidden">
           <div className="absolute inset-x-0 top-16 h-16 bg-gradient-to-t from-background to-transparent pointer-events-none"></div>
           <Image
@@ -125,7 +125,7 @@ const LayoutOne = ({ datesAvailable }: Props): JSX.Element => {
           </div>
         </div>
 
-        <div className="mt-8">
+        <div className="mt-8 px-4">
           <div className="text-center mb-8">
             <p className="text-secondary-foreground text-xs font-thin">
               Serviço de qualidade e os melhores cortes de cabelo que você pode
@@ -134,7 +134,7 @@ const LayoutOne = ({ datesAvailable }: Props): JSX.Element => {
           </div>
         </div>
 
-        <div className="px-8">
+        <div className="md:px-8 px-1.5 w-fit mx-auto">
           {/* Step 1: Choose Service */}
           {step === 1 && (
             <ChooseService
