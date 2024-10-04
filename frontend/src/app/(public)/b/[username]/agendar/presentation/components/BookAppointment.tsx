@@ -17,9 +17,8 @@ import { Button } from "@/components/ui/button";
 import { ArrowLeftIcon } from "@radix-ui/react-icons";
 import { Textarea } from "@/components/ui/textarea";
 import { BookAppointmentData, Service } from "@/shared/types/appointment";
-import FillPhoneNumber from "../../../onboarding/presentation/components/FillPhoneNumber";
-import { PhoneInput } from "../../../../../../../components/ui/phone-input";
-import { Input } from "../../../../../../../components/ui/input";
+import { PhoneInput } from "@/components/ui/phone-input";
+import { Input } from "@/components/ui/input";
 
 // Define the interface for the component props
 interface BookAppointmentProps {

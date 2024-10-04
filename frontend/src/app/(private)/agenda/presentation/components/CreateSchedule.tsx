@@ -89,7 +89,7 @@ export default function CreateSchedule() {
         <div className="flex justify-center mb-4 items-center">
           <Button
             disabled={!isSubmitEnabled || isPending}
-            className="text-foreground w-28"
+            className="w-28"
             type="submit"
           >
             Salvar

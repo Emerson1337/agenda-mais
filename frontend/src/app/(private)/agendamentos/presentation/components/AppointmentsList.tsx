@@ -85,7 +85,9 @@ export default function AppointmentsList() {
               <TableHead className="hidden sm:table-cell">Serviço</TableHead>
               <TableHead className="hidden md:table-cell">Código</TableHead>
               <TableHead className="text-center">Data</TableHead>
-              <TableHead className="text-right">Valor</TableHead>
+              <TableHead className="text-right hidden md:table-cell">
+                Valor
+              </TableHead>
               <TableHead className="text-right">Ações</TableHead>
             </TableRow>
           </TableHeader>
@@ -118,9 +120,9 @@ export default function AppointmentsList() {
                   <Badge className="text-xs">{row.code}</Badge>
                 </TableCell>
                 <TableCell className="text-center">
-                  {format(parseISO(row.date), "dd/MM/yyyy")} às {row.time}
+                  {format(parseISO(row.date), "dd/MM/yyyy")} - {row.time}
                 </TableCell>
-                <TableCell className="text-right">
+                <TableCell className="text-right hidden sm:table-cell">
                   {numberUtils.convertToMonetaryBRL(row.service.price)}
                 </TableCell>
                 <TableCell className="text-right">
