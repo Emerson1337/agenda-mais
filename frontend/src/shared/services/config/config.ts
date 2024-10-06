@@ -1,13 +1,13 @@
 import axios from "axios";
 
-const BASE_URL = process.env.REACT_APP_BASE_URL;
+const BASE_URL = process.env.REACT_APP_BASE_URL || "http://localhost:3001";
 
 export const API = axios.create({
   baseURL: BASE_URL,
   headers: {
-    Authorization:
+    authorization:
       typeof localStorage !== "undefined"
-        ? localStorage.getItem("Authorization")
+        ? localStorage.getItem("authorization")
         : null,
   },
 });

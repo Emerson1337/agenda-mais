@@ -18,7 +18,7 @@ import {
 } from "@/components/ui/table";
 import { useAppointment } from "@/private/agendamentos/application/hooks/useAppointment";
 import { ReloadIcon, MobileIcon } from "@radix-ui/react-icons";
-import { format } from "date-fns";
+import { format, parseISO } from "date-fns";
 import { stringUtils } from "@/shared/utils/stringUtils";
 import { numberUtils } from "@/shared/utils/numberUtils";
 import { Button } from "@/components/ui/button";
@@ -85,7 +85,9 @@ export default function AppointmentsList() {
               <TableHead className="hidden sm:table-cell">Serviço</TableHead>
               <TableHead className="hidden md:table-cell">Código</TableHead>
               <TableHead className="text-center">Data</TableHead>
-              <TableHead className="text-right">Valor</TableHead>
+              <TableHead className="text-right hidden md:table-cell">
+                Valor
+              </TableHead>
               <TableHead className="text-right">Ações</TableHead>
             </TableRow>
           </TableHeader>
@@ -118,9 +120,9 @@ export default function AppointmentsList() {
                   <Badge className="text-xs">{row.code}</Badge>
                 </TableCell>
                 <TableCell className="text-center">
-                  {format(row.date, "dd/MM/yyyy")} às {row.time}
+                  {format(parseISO(row.date), "dd/MM/yyyy")} - {row.time}
                 </TableCell>
-                <TableCell className="text-right">
+                <TableCell className="text-right hidden sm:table-cell">
                   {numberUtils.convertToMonetaryBRL(row.service.price)}
                 </TableCell>
                 <TableCell className="text-right">

@@ -9,9 +9,10 @@ import { ThemeToggle } from "./theme-toggle";
 
 interface Props {
   tooltip?: boolean;
+  closeSheet?: () => void;
 }
 
-export function MenuItems({ tooltip = false }: Props) {
+export function MenuItems({ tooltip = false, closeSheet }: Props) {
   const checkActivePath = useActivePath();
 
   const menus = [
@@ -44,6 +45,7 @@ export function MenuItems({ tooltip = false }: Props) {
                   checkActivePath(menu.url) &&
                   "bg-accent text-accent-foreground"
                 }`}
+                onClick={closeSheet} // Close the sheet after clicking
               >
                 {menu.icon}
                 <span className="sr-only">{menu.title}</span>
@@ -58,6 +60,7 @@ export function MenuItems({ tooltip = false }: Props) {
             className={`flex items-center gap-4 p-2.5 rounded-lg text-muted-foreground hover:text-foreground ${
               checkActivePath(menu.url) && "bg-accent text-accent-foreground"
             }`}
+            onClick={closeSheet} // Close the sheet after clicking
           >
             {menu.icon}
             {menu.title}

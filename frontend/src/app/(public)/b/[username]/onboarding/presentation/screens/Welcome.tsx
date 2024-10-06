@@ -3,7 +3,7 @@ import { SparklesCore } from "../components/SparklesCore";
 import OnboardingFlow from "../components/OnboardingFlow";
 import "@/app/globals.css";
 
-const Welcome = (): JSX.Element => {
+const Welcome = async () => {
   return (
     <div className="w-full h-screen flex flex-col items-center justify-center overflow-hidden relative">
       <div className="w-full h-40 absolute top-0">

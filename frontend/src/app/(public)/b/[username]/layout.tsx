@@ -1,37 +1,46 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
 import "@/app/globals.css";
-import { Provider } from "@/shared/utils/Providers";
-import { ThemeProvider } from "@/components/ui/theme-provider";
+import { fetchBusinessData } from "@/server-actions/fetchBusinessData";
 import { BusinessProvider } from "./utils/context/BusinessDataContext";
-
-const inter = Inter({ subsets: ["latin"] });
-
-export const metadata: Metadata = {
-  title: "Agendazap",
-  description: "Agende o seu horário.",
-};
+import { Suspense } from "react";
+import { ReloadIcon } from "@radix-ui/react-icons";
 
 interface RootLayoutProps {
   children: React.ReactNode;
+  params: {
+    username: string;
+  };
 }
 
-export default function RootLayout({ children }: Readonly<RootLayoutProps>) {
+// Wrapping in suspense to allow asynchronous fetching
+async function BusinessWrapper({
+  children,
+  username,
+}: {
+  children: React.ReactNode;
+  username: string;
+}) {
+  const businessInformation = await fetchBusinessData(username);
   return (
-    <html suppressHydrationWarning lang="en">
-      <body className={inter.className}>
-        <Provider>
-          <BusinessProvider>
-            <ThemeProvider
-              attribute="class"
-              defaultTheme="dark"
-              disableTransitionOnChange
-            >
-              {children}
-            </ThemeProvider>
-          </BusinessProvider>
-        </Provider>
-      </body>
-    </html>
+    <BusinessProvider defaultValue={businessInformation}>
+      {children}
+    </BusinessProvider>
+  );
+}
+
+export default function RootLayout({
+  children,
+  params,
+}: Readonly<RootLayoutProps>) {
+  return (
+    <Suspense
+      fallback={
+        <div className="h-screen w-screen flex items-center justify-center">
+          <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />
+        </div>
+      }
+    >
+      <BusinessWrapper username={params.username}>{children}</BusinessWrapper>
+    </Suspense>
   );
 }

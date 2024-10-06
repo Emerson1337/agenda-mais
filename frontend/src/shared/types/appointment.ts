@@ -28,3 +28,14 @@ export const AppointmentDataSchema = z.object({
   service: ServiceSchema,
 });
 export type AppointmentData = z.infer<typeof AppointmentDataSchema>;
+
+export const BookAppointmentSchema = z.object({
+  date: z.string(),
+  time: z.string(),
+  notes: z.string(),
+  phone: z.string(),
+  clientName: z.string(),
+  scheduleId: z.string(),
+  serviceId: z.string(),
+});
+export type BookAppointmentData = z.infer<typeof BookAppointmentSchema>;

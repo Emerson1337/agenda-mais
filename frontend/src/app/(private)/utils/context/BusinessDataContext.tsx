@@ -1,8 +1,14 @@
-"use client"
+"use client";
 
 import { MeType } from "@/shared/types/me";
 import { useRouter } from "next/navigation";
-import React, { createContext, FC, ReactNode, useContext, useState } from "react";
+import React, {
+  createContext,
+  FC,
+  ReactNode,
+  useContext,
+  useState,
+} from "react";
 import { useGetManager } from "../../dashboard/application/hooks/useGetManager";
 import { ReloadIcon } from "@radix-ui/react-icons";
 
@@ -19,7 +25,7 @@ const defaultValue: MeType = {
   appointmentsPerPhone: 0,
   status: "",
   roles: [],
-  plan: ""
+  plan: "",
 };
 
 // Create the context
@@ -31,15 +37,15 @@ export const useBusinessContext = () => useContext(BusinessContext);
 // Provider component to wrap your app and provide the context value
 export const BusinessProvider: FC<{
   children: ReactNode;
-}> = ({  children }): ReactNode => {
+}> = ({ children }): ReactNode => {
   const { data, isPending, isError } = useGetManager();
   const router = useRouter();
 
   if (isError) router.replace("/not-found");
-  
+
   return (
     <BusinessContext.Provider value={data ?? defaultValue}>
-      { children }
+      {children}
     </BusinessContext.Provider>
   );
 };

@@ -1,173 +1,178 @@
-import { useState } from "react";
-import { format, parseISO } from "date-fns";
-import { SocialNetwork } from "./SocialNetwork";
+"use client";
+
+import { useState, useEffect, useCallback } from "react";
 import Image from "next/image";
-import { Calendar } from "@/components/ui/calendar";
-import { useGetTimesAvailable } from "../../application/hooks/useGetTimesAvailable";
-import { useBusinessContext } from "../../../utils/context/BusinessDataContext";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-} from "@/components/ui/alert-dialog";
-import { TimesAvailable } from "@/shared/types/times-available";
-import { ptBR } from "date-fns/locale";
-import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
-import { useRouter } from "next/router";
+import { BusinessSchedule, Slot } from "@/shared/types/times-available";
+import { notFound, useRouter } from "next/navigation";
+import { ReloadIcon } from "@radix-ui/react-icons";
+import { useBusinessContext } from "@/public/b/[username]/utils/context/BusinessDataContext";
+import { SocialNetwork } from "@/public/b/[username]/agendar/presentation/components/SocialNetwork";
+import { Service } from "@/shared/types/business";
+import BookAppointment from "@/public/b/[username]/agendar/presentation/components/BookAppointment";
+import ChooseService from "@/public/b/[username]/agendar/presentation/components/ChooseService";
+import { BookAppointmentData } from "@/shared/types/appointment";
+import { bookAppointment } from "@/server-actions/bookAppointment";
+import { toast } from "react-toastify";
+import { parseRequestError } from "@/shared/utils/errorParser";
+import { WhatsappService } from "@/shared/services/whatsapp.service";
+import { format, parseISO } from "date-fns";
+import { numberUtils } from "@/shared/utils/numberUtils";
+import { dateUtils } from "@/shared/utils/dateUtils";
 
-const LayoutOne = (): JSX.Element => {
-  const [modalVisible, setModalVisible] = useState(false);
-  const [selectedDate, setSelectedDate] = useState<TimesAvailable>();
+interface Props {
+  datesAvailable: BusinessSchedule;
+}
+
+const LayoutOne = ({ datesAvailable }: Props): JSX.Element => {
+  const [selectedDate, setSelectedDate] = useState<Slot>();
   const [selectedTime, setSelectedTime] = useState<string>();
-  const { business } = useBusinessContext();
-  const [open, setOpen] = useState<boolean>(false);
+  const [step, setStep] = useState<number>(1);
+  const [selectedService, setSelectedService] = useState<Service>();
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(true);
 
-  const { datesAvailable, data } = useGetTimesAvailable({
-    username: business.username,
-  });
+  const { business, services } = useBusinessContext();
+  if (!business) notFound();
 
-  const showModal = () => {
-    setModalVisible(true);
-  };
+  const router = useRouter();
 
-  const handleOk = () => {
-    setModalVisible(false);
-  };
+  useEffect(() => {
+    const isOnboarded = localStorage.getItem("onboarding");
+    if (!isOnboarded) {
+      router.replace(`/b/${business.username}`);
+    }
+    setLoading(false);
+  }, [business, router]);
 
-  const handleCancel = () => {
-    setModalVisible(false);
-  };
+  const handleFinish = useCallback(
+    async ({
+      clientName,
+      phone,
+      date,
+      notes,
+      time,
+    }: Omit<BookAppointmentData, "scheduleId" | "serviceId">) => {
+      if (!selectedService) {
+        return toast.error("Serviço não selecionado");
+      }
 
-  const finish = () => {
-    // {
-    //   "clientName": "Emerson",
-    //   "phone": "+5585986160705",
-    //   "scheduleId": "663c246b1811ea88abd74230",
-    //   "serviceId": "65f384cd22cfa592ab35d0f6",
-    //   "time": "18:00",
-    //   "notes": "notes",
-    //   "date": "2024-05-21"
-    // }
+      try {
+        const response = await bookAppointment(business.username, {
+          clientName,
+          phone,
+          date,
+          notes,
+          time,
+          serviceId: selectedService.id,
+          scheduleId: datesAvailable.scheduleId,
+        });
 
-    console.log(selectedDate);
-    console.log(selectedTime);
-  };
+        toast.success(response.message);
+        setIsOpen(false);
+
+        // Delay WhatsApp notification for better UX
+        setTimeout(() => {
+          WhatsappService.sendAppointmentConfirmation({
+            name: clientName,
+            code: response.appointment.code,
+            day: format(parseISO(date), "dd/MM/yyyy"),
+            time,
+            phone,
+            service: {
+              name: selectedService.name,
+              price: numberUtils.convertToMonetaryBRL(selectedService.price),
+              notes: notes,
+              duration: dateUtils.convertToMinutes(
+                selectedService.timeDuration
+              ),
+            },
+          });
+        }, 3000);
+      } catch (error) {
+        const parsedError = parseRequestError(error);
+        toast.error(parsedError.message);
+      }
+    },
+    [selectedService, business, datesAvailable.scheduleId]
+  );
+
+  if (loading) {
+    return <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />;
+  }
 
   return (
-    <div className="h-screen w-full flex flex-wrap items-center justify-center">
-      <div className="w-full h-screen shadow-lg transform duration-200 easy-in-out">
-        <div className="h-32 overflow-hidden">
-          <div className="absolute inset-x-0 top-16 h-16 bg-gradient-to-t from-background to-transparent pointer-events-none"></div>
+    <div className="h-full w-full flex flex-wrap justify-center between">
+      <div className="shadow-lg transform duration-200 ease-in-out w-full flex flex-col">
+        {/* Header Section with Image */}
+        <div className="relative h-32 overflow-hidden">
           <Image
             className="w-full"
             src="https://images.unsplash.com/photo-1605379399642-870262d3d051?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=2000&q=80"
-            alt=""
-            width={200}
-            height={200}
+            alt="Business Cover"
+            layout="fill"
+            objectFit="cover"
           />
+          <div className="absolute inset-x-0 top-16 h-16 bg-gradient-to-t from-background to-transparent pointer-events-none"></div>
         </div>
-        <div className="flex flex-col items-center justify-center px-5 -mt-12 z-50">
+
+        {/* Profile Image & Status */}
+        <div className="flex flex-col items-center justify-center px-5 -mt-12 relative z-10">
           <Image
-            className="h-32 w-32 bg-background p-2 rounded-full relative"
+            className="h-32 w-32 bg-background p-2 rounded-full"
             src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=2000&q=80"
-            alt=""
+            alt="Profile Picture"
             width={200}
             height={200}
           />
-          <div className="flex gap-2">
+          <div className="flex gap-2 mt-2">
             <span className="relative flex h-3 w-3">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
               <span className="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span>
             </span>
-            <span className="font-bold text-xs text-green-500">
+            <span className="text-xs font-light text-primary">
               Atendendo agora
             </span>
           </div>
         </div>
-        <div className="px-14 mt-8">
-          <div className="text-center mb-8">
+        <div className="max-w-96 md:max-w-full self-center">
+          {/* Introduction Text */}
+          <div className="mt-8 px-4 text-center">
             <p className="text-secondary-foreground text-xs font-thin">
               Serviço de qualidade e os melhores cortes de cabelo que você pode
               encontrar!
             </p>
           </div>
-        </div>
 
-        <div className="flex justify-center h-98">
-          <Calendar
-            locale={ptBR}
-            classNames={{
-              day: "m-1 p-2 rounded-lg w-10",
-              day_disabled: "bg-secondary",
-              cell: "w-12",
-              head_cell: "w-12 font-light text-xs",
-            }}
-            mode="multiple"
-            selected={datesAvailable}
-            onDayClick={(date) => {
-              const dateAvailable = data?.find(
-                (dateAvailable) =>
-                  parseISO(dateAvailable.date).getTime() === date.getTime()
-              );
-              if (dateAvailable) {
-                setSelectedDate(dateAvailable);
-                setOpen(true);
-                setSelectedTime(undefined);
-              }
-            }}
-            className="rounded-md border shadow"
-          />
-        </div>
-        <AlertDialog open={open}>
-          <AlertDialogContent>
-            <AlertDialogHeader>
-              <AlertDialogTitle>Selecione o horário</AlertDialogTitle>
-            </AlertDialogHeader>
-            <div className="my-4 text-center font-thin">
-              Agendamento para{" "}
-              <strong>
-                {selectedDate?.date &&
-                  format(selectedDate.date, "EEEE, dd/MM/yyyy")}
-              </strong>
-            </div>
-            <ToggleGroup
-              type="single"
-              variant="outline"
-              className="justify-center max-w-screen-sm flex-wrap"
-              defaultValue={selectedTime}
-              onValueChange={(time) => {
-                setSelectedTime(time);
-              }}
-            >
-              {selectedDate?.times.map((time, key) => (
-                <ToggleGroupItem value={time} className="m-1" key={key}>
-                  {time}
-                </ToggleGroupItem>
-              ))}
-            </ToggleGroup>
-            {selectedTime && (
-              <div className="my-4 text-center font-thin">
-                Horário selecionado: <strong>{selectedTime}</strong>
-              </div>
+          {/* Main Content */}
+          <div className="w-full">
+            {step === 1 ? (
+              <ChooseService
+                services={services}
+                onSelectService={(service) => {
+                  setSelectedService(service);
+                  setStep(2);
+                }}
+              />
+            ) : (
+              <BookAppointment
+                datesAvailable={datesAvailable.slots}
+                selectedDate={selectedDate}
+                setSelectedDate={setSelectedDate}
+                selectedTime={selectedTime}
+                setSelectedTime={setSelectedTime}
+                moveBack={() => setStep(1)}
+                open={isOpen}
+                setOpen={setIsOpen}
+                finish={handleFinish}
+              />
             )}
-            <AlertDialogFooter>
-              <AlertDialogCancel onClick={() => setOpen(false)}>
-                Cancelar
-              </AlertDialogCancel>
-              <AlertDialogAction onClick={finish} className="text-foreground">
-                Confirmar
-              </AlertDialogAction>
-            </AlertDialogFooter>
-          </AlertDialogContent>
-        </AlertDialog>
-
-        <div className="w-full flex items-center justify-center mt-8 absolute bottom-10">
-          <SocialNetwork className="text-white h-8" />
+          </div>
         </div>
+      </div>
+
+      {/* Social Network */}
+      <div className="w-full flex items-center justify-center mt-12 mb-8">
+        <SocialNetwork className="text-foreground h-8" />
       </div>
     </div>
   );

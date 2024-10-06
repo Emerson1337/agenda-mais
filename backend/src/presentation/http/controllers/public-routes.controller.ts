@@ -27,7 +27,7 @@ export class PublicRoutesController {
     @Res() response: Response,
   ) {
     try {
-      return response.status(201).send(
+      return response.status(200).send(
         ok(
           await this.appointmentsService.bookAppointment({
             username: managerUsername,
@@ -47,7 +47,7 @@ export class PublicRoutesController {
   ) {
     try {
       return response
-        .status(201)
+        .status(200)
         .send(ok(await this.datesService.getBusinessData(managerUsername)));
     } catch (error) {
       return response.status(error.status).send(handleError(error));
@@ -60,7 +60,7 @@ export class PublicRoutesController {
     @Res() response: Response,
   ) {
     try {
-      return response.status(201).send(
+      return response.status(200).send(
         ok(
           await this.appointmentsService.getSlotsAvailable({
             username: managerUsername,
@@ -79,7 +79,7 @@ export class PublicRoutesController {
     @Res() response: Response,
   ) {
     try {
-      return response.status(201).send(
+      return response.status(200).send(
         ok(
           await this.appointmentsService.cancel({
             appointmentCode,

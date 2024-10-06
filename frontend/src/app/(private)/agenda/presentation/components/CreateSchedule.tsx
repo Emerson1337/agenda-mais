@@ -25,6 +25,7 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 import { MonthsAheadSelector } from "./MonthsAheadSelector";
 import { useGetScheduleQuery } from "@/private/agenda/infrastructure/schedule.api";
+import React from "react";
 
 export default function CreateSchedule() {
   const { mutate, isPending, isSuccess, error } = useScheduleMutation();
@@ -88,7 +89,7 @@ export default function CreateSchedule() {
         <div className="flex justify-center mb-4 items-center">
           <Button
             disabled={!isSubmitEnabled || isPending}
-            className="text-foreground w-28"
+            className="w-28"
             type="submit"
           >
             Salvar
