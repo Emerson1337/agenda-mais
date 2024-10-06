@@ -1,0 +1,181 @@
+"use client";
+
+import { useState, useEffect, useCallback } from "react";
+import Image from "next/image";
+import { BusinessSchedule, Slot } from "@/shared/types/times-available";
+import { notFound, useRouter } from "next/navigation";
+import { ReloadIcon } from "@radix-ui/react-icons";
+import { useBusinessContext } from "@/public/b/[username]/utils/context/BusinessDataContext";
+import { SocialNetwork } from "@/public/b/[username]/agendar/presentation/components/SocialNetwork";
+import { Service } from "@/shared/types/business";
+import BookAppointment from "@/public/b/[username]/agendar/presentation/components/BookAppointment";
+import ChooseService from "@/public/b/[username]/agendar/presentation/components/ChooseService";
+import { BookAppointmentData } from "@/shared/types/appointment";
+import { bookAppointment } from "@/server-actions/bookAppointment";
+import { toast } from "react-toastify";
+import { parseRequestError } from "@/shared/utils/errorParser";
+import { WhatsappService } from "@/shared/services/whatsapp.service";
+import { format, parseISO } from "date-fns";
+import { numberUtils } from "@/shared/utils/numberUtils";
+import { dateUtils } from "@/shared/utils/dateUtils";
+
+interface Props {
+  datesAvailable: BusinessSchedule;
+}
+
+const LayoutOne = ({ datesAvailable }: Props): JSX.Element => {
+  const [selectedDate, setSelectedDate] = useState<Slot>();
+  const [selectedTime, setSelectedTime] = useState<string>();
+  const [step, setStep] = useState<number>(1);
+  const [selectedService, setSelectedService] = useState<Service>();
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(true);
+
+  const { business, services } = useBusinessContext();
+  if (!business) notFound();
+
+  const router = useRouter();
+
+  useEffect(() => {
+    const isOnboarded = localStorage.getItem("onboarding");
+    if (!isOnboarded) {
+      router.replace(`/b/${business.username}`);
+    }
+    setLoading(false);
+  }, [business, router]);
+
+  const handleFinish = useCallback(
+    async ({
+      clientName,
+      phone,
+      date,
+      notes,
+      time,
+    }: Omit<BookAppointmentData, "scheduleId" | "serviceId">) => {
+      if (!selectedService) {
+        return toast.error("Serviço não selecionado");
+      }
+
+      try {
+        const response = await bookAppointment(business.username, {
+          clientName,
+          phone,
+          date,
+          notes,
+          time,
+          serviceId: selectedService.id,
+          scheduleId: datesAvailable.scheduleId,
+        });
+
+        toast.success(response.message);
+        setIsOpen(false);
+
+        // Delay WhatsApp notification for better UX
+        setTimeout(() => {
+          WhatsappService.sendAppointmentConfirmation({
+            name: clientName,
+            code: response.appointment.code,
+            day: format(parseISO(date), "dd/MM/yyyy"),
+            time,
+            phone,
+            service: {
+              name: selectedService.name,
+              price: numberUtils.convertToMonetaryBRL(selectedService.price),
+              notes: notes,
+              duration: dateUtils.convertToMinutes(
+                selectedService.timeDuration
+              ),
+            },
+          });
+        }, 3000);
+      } catch (error) {
+        const parsedError = parseRequestError(error);
+        toast.error(parsedError.message);
+      }
+    },
+    [selectedService, business, datesAvailable.scheduleId]
+  );
+
+  if (loading) {
+    return <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />;
+  }
+
+  return (
+    <div className="h-full w-full flex flex-wrap justify-center between">
+      <div className="shadow-lg transform duration-200 ease-in-out w-full flex flex-col">
+        {/* Header Section with Image */}
+        <div className="relative h-32 overflow-hidden">
+          <Image
+            className="w-full"
+            src="https://images.unsplash.com/photo-1605379399642-870262d3d051?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=2000&q=80"
+            alt="Business Cover"
+            layout="fill"
+            objectFit="cover"
+          />
+          <div className="absolute inset-x-0 top-16 h-16 bg-gradient-to-t from-background to-transparent pointer-events-none"></div>
+        </div>
+
+        {/* Profile Image & Status */}
+        <div className="flex flex-col items-center justify-center px-5 -mt-12 relative z-10">
+          <Image
+            className="h-32 w-32 bg-background p-2 rounded-full"
+            src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=2000&q=80"
+            alt="Profile Picture"
+            width={200}
+            height={200}
+          />
+          <div className="flex gap-2 mt-2">
+            <span className="relative flex h-3 w-3">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span>
+            </span>
+            <span className="text-xs font-light text-primary">
+              Atendendo agora
+            </span>
+          </div>
+        </div>
+        <div className="max-w-96 md:max-w-full self-center">
+          {/* Introduction Text */}
+          <div className="mt-8 px-4 text-center">
+            <p className="text-secondary-foreground text-xs font-thin">
+              Serviço de qualidade e os melhores cortes de cabelo que você pode
+              encontrar!
+            </p>
+          </div>
+
+          {/* Main Content */}
+          <div className="w-full">
+            {step === 1 ? (
+              <ChooseService
+                services={services}
+                onSelectService={(service) => {
+                  setSelectedService(service);
+                  setStep(2);
+                }}
+              />
+            ) : (
+              <BookAppointment
+                datesAvailable={datesAvailable.slots}
+                selectedDate={selectedDate}
+                setSelectedDate={setSelectedDate}
+                selectedTime={selectedTime}
+                setSelectedTime={setSelectedTime}
+                moveBack={() => setStep(1)}
+                open={isOpen}
+                setOpen={setIsOpen}
+                finish={handleFinish}
+              />
+            )}
+          </div>
+        </div>
+      </div>
+
+      {/* Social Network */}
+      <div className="w-full flex items-center justify-center mt-12 mb-8">
+        <SocialNetwork className="text-foreground h-8" />
+      </div>
+    </div>
+  );
+};
+
+export default LayoutOne;

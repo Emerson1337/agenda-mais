@@ -1,5 +1,7 @@
 import { startOfToday, subDays } from "date-fns";
 import { DateExceptions } from "@/private/agenda/domain/schedule.schema";
+import { formatDuration, intervalToDuration } from "date-fns";
+import { ptBR } from "date-fns/locale";
 
 export namespace dateUtils {
   export const getTimes = (start: number, end: number): string[] => {
@@ -35,5 +37,32 @@ export namespace dateUtils {
     }
 
     return dates;
+  };
+
+  export const convertToMinutes = (duration: string) => {
+    const [value, unit] = duration.split(" ");
+    let numericValue = parseInt(value, 10);
+
+    let minutes = 0;
+
+    switch (unit) {
+      case "hours":
+      case "hour":
+        minutes = numericValue * 60; // 1 hour = 60 minutes
+        break;
+      case "minutes":
+      case "minute":
+        minutes = numericValue; // Already in minutes
+        break;
+      default:
+        return "Unsupported unit"; // In case an invalid unit is provided
+    }
+
+    const formattedDuration = formatDuration(
+      intervalToDuration({ start: 0, end: minutes * 60 * 1000 }),
+      { locale: ptBR }
+    );
+
+    return formattedDuration;
   };
 }

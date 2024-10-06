@@ -12,6 +12,7 @@ import {
 } from "date-fns";
 import { dateUtils } from "@/shared/utils/dateUtils";
 import { DateExceptions } from "@/private/agenda/domain/schedule.schema";
+import React from "react";
 
 export interface SchedulesCalendarProps {
   times: string[];

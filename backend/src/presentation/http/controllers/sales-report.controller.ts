@@ -18,7 +18,7 @@ export class SalesReportController {
     try {
       const userId = request['user'].id;
 
-      return response.status(201).send(
+      return response.status(200).send(
         ok(
           await this.salesReportService.getSales({
             managerId: userId,

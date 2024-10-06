@@ -29,7 +29,7 @@ export class BookingManagerController {
   async create(@Body() manager: CreateManagerDto, @Res() response: Response) {
     try {
       return response
-        .status(201)
+        .status(200)
         .send(ok(await this.bookingManagersService.create(manager)));
     } catch (error) {
       return response.status(error.status).send(handleError(error));
@@ -60,7 +60,7 @@ export class BookingManagerController {
     try {
       const userId = request['user'].id;
 
-      return response.status(201).send(
+      return response.status(200).send(
         ok(
           await this.bookingManagersService.update({
             managerId: userId,
@@ -84,7 +84,7 @@ export class BookingManagerController {
     try {
       const userId = request['user'].id;
 
-      return response.status(201).send(
+      return response.status(200).send(
         ok(
           await this.bookingManagersService.updatePicture({
             managerId: userId,

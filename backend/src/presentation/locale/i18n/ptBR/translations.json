@@ -34,7 +34,8 @@
   },
   "APPOINTMENT": {
     "CREATED": "Horário agendado com sucesso!",
-    "CANCELLED": "Agendamento cancelado com sucesso!"
+    "CANCELLED": "Agendamento cancelado com sucesso!",
+    "ERROR": "Não foi possível agendar o atendimento. Ele pode ter sido marcado por outra pessoa enquanto você tentava. Por favor, tente novamente."
   },
   "SCHEDULES": {
     "DELETED": "Agenda deletada com sucesso!"

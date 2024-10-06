@@ -1,3 +1,3 @@
 export function generateFrontendUrl(path: string): string {
-  return `${process.env.URL_FRONTEND}/${path}`;
+  return `${process.env.REACT_APP_BASE_URL}/${path}`;
 }

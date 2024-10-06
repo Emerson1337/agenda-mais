@@ -1,9 +1,11 @@
 import { PhoneInput } from "@/components/ui/phone-input";
-import { useFormContext } from "react-hook-form";
 
-const FillPhoneNumber = (): JSX.Element => {
-  const { setValue } = useFormContext();
+interface Props {
+  onChange?: (value: string) => void;
+  value?: string;
+}
 
+const FillPhoneNumber = ({ onChange, value }: Props): JSX.Element => {
   return (
     <div>
       <div className="text-2xl font-thin mb-8">
@@ -15,9 +17,8 @@ const FillPhoneNumber = (): JSX.Element => {
         </p>
       </div>
       <PhoneInput
-        onChange={(value) => {
-          setValue("phone", value);
-        }}
+        onChange={onChange}
+        value={value}
         countries={["BR"]}
         defaultCountry="BR"
         autoFocus

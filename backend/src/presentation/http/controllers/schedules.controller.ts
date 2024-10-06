@@ -21,7 +21,7 @@ export class SchedulesController {
     try {
       const userId = request['user'].id;
 
-      return response.status(201).send(
+      return response.status(200).send(
         ok(
           await this.schedulesService.createOrUpdate({
             ...schedule,
@@ -41,7 +41,7 @@ export class SchedulesController {
       const userId = request['user'].id;
 
       return response
-        .status(201)
+        .status(200)
         .send(ok(await this.schedulesService.list({ managerId: userId })));
     } catch (error) {
       return response.status(error.status).send(handleError(error));
@@ -58,7 +58,7 @@ export class SchedulesController {
     try {
       const userId = request['user'].id;
 
-      return response.status(201).send(
+      return response.status(200).send(
         ok(
           await this.schedulesService.delete({
             schedulesIds: payload.schedulesIds,
@@ -81,7 +81,7 @@ export class SchedulesController {
     try {
       const userId = request['user'].id;
 
-      return response.status(201).send(
+      return response.status(200).send(
         ok(
           await this.schedulesService.cancelAppointment({
             appointmentId: payload.appointmentId,
@@ -101,7 +101,7 @@ export class SchedulesController {
       const userId = request['user'].id;
 
       return response
-        .status(201)
+        .status(200)
         .send(
           ok(
             await this.schedulesService.listAppointments({ managerId: userId }),

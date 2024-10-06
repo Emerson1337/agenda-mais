@@ -47,7 +47,8 @@ const ToggleGroupItem = React.forwardRef<
           variant: context.variant || variant,
           size: context.size || size,
         }),
-        className + " aria-pressed:!bg-primary aria-checked:!bg-primary"
+        className +
+          " aria-pressed:!bg-primary aria-pressed:!text-primary-foreground aria-checked:!text-primary-foreground aria-checked:!bg-primary"
       )}
       {...props}
     >
