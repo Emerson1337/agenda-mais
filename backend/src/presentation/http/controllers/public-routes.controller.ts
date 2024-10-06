@@ -93,4 +93,26 @@ export class PublicRoutesController {
       return response.status(error.status).send(handleError(error));
     }
   }
+
+  @Get('historico/:phone')
+  async phoneHistory(
+    @Param('phone') phone: string,
+    @Param('managerUsername') managerUsername: string,
+    @Res() response: Response,
+  ) {
+    try {
+      return response.status(200).send(
+        ok(
+          await this.appointmentsService.getPhoneHistory({
+            phone,
+            username: managerUsername,
+          }),
+        ),
+      );
+    } catch (error) {
+      console.log(error);
+
+      return response.status(error.status).send(handleError(error));
+    }
+  }
 }

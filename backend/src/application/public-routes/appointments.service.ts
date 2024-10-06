@@ -18,6 +18,7 @@ import {
   IOCancel,
   ISlots,
 } from './dtos/type';
+import { SalesReport } from '@/domain/entities/sales-report.entity';
 
 @Injectable()
 export class AppointmentsService {
@@ -214,5 +215,29 @@ export class AppointmentsService {
         lang: I18nContext.current().lang,
       }),
     };
+  }
+
+  public async getPhoneHistory({
+    phone,
+    username,
+  }: {
+    phone: string;
+    username: string;
+  }): Promise<SalesReport[] | Error> {
+    const manager =
+      await this.bookingManagersRepository.findByUsername(username);
+
+    if (!manager)
+      throw new InvalidParamError(
+        'managerUsername',
+        this.i18n.t('translations.INVALID_FIELD.MISSING_DATA.USERNAME', {
+          lang: I18nContext.current().lang,
+        }),
+      );
+
+    return await this.salesReportService.getPhoneReports({
+      phone,
+      managerId: manager.id,
+    });
   }
 }

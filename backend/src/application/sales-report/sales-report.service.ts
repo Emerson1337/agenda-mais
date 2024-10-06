@@ -58,4 +58,17 @@ export class SalesReportService {
       date,
     });
   }
+
+  async getPhoneReports({
+    phone,
+    managerId,
+  }: {
+    phone: string;
+    managerId: string;
+  }) {
+    return await this.salesReportRepository.getReportsByPhoneAndManagerId({
+      phone,
+      managerId,
+    });
+  }
 }
