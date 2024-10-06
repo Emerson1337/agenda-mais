@@ -101,8 +101,8 @@ const LayoutOne = ({ datesAvailable }: Props): JSX.Element => {
   }
 
   return (
-    <div className="h-full w-full flex flex-wrap items-center justify-center">
-      <div className="shadow-lg transform duration-200 ease-in-out w-full">
+    <div className="h-full w-full flex flex-wrap justify-center between">
+      <div className="shadow-lg transform duration-200 ease-in-out w-full flex flex-col">
         {/* Header Section with Image */}
         <div className="relative h-32 overflow-hidden">
           <Image
@@ -134,38 +134,39 @@ const LayoutOne = ({ datesAvailable }: Props): JSX.Element => {
             </span>
           </div>
         </div>
+        <div className="max-w-96 md:max-w-full self-center">
+          {/* Introduction Text */}
+          <div className="mt-8 px-4 text-center">
+            <p className="text-secondary-foreground text-xs font-thin">
+              Serviço de qualidade e os melhores cortes de cabelo que você pode
+              encontrar!
+            </p>
+          </div>
 
-        {/* Introduction Text */}
-        <div className="mt-8 px-4 text-center">
-          <p className="text-secondary-foreground text-xs font-thin">
-            Serviço de qualidade e os melhores cortes de cabelo que você pode
-            encontrar!
-          </p>
-        </div>
-
-        {/* Main Content */}
-        <div className="md:px-8 px-1.5 w-full mx-auto">
-          {step === 1 ? (
-            <ChooseService
-              services={services}
-              onSelectService={(service) => {
-                setSelectedService(service);
-                setStep(2);
-              }}
-            />
-          ) : (
-            <BookAppointment
-              datesAvailable={datesAvailable.slots}
-              selectedDate={selectedDate}
-              setSelectedDate={setSelectedDate}
-              selectedTime={selectedTime}
-              setSelectedTime={setSelectedTime}
-              moveBack={() => setStep(1)}
-              open={isOpen}
-              setOpen={setIsOpen}
-              finish={handleFinish}
-            />
-          )}
+          {/* Main Content */}
+          <div className="w-full">
+            {step === 1 ? (
+              <ChooseService
+                services={services}
+                onSelectService={(service) => {
+                  setSelectedService(service);
+                  setStep(2);
+                }}
+              />
+            ) : (
+              <BookAppointment
+                datesAvailable={datesAvailable.slots}
+                selectedDate={selectedDate}
+                setSelectedDate={setSelectedDate}
+                selectedTime={selectedTime}
+                setSelectedTime={setSelectedTime}
+                moveBack={() => setStep(1)}
+                open={isOpen}
+                setOpen={setIsOpen}
+                finish={handleFinish}
+              />
+            )}
+          </div>
         </div>
       </div>
 

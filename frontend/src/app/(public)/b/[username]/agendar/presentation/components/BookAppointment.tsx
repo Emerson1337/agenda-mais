@@ -106,9 +106,11 @@ const BookAppointment: React.FC<BookAppointmentProps> = ({
   return (
     <>
       {/* Back Button */}
-      <Button onClick={moveBack} className="flex gap-2 justify-between">
-        <ArrowLeftIcon /> <span className="font-bold">Voltar</span>
-      </Button>
+      <div className="w-full flex justify-center mt-6">
+        <Button onClick={moveBack} className="flex gap-2 justify-between">
+          <ArrowLeftIcon /> <span className="font-bold">Voltar</span>
+        </Button>
+      </div>
 
       {/* Calendar */}
       <div className="flex justify-center h-98 mt-8">
