@@ -4,6 +4,8 @@ import { fetchBusinessData } from "@/server-actions/fetchBusinessData";
 import { BusinessProvider } from "./utils/context/BusinessDataContext";
 import { Suspense } from "react";
 import { ReloadIcon } from "@radix-ui/react-icons";
+import { ScheduleOptions } from "./components/ScheduleOptions";
+import { SocialNetwork } from "./agendar/presentation/components/SocialNetwork";
 
 interface RootLayoutProps {
   children: React.ReactNode;
@@ -40,7 +42,14 @@ export default function RootLayout({
         </div>
       }
     >
-      <BusinessWrapper username={params.username}>{children}</BusinessWrapper>
+      <BusinessWrapper username={params.username}>
+        <div className="h-screen">
+          <div className="absolute mt-4 z-20 self-center w-full flex items-center justify-center">
+            <ScheduleOptions />
+          </div>
+          {children}
+        </div>
+      </BusinessWrapper>
     </Suspense>
   );
 }

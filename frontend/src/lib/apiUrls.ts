@@ -16,6 +16,10 @@ export const apiUrls = {
     availableTimes: {
       get: (username: string): string => `/api/${username}/horarios`,
     },
+    history: {
+      get: ({ username, phone }: { phone: string; username: string }): string =>
+        `/api/${username}/historico/${phone}`,
+    },
   },
   internal: {
     schedule: {

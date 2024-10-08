@@ -101,7 +101,7 @@ const LayoutOne = ({ datesAvailable }: Props): JSX.Element => {
   }
 
   return (
-    <div className="h-full w-full flex flex-wrap justify-center between">
+    <div className="h-full w-full flex flex-wrap justify-evenly">
       <div className="shadow-lg transform duration-200 ease-in-out w-full flex flex-col">
         {/* Header Section with Image */}
         <div className="relative h-32 overflow-hidden">
@@ -169,10 +169,8 @@ const LayoutOne = ({ datesAvailable }: Props): JSX.Element => {
           </div>
         </div>
       </div>
-
-      {/* Social Network */}
-      <div className="w-full flex items-center justify-center mt-12 mb-8">
-        <SocialNetwork className="text-foreground h-8" />
+      <div className="flex justify-center my-4 absolute bottom-5">
+        <SocialNetwork className="text-foreground h-6" />
       </div>
     </div>
   );
