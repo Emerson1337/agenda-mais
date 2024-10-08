@@ -62,6 +62,8 @@ export class TypeOrmSalesReportRepository implements SalesReportRepository {
       {
         managerId: report.managerId,
         time: report.time,
+        serviceName: report.serviceName,
+        notes: report.notes,
         date: report.date,
         phone: report.phone,
       },

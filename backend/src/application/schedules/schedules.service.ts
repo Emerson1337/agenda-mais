@@ -79,6 +79,8 @@ export class SchedulesService {
       managerId: userId,
       phone: appointmentDeleted.phone,
       price: service.price,
+      serviceName: service.name,
+      notes: appointmentDeleted.notes,
       date: appointmentDeleted.date,
       time: appointmentDeleted.time,
       status: AppointmentStatus.CANCELLED,

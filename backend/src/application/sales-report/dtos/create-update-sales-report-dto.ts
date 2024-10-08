@@ -1,6 +1,7 @@
 import {
   IsEnum,
   IsMongoId,
+  IsNotEmpty,
   IsNumber,
   IsOptional,
   IsPhoneNumber,
@@ -26,6 +27,12 @@ export class CreateOrUpdateSalesReportDto {
 
   @IsPhoneNumber()
   phone: string;
+
+  @IsNotEmpty()
+  serviceName: string;
+
+  @IsNotEmpty()
+  notes: string;
 
   @IsOptional()
   timeDuration?: string;

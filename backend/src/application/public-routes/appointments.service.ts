@@ -104,6 +104,8 @@ export class AppointmentsService {
       date: appointment.date,
       time: appointment.time,
       managerId: manager.id,
+      serviceName: service.name,
+      notes: appointment.notes,
       phone: phone,
       price: service.price,
       timeDuration: service.timeDuration,
@@ -207,6 +209,8 @@ export class AppointmentsService {
       phone: appointment.phone,
       price: service.price,
       date: appointment.date,
+      serviceName: service.name,
+      notes: appointment.notes,
       time: appointment.time,
       status: AppointmentStatus.CANCELLED,
     });
