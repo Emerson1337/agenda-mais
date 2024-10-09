@@ -70,13 +70,19 @@ export class SalesReportService {
   async getPhoneReports({
     phone,
     managerId,
+    limit,
+    offset,
   }: {
     phone: string;
     managerId: string;
+    limit?: number;
+    offset?: number;
   }) {
     return await this.salesReportRepository.getReportsByPhoneAndManagerId({
       phone,
       managerId,
+      limit,
+      offset,
     });
   }
 }

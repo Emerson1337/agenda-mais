@@ -226,9 +226,13 @@ export class AppointmentsService {
   public async getPhoneHistory({
     phone,
     username,
+    limit,
+    offset,
   }: {
     phone: string;
     username: string;
+    limit: number;
+    offset: number;
   }): Promise<SalesReport[] | Error> {
     const manager =
       await this.bookingManagersRepository.findByUsername(username);
@@ -244,6 +248,8 @@ export class AppointmentsService {
     return await this.salesReportService.getPhoneReports({
       phone,
       managerId: manager.id,
+      limit,
+      offset,
     });
   }
 }

@@ -1,14 +1,18 @@
-import { useGetPhoneHistoryQuery } from "@/app/(public)/b/[username]/historico/infrastructure/phone-history.api";
+import { useGetPhoneHistoryQuery } from "@/app/(public)/b/[username]/(onboarded)/historico/infrastructure/phone-history.api";
 
 export const useGetPhoneHistory = ({
   username,
   phone,
+  limit,
+  offset,
 }: {
   username: string;
   phone: string;
+  limit?: number;
+  offset?: number;
 }) => {
   const { isPending, error, isError, data, isFetching } =
-    useGetPhoneHistoryQuery({ username, phone });
+    useGetPhoneHistoryQuery({ username, phone, limit, offset });
 
   return {
     isPending,

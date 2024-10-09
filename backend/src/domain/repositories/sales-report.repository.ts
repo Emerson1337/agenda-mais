@@ -19,5 +19,7 @@ export abstract class SalesReportRepository {
   }: {
     phone: string;
     managerId: string;
+    limit?: number;
+    offset?: number;
   }): Promise<SalesReport[]>;
 }

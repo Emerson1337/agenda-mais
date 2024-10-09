@@ -9,8 +9,6 @@ interface Props {
 }
 
 export default function Page({ params }: Props) {
-  console.log("🟢🟢🟢🟢 params", params.username);
-
   return (
     <CustomMotion className="flex items-center justify-center">
       <AppointmentsHistory username={params.username} />

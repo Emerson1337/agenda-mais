@@ -16,11 +16,20 @@ export class TypeOrmSalesReportRepository implements SalesReportRepository {
   async getReportsByPhoneAndManagerId({
     phone,
     managerId,
+    offset,
+    limit,
   }: {
     phone: string;
     managerId: string;
+    offset: number;
+    limit: number;
   }): Promise<SalesReport[]> {
-    return await this.repository.find({ where: { phone, managerId } });
+    return await this.repository.find({
+      where: { phone, managerId },
+      order: { createdAt: 'DESC' },
+      skip: offset,
+      take: limit,
+    });
   }
   async cancelSellByAppointmentId(appointmentId: string): Promise<boolean> {
     await this.repository.findOneAndDelete({ appointmentId });

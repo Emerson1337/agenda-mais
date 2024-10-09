@@ -5,6 +5,7 @@ import {
   Get,
   Param,
   Post,
+  Query,
   Res,
 } from '@nestjs/common';
 import { handleError, ok } from '@presentation/helpers/http.helper';
@@ -98,6 +99,8 @@ export class PublicRoutesController {
   async phoneHistory(
     @Param('phone') phone: string,
     @Param('managerUsername') managerUsername: string,
+    @Query('limit') limit = '5',
+    @Query('offset') offset = '0',
     @Res() response: Response,
   ) {
     try {
@@ -106,6 +109,8 @@ export class PublicRoutesController {
           await this.appointmentsService.getPhoneHistory({
             phone,
             username: managerUsername,
+            limit: parseInt(limit),
+            offset: parseInt(offset),
           }),
         ),
       );
