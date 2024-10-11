@@ -138,8 +138,7 @@ const LayoutOne = ({ datesAvailable }: Props): JSX.Element => {
           {/* Introduction Text */}
           <div className="mt-8 px-4 text-center">
             <p className="text-secondary-foreground text-xs font-thin">
-              Serviço de qualidade e os melhores cortes de cabelo que você pode
-              encontrar!
+              {business.welcomeMessage}
             </p>
           </div>
 
@@ -169,7 +168,7 @@ const LayoutOne = ({ datesAvailable }: Props): JSX.Element => {
           </div>
         </div>
       </div>
-      <div className="flex justify-center my-4 absolute bottom-5">
+      <div className="flex justify-center my-4">
         <SocialNetwork className="text-foreground h-6" />
       </div>
     </div>
