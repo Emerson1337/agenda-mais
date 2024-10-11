@@ -2,7 +2,7 @@ import CustomMotion from "@/components/ui/custom-motion";
 import { ptBR } from "date-fns/locale";
 import { setDefaultOptions } from "date-fns";
 import Appointment from "./presentation/screens/Appointment";
-import { fetchAvailableTimes } from "@/server-actions/fetchAvailableTimes";
+import { fetchAvailableTimes } from "@/api/fetchAvailableTimes";
 setDefaultOptions({ locale: ptBR });
 
 interface Props {

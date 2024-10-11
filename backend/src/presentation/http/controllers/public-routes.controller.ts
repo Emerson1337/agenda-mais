@@ -73,10 +73,11 @@ export class PublicRoutesController {
     }
   }
 
-  @Delete('cancelar-agendamento/:appointmentCode')
+  @Delete('cancelar-agendamento/:appointmentCode/:phone')
   async cancel(
     @Param('appointmentCode') appointmentCode: string,
     @Param('managerUsername') managerUsername: string,
+    @Param('phone') phone: string,
     @Res() response: Response,
   ) {
     try {
@@ -85,6 +86,7 @@ export class PublicRoutesController {
           await this.appointmentsService.cancel({
             appointmentCode,
             username: managerUsername,
+            phone,
           }),
         ),
       );

@@ -11,7 +11,7 @@ import { Service } from "@/shared/types/business";
 import BookAppointment from "@/public/b/[username]/(onboarded)/agendar/presentation/components/BookAppointment";
 import ChooseService from "@/public/b/[username]/(onboarded)/agendar/presentation/components/ChooseService";
 import { BookAppointmentData } from "@/shared/types/appointment";
-import { bookAppointment } from "@/server-actions/bookAppointment";
+import { bookAppointment } from "@/api/bookAppointment";
 import { toast } from "react-toastify";
 import { parseRequestError } from "@/shared/utils/errorParser";
 import { WhatsappService } from "@/shared/services/whatsapp.service";

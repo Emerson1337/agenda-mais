@@ -49,6 +49,7 @@ export interface IGetSlotAvailable {
 export interface ICancel {
   username: string;
   appointmentCode: string;
+  phone: string;
 }
 
 export interface IOCancel {

@@ -4,10 +4,12 @@ export const apiUrls = {
       cancel: ({
         username,
         code,
+        phone,
       }: {
         username: string;
         code: string;
-      }): string => `/api/${username}/cancelar-agendamento/${code}`,
+        phone: string;
+      }): string => `/api/${username}/cancelar-agendamento/${code}/${phone}`,
       book: (username: string): string => `/api/${username}/agendamentos`,
     },
     business: {

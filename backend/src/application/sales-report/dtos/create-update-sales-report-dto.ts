@@ -32,6 +32,9 @@ export class CreateOrUpdateSalesReportDto {
   clientName: string;
 
   @IsNotEmpty()
+  code: string;
+
+  @IsNotEmpty()
   serviceName: string;
 
   @IsNotEmpty()

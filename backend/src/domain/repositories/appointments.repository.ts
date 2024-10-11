@@ -26,9 +26,11 @@ export abstract class AppointmentsRepository {
   abstract findActiveByAppointmentCode({
     code,
     managerId,
+    phone,
   }: {
     code: string;
     managerId: string;
+    phone: string;
   }): Promise<Appointments | null>;
   abstract getByScheduleId({
     scheduleId,
