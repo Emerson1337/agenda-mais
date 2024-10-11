@@ -4,11 +4,12 @@ import { SchedulesController } from '@/presentation/http/controllers/schedules.c
 
 import { SchedulesService } from './schedules.service';
 import { LocaleModule } from '@presentation/locale/locale.module';
+import { SalesReportService } from '@/application/sales-report/sales-report.service';
 
 @Module({
   imports: [DatabaseModule, LocaleModule],
   controllers: [SchedulesController],
-  providers: [SchedulesService],
+  providers: [SchedulesService, SalesReportService],
   exports: [SchedulesService],
 })
 export class SchedulesModule {}

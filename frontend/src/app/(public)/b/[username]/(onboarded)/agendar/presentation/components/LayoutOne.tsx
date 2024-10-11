@@ -6,10 +6,10 @@ import { BusinessSchedule, Slot } from "@/shared/types/times-available";
 import { notFound, useRouter } from "next/navigation";
 import { ReloadIcon } from "@radix-ui/react-icons";
 import { useBusinessContext } from "@/public/b/[username]/utils/context/BusinessDataContext";
-import { SocialNetwork } from "@/public/b/[username]/agendar/presentation/components/SocialNetwork";
+import { SocialNetwork } from "@/public/b/[username]/(onboarded)/agendar/presentation/components/SocialNetwork";
 import { Service } from "@/shared/types/business";
-import BookAppointment from "@/public/b/[username]/agendar/presentation/components/BookAppointment";
-import ChooseService from "@/public/b/[username]/agendar/presentation/components/ChooseService";
+import BookAppointment from "@/public/b/[username]/(onboarded)/agendar/presentation/components/BookAppointment";
+import ChooseService from "@/public/b/[username]/(onboarded)/agendar/presentation/components/ChooseService";
 import { BookAppointmentData } from "@/shared/types/appointment";
 import { bookAppointment } from "@/server-actions/bookAppointment";
 import { toast } from "react-toastify";
@@ -101,7 +101,7 @@ const LayoutOne = ({ datesAvailable }: Props): JSX.Element => {
   }
 
   return (
-    <div className="h-full w-full flex flex-wrap justify-center between">
+    <div className="h-full w-full flex flex-wrap justify-evenly">
       <div className="shadow-lg transform duration-200 ease-in-out w-full flex flex-col">
         {/* Header Section with Image */}
         <div className="relative h-32 overflow-hidden">
@@ -169,10 +169,8 @@ const LayoutOne = ({ datesAvailable }: Props): JSX.Element => {
           </div>
         </div>
       </div>
-
-      {/* Social Network */}
-      <div className="w-full flex items-center justify-center mt-12 mb-8">
-        <SocialNetwork className="text-foreground h-8" />
+      <div className="flex justify-center my-4 absolute bottom-5">
+        <SocialNetwork className="text-foreground h-6" />
       </div>
     </div>
   );

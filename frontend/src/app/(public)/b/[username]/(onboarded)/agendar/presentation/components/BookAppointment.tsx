@@ -12,13 +12,14 @@ import {
 import { Slot } from "@/shared/types/times-available";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { ptBR } from "date-fns/locale";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { ArrowLeftIcon } from "@radix-ui/react-icons";
 import { Textarea } from "@/components/ui/textarea";
 import { BookAppointmentData, Service } from "@/shared/types/appointment";
 import { PhoneInput } from "@/components/ui/phone-input";
 import { Input } from "@/components/ui/input";
+import { useClientInfo } from "@/lib/hooks";
 
 // Define the interface for the component props
 interface BookAppointmentProps {
@@ -33,19 +34,6 @@ interface BookAppointmentProps {
   selectedService?: Service;
   moveBack: () => void;
 }
-
-// Custom hook to manage client information from local storage
-const useClientInfo = () => {
-  const [clientName, setClientName] = useState("");
-  const [clientPhone, setClientPhone] = useState("");
-
-  useEffect(() => {
-    setClientName(localStorage.getItem("name") || "");
-    setClientPhone(localStorage.getItem("phone") || "");
-  }, []);
-
-  return { clientName, setClientName, clientPhone, setClientPhone };
-};
 
 const BookAppointment: React.FC<BookAppointmentProps> = ({
   datesAvailable,

@@ -7,11 +7,16 @@ import { DeleteScheduleDto } from './dtos/delete-schedule.dto';
 import { I18nContext, I18nService } from 'nestjs-i18n';
 import { Appointments } from '@/domain/entities/appointment.entity';
 import { IDelete } from './dtos/types';
+import { SalesReportService } from '@/application/sales-report/sales-report.service';
+import { ManagerServicesRepository } from '@/domain/repositories/manager-services.repository';
+import { AppointmentStatus } from '@/domain/entities/enums/appointment-status.enum';
 
 @Injectable()
 export class SchedulesService {
   constructor(
     private readonly schedulesRepository: SchedulesRepository,
+    private readonly managerServicesRepository: ManagerServicesRepository,
+    private readonly salesReportService: SalesReportService,
     private readonly appointmentsRepository: AppointmentsRepository,
     private readonly i18n: I18nService,
   ) {}
@@ -63,6 +68,22 @@ export class SchedulesService {
     const appointmentDeleted = await this.appointmentsRepository.deleteById({
       id: appointmentId,
       managerId: userId,
+    });
+
+    const service = await this.managerServicesRepository.findById({
+      managerId: userId,
+      managerServiceId: appointmentDeleted.serviceId,
+    });
+
+    await this.salesReportService.update({
+      managerId: userId,
+      phone: appointmentDeleted.phone,
+      price: service.price,
+      serviceName: service.name,
+      notes: appointmentDeleted.notes,
+      date: appointmentDeleted.date,
+      time: appointmentDeleted.time,
+      status: AppointmentStatus.CANCELLED,
     });
 
     return appointmentDeleted;

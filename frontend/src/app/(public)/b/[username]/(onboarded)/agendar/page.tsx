@@ -12,10 +12,8 @@ interface Props {
 export default async function Page({ params }: Props) {
   const timesAvailable = await fetchAvailableTimes(params.username);
   return (
-    <CustomMotion>
-      <div className="w-full flex flex-col items-center justify-center relative">
-        <Appointment timesAvailable={timesAvailable} />
-      </div>
+    <CustomMotion className="h-full">
+      <Appointment timesAvailable={timesAvailable} />
     </CustomMotion>
   );
 }

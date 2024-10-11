@@ -13,4 +13,13 @@ export abstract class SalesReportRepository {
   }): Promise<SalesReport[] | null>;
   abstract getAllSales(managerId: string): Promise<SalesReport[] | null>;
   abstract cancelSellByAppointmentId(appointmentId: string): Promise<boolean>;
+  abstract getReportsByPhoneAndManagerId({
+    phone,
+    managerId,
+  }: {
+    phone: string;
+    managerId: string;
+    limit?: number;
+    offset?: number;
+  }): Promise<SalesReport[]>;
 }

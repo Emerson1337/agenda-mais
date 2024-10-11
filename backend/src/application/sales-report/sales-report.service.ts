@@ -17,6 +17,8 @@ export class SalesReportService {
     phone,
     price,
     date,
+    serviceName,
+    notes,
     time,
     timeDuration,
     status = AppointmentStatus.ACTIVE,
@@ -26,6 +28,8 @@ export class SalesReportService {
       phone,
       price,
       date,
+      serviceName,
+      notes,
       timeDuration,
       status,
       time,
@@ -37,6 +41,8 @@ export class SalesReportService {
     phone,
     price,
     date,
+    serviceName,
+    notes,
     time,
     timeDuration,
     status = AppointmentStatus.ACTIVE,
@@ -46,6 +52,8 @@ export class SalesReportService {
       phone,
       price,
       date,
+      serviceName,
+      notes,
       timeDuration,
       status,
       time,
@@ -56,6 +64,25 @@ export class SalesReportService {
     return await this.salesReportRepository.getSalesByMonth({
       managerId,
       date,
+    });
+  }
+
+  async getPhoneReports({
+    phone,
+    managerId,
+    limit,
+    offset,
+  }: {
+    phone: string;
+    managerId: string;
+    limit?: number;
+    offset?: number;
+  }) {
+    return await this.salesReportRepository.getReportsByPhoneAndManagerId({
+      phone,
+      managerId,
+      limit,
+      offset,
     });
   }
 }

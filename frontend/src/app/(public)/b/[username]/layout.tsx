@@ -1,4 +1,3 @@
-import type { Metadata } from "next";
 import "@/app/globals.css";
 import { fetchBusinessData } from "@/server-actions/fetchBusinessData";
 import { BusinessProvider } from "./utils/context/BusinessDataContext";

@@ -78,7 +78,6 @@ export function SettingsItem({ tooltip = false }: Props) {
     <>
       {tooltip ? (
         <Tooltip>
-          <ThemeToggle />
           <TooltipTrigger asChild>
             <Link
               href="/settings"
@@ -95,7 +94,6 @@ export function SettingsItem({ tooltip = false }: Props) {
         </Tooltip>
       ) : (
         <>
-          <ThemeToggle />
           <Link
             href="/settings"
             className={`flex items-center gap-4 p-2.5 text-muted-foreground hover:text-foreground ${
