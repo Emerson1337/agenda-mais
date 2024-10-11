@@ -76,6 +76,12 @@ const BookAppointment: React.FC<BookAppointmentProps> = ({
     if (!selectedDate || !selectedTime) return;
 
     setConfirmOpen(true); // Open confirmation modal
+    setOpen(false); // Close the main dialog
+  };
+
+  const handleConfirmModalBack = () => {
+    setConfirmOpen(false);
+    setOpen(true);
   };
 
   // Finalize appointment
@@ -197,7 +203,7 @@ const BookAppointment: React.FC<BookAppointmentProps> = ({
               <strong>Observações:</strong>
               <span className="font-thin"> {notes || "Nenhuma"}</span>
             </p>
-            <p className="mt-2">
+            <p className="mt-2 flex flex-col gap-4">
               <strong>Nome:</strong>
               <Input
                 onChange={(event) => setClientName(event.target.value)}
@@ -206,7 +212,7 @@ const BookAppointment: React.FC<BookAppointmentProps> = ({
                 className="text-xl text-center"
               />
             </p>
-            <p className="mt-2">
+            <p className="mt-2 flex flex-col gap-4">
               <strong>Telefone:</strong>
               <PhoneInput
                 value={clientPhone}
@@ -218,7 +224,7 @@ const BookAppointment: React.FC<BookAppointmentProps> = ({
             </p>
           </div>
           <AlertDialogFooter>
-            <AlertDialogCancel onClick={() => setConfirmOpen(false)}>
+            <AlertDialogCancel onClick={handleConfirmModalBack}>
               Voltar
             </AlertDialogCancel>
             <AlertDialogAction

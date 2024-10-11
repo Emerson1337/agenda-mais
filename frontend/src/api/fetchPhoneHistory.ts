@@ -17,6 +17,8 @@ export interface AppointmentHistory {
   serviceName: string;
   notes: string;
   managerId: string;
+  code: string;
+  clientName: string;
   date: Date;
   time: string;
   status: AppointmentStatus;

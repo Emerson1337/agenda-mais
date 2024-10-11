@@ -1,7 +1,7 @@
 import React from "react";
 import { translateStatus } from "@/shared/utils/statusParser";
 import { cn } from "@/lib/utils";
-import { AppointmentStatus } from "@/server-actions/fetchPhoneHistory";
+import { AppointmentStatus } from "@/api/fetchPhoneHistory";
 
 type StatusBadgeProps = {
   variant: AppointmentStatus;

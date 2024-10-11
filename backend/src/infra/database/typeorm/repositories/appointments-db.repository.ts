@@ -81,13 +81,16 @@ export class TypeOrmAppointmentsRepository implements AppointmentsRepository {
   async findActiveByAppointmentCode({
     code,
     managerId,
+    phone,
   }: {
     code: string;
     managerId: string;
+    phone: string;
   }): Promise<Appointments | null> {
     return (await this.repository.findOne({
       where: {
         code,
+        phone,
         managerId,
       },
     })) as Appointments;

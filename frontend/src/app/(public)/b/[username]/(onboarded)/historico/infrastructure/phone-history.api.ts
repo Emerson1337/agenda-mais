@@ -1,8 +1,5 @@
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
-import {
-  AppointmentHistory,
-  fetchPhoneHistory,
-} from "@/server-actions/fetchPhoneHistory";
+import { AppointmentHistory, fetchPhoneHistory } from "@/api/fetchPhoneHistory";
 
 export const useGetPhoneHistoryQuery = ({
   username,

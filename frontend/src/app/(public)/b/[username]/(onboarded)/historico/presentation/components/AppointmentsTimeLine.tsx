@@ -1,8 +1,7 @@
+"use client";
+
 import React from "react";
-import {
-  AppointmentHistory,
-  AppointmentStatus,
-} from "@/server-actions/fetchPhoneHistory";
+import { AppointmentHistory, AppointmentStatus } from "@/api/fetchPhoneHistory";
 import { format, parseISO } from "date-fns";
 import { cn } from "@/lib/utils";
 import { dateUtils } from "@/shared/utils/dateUtils";
@@ -10,11 +9,14 @@ import { Button } from "@/components/ui/button";
 import { TrashIcon, CalendarIcon } from "@radix-ui/react-icons";
 import StatusBadge from "@/components/ui/badge-status";
 import { motion } from "framer-motion";
+import { useRouter } from "next/navigation";
 interface Props {
   appointmentsHistory: AppointmentHistory[];
 }
 
 const AppointmentsTimeLine = ({ appointmentsHistory }: Props): JSX.Element => {
+  const router = useRouter();
+
   return (
     <>
       {appointmentsHistory.map((appointment, index) => (
@@ -41,14 +43,24 @@ const AppointmentsTimeLine = ({ appointmentsHistory }: Props): JSX.Element => {
               {appointment.time}
             </time>
             <p className="mb-1 text-base font-normal text-gray-500 dark:text-gray-400">
-              Duração: {dateUtils.convertToMinutes(appointment.timeDuration)}
+              Duração:{" "}
+              {appointment.timeDuration
+                ? dateUtils.convertToMinutes(appointment.timeDuration)
+                : "-"}
             </p>
-            <p className="mb-4 text-base text-gray-500 dark:text-gray-400">
-              <span className="font-bold"> Obs:</span>{" "}
-              <span className="font-thin">{appointment.notes}</span>
-            </p>
+            {appointment.notes && (
+              <p className="mb-4 text-base text-gray-500 dark:text-gray-400">
+                <span className="font-bold"> Obs:</span>{" "}
+                <span className="font-thin">{appointment.notes}</span>
+              </p>
+            )}
             {[AppointmentStatus.ACTIVE].includes(appointment.status) && (
-              <Button variant="destructive">
+              <Button
+                variant="destructive"
+                onClick={() => {
+                  router.push(`cancelar?code=${appointment.code}`);
+                }}
+              >
                 <TrashIcon className="w-4 h-4 me-1" />
                 Cancelar
               </Button>

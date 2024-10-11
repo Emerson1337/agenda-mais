@@ -1,4 +1,4 @@
-import { AppointmentStatus } from "@/server-actions/fetchPhoneHistory";
+import { AppointmentStatus } from "@/api/fetchPhoneHistory";
 
 export function translateStatus(status: AppointmentStatus): {
   label: string;

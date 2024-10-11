@@ -105,6 +105,8 @@ export class AppointmentsService {
       time: appointment.time,
       managerId: manager.id,
       serviceName: service.name,
+      clientName: appointment.clientName,
+      code: appointment.code,
       notes: appointment.notes,
       phone: phone,
       price: service.price,
@@ -171,6 +173,7 @@ export class AppointmentsService {
   public async cancel({
     username,
     appointmentCode,
+    phone,
   }: ICancel): Promise<IOCancel | Error> {
     const manager =
       await this.bookingManagersRepository.findByUsername(username);
@@ -187,6 +190,7 @@ export class AppointmentsService {
       await this.appointmentsRepository.findActiveByAppointmentCode({
         code: appointmentCode,
         managerId: manager.id,
+        phone,
       });
 
     if (!appointment)
@@ -209,6 +213,8 @@ export class AppointmentsService {
       phone: appointment.phone,
       price: service.price,
       date: appointment.date,
+      code: appointment.code,
+      clientName: appointment.clientName,
       serviceName: service.name,
       notes: appointment.notes,
       time: appointment.time,

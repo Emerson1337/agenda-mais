@@ -80,6 +80,8 @@ export class SchedulesService {
       phone: appointmentDeleted.phone,
       price: service.price,
       serviceName: service.name,
+      clientName: appointmentDeleted.clientName,
+      code: appointmentDeleted.code,
       notes: appointmentDeleted.notes,
       date: appointmentDeleted.date,
       time: appointmentDeleted.time,
