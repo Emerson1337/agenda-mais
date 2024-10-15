@@ -9,7 +9,7 @@ import {
 import { useFormContext } from "react-hook-form";
 import { dateUtils } from "@/shared/utils/dateUtils";
 import { stringUtils } from "@/shared/utils/stringUtils";
-import { TimeRange } from "@/private/agenda/domain/schedule.schema";
+import { TimeRange } from "@/app/(private)/agenda/schemas/schedule.schema";
 
 export interface TimeRangeSelectorProps {
   defaultValue?: TimeRange;

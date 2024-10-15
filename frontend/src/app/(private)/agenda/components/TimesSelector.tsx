@@ -4,7 +4,7 @@ import { useFormContext } from "react-hook-form";
 import { stringUtils } from "@/shared/utils/stringUtils";
 import { useCallback, useEffect, useState } from "react";
 import { TimesExceptionSelector } from "./TimesExceptionSelector";
-import { ScheduleData } from "@/private/agenda/domain/schedule.schema";
+import { ScheduleData } from "@/app/(private)/agenda/schemas/schedule.schema";
 import React from "react";
 
 interface Props {

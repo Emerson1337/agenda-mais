@@ -1,5 +1,5 @@
 import { startOfToday, subDays } from "date-fns";
-import { DateExceptions } from "@/private/agenda/domain/schedule.schema";
+import { DateExceptions } from "@/app/(private)/agenda/schemas/schedule.schema";
 import { formatDuration, intervalToDuration } from "date-fns";
 import { ptBR } from "date-fns/locale";
 

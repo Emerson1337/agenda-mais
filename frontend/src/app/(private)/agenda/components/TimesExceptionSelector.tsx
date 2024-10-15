@@ -11,7 +11,7 @@ import { useFormContext } from "react-hook-form";
 import {
   DateExceptions,
   ScheduleData,
-} from "@/private/agenda/domain/schedule.schema";
+} from "@/app/(private)/agenda/schemas/schedule.schema";
 import { TimesExceptionList } from "./TimesExceptionList";
 import { isSameDay } from "date-fns";
 

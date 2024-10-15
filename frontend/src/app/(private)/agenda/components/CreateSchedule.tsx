@@ -13,7 +13,7 @@ import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import { CustomForm } from "@/components/ui/form";
-import { useScheduleMutation } from "@/private/agenda/application/hooks/useScheduleMutation";
+import { useScheduleMutation } from "@/app/(private)/agenda/hooks/useScheduleMutation";
 import { ReloadIcon } from "@radix-ui/react-icons";
 import { WeekdaysCards } from "./WeekdaysCards";
 import { TimesSelector } from "./TimesSelector";
@@ -21,10 +21,10 @@ import { TimeRangeSelector } from "./TimeRangeSelector";
 import {
   ScheduleData,
   scheduleFormSchema,
-} from "@/private/agenda/domain/schedule.schema";
+} from "@/app/(private)/agenda/schemas/schedule.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { MonthsAheadSelector } from "./MonthsAheadSelector";
-import { useGetScheduleQuery } from "@/private/agenda/infrastructure/schedule.api";
+import { useGetScheduleQuery } from "@/app/(private)/agenda/api/schedule.api";
 import React from "react";
 
 export default function CreateSchedule() {

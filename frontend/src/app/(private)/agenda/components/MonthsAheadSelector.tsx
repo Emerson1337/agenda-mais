@@ -7,7 +7,7 @@ import {
 } from "@/components/ui/select";
 import { Select } from "@radix-ui/react-select";
 import { useFormContext } from "react-hook-form";
-import { ScheduleData } from "@/private/agenda/domain/schedule.schema";
+import { ScheduleData } from "@/app/(private)/agenda/schemas/schedule.schema";
 
 export interface MonthsAheadSelectorProps {
   onChange?: (value: number) => void;

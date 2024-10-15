@@ -11,7 +11,7 @@ import {
   startOfToday,
 } from "date-fns";
 import { dateUtils } from "@/shared/utils/dateUtils";
-import { DateExceptions } from "@/private/agenda/domain/schedule.schema";
+import { DateExceptions } from "@/app/(private)/agenda/schemas/schedule.schema";
 import React from "react";
 
 export interface SchedulesCalendarProps {

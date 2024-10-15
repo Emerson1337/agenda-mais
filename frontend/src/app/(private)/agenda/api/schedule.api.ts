@@ -2,7 +2,7 @@ import { apiUrls } from "@/lib/apiUrls";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { API } from "@/shared/services/config/config";
 import { IScheduleRequest } from "@/shared/types/schedule";
-import { ScheduleData } from "@/private/agenda/domain/schedule.schema";
+import { ScheduleData } from "@/app/(private)/agenda/schemas/schedule.schema";
 
 export const usePostScheduleQuery = () =>
   useMutation({
@@ -15,6 +15,8 @@ export const useGetScheduleQuery = () => {
   return useQuery<ScheduleData>({
     queryKey: ["schedule"],
     queryFn: () =>
-      API.get(apiUrls.internal.schedule.get()).then((response) => response.data.body),
+      API.get(apiUrls.internal.schedule.get()).then(
+        (response) => response.data.body
+      ),
   });
 };

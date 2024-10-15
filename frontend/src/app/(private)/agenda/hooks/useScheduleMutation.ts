@@ -1,4 +1,4 @@
-import { usePostScheduleQuery } from "@/private/agenda/infrastructure/schedule.api";
+import { usePostScheduleQuery } from "@/app/(private)/agenda/api/schedule.api";
 
 export const useScheduleMutation = () => {
   const { isPending, error, data, mutate, isSuccess } = usePostScheduleQuery();

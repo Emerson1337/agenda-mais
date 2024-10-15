@@ -14,7 +14,7 @@ import {
   Table,
 } from "@/components/ui/table";
 import { dateUtils } from "@/shared/utils/dateUtils";
-import { DateExceptions } from "@/private/agenda/domain/schedule.schema";
+import { DateExceptions } from "@/app/(private)/agenda/schemas/schedule.schema";
 
 export interface TimesExceptionListProps {
   dateExceptions: DateExceptions[];
