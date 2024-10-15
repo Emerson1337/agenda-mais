@@ -1,7 +1,7 @@
 import CustomMotion from "@/components/ui/custom-motion";
 import { ptBR } from "date-fns/locale";
 import { setDefaultOptions } from "date-fns";
-import Appointment from "./presentation/screens/Appointment";
+import Appointment from "./screens/Appointment";
 import { fetchAvailableTimes } from "@/api/fetchAvailableTimes";
 setDefaultOptions({ locale: ptBR });
 
