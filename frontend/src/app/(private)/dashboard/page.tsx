@@ -1,10 +1,10 @@
-import Orders from "./presentation/components/Orders";
-import GoalCard from "./presentation/components/GoalCard";
-import TotalRevenue from "./presentation/components/TotalRevenue";
-import TotalAppointments from "./presentation/components/TotalAppointments";
-import TotalAppointmentsScheduled from "./presentation/components/TotalAppointmentsScheduled";
-import TotalAppointmentsFinished from "./presentation/components/TotalAppointmentsFinished";
-import TopClients from "./presentation/components/TopClients";
+import Orders from "./components/Orders";
+import GoalCard from "./components/GoalCard";
+import TotalRevenue from "./components/TotalRevenue";
+import TotalAppointments from "./components/TotalAppointments";
+import TotalAppointmentsScheduled from "./components/TotalAppointmentsScheduled";
+import TotalAppointmentsFinished from "./components/TotalAppointmentsFinished";
+import TopClients from "./components/TopClients";
 
 export default function Dashboard() {
   return (

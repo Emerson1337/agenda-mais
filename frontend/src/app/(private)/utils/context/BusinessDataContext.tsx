@@ -2,15 +2,8 @@
 
 import { MeType } from "@/shared/types/me";
 import { useRouter } from "next/navigation";
-import React, {
-  createContext,
-  FC,
-  ReactNode,
-  useContext,
-  useState,
-} from "react";
-import { useGetManager } from "../../dashboard/application/hooks/useGetManager";
-import { ReloadIcon } from "@radix-ui/react-icons";
+import React, { createContext, FC, ReactNode, useContext } from "react";
+import { useGetManager } from "@/private/dashboard/hooks/useGetManager";
 
 // Create a default value for the context
 const defaultValue: MeType = {
