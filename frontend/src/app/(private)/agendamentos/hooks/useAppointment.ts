@@ -1,6 +1,6 @@
-"use client"
+"use client";
 
-import { useGetAppointmentQuery } from "@/private/agendamentos/infrastructure/appointment.api";
+import { useGetAppointmentQuery } from "@/app/(private)/agendamentos/api/appointment.api";
 
 export const useAppointment = () => {
   const { isPending, error, data, isFetching } = useGetAppointmentQuery();

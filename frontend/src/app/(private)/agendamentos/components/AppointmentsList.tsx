@@ -16,7 +16,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { useAppointment } from "@/private/agendamentos/application/hooks/useAppointment";
+import { useAppointment } from "@/app/(private)/agendamentos/hooks/useAppointment";
 import { ReloadIcon, MobileIcon } from "@radix-ui/react-icons";
 import { format, parseISO } from "date-fns";
 import { stringUtils } from "@/shared/utils/stringUtils";
@@ -26,7 +26,7 @@ import { Modal } from "@/components/ui/modal";
 import { useState } from "react";
 import { AppointmentData } from "@/shared/types/appointment";
 import { WhatsappService } from "@/shared/services/whatsapp.service";
-import { useAppointmentMutation } from "@/private/agendamentos/application/hooks/useAppointmentMutation";
+import { useAppointmentMutation } from "@/app/(private)/agendamentos/hooks/useAppointmentMutation";
 import { toast } from "react-toastify";
 import { AxiosError } from "axios";
 import { useBusinessContext } from "@/app/(private)/utils/context/BusinessDataContext";
