@@ -1,4 +1,4 @@
-import { useGetPhoneHistoryQuery } from "@/app/(public)/b/[username]/(onboarded)/historico/infrastructure/phone-history.api";
+import { useGetPhoneHistoryQuery } from "@/app/(public)/b/[username]/(onboarded)/historico/api/phone-history.api";
 
 export const useGetPhoneHistory = ({
   username,

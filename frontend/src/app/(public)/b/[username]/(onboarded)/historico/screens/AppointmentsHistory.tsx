@@ -3,7 +3,7 @@
 import { useState } from "react";
 import AppointmentsTimeLine from "../components/AppointmentsTimeLine";
 import { useClientInfo } from "@/lib/hooks";
-import { useGetPhoneHistory } from "../../application/hooks/useGetPhoneHistory";
+import { useGetPhoneHistory } from "../hooks/useGetPhoneHistory";
 import { ReloadIcon } from "@radix-ui/react-icons";
 
 interface Props {
