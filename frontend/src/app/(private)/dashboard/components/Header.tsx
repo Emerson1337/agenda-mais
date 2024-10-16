@@ -60,34 +60,19 @@ export default function Header() {
             </Link>
             <MenuItems closeSheet={closeSheet} />
             <Link
-              href="/settings"
+              href="/detalhes"
               className={`flex items-center gap-4 p-2.5 text-muted-foreground hover:text-foreground ${
-                checkActivePath("/settings") &&
+                checkActivePath("/detalhes") &&
                 "bg-accent text-accent-foreground"
               }`}
               onClick={closeSheet} // Close the sheet after clicking
             >
               <Settings className="h-5 w-5 transition-all group-hover:scale-110" />
-              Settings
+              Detalhes
             </Link>
           </nav>
         </SheetContent>
       </Sheet>
-      <Breadcrumb className="hidden md:flex">
-        <BreadcrumbList>
-          <BreadcrumbItem>
-            <BreadcrumbLink asChild>
-              <Link href="#">Agendas</Link>
-            </BreadcrumbLink>
-          </BreadcrumbItem>
-          <BreadcrumbSeparator />
-          <BreadcrumbItem>
-            <BreadcrumbLink asChild>
-              <Link href="#">Atualizar agenda</Link>
-            </BreadcrumbLink>
-          </BreadcrumbItem>
-        </BreadcrumbList>
-      </Breadcrumb>
       <div className="relative ml-auto flex-1 md:grow-0"></div>
       <Tooltip>
         <ThemeToggle />
