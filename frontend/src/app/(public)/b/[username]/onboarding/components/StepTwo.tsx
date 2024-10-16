@@ -22,7 +22,7 @@ const StepTwo = ({ onNext, onBack }: StepTwoProps): JSX.Element => {
         />
         <div className="flex justify-between mt-12">
           <Button
-            className="hover:bg-secondary hover:text-secondary-foreground text-primary-foreground bg-secondary-foreground h-12"
+            className="hover:bg-secondary hover:text-secondary-foreground text-secondary bg-secondary-foreground h-12"
             onClick={onBack}
           >
             <MoveLeft />

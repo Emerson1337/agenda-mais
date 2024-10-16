@@ -16,17 +16,17 @@ const ChooseService = ({
         <div
           onClick={() => onSelectService(service)}
           key={index}
-          className="flex w-full cursor-pointer transition-all duration-200 hover:bg-primary-foreground bg-primary-foreground/60 text-foreground flex-col md:px-20 p-8 mx-auto max-w-lg text-center rounded-lg border border-primary dark:border-primary dark:text-white"
+          className="flex w-full cursor-pointer transition-all duration-200 hover:bg-primary-foreground/40 bg-primary-foreground/25 text-foreground flex-col md:px-20 p-8 mx-auto max-w-lg text-center rounded-lg border border-primary dark:border-primary dark:text-white"
         >
           <h3 className="mb-4 text-2xl font-semibold"> {service.name}</h3>
-          <p className="font-light  text-foreground/70 sm:text-lg">
+          <p className="font-light text-foreground sm:text-lg">
             {service.description}
           </p>
           <div className="flex justify-center items-baseline my-8">
             <span className="mr-2 text-4xl font-extrabold">
               R$ {service.price}
             </span>
-            <span className="text-foreground/70">
+            <span className="text-foreground">
               {dateUtils.convertToMinutes(service.timeDuration)}
             </span>
           </div>

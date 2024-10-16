@@ -18,7 +18,7 @@ const StepThree = ({ onBack }: StepThreeProps): JSX.Element => {
         <FillName value={name} onChange={(value) => setValue("name", value)} />
         <div className="flex justify-between mt-12">
           <Button
-            className="hover:bg-secondary hover:text-secondary-foreground text-primary-foreground bg-secondary-foreground h-12"
+            className="hover:bg-secondary hover:text-secondary-foreground text-secondary bg-secondary-foreground h-12"
             onClick={onBack}
           >
             <MoveLeft />

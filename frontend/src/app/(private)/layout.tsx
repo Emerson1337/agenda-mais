@@ -21,29 +21,14 @@ interface RootLayoutProps {
 
 export default function RootLayout({ children }: Readonly<RootLayoutProps>) {
   return (
-    <html suppressHydrationWarning lang="en">
-      <body className={inter.className}>
-        <Provider>
-          <BusinessProvider>
-            <ThemeProvider
-              attribute="class"
-              defaultTheme="system"
-              enableSystem
-              disableTransitionOnChange
-            >
-              <div className="flex min-h-screen w-full flex-col bg-muted/40">
-                <TooltipProvider>
-                  <Sidebar />
-                  <div className="flex flex-col sm:gap-4 sm:py-4 sm:pl-14">
-                    <Header />
-                    {children}
-                  </div>
-                </TooltipProvider>
-              </div>
-            </ThemeProvider>
-          </BusinessProvider>
-        </Provider>
-      </body>
-    </html>
+    <div className="flex min-h-screen w-full flex-col bg-muted/40">
+      <TooltipProvider>
+        <Sidebar />
+        <div className="flex flex-col sm:gap-4 sm:py-4 sm:pl-14">
+          <Header />
+          {children}
+        </div>
+      </TooltipProvider>
+    </div>
   );
 }
