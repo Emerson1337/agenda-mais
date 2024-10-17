@@ -13,7 +13,8 @@ import ImageUploadingButton from "@/components/upload/ImageUploadingButton";
 import ImageCropper from "@/components/upload/ImageCropper";
 import Image from "next/image";
 import ImageUploadingHoverButton from "@/components/upload/ImageUploadingHoverButton";
-import { ThemeCustomizer } from "../../../../components/ui/theme-customizer";
+import { ThemeCustomizer } from "@/components/ui/theme-customizer";
+import { Button } from "@/components/ui/button";
 
 export default function ProfileDetails() {
   const [profileImage, setProfileImage] = useState<ImageListType>([]);
@@ -32,7 +33,7 @@ export default function ProfileDetails() {
       </CardHeader>
       <CardContent>
         <div className="grid gap-6">
-          <div className="relative  min-h-[200px] flex items-center justify-center">
+          <div className="relative min-h-[200px] flex items-center justify-center">
             {croppedProfileImage && (
               <Image
                 width={150}
@@ -84,6 +85,9 @@ export default function ProfileDetails() {
           />
         </div>
         <ThemeCustomizer />
+        <Button variant="default" className="mt-10 w-full">
+          Salvar alterações
+        </Button>
       </CardContent>
     </Card>
   );

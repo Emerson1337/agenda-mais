@@ -1,23 +1,18 @@
-import { ResetIcon, InfoCircledIcon } from "@radix-ui/react-icons";
+import { ResetIcon } from "@radix-ui/react-icons";
 import { Label } from "@radix-ui/react-label";
-import {
-  Popover,
-  PopoverTrigger,
-  PopoverContent,
-} from "@radix-ui/react-popover";
-import { CheckIcon, SunIcon, MoonIcon } from "lucide-react";
+import { CheckIcon } from "lucide-react";
 import { useTheme } from "next-themes";
 import React from "react";
 import { cn } from "@/lib/utils";
 import { useConfig } from "@/lib/hooks/use-config";
 import { ThemeWrapper } from "@/components/ui/theme-wrapper";
 import { Button } from "./button";
-import { baseColors } from "../../registry/registry-colors";
+import { baseColors } from "@/registry/registry-colors";
 import { Skeleton } from "@/registry/new-york/ui/skeleton";
 
 const ThemeCustomizer = () => {
   const [mounted, setMounted] = React.useState(false);
-  const { setTheme: setMode, resolvedTheme: mode } = useTheme();
+  const { resolvedTheme: mode } = useTheme();
   const [config, setConfig] = useConfig();
 
   React.useEffect(() => {
@@ -32,10 +27,11 @@ const ThemeCustomizer = () => {
       <div className="flex items-start pt-4 md:pt-0">
         <div className="space-y-1 pr-2">
           <div className="font-semibold leading-none tracking-tight">
-            Customize
+            Personalizar
           </div>
-          <div className="text-xs text-muted-foreground">
-            Pick a style and color for your components.
+          <div className="text-xs text-muted-foreground max-w-xs">
+            Selecione a cor tema para o aplicativo e torne o processo de
+            agendamento dos seus clientes ainda mais satisfatório.
           </div>
         </div>
         <Button
@@ -56,41 +52,6 @@ const ThemeCustomizer = () => {
       </div>
       <div className="flex flex-1 flex-col space-y-4 md:space-y-6">
         <div className="space-y-1.5">
-          <div className="flex w-full items-center">
-            <Label className="text-xs">Style</Label>
-            <Popover>
-              <PopoverTrigger>
-                <InfoCircledIcon className="ml-1 h-3 w-3" />
-                <span className="sr-only">About styles</span>
-              </PopoverTrigger>
-              <PopoverContent
-                className="space-y-3 rounded-[0.5rem] text-sm"
-                side="right"
-                align="start"
-                alignOffset={-20}
-              >
-                <p className="font-medium">
-                  What is the difference between the New York and Default style?
-                </p>
-                <p>
-                  A style comes with its own set of components, animations,
-                  icons and more.
-                </p>
-                <p>
-                  The <span className="font-medium">Default</span> style has
-                  larger inputs, uses lucide-react for icons and
-                  tailwindcss-animate for animations.
-                </p>
-                <p>
-                  The <span className="font-medium">New York</span> style ships
-                  with smaller buttons and cards with shadows. It uses icons
-                  from Radix Icons.
-                </p>
-              </PopoverContent>
-            </Popover>
-          </div>
-        </div>
-        <div className="space-y-1.5">
           <Label className="text-xs">Color</Label>
           <div className="grid grid-cols-3 gap-2">
             {baseColors.map((theme) => {
@@ -109,7 +70,7 @@ const ThemeCustomizer = () => {
                   }}
                   className={cn(
                     "justify-start",
-                    isActive && "border-2 border-primary"
+                    isActive && "border border-primary"
                   )}
                   style={
                     {
@@ -132,64 +93,6 @@ const ThemeCustomizer = () => {
                 <Skeleton className="h-8 w-full" key={theme.name} />
               );
             })}
-          </div>
-        </div>
-        <div className="space-y-1.5">
-          <Label className="text-xs">Radius</Label>
-          <div className="grid grid-cols-5 gap-2">
-            {["0", "0.3", "0.5", "0.75", "1.0"].map((value) => {
-              return (
-                <Button
-                  variant={"outline"}
-                  size="sm"
-                  key={value}
-                  onClick={() => {
-                    setConfig({
-                      ...config,
-                      radius: parseFloat(value),
-                    });
-                  }}
-                  className={cn(
-                    config.radius === parseFloat(value) &&
-                      "border-2 border-primary"
-                  )}
-                >
-                  {value}
-                </Button>
-              );
-            })}
-          </div>
-        </div>
-        <div className="space-y-1.5">
-          <Label className="text-xs">Mode</Label>
-          <div className="grid grid-cols-3 gap-2">
-            {mounted ? (
-              <>
-                <Button
-                  variant={"outline"}
-                  size="sm"
-                  onClick={() => setMode("light")}
-                  className={cn(mode === "light" && "border-2 border-primary")}
-                >
-                  <SunIcon className="mr-1 -translate-x-1" />
-                  Light
-                </Button>
-                <Button
-                  variant={"outline"}
-                  size="sm"
-                  onClick={() => setMode("dark")}
-                  className={cn(mode === "dark" && "border-2 border-primary")}
-                >
-                  <MoonIcon className="mr-1 -translate-x-1" />
-                  Dark
-                </Button>
-              </>
-            ) : (
-              <>
-                <Skeleton className="h-8 w-full" />
-                <Skeleton className="h-8 w-full" />
-              </>
-            )}
           </div>
         </div>
       </div>
