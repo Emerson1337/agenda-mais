@@ -1,7 +1,7 @@
 export const baseColors = [
   {
     name: "zinc",
-    label: "Zinc",
+    label: "Zinco",
     activeColor: {
       light: "240 5.9% 10%",
       dark: "240 5.2% 33.9%",
@@ -64,7 +64,7 @@ export const baseColors = [
   },
   {
     name: "slate",
-    label: "Slate",
+    label: "Ardósia",
     activeColor: {
       light: "215.4 16.3% 46.9%",
       dark: "215.3 19.3% 34.5%",
@@ -127,7 +127,7 @@ export const baseColors = [
   },
   {
     name: "stone",
-    label: "Stone",
+    label: "Pedra",
     activeColor: {
       light: "25 5.3% 44.7%",
       dark: "33.3 5.5% 32.4%",
@@ -190,7 +190,7 @@ export const baseColors = [
   },
   {
     name: "gray",
-    label: "Gray",
+    label: "Cinza",
     activeColor: {
       light: "220 8.9% 46.1%",
       dark: "215 13.8% 34.1%",
@@ -253,7 +253,7 @@ export const baseColors = [
   },
   {
     name: "neutral",
-    label: "Neutral",
+    label: "Neutro",
     activeColor: {
       light: "0 0% 45.1%",
       dark: "0 0% 32.2%",
@@ -315,7 +315,7 @@ export const baseColors = [
   },
   {
     name: "red",
-    label: "Red",
+    label: "Vermelho",
     activeColor: {
       light: "0 72.2% 50.6%",
       dark: "0 72.2% 50.6%",
@@ -378,7 +378,7 @@ export const baseColors = [
   },
   {
     name: "rose",
-    label: "Rose",
+    label: "Rosa",
     activeColor: {
       light: "346.8 77.2% 49.8%",
       dark: "346.8 77.2% 49.8%",
@@ -441,7 +441,7 @@ export const baseColors = [
   },
   {
     name: "orange",
-    label: "Orange",
+    label: "Laranja",
     activeColor: {
       light: "24.6 95% 53.1%",
       dark: "20.5 90.2% 48.2%",
@@ -504,7 +504,7 @@ export const baseColors = [
   },
   {
     name: "green",
-    label: "Green",
+    label: "Verde",
     activeColor: {
       light: "142.1 76.2% 36.3%",
       dark: "142.1 70.6% 45.3%",
@@ -566,7 +566,7 @@ export const baseColors = [
   },
   {
     name: "blue",
-    label: "Blue",
+    label: "Azul",
     activeColor: {
       light: "221.2 83.2% 53.3%",
       dark: "217.2 91.2% 59.8%",
@@ -628,7 +628,7 @@ export const baseColors = [
   },
   {
     name: "yellow",
-    label: "Yellow",
+    label: "Amarelo",
     activeColor: {
       light: "47.9 95.8% 53.1%",
       dark: "47.9 95.8% 53.1%",
@@ -691,7 +691,7 @@ export const baseColors = [
   },
   {
     name: "violet",
-    label: "Violet",
+    label: "Violeta",
     activeColor: {
       light: "262.1 83.3% 57.8%",
       dark: "263.4 70% 50.4%",

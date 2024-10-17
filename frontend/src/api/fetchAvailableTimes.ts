@@ -4,6 +4,12 @@ import { API } from "../shared/services/config/config";
 
 export const fetchAvailableTimes = async (
   username: string
-): Promise<BusinessSchedule> => {
-  return (await API.get(apiUrls.public.availableTimes.get(username))).data.body;
+): Promise<BusinessSchedule | undefined> => {
+  try {
+    return (await API.get(apiUrls.public.availableTimes.get(username))).data
+      .body;
+  } catch (error) {
+    console.error("Error fetching business data:", error);
+    return undefined;
+  }
 };

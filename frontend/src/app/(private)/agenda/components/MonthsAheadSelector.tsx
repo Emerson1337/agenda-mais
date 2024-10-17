@@ -31,7 +31,9 @@ export function MonthsAheadSelector({
 
   return (
     <div className="w-full flex gap-4 flex-col text-center justify-center items-center">
-      <span>Por quanto tempo deseja deixar a agenda aberta?</span>
+      <span>
+        Quanto tempo à frente alguém pode marcar um atendimento com você?
+      </span>
       <Select
         defaultValue={defaultValue ? String(defaultValue) : undefined}
         onValueChange={(value) => {

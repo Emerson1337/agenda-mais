@@ -3,6 +3,7 @@ const inter = Inter({ subsets: ["latin"] });
 import "@/app/globals.css";
 import { Provider } from "@/shared/utils/Providers";
 import { ThemeProvider } from "@/components/ui/theme-provider";
+import { BusinessProvider } from "./(private)/utils/context/BusinessDataContext";
 
 export default async function RootLayout({
   children,
@@ -11,7 +12,7 @@ export default async function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${inter.className} ${"theme-rose"}`}>
+      <body className={`${inter.className} theme-rose`}>
         <Provider>
           <ThemeProvider
             attribute="class"

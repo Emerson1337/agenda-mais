@@ -1,14 +1,10 @@
-import { apiUrls } from "@/lib/apiUrls";
 import { useQuery } from "@tanstack/react-query";
-import { API } from "@/shared/services/config/config";
 import { MeType } from "@/shared/types/me";
+import { fetchManagerData } from "@/api/fetchManagerData";
 
 export const useGetManagerQuery = () => {
-  return useQuery<MeType>({
+  return useQuery<MeType | undefined>({
     queryKey: ["me"],
-    queryFn: () =>
-      API.get(apiUrls.internal.me.get()).then(
-        (response) => response.data.body
-      ),
+    queryFn: async () => await fetchManagerData(),
   });
 };
