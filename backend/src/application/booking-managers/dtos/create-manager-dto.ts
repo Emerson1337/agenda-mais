@@ -13,6 +13,7 @@ import {
   IsString,
   IsStrongPassword,
 } from 'class-validator';
+import { ThemePalettesEnum } from '@/domain/entities/enums/theme-palettes.enum';
 
 export class CreateManagerDto {
   @IsString()
@@ -64,4 +65,7 @@ export class CreateManagerDto {
 
   @IsOptional()
   plan: ManagersPlansEnum;
+
+  @IsOptional()
+  palette: ThemePalettesEnum;
 }

@@ -26,7 +26,6 @@ export function Provider({ children }: ProviderProps) {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <ReactQueryDevtools initialIsOpen={false} />
       {children}
       <ToastContainer
         toastClassName={(context) =>

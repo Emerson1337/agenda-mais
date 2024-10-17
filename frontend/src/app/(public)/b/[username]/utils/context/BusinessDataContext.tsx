@@ -15,10 +15,18 @@ export const useBusinessContext = () => useContext(BusinessContext);
 // Provider component to wrap your app and provide the context value
 export const BusinessProvider: FC<{
   children: ReactNode;
-  defaultValue: BusinessFullContext;
+  defaultValue?: BusinessFullContext;
 }> = ({ children, defaultValue }): ReactNode => {
   return (
-    <BusinessContext.Provider value={defaultValue}>
+    <BusinessContext.Provider
+      value={
+        defaultValue ?? {
+          services: undefined,
+          business: undefined,
+          layout: undefined,
+        }
+      }
+    >
       {children}
     </BusinessContext.Provider>
   );

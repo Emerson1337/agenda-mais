@@ -3,8 +3,8 @@ import { BusinessFullContext } from "@/shared/types/business";
 import { fetchBusinessData } from "@/api/fetchBusinessData";
 
 export const useGetBusinessQuery = ({ username }: { username: string }) => {
-  return useQuery<BusinessFullContext>({
+  return useQuery<BusinessFullContext | undefined>({
     queryKey: ["business", username],
-    queryFn: async () => await fetchBusinessData(username), //TODO: check how to handle errors using react query
+    queryFn: async () => (await fetchBusinessData(username)) ?? undefined, //TODO: check how to handle errors using react query
   });
 };
