@@ -10,7 +10,11 @@ import { Button } from "./button";
 import { baseColors } from "@/registry/registry-colors";
 import { Skeleton } from "@/registry/new-york/ui/skeleton";
 
-const ThemeCustomizer = () => {
+interface Props {
+  onChange?: (theme: string) => void;
+}
+
+const ThemeCustomizer = ({ onChange }: Props) => {
   const [mounted, setMounted] = React.useState(false);
   const { resolvedTheme: mode } = useTheme();
   const [config, setConfig] = useConfig();
@@ -34,21 +38,6 @@ const ThemeCustomizer = () => {
             agendamento dos seus clientes ainda mais satisfatório.
           </div>
         </div>
-        <Button
-          variant="ghost"
-          size="icon"
-          className="ml-auto rounded-[0.5rem]"
-          onClick={() => {
-            setConfig({
-              ...config,
-              theme: "zinc",
-              radius: 0.5,
-            });
-          }}
-        >
-          <ResetIcon />
-          <span className="sr-only">Reset</span>
-        </Button>
       </div>
       <div className="flex flex-1 flex-col space-y-4 md:space-y-6">
         <div className="space-y-1.5">
@@ -67,6 +56,7 @@ const ThemeCustomizer = () => {
                       ...config,
                       theme: theme.name,
                     });
+                    onChange?.(`theme-${theme.name}`);
                   }}
                   className={cn(
                     "justify-start",

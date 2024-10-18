@@ -18,6 +18,7 @@ export interface Business {
   firstName: string;
   email: string;
   phone: string;
+  profilePhoto: string;
 }
 
 // Define the type for the context value

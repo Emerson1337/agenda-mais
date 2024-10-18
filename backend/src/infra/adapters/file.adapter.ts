@@ -48,6 +48,8 @@ export class FileAdapter {
   }
 
   removeFile(filePath: string): void {
+    console.log('🟢🟢🟢🟢 filePath', filePath);
+
     fs.unlinkSync(filePath);
   }
 }
