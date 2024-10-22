@@ -1,7 +1,7 @@
 import CustomMotion from "@/components/ui/custom-motion";
 import { ptBR } from "date-fns/locale";
 import { setDefaultOptions } from "date-fns";
-import CancelAppointment from "./presentation/screens/CancelAppointment";
+import CancelAppointment from "./screens/CancelAppointment";
 setDefaultOptions({ locale: ptBR });
 
 interface Props {

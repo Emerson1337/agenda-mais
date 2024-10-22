@@ -2,15 +2,9 @@
 
 import { MeType } from "@/shared/types/me";
 import { useRouter } from "next/navigation";
-import React, {
-  createContext,
-  FC,
-  ReactNode,
-  useContext,
-  useState,
-} from "react";
-import { useGetManager } from "../../dashboard/application/hooks/useGetManager";
-import { ReloadIcon } from "@radix-ui/react-icons";
+import React, { createContext, FC, ReactNode, useContext } from "react";
+import { useGetManager } from "@/private/dashboard/hooks/useGetManager";
+import { cn } from "@/lib/utils";
 
 // Create a default value for the context
 const defaultValue: MeType = {
@@ -26,6 +20,7 @@ const defaultValue: MeType = {
   status: "",
   roles: [],
   plan: "",
+  palette: "",
 };
 
 // Create the context
@@ -38,7 +33,7 @@ export const useBusinessContext = () => useContext(BusinessContext);
 export const BusinessProvider: FC<{
   children: ReactNode;
 }> = ({ children }): ReactNode => {
-  const { data, isPending, isError } = useGetManager();
+  const { data, isError } = useGetManager();
   const router = useRouter();
 
   if (isError) router.replace("/not-found");
@@ -49,3 +44,11 @@ export const BusinessProvider: FC<{
     </BusinessContext.Provider>
   );
 };
+
+export function BusinessWrapper({ children }: { children: React.ReactNode }) {
+  const { palette } = useBusinessContext();
+
+  if (!palette) return;
+
+  return <div className={cn(palette)}>{children}</div>;
+}

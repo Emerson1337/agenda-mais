@@ -5,6 +5,7 @@ import { ManagerStatus } from '@/domain/entities/enums/managers-status.enum';
 import { Column, Entity } from 'typeorm';
 
 import BaseEntityMDB from './config/base.entity';
+import { ThemePalettesEnum } from '@/domain/entities/enums/theme-palettes.enum';
 
 @Entity('BookingManagers')
 export class BookingManagersMDB
@@ -46,6 +47,9 @@ export class BookingManagersMDB
 
   @Column({ type: 'array', default: [ManagersRolesEnum.USER] })
   roles: ManagersRolesEnum[];
+
+  @Column({ type: 'string' })
+  palette: ThemePalettesEnum;
 
   @Column({
     type: 'enum',

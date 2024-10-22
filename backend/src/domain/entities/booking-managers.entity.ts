@@ -3,6 +3,7 @@ import { ManagerStatus } from '@/domain/entities/enums/managers-status.enum';
 import BaseEntity from './config/base.entity';
 import { ManagersPlansEnum } from './enums/managers-plans.enum';
 import { ManagersRolesEnum } from './enums/managers-roles.enum';
+import { ThemePalettesEnum } from './enums/theme-palettes.enum';
 
 export class BookingManagers extends BaseEntity {
   welcomeMessage?: string;
@@ -18,4 +19,5 @@ export class BookingManagers extends BaseEntity {
   status: ManagerStatus;
   roles: ManagersRolesEnum[];
   plan: ManagersPlansEnum;
+  palette: ThemePalettesEnum;
 }

@@ -1,9 +1,7 @@
-import { ManagersPlansEnum } from '@/domain/entities/enums/managers-plans.enum';
-import { ManagersRolesEnum } from '@/domain/entities/enums/managers-roles.enum';
-import { ManagerStatus } from '@/domain/entities/enums/managers-status.enum';
 import { Transform } from 'class-transformer';
 import {
   IsEmail,
+  IsEnum,
   IsNotEmpty,
   IsNumber,
   IsOptional,
@@ -11,6 +9,7 @@ import {
   IsPositive,
   IsString,
 } from 'class-validator';
+import { ThemePalettesEnum } from '@/domain/entities/enums/theme-palettes.enum';
 
 export class UpdateManagerDto {
   @IsString()
@@ -50,11 +49,6 @@ export class UpdateManagerDto {
   appointmentsPerPhone?: number;
 
   @IsOptional()
-  status: ManagerStatus;
-
-  @IsOptional()
-  roles: ManagersRolesEnum[];
-
-  @IsOptional()
-  plan: ManagersPlansEnum;
+  @IsEnum(ThemePalettesEnum)
+  palette: ThemePalettesEnum;
 }

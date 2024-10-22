@@ -80,9 +80,9 @@ export function SettingsItem({ tooltip = false }: Props) {
         <Tooltip>
           <TooltipTrigger asChild>
             <Link
-              href="/settings"
+              href="/detalhes"
               className={`flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8 ${
-                checkActivePath("/settings") &&
+                checkActivePath("/detalhes") &&
                 "bg-accent text-accent-foreground"
               }`}
             >
@@ -95,7 +95,7 @@ export function SettingsItem({ tooltip = false }: Props) {
       ) : (
         <>
           <Link
-            href="/settings"
+            href="/detalhes"
             className={`flex items-center gap-4 p-2.5 text-muted-foreground hover:text-foreground ${
               checkActivePath("/settings") && "bg-accent text-accent-foreground"
             }`}

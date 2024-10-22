@@ -1,4 +1,4 @@
-import Welcome from "./onboarding/presentation/screens/Welcome";
+import Welcome from "./onboarding/screens/Welcome";
 import CustomMotion from "@/components/ui/custom-motion";
 import { ptBR } from "date-fns/locale";
 import { setDefaultOptions } from "date-fns";

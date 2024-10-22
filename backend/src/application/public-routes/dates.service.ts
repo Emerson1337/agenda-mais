@@ -125,6 +125,8 @@ export class DatesService {
       manager.id,
     );
 
+    const layoutPalette = manager.palette;
+
     const business = {
       ...removeAttributes<BookingManagers>(manager, [
         'password',
@@ -135,13 +137,14 @@ export class DatesService {
         'googleId',
         'plan',
         'status',
+        'palette',
       ]),
     };
 
     return {
       services,
       business,
-      layout: 'to do',
+      layout: layoutPalette,
     };
   }
 }

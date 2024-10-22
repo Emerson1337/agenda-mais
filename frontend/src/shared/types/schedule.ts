@@ -1,7 +1,7 @@
 import {
   TimeRange,
   DateExceptions,
-} from "@/private/agenda/domain/schedule.schema";
+} from "@/app/(private)/agenda/schemas/schedule.schema";
 
 export type IScheduleResponse = {
   body: IBody;

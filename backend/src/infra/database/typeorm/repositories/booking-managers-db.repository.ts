@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { UserDto } from '@/application/auth/dtos/user-dto';
 import { CreateManagerDto } from '@/application/booking-managers/dtos/create-manager-dto';
-import { UpdateManagerDto } from '@/application/booking-managers/dtos/update-manager-dto';
 import { BookingManagers } from '@/domain/entities/booking-managers.entity';
 import { BookingManagersRepository } from '@/domain/repositories/booking-managers.repository';
 import { ObjectId } from 'mongodb';
@@ -9,6 +8,8 @@ import { MongoRepository } from 'typeorm';
 
 import { BookingManagersMDB } from '../entities/booking-managers-db.entity';
 import { TypeormService } from '../typeorm.service';
+import { UpdateManagerDto } from '@/application/booking-managers/dtos/update-manager-dto';
+import { UpdateManagerAdminDto } from '@/application/booking-managers/dtos/update-manager-admin-dto';
 
 @Injectable()
 export class TypeOrmBookingManagersRepository
@@ -60,7 +61,7 @@ export class TypeOrmBookingManagersRepository
 
   async updateAsAdmin(
     id: string,
-    managerUpdated: UpdateManagerDto,
+    managerUpdated: UpdateManagerAdminDto,
   ): Promise<BookingManagers> {
     const manager = await this.repository.findOne({
       where: { _id: new ObjectId(id) },

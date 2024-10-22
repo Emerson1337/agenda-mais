@@ -145,7 +145,17 @@ export class BookingManagersService {
       throw new MultipleErrors(errors);
     }
 
-    return await this.bookingManagersRepository.update(managerId, manager);
+    return await this.bookingManagersRepository.update(managerId, {
+      email: manager.email,
+      firstName: manager.firstName,
+      lastName: manager.lastName,
+      phone: manager.phone,
+      profilePhoto: manager.profilePhoto,
+      appointmentsPerPhone: manager.appointmentsPerPhone,
+      username: manager.username,
+      welcomeMessage: manager.welcomeMessage,
+      palette: manager.palette,
+    });
   }
 
   async updatePicture({
