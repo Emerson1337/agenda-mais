@@ -11,11 +11,78 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { PhoneInput } from "@/components/ui/phone-input";
-import { useState } from "react";
 import { Button } from "@/components/ui/button";
+import { IRequestUpdateManager, useGetManagerQuery } from "../api/manager.api";
+import { ReloadIcon } from "@radix-ui/react-icons";
+import { toast } from "react-toastify";
+import { AxiosError } from "axios";
+import { useManagerMutation } from "../hooks/useManagerMutation";
+import { useForm } from "react-hook-form";
+import { useState, useEffect } from "react";
+import { useGetManager } from "../../dashboard/hooks/useGetManager";
+import { notFound } from "next/navigation";
 
 export default function AccountDetails() {
-  const [phone, setPhone] = useState<string>();
+  const { isFetching, data, error } = useGetManager();
+  const { mutateAsync } = useManagerMutation();
+
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    formState: { errors },
+  } = useForm<IRequestUpdateManager>();
+
+  const [phone, setPhone] = useState<string>(data?.phone || "");
+  const [businessName, setBusinessName] = useState<string>("");
+
+  useEffect(() => {
+    if (data) {
+      const displayName = data.username.replace(/-/g, " ");
+      setValue("username", displayName);
+      setBusinessName(displayName);
+      setValue("welcomeMessage", data.welcomeMessage);
+      setPhone(data.phone);
+    }
+  }, [data, setValue]);
+
+  const formatBusinessNameForURL = (name: string) => {
+    return name
+      .toLowerCase()
+      .replace(/[^a-zA-Z\s]/g, "") // Remove non-letter characters (no numbers or special symbols)
+      .replace(/\s+/g, "-"); // Replace spaces with hyphens
+  };
+
+  const [formattedName, setFormattedName] = useState<string>("");
+
+  useEffect(() => {
+    setFormattedName(formatBusinessNameForURL(businessName));
+  }, [businessName]);
+
+  const onSubmit = async (formData: IRequestUpdateManager) => {
+    try {
+      const updatedData = {
+        ...data,
+        ...formData,
+        phone,
+        username: formatBusinessNameForURL(formData.username),
+      };
+      await mutateAsync(updatedData);
+      toast.success("Dados atualizados com sucesso!");
+    } catch (error: AxiosError | any) {
+      toast.error(
+        error?.response?.data?.message || "Erro ao salvar alterações"
+      );
+    }
+  };
+
+  if (isFetching)
+    return (
+      <div>
+        <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />
+      </div>
+    );
+  if (error) return notFound();
 
   return (
     <Card className="w-fit">
@@ -26,38 +93,53 @@ export default function AccountDetails() {
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <div className="grid gap-6">
+        <form onSubmit={handleSubmit(onSubmit)} className="grid gap-6">
           <div className="grid gap-3">
             <Label htmlFor="name">Nome do seu negócio</Label>
-            {/* show preview of the URL */}
             <Input
-              id="name"
-              type="text"
+              id="username"
+              {...register("username", { required: true })}
               className="w-full"
-              defaultValue="Gamer Gear Pro Controller"
+              value={businessName}
+              onChange={(e) => setBusinessName(e.target.value)}
             />
+            {/* Error for username */}
+            {errors.username && (
+              <p className="text-red-500 text-sm">
+                Nome do negócio é obrigatório
+              </p>
+            )}
+            {/* Display the formatted example */}
+            <p className="text-sm text-gray-500">
+              Exemplo de URL:{" "}
+              <span className="font-mono">/{formattedName}</span>
+            </p>
           </div>
           <div className="grid gap-3">
             <Label htmlFor="description">Mensagem de boas vindas:</Label>
             <Textarea
-              id="description"
-              defaultValue="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam auctor, nisl nec ultricies ultricies, nunc nisl ultricies nunc, nec ultricies nunc nisl nec nunc."
+              id="welcomeMessage"
+              {...register("welcomeMessage")}
               className="min-h-32"
             />
           </div>
           <div className="grid gap-3">
-            <Label htmlFor="description">Número de telefone:</Label>
+            <Label htmlFor="phone">Número de telefone:</Label>
             <PhoneInput
-              onChange={setPhone}
               countries={["BR"]}
               defaultCountry="BR"
-              autoFocus
+              value={phone}
+              onChange={setPhone} // Use state to handle phone input
             />
           </div>
-        </div>
-        <Button variant="default" className="mt-10 w-full">
-          Salvar alterações
-        </Button>
+          <Button
+            type="submit"
+            variant="default"
+            className="mt-10 w-full cursor-pointer"
+          >
+            Salvar alterações
+          </Button>
+        </form>
       </CardContent>
     </Card>
   );

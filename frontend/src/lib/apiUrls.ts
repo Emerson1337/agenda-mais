@@ -34,6 +34,8 @@ export const apiUrls = {
     },
     me: {
       get: (): string => `/api/dashboard/usuarios/me`,
+      put: (): string => `/api/dashboard/usuarios`,
+      patch: (): string => `/api/dashboard/usuarios/foto`,
     },
   },
 };

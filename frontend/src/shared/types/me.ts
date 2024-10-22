@@ -7,6 +7,7 @@ export type MeType = {
   firstName: string;
   email: string;
   phone: string;
+  profilePhoto: string;
   appointmentsPerPhone: number;
   status: string;
   roles: string[];

@@ -18,6 +18,7 @@ import { WhatsappService } from "@/shared/services/whatsapp.service";
 import { format, parseISO } from "date-fns";
 import { numberUtils } from "@/shared/utils/numberUtils";
 import { dateUtils } from "@/shared/utils/dateUtils";
+import { getPublicAPIPath } from "@/shared/utils/urlUtils";
 
 interface Props {
   datesAvailable: BusinessSchedule;
@@ -117,13 +118,15 @@ const LayoutOne = ({ datesAvailable }: Props): JSX.Element => {
 
         {/* Profile Image & Status */}
         <div className="flex flex-col items-center justify-center px-5 -mt-12 relative z-10">
-          <Image
-            className="h-32 w-32 bg-background p-2 rounded-full"
-            src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=2000&q=80"
-            alt="Profile Picture"
-            width={200}
-            height={200}
-          />
+          {business.profilePhoto && (
+            <Image
+              className="h-32 w-32 bg-background p-2 rounded-full"
+              src={getPublicAPIPath(business.profilePhoto)}
+              alt="Profile Picture"
+              width={200}
+              height={200}
+            />
+          )}
           <div className="flex gap-2 mt-2">
             <span className="relative flex h-3 w-3">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
