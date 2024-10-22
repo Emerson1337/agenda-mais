@@ -15,8 +15,6 @@ const ImageUploadingHoverButton: React.FC<ImageUploadingButtonProps> = ({
   croppedImage,
   ...props
 }) => {
-  console.log("🟢🟢🟢🟢 croppedImage", croppedImage);
-
   return (
     <ImageUploading value={value} onChange={onChange}>
       {({ onImageUpload, onImageUpdate }) => (
