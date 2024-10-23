@@ -32,10 +32,13 @@ import { useActivePath } from "@/lib/hooks";
 import { MenuItems } from "@/components/ui/menu-items";
 import { Tooltip } from "@/components/ui/tooltip";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
+import { useBusinessContext } from "../../utils/context/BusinessDataContext";
+import { getPublicAPIPath } from "@/shared/utils/urlUtils";
 
 export default function Header() {
   const [isSheetOpen, setIsSheetOpen] = useState(false);
   const checkActivePath = useActivePath();
+  const { profilePhoto } = useBusinessContext();
 
   const closeSheet = () => setIsSheetOpen(false);
 
@@ -85,7 +88,7 @@ export default function Header() {
             className="overflow-hidden rounded-full"
           >
             <Image
-              src="https://github.com/emerson1337.png"
+              src={getPublicAPIPath(profilePhoto)}
               width={36}
               height={36}
               alt="Avatar"

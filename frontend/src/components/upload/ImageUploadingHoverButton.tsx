@@ -20,7 +20,7 @@ const ImageUploadingHoverButton: React.FC<ImageUploadingButtonProps> = ({
       {({ onImageUpload, onImageUpdate }) => (
         <div
           className={cn(
-            "flex cursor-pointer items-center  transition-opacity duration-100 justify-center mt-4 top-0 w-[150px] h-[150px] bg-secondary rounded-full absolute",
+            "flex cursor-pointer items-center transition-opacity duration-100 justify-center mt-4 w-[150px] h-[150px] bg-secondary rounded-full absolute",
             {
               "opacity-0 hover:opacity-60": croppedImage,
             }
