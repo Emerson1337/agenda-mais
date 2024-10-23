@@ -153,16 +153,18 @@ export class AppointmentsService {
     );
 
     // remove slots already taken by someone
-    const slots = slotsAvailableBySchedule.flatMap((slot) => {
-      const appointmentInDate = appointments.find(
-        (appointment) => appointment.date === slot.date,
-      );
+    const slots = slotsAvailableBySchedule
+      .map((slot) => {
+        const takenTimes = appointments
+          .filter((appointment) => appointment.date === slot.date)
+          .map((appointment) => appointment.time);
 
-      return {
-        date: slot.date,
-        times: slot.times.filter((time) => time !== appointmentInDate?.time),
-      };
-    });
+        return {
+          date: slot.date,
+          times: slot.times.filter((time) => !takenTimes.includes(time)),
+        };
+      })
+      .filter((slot) => !!slot.times.length);
 
     return {
       scheduleId: schedule.id,
