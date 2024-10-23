@@ -5,6 +5,7 @@ import {
   CaretSortIcon,
   ChevronDownIcon,
   MobileIcon,
+  PlusIcon,
 } from "@radix-ui/react-icons";
 import {
   ColumnDef,
@@ -256,7 +257,17 @@ export function ServicesDataTable() {
   return (
     <Card>
       <CardHeader className="px-7">
-        <CardTitle>Serviços oferecidos</CardTitle>
+        <CardTitle>
+          <div className="flex justify-between">
+            <span>Serviços oferecidos</span>
+            <div>
+              <Button className="font-bold flex gap-2 uppercase">
+                <PlusIcon className="h-5 w-5" />
+                Adicionar Serviço
+              </Button>
+            </div>
+          </div>
+        </CardTitle>
         <CardDescription>
           Estes são todos os serviços disponíveis para agendamento.
         </CardDescription>
