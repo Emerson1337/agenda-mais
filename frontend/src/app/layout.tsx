@@ -11,7 +11,7 @@ export default async function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${inter.className} theme-rose`}>
+      <body className={`${inter.className} theme-zinc`}>
         <Provider>
           <ThemeProvider
             attribute="class"

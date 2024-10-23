@@ -5,7 +5,6 @@ import { Home, Calendar, AlarmCheck, Settings } from "lucide-react";
 import { Tooltip, TooltipContent, TooltipTrigger } from "./tooltip";
 import { useActivePath } from "@/lib/hooks";
 import Link from "next/link";
-import { ThemeToggle } from "./theme-toggle";
 
 interface Props {
   tooltip?: boolean;
