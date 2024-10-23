@@ -1,11 +1,17 @@
 import Image from "next/image";
+import { useBusinessContext } from "../../utils/context/BusinessDataContext";
+import { notFound } from "next/navigation";
+import { getPublicAPIPath } from "@/shared/utils/urlUtils";
 
 const BusinessIntroduction = (): JSX.Element => {
+  const { business } = useBusinessContext();
+  if (!business) notFound();
+
   return (
     <>
       <div className="flex justify-center items-center">
         <Image
-          src="https://github.com/emerson1337.png"
+          src={getPublicAPIPath(business.profilePhoto)}
           className="rounded-full mb-8 z-10"
           alt="logo"
           width={155}
@@ -14,10 +20,11 @@ const BusinessIntroduction = (): JSX.Element => {
         <div className="rounded-full w-40 h-40 absolute bg-primary-foreground mb-8 z-0" />
       </div>
       <div>Bem vindo ao</div>
-      <div className="font-bold">Barber!</div>
+      <div className="font-bold uppercase">
+        {business.username.replace("-", " ")}
+      </div>
       <div className="font-light text-sm text-muted-foreground opacity-80 mt-8 px-16 max-w-xl text-center">
-        Lorem Ipsum is simply dummy text of the printing and typesetting
-        industry. Lorem Ipsum has been the standard dummy text ever.
+        {business.welcomeMessage}
       </div>
     </>
   );
