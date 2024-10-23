@@ -44,7 +44,7 @@ export function Modal({
             </AlertDialogCancel>
           )}
           {confirm && (
-            <AlertDialogAction className="text-foreground" onClick={confirm}>
+            <AlertDialogAction onClick={confirm}>
               {confirmButton}
             </AlertDialogAction>
           )}
