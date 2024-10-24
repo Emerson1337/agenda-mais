@@ -28,7 +28,7 @@ const ChooseService = ({
                 R$ {service.price}
               </span>
               <span className="text-foreground">
-                {dateUtils.convertToMinutes(service.timeDuration)}
+                {dateUtils.convertToTime(service.timeDurationInMinutes)}
               </span>
             </div>
           </div>

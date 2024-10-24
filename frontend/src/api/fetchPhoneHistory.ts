@@ -13,7 +13,7 @@ export interface AppointmentHistory {
   updatedAt: string;
   price: number;
   phone: string;
-  timeDuration: string;
+  timeDurationInMinutes: number;
   serviceName: string;
   notes: string;
   managerId: string;

@@ -94,7 +94,7 @@ export function AppointmentsDataTable() {
         return (
           <Button
             variant="ghost"
-            className="p-0 m-0"
+            className="p-2 m-0"
             onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           >
             Cliente
@@ -154,7 +154,7 @@ export function AppointmentsDataTable() {
         <div className="flex justify-center">
           <Button
             variant="ghost"
-            className="p-0 m-0"
+            className="p-2 m-0"
             onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           >
             Valor

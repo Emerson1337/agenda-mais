@@ -44,8 +44,8 @@ const AppointmentsTimeLine = ({ appointmentsHistory }: Props): JSX.Element => {
             </time>
             <p className="mb-1 text-base font-normal text-gray-500 dark:text-gray-400">
               Duração:{" "}
-              {appointment.timeDuration
-                ? dateUtils.convertToMinutes(appointment.timeDuration)
+              {appointment.timeDurationInMinutes
+                ? dateUtils.convertToTime(appointment.timeDurationInMinutes)
                 : "-"}
             </p>
             {appointment.notes && (

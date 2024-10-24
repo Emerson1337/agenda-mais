@@ -253,7 +253,10 @@ export function ServicesDataTable() {
         <CardHeader>
           <CardTitle>
             <div className="flex justify-between">
-              <span>Serviços oferecidos</span>
+              <div className="flex gap-3 flex-col">
+                <CardTitle>Serviços</CardTitle>
+                <CardDescription>Gerencie seus serviços</CardDescription>
+              </div>
               <div>
                 <Button
                   className="font-bold flex gap-2 uppercase"
@@ -265,8 +268,6 @@ export function ServicesDataTable() {
               </div>
             </div>
           </CardTitle>
-          <CardTitle>Serviços</CardTitle>
-          <CardDescription>Gerencie seus serviços</CardDescription>
         </CardHeader>
         <CardContent>
           <ServiceTableHeader table={table} />
