@@ -22,7 +22,7 @@ export class SalesReportService {
     notes,
     code,
     time,
-    timeDuration,
+    timeDurationInMinutes,
     status = AppointmentStatus.ACTIVE,
   }: CreateOrUpdateSalesReportDto): Promise<boolean> {
     return await this.salesReportRepository.create({
@@ -34,7 +34,7 @@ export class SalesReportService {
       code,
       clientName,
       notes,
-      timeDuration,
+      timeDurationInMinutes,
       status,
       time,
     });
@@ -50,7 +50,7 @@ export class SalesReportService {
     notes,
     code,
     time,
-    timeDuration,
+    timeDurationInMinutes,
     status = AppointmentStatus.ACTIVE,
   }: CreateOrUpdateSalesReportDto): Promise<boolean> {
     return await this.salesReportRepository.update({
@@ -62,7 +62,7 @@ export class SalesReportService {
       code,
       serviceName,
       notes,
-      timeDuration,
+      timeDurationInMinutes,
       status,
       time,
     });

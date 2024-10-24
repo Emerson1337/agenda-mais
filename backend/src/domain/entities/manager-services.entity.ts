@@ -4,5 +4,5 @@ export class ManagerServices extends BaseEntity {
   name: string;
   price: number;
   description: string;
-  timeDuration: string;
+  timeDurationInMinutes: number;
 }

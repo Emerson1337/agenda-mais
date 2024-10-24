@@ -1,5 +1,5 @@
 import { ManagerServices } from '@/domain/entities/manager-services.entity';
-import { Column, Entity } from 'typeorm';
+import { Column, DeleteDateColumn, Entity } from 'typeorm';
 
 import BaseEntityMDB from './config/base.entity';
 
@@ -20,6 +20,9 @@ export class ManagerServicesMDB
   @Column({ type: 'string' })
   description: string;
 
-  @Column({ type: 'string' })
-  timeDuration: string;
+  @Column({ type: 'number' })
+  timeDurationInMinutes: number;
+
+  @DeleteDateColumn()
+  deletedAt?: Date;
 }

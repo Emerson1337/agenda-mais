@@ -110,7 +110,7 @@ export class AppointmentsService {
       notes: appointment.notes,
       phone: phone,
       price: service.price,
-      timeDuration: service.timeDuration,
+      timeDurationInMinutes: service.timeDurationInMinutes,
     });
 
     return {

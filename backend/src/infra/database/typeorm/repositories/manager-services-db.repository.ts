@@ -19,23 +19,29 @@ export class TypeOrmManagerServicesRepository
   }
 
   async getByManagerId(managerId: string): Promise<ManagerServices[]> {
-    return await this.repository.find({
+    const result = await this.repository.find({
       where: { managerId },
     });
+    result.forEach((item) => delete item.deletedAt);
+    return result;
   }
 
-  async deleteById(managerServiceId: string, managerId: string): Promise<void> {
-    await this.repository.deleteOne({
-      managerId,
-      _id: new ObjectId(managerServiceId),
-    });
-    return;
+  async softDeleteById(
+    managerServiceId: string,
+    managerId: string,
+  ): Promise<void> {
+    await this.repository.updateOne(
+      { managerId, _id: new ObjectId(managerServiceId) },
+      { $set: { deletedAt: new Date() } },
+    );
   }
 
   async create(
     managerServiceData: CreateUpdateManagerServiceDto,
   ): Promise<ManagerServices> {
-    return await this.repository.save(managerServiceData);
+    const result = await this.repository.save(managerServiceData);
+    delete result.deletedAt;
+    return result;
   }
 
   async update(
@@ -43,19 +49,23 @@ export class TypeOrmManagerServicesRepository
     managerServiceData: CreateUpdateManagerServiceDto,
     managerId: string,
   ): Promise<ManagerServices> {
-    return (await this.repository.findOneAndUpdate(
+    const result = await this.repository.findOneAndUpdate(
       {
         _id: new ObjectId(id),
         managerId,
       },
       { $set: managerServiceData },
-    )) as ManagerServices;
+    );
+    if (result?.value) delete result.value.deletedAt;
+    return result.value;
   }
 
   async findByName(name: string, managerId: string): Promise<ManagerServices> {
-    return await this.repository.findOne({
+    const result = await this.repository.findOne({
       where: { name, managerId },
     });
+    if (result) delete result.deletedAt;
+    return result;
   }
 
   async findByNameInUse(
@@ -63,16 +73,21 @@ export class TypeOrmManagerServicesRepository
     managerServiceId: string,
     managerId: string,
   ): Promise<ManagerServices> {
-    return await this.repository.findOne({
+    const result = await this.repository.findOne({
       where: {
         _id: { $ne: new ObjectId(managerServiceId) },
         managerId,
         name,
       },
     });
+    if (result) delete result.deletedAt;
+    return result;
   }
+
   async getAll(managerId: string): Promise<ManagerServices[]> {
-    return await this.repository.find({ managerId });
+    const result = await this.repository.find({ managerId });
+    result.forEach((item) => delete item.deletedAt);
+    return result;
   }
 
   async findById({
@@ -82,9 +97,11 @@ export class TypeOrmManagerServicesRepository
     managerServiceId: string;
     managerId: string;
   }): Promise<ManagerServices> {
-    return await this.repository.findOneBy({
+    const result = await this.repository.findOneBy({
       _id: new ObjectId(managerServiceId),
       managerId,
     });
+    if (result) delete result.deletedAt;
+    return result;
   }
 }

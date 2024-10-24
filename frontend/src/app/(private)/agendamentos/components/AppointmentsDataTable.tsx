@@ -94,6 +94,7 @@ export function AppointmentsDataTable() {
         return (
           <Button
             variant="ghost"
+            className="p-2 m-0"
             onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           >
             Cliente
@@ -129,7 +130,15 @@ export function AppointmentsDataTable() {
     {
       id: "serviceName",
       accessorKey: "service",
-      header: () => <div>Serviço</div>,
+      header: ({ column }) => (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Serviço
+          <CaretSortIcon className="ml-2 h-4 w-4" />
+        </Button>
+      ),
       cell: ({ row }) => {
         return (
           <div className="font-medium">
@@ -141,7 +150,18 @@ export function AppointmentsDataTable() {
     {
       id: "servicePrice",
       accessorKey: "service",
-      header: () => <div className="flex justify-center w-full">Valor</div>,
+      header: ({ column }) => (
+        <div className="flex justify-center">
+          <Button
+            variant="ghost"
+            className="p-2 m-0"
+            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          >
+            Valor
+            <CaretSortIcon className="ml-2 h-4 w-4" />
+          </Button>
+        </div>
+      ),
       cell: ({ row }) => {
         return (
           <div className="font-medium flex justify-center">

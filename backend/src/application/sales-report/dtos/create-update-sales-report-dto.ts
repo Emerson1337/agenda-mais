@@ -41,7 +41,7 @@ export class CreateOrUpdateSalesReportDto {
   notes: string;
 
   @IsOptional()
-  timeDuration?: string;
+  timeDurationInMinutes?: number;
 
   @IsOptional()
   @IsEnum(AppointmentStatus)

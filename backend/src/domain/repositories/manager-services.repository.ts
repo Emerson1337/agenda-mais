@@ -29,7 +29,7 @@ export abstract class ManagerServicesRepository {
     managerServiceId: string;
     managerId: string;
   }): Promise<ManagerServices>;
-  abstract deleteById(
+  abstract softDeleteById(
     managerServiceId: string,
     managerId: string,
   ): Promise<void>;

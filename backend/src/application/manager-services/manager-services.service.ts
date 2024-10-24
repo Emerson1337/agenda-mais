@@ -84,7 +84,7 @@ export class ManagerServicesService {
         ),
       );
 
-    await this.managerServicesRepository.deleteById(
+    await this.managerServicesRepository.softDeleteById(
       managerServiceId,
       managerId,
     );

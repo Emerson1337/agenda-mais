@@ -39,30 +39,16 @@ export namespace dateUtils {
     return dates;
   };
 
-  export const convertToMinutes = (duration: string) => {
-    const [value, unit] = duration.split(" ");
-    let numericValue = parseInt(value, 10);
-
-    let minutes = 0;
-
-    switch (unit) {
-      case "hours":
-      case "hour":
-        minutes = numericValue * 60; // 1 hour = 60 minutes
-        break;
-      case "minutes":
-      case "minute":
-        minutes = numericValue; // Already in minutes
-        break;
-      default:
-        return "Unsupported unit"; // In case an invalid unit is provided
+  export const convertToTime = (durationInMinutes: number): string => {
+    if (durationInMinutes < 60) {
+      return `${durationInMinutes} minuto${durationInMinutes !== 1 ? "s" : ""}`;
+    } else {
+      const hours = Math.floor(durationInMinutes / 60);
+      const minutes = durationInMinutes % 60;
+      const hourString = `${hours} hora${hours !== 1 ? "s" : ""}`;
+      const minuteString =
+        minutes > 0 ? ` ${minutes} minuto${minutes !== 1 ? "s" : ""}` : "";
+      return `${hourString}${minuteString}`;
     }
-
-    const formattedDuration = formatDuration(
-      intervalToDuration({ start: 0, end: minutes * 60 * 1000 }),
-      { locale: ptBR }
-    );
-
-    return formattedDuration;
   };
 }

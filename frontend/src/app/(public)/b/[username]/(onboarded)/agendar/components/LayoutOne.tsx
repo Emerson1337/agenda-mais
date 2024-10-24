@@ -83,8 +83,8 @@ const LayoutOne = ({ datesAvailable }: Props): JSX.Element => {
               name: selectedService.name,
               price: numberUtils.convertToMonetaryBRL(selectedService.price),
               notes: notes,
-              duration: dateUtils.convertToMinutes(
-                selectedService.timeDuration
+              duration: dateUtils.convertToTime(
+                selectedService.timeDurationInMinutes
               ),
             },
           });
