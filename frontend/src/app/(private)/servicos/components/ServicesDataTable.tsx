@@ -1,42 +1,8 @@
 "use client";
 
-import * as React from "react";
-import {
-  CaretSortIcon,
-  ChevronDownIcon,
-  PlusIcon,
-} from "@radix-ui/react-icons";
-import {
-  ColumnDef,
-  ColumnFiltersState,
-  SortingState,
-  VisibilityState,
-  flexRender,
-  getCoreRowModel,
-  getFilteredRowModel,
-  getPaginationRowModel,
-  getSortedRowModel,
-  useReactTable,
-} from "@tanstack/react-table";
-
+import React from "react";
 import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuCheckboxItem,
-  DropdownMenuContent,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Input } from "@/components/ui/input";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import { useService } from "../hooks/useService";
-import { numberUtils } from "@/shared/utils/numberUtils";
+import { CaretSortIcon, PlusIcon } from "@radix-ui/react-icons";
 import {
   Card,
   CardContent,
@@ -44,45 +10,50 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { toast } from "react-toastify";
-import { AxiosError } from "axios";
-import { Modal } from "@/components/ui/modal";
+import {
+  useReactTable,
+  getPaginationRowModel,
+  getCoreRowModel,
+  ColumnDef,
+  getSortedRowModel,
+  getFilteredRowModel,
+  SortingState,
+  ColumnFiltersState,
+  VisibilityState,
+} from "@tanstack/react-table";
+import { useService } from "../hooks/useService";
 import { useServiceMutation } from "../hooks/useServiceMutation";
 import { ServiceData } from "@/shared/types/service";
+import { toast } from "react-toastify";
+import { ServiceModal } from "./ServiceModal";
+import { ServiceTableHeader } from "./ServiceTableHeader";
+import { ServiceTableBody } from "./ServiceTableBody";
+import { numberUtils } from "@/shared/utils/numberUtils";
 import { dateUtils } from "@/shared/utils/dateUtils";
-import { TimeDurationSelector } from "./TimeDurationSelector";
-import { Textarea } from "@/components/ui/textarea";
-import MoneyInput from "@/components/ui/input-monetary";
-
-const columnLabels: Record<string, string> = {
-  name: "Nome",
-  price: "Preço",
-  description: "Descrição",
-  timeDurationInMinutes: "Tempo",
-};
+import { AxiosError } from "axios";
 
 export function ServicesDataTable() {
+  const { data } = useService();
+  const {
+    delete: deleteMutation,
+    update: updateMutation,
+    create: createMutation,
+  } = useServiceMutation();
+  const [rowSelection, setRowSelection] = React.useState({});
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
   );
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({});
-  const [rowSelection, setRowSelection] = React.useState({});
-  const { data } = useService();
-
-  const {
-    delete: deleteMutation,
-    update: updateMutation,
-    create: createMutation,
-  } = useServiceMutation();
   const [openServiceModal, setOpenServiceModal] =
     React.useState<boolean>(false);
   const [modalType, setModalType] = React.useState<
     "create" | "edit" | "delete"
   >("create");
-  const [serviceFocused, setServiceFocused] =
-    React.useState<Partial<ServiceData>>();
+  const [serviceFocused, setServiceFocused] = React.useState<
+    Partial<ServiceData> | undefined
+  >();
 
   const columns: ColumnDef<ServiceData>[] = [
     {
@@ -91,7 +62,7 @@ export function ServicesDataTable() {
       header: ({ column }) => {
         return (
           <Button
-            className="p-0 m-0"
+            className="p-2 m-0"
             variant="ghost"
             onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           >
@@ -112,7 +83,7 @@ export function ServicesDataTable() {
       header: ({ column }) => {
         return (
           <Button
-            className="p-0 m-0"
+            className="p-2 m-0"
             variant="ghost"
             onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           >
@@ -136,7 +107,7 @@ export function ServicesDataTable() {
       header: ({ column }) => {
         return (
           <Button
-            className="p-0 m-0"
+            className="p-2 m-0"
             variant="ghost"
             onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           >
@@ -157,7 +128,7 @@ export function ServicesDataTable() {
       header: ({ column }) => {
         return (
           <Button
-            className="p-0 m-0"
+            className="p-2 m-0"
             variant="ghost"
             onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           >
@@ -185,7 +156,7 @@ export function ServicesDataTable() {
             <Button
               variant="secondary"
               onClick={() => {
-                triggerServiceModal("edit", row.original);
+                handleEdit(row.original);
               }}
             >
               Editar
@@ -193,7 +164,7 @@ export function ServicesDataTable() {
             <Button
               variant="destructive"
               onClick={() => {
-                triggerServiceModal("delete", row.original);
+                handleDelete(row.original);
               }}
             >
               Remover
@@ -223,255 +194,93 @@ export function ServicesDataTable() {
     },
   });
 
-  const handleServiceAction = async () => {
+  function handleCreate() {
+    setServiceFocused(undefined);
+    setModalType("create");
+    setOpenServiceModal(true);
+  }
+
+  function handleEdit(service: ServiceData) {
+    setServiceFocused(service);
+    setModalType("edit");
+    setOpenServiceModal(true);
+  }
+
+  function handleDelete(service: ServiceData) {
+    setServiceFocused(service);
+    setModalType("delete");
+    setOpenServiceModal(true);
+  }
+
+  async function handleConfirm() {
     try {
-      if (modalType === "create") {
-        await createMutation.mutateAsync({
-          ...serviceFocused,
-        });
-        toast.success("Serviço criado com sucesso!");
+      if (modalType === "delete") {
+        if (!serviceFocused?.id)
+          return toast.error(
+            "Erro ao deletar serviço! Verifique os dados e tente novamente"
+          );
+        await deleteMutation.mutateAsync({ id: serviceFocused.id });
+        toast.success("Serviço removido com sucesso!");
       } else if (modalType === "edit") {
-        if (serviceFocused?.id) {
-          await updateMutation.mutateAsync({
-            id: serviceFocused.id,
-            updatedData: serviceFocused,
-          });
-          toast.success("Serviço editado com sucesso!");
-        }
-      } else if (modalType === "delete") {
-        if (serviceFocused?.id) {
-          await deleteMutation.mutateAsync({ id: serviceFocused.id });
-          toast.success("Serviço removido com sucesso!");
-        }
+        if (!serviceFocused?.id)
+          return toast.error(
+            "Erro ao editar serviço! Verifique os dados e tente novamente"
+          );
+        await updateMutation.mutateAsync({
+          id: serviceFocused.id,
+          updatedData: serviceFocused,
+        });
+        toast.success("Serviço editado com sucesso!");
+      } else {
+        if (!serviceFocused)
+          return toast.error(
+            "Erro ao criar serviço! Verifique os dados e tente novamente"
+          );
+        await createMutation.mutateAsync(serviceFocused);
+        toast.success("Serviço criado com sucesso!");
       }
       setOpenServiceModal(false);
     } catch (error: AxiosError | any) {
-      toast.error(
-        error?.response?.data?.message ||
-          "Erro! Confira os dados e tente novamente."
-      );
+      error?.response?.data?.body?.errors.map((error: any) => {
+        toast.error(error?.message || "Erro ao salvar alterações");
+      });
     }
-  };
-
-  const triggerServiceModal = (
-    type: "create" | "edit" | "delete",
-    service?: ServiceData
-  ) => {
-    setModalType(type);
-    setServiceFocused(service);
-    setOpenServiceModal(true);
-  };
+  }
 
   return (
-    <Card>
-      <CardHeader className="px-7">
-        <CardTitle>
-          <div className="flex justify-between">
-            <span>Serviços oferecidos</span>
-            <div>
-              <Button
-                className="font-bold flex gap-2 uppercase"
-                onClick={() => triggerServiceModal("create")}
-              >
-                <PlusIcon className="h-5 w-5" />
-                Adicionar Serviço
-              </Button>
-            </div>
-          </div>
-        </CardTitle>
-        <CardDescription>
-          Estes são todos os serviços disponíveis para agendamento.
-        </CardDescription>
-      </CardHeader>
-      <CardContent>
-        <div className="w-full">
-          <div className="flex items-center py-4">
-            <Input
-              placeholder="Filtrar seviços..."
-              value={
-                (table.getColumn("name")?.getFilterValue() as string) ?? ""
-              }
-              onChange={(event) =>
-                table.getColumn("name")?.setFilterValue(event.target.value)
-              }
-              className="max-w-sm"
-            />
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="outline" className="ml-auto">
-                  Colunas <ChevronDownIcon className="ml-2 h-4 w-4" />
+    <>
+      <Card>
+        <CardHeader>
+          <CardTitle>
+            <div className="flex justify-between">
+              <span>Serviços oferecidos</span>
+              <div>
+                <Button
+                  className="font-bold flex gap-2 uppercase"
+                  onClick={() => handleCreate()}
+                >
+                  <PlusIcon className="h-5 w-5" />
+                  Adicionar Serviço
                 </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
-                {table
-                  .getAllColumns()
-                  .filter((column) => column.getCanHide())
-                  .map((column) => {
-                    return (
-                      <DropdownMenuCheckboxItem
-                        key={column.id}
-                        className="capitalize"
-                        checked={column.getIsVisible()}
-                        onCheckedChange={(value) =>
-                          column.toggleVisibility(!!value)
-                        }
-                      >
-                        {columnLabels[column.id] ?? column.id}
-                      </DropdownMenuCheckboxItem>
-                    );
-                  })}
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </div>
-          <div className="rounded-md border">
-            <Table>
-              <TableHeader>
-                {table.getHeaderGroups().map((headerGroup) => (
-                  <TableRow key={headerGroup.id}>
-                    {headerGroup.headers.map((header) => {
-                      return (
-                        <TableHead key={header.id}>
-                          {header.isPlaceholder
-                            ? null
-                            : flexRender(
-                                header.column.columnDef.header,
-                                header.getContext()
-                              )}
-                        </TableHead>
-                      );
-                    })}
-                  </TableRow>
-                ))}
-              </TableHeader>
-              <TableBody>
-                {table.getRowModel().rows?.length ? (
-                  table.getRowModel().rows.map((row) => (
-                    <TableRow
-                      key={row.id}
-                      data-state={row.getIsSelected() && "selected"}
-                    >
-                      {row.getVisibleCells().map((cell) => (
-                        <TableCell key={cell.id}>
-                          {flexRender(
-                            cell.column.columnDef.cell,
-                            cell.getContext()
-                          )}
-                        </TableCell>
-                      ))}
-                    </TableRow>
-                  ))
-                ) : (
-                  <TableRow>
-                    <TableCell
-                      colSpan={columns.length}
-                      className="h-24 text-center"
-                    >
-                      Nenhum serviço encontrado.
-                    </TableCell>
-                  </TableRow>
-                )}
-              </TableBody>
-            </Table>
-          </div>
-          <div className="flex items-center justify-end space-x-2 py-4">
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => table.previousPage()}
-              disabled={!table.getCanPreviousPage()}
-            >
-              Anterior
-            </Button>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => table.nextPage()}
-              disabled={!table.getCanNextPage()}
-            >
-              Próximo
-            </Button>
-          </div>
-        </div>
-      </CardContent>
-
-      <Modal
+              </div>
+            </div>
+          </CardTitle>
+          <CardTitle>Serviços</CardTitle>
+          <CardDescription>Gerencie seus serviços</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <ServiceTableHeader table={table} />
+          <ServiceTableBody table={table} />
+        </CardContent>
+      </Card>
+      <ServiceModal
         open={openServiceModal}
-        confirm={handleServiceAction}
-        dismiss={() => setOpenServiceModal(false)}
-        cancelStyle={modalType === "delete" ? "bg-destructive" : ""}
-        title={
-          modalType === "create"
-            ? "Criar novo serviço"
-            : modalType === "edit"
-            ? "Editar serviço"
-            : "Remover serviço"
-        }
-        cancelButton={modalType === "delete" ? "Cancelar" : "Fechar"}
-        confirmButton={
-          modalType === "create"
-            ? "Criar"
-            : modalType === "edit"
-            ? "Salvar"
-            : "Confirmar exclusão"
-        }
-      >
-        {modalType === "delete" ? (
-          <p className="font-thin">
-            Tem certeza de que deseja excluir o serviço{" "}
-            <span className="font-bold">{serviceFocused?.name}</span>?
-          </p>
-        ) : (
-          <div className="p-4">
-            <div className="mb-4 flex gap-3 flex-col">
-              <label className="font-thin">Nome do Serviço:</label>
-              <Input
-                value={serviceFocused?.name}
-                onChange={(e) => {
-                  setServiceFocused((prev) => ({
-                    ...prev,
-                    name: e.target.value,
-                  }));
-                }}
-              />
-            </div>
-            <div className="mb-4 flex gap-3 flex-col">
-              <label className="font-thin">Preço:</label>
-              <MoneyInput
-                defaultValue={serviceFocused?.price}
-                onChange={(value) =>
-                  setServiceFocused((prev) => ({
-                    ...prev,
-                    price: Number(value),
-                  }))
-                }
-              />
-            </div>
-            <div className="mb-4 flex gap-3 flex-col">
-              <label className="font-thin">Descrição:</label>
-              <Textarea
-                value={serviceFocused?.description}
-                onChange={(e) =>
-                  setServiceFocused((prev) => ({
-                    ...prev,
-                    description: e.target.value,
-                  }))
-                }
-              />
-            </div>
-            <div className="mb-4 flex gap-3 flex-col">
-              <TimeDurationSelector
-                defaultValue={serviceFocused?.timeDurationInMinutes}
-                onChange={(value) =>
-                  setServiceFocused((prev) => ({
-                    ...prev,
-                    timeDurationInMinutes: Number(value),
-                  }))
-                }
-              />
-            </div>
-          </div>
-        )}
-      </Modal>
-    </Card>
+        onConfirm={handleConfirm}
+        onCancel={() => setOpenServiceModal(false)}
+        modalType={modalType}
+        serviceFocused={serviceFocused}
+        setServiceFocused={setServiceFocused}
+      />
+    </>
   );
 }
