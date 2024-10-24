@@ -14,6 +14,6 @@ export class CreateUpdateManagerServiceDto {
   description: string;
 
   @IsNotEmpty()
-  @IsString()
-  timeDuration: string;
+  @IsNumber()
+  timeDurationInMinutes: number;
 }

@@ -7,7 +7,7 @@ export interface Service {
   name: string;
   price: number;
   description: string;
-  timeDuration: string;
+  timeDurationInMinutes: number;
 }
 
 // Define the type for the business data

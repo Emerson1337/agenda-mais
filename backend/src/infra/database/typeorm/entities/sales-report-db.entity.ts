@@ -12,8 +12,8 @@ export class SalesReportMDB extends BaseEntityMDB implements SalesReport {
   @Column({ type: 'string' })
   phone: string;
 
-  @Column({ type: 'string' })
-  timeDuration?: string;
+  @Column({ type: 'number' })
+  timeDurationInMinutes?: number;
 
   @Column({ type: 'string' })
   managerId: string;

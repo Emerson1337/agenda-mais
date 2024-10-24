@@ -10,6 +10,6 @@ export class SalesReport extends BaseEntity {
   code: string;
   serviceName: string;
   notes: string;
-  timeDuration?: string;
+  timeDurationInMinutes?: number;
   status: AppointmentStatus;
 }

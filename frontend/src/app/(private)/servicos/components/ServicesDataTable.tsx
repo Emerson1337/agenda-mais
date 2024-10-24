@@ -4,7 +4,6 @@ import * as React from "react";
 import {
   CaretSortIcon,
   ChevronDownIcon,
-  MobileIcon,
   PlusIcon,
 } from "@radix-ui/react-icons";
 import {
@@ -36,10 +35,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { useAppointment } from "../hooks/useAppointment";
-import { AppointmentData } from "@/shared/types/appointment";
-import { Badge } from "@/components/ui/badge";
-import { stringUtils } from "@/shared/utils/stringUtils";
+import { useService } from "../hooks/useService";
 import { numberUtils } from "@/shared/utils/numberUtils";
 import {
   Card,
@@ -48,15 +44,15 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { format, parseISO } from "date-fns";
-import { useBusinessContext } from "@/app/(private)/utils/context/BusinessDataContext";
-import { WhatsappService } from "@/shared/services/whatsapp.service";
-import { useAppointmentMutation } from "@/app/(private)/agendamentos/hooks/useAppointmentMutation";
 import { toast } from "react-toastify";
 import { AxiosError } from "axios";
 import { Modal } from "@/components/ui/modal";
-
-const ONE_SECOND = 1000;
+import { useServiceMutation } from "../hooks/useServiceMutation";
+import { ServiceData } from "@/shared/types/service";
+import { dateUtils } from "@/shared/utils/dateUtils";
+import { TimeDurationSelector } from "./TimeDurationSelector";
+import { Textarea } from "@/components/ui/textarea";
+import MoneyInput from "@/components/ui/input-monetary";
 
 const columnLabels: Record<string, string> = {
   clientName: "Cliente",
@@ -69,8 +65,6 @@ const columnLabels: Record<string, string> = {
   actions: "Ações",
 };
 
-const hiddenColumns = ["phone", "time"];
-
 export function ServicesDataTable() {
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
@@ -79,116 +73,106 @@ export function ServicesDataTable() {
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = React.useState({});
-  const { data } = useAppointment();
+  const { data } = useService();
 
-  const { mutateAsync } = useAppointmentMutation();
-  const [open, setOpen] = React.useState<boolean>(false);
-  const [appointmentFocused, setAppointmentFocused] =
-    React.useState<AppointmentData>();
-  const { id: managerId } = useBusinessContext();
+  const {
+    delete: deleteMutation,
+    update: updateMutation,
+    create: createMutation,
+  } = useServiceMutation();
+  const [openServiceModal, setOpenServiceModal] =
+    React.useState<boolean>(false);
+  const [modalType, setModalType] = React.useState<
+    "create" | "edit" | "delete"
+  >("create");
+  const [serviceFocused, setServiceFocused] =
+    React.useState<Partial<ServiceData>>();
 
-  const columns: ColumnDef<AppointmentData>[] = [
+  const columns: ColumnDef<ServiceData>[] = [
     {
-      id: "clientName",
-      accessorKey: "clientName",
+      id: "name",
+      accessorKey: "name",
       header: ({ column }) => {
         return (
           <Button
             variant="ghost"
             onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           >
-            Cliente
+            Nome
             <CaretSortIcon className="ml-2 h-4 w-4" />
           </Button>
         );
       },
       cell: ({ row }) => (
-        <>
-          <div className="font-medium">
-            {row.getValue<AppointmentData["clientName"]>("clientName")}
-          </div>
-          <div className="hidden text-sm text-muted-foreground md:inline">
-            {stringUtils.addPhoneMask(
-              row.getValue<AppointmentData["phone"]>("phone")
-            )}
-          </div>
-        </>
+        <div className="font-medium">
+          {row.getValue<ServiceData["name"]>("name")}
+        </div>
       ),
     },
     {
-      id: "time",
-      accessorKey: "time",
-      header: undefined,
-      cell: undefined,
-    },
-    {
-      id: "phone",
-      accessorKey: "phone",
-      header: undefined,
-      cell: undefined,
-    },
-    {
-      id: "serviceName",
-      accessorKey: "service",
-      header: () => <div>Serviço</div>,
-      cell: ({ row }) => {
-        return (
-          <div className="font-medium">
-            {row.getValue<AppointmentData["service"]>("serviceName").name}
-          </div>
-        );
-      },
-    },
-    {
-      id: "servicePrice",
-      accessorKey: "service",
-      header: () => <div className="flex justify-center w-full">Valor</div>,
-      cell: ({ row }) => {
-        return (
-          <div className="font-medium flex justify-center">
-            {numberUtils.convertToMonetaryBRL(
-              row.getValue<AppointmentData["service"]>("servicePrice").price
-            )}
-          </div>
-        );
-      },
-    },
-    {
-      accessorKey: "date",
+      id: "price",
+      accessorKey: "price",
       header: ({ column }) => {
         return (
-          <div className="flex justify-center w-full">
-            <Button
-              variant="ghost"
-              onClick={() =>
-                column.toggleSorting(column.getIsSorted() === "asc")
-              }
-            >
-              Data
-              <CaretSortIcon className="ml-2 h-4 w-4" />
-            </Button>
-          </div>
+          <Button
+            variant="ghost"
+            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          >
+            Preço
+            <CaretSortIcon className="ml-2 h-4 w-4" />
+          </Button>
         );
-      },
-      cell: ({ row }) => {
-        return (
-          <div className="font-medium flex items-center justify-center flex-col">
-            <div>{format(parseISO(row.getValue("date")), "dd/MM/yyyy")}</div>
-            <div className="hidden text-sm text-muted-foreground md:inline">
-              {row.getValue<AppointmentData["time"]>("time")}
-            </div>
-          </div>
-        );
-      },
-    },
-    {
-      accessorKey: "code",
-      header: () => {
-        return <div className="flex justify-center w-full">Código</div>;
       },
       cell: ({ row }) => (
-        <div className="font-medium flex justify-center">
-          <Badge className="text-xs capitalize">{row.getValue("code")}</Badge>
+        <div className="font-medium">
+          {row.getValue<ServiceData["price"]>("price") !== undefined &&
+            numberUtils.convertToMonetaryBRL(
+              row.getValue<ServiceData["price"]>("price")
+            )}
+        </div>
+      ),
+    },
+    {
+      id: "description",
+      accessorKey: "description",
+      header: ({ column }) => {
+        return (
+          <Button
+            variant="ghost"
+            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          >
+            Descrição
+            <CaretSortIcon className="ml-2 h-4 w-4" />
+          </Button>
+        );
+      },
+      cell: ({ row }) => (
+        <div className="font-medium">
+          {row.getValue<ServiceData["description"]>("description")}
+        </div>
+      ),
+    },
+    {
+      id: "timeDurationInMinutes",
+      accessorKey: "timeDurationInMinutes",
+      header: ({ column }) => {
+        return (
+          <Button
+            variant="ghost"
+            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          >
+            Tempo
+            <CaretSortIcon className="ml-2 h-4 w-4" />
+          </Button>
+        );
+      },
+      cell: ({ row }) => (
+        <div className="font-medium">
+          {dateUtils.convertToTime(
+            row.getValue<ServiceData["timeDurationInMinutes"]>(
+              "timeDurationInMinutes"
+            )
+          )}
         </div>
       ),
     },
@@ -197,14 +181,24 @@ export function ServicesDataTable() {
       enableHiding: false,
       cell: ({ row }) => {
         return (
-          <Button
-            onClick={() => {
-              setOpen(true);
-              setAppointmentFocused(row.original);
-            }}
-          >
-            Detalhes
-          </Button>
+          <div className="flex gap-3">
+            <Button
+              variant="secondary"
+              onClick={() => {
+                triggerServiceModal("edit", row.original);
+              }}
+            >
+              Editar
+            </Button>
+            <Button
+              variant="destructive"
+              onClick={() => {
+                triggerServiceModal("delete", row.original);
+              }}
+            >
+              Remover
+            </Button>
+          </div>
         );
       },
     },
@@ -229,29 +223,43 @@ export function ServicesDataTable() {
     },
   });
 
-  const handleCancelAppointment = async (appointment: AppointmentData) => {
+  const handleServiceAction = async () => {
     try {
-      const response = await mutateAsync({
-        managerId: managerId,
-        appointmentId: appointment._id,
-      });
-
-      toast.success(response.data.body.message);
-      setOpen(false);
-      setTimeout(() => {
-        WhatsappService.warnCancelAppointment({
-          name: appointment?.clientName,
-          code: appointment?.code,
-          day: format(appointment?.date, "dd/MM/yyyy"),
-          time: appointment?.time,
-          phone: appointment.phone,
+      if (modalType === "create") {
+        await createMutation.mutateAsync({
+          ...serviceFocused,
         });
-      }, ONE_SECOND);
+        toast.success("Serviço criado com sucesso!");
+      } else if (modalType === "edit") {
+        if (serviceFocused?.id) {
+          await updateMutation.mutateAsync({
+            id: serviceFocused.id,
+            updatedData: serviceFocused,
+          });
+          toast.success("Serviço editado com sucesso!");
+        }
+      } else if (modalType === "delete") {
+        if (serviceFocused?.id) {
+          await deleteMutation.mutateAsync({ id: serviceFocused.id });
+          toast.success("Serviço removido com sucesso!");
+        }
+      }
+      setOpenServiceModal(false);
     } catch (error: AxiosError | any) {
       toast.error(
-        error?.response?.data?.message || "Erro ao cancelar agendamento"
+        error?.response?.data?.message ||
+          "Erro! Confira os dados e tente novamente."
       );
     }
+  };
+
+  const triggerServiceModal = (
+    type: "create" | "edit" | "delete",
+    service?: ServiceData
+  ) => {
+    setModalType(type);
+    setServiceFocused(service);
+    setOpenServiceModal(true);
   };
 
   return (
@@ -261,7 +269,10 @@ export function ServicesDataTable() {
           <div className="flex justify-between">
             <span>Serviços oferecidos</span>
             <div>
-              <Button className="font-bold flex gap-2 uppercase">
+              <Button
+                className="font-bold flex gap-2 uppercase"
+                onClick={() => triggerServiceModal("create")}
+              >
                 <PlusIcon className="h-5 w-5" />
                 Adicionar Serviço
               </Button>
@@ -276,15 +287,12 @@ export function ServicesDataTable() {
         <div className="w-full">
           <div className="flex items-center py-4">
             <Input
-              placeholder="Filtrar clientes..."
+              placeholder="Filtrar seviços..."
               value={
-                (table.getColumn("clientName")?.getFilterValue() as string) ??
-                ""
+                (table.getColumn("name")?.getFilterValue() as string) ?? ""
               }
               onChange={(event) =>
-                table
-                  .getColumn("clientName")
-                  ?.setFilterValue(event.target.value)
+                table.getColumn("name")?.setFilterValue(event.target.value)
               }
               className="max-w-sm"
             />
@@ -297,10 +305,7 @@ export function ServicesDataTable() {
               <DropdownMenuContent align="end">
                 {table
                   .getAllColumns()
-                  .filter(
-                    (column) =>
-                      column.getCanHide() && !hiddenColumns.includes(column.id)
-                  )
+                  .filter((column) => column.getCanHide())
                   .map((column) => {
                     return (
                       <DropdownMenuCheckboxItem
@@ -311,7 +316,7 @@ export function ServicesDataTable() {
                           column.toggleVisibility(!!value)
                         }
                       >
-                        {columnLabels[column.id] || column.id}
+                        {columnLabels[column.id] ?? column.id}
                       </DropdownMenuCheckboxItem>
                     );
                   })}
@@ -361,7 +366,7 @@ export function ServicesDataTable() {
                       colSpan={columns.length}
                       className="h-24 text-center"
                     >
-                      Sem resultados.
+                      Nenhum serviço encontrado.
                     </TableCell>
                   </TableRow>
                 )}
@@ -369,84 +374,100 @@ export function ServicesDataTable() {
             </Table>
           </div>
           <div className="flex items-center justify-end space-x-2 py-4">
-            <div className="flex-1 text-sm text-muted-foreground">
-              Página {table.getState().pagination.pageIndex + 1} de{" "}
-              {table.getPageCount()}.
-            </div>
-            <div className="space-x-2">
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => table.previousPage()}
-                disabled={!table.getCanPreviousPage()}
-              >
-                Anterior
-              </Button>
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => table.nextPage()}
-                disabled={!table.getCanNextPage()}
-              >
-                Próximo
-              </Button>
-            </div>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => table.previousPage()}
+              disabled={!table.getCanPreviousPage()}
+            >
+              Anterior
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => table.nextPage()}
+              disabled={!table.getCanNextPage()}
+            >
+              Próximo
+            </Button>
           </div>
         </div>
       </CardContent>
+
       <Modal
-        open={open}
-        confirm={() => {
-          setOpen(false);
-        }}
-        dismiss={() =>
-          appointmentFocused && handleCancelAppointment(appointmentFocused)
+        open={openServiceModal}
+        confirm={handleServiceAction}
+        dismiss={() => setOpenServiceModal(false)}
+        cancelStyle={modalType === "delete" ? "bg-destructive" : ""}
+        title={
+          modalType === "create"
+            ? "Criar novo serviço"
+            : modalType === "edit"
+            ? "Editar serviço"
+            : "Remover serviço"
         }
-        cancelStyle="bg-destructive"
-        title={"Detalhes do agendamento"}
-        cancelButton="Cancelar agendamento"
-        confirmButton="Fechar"
+        cancelButton={modalType === "delete" ? "Cancelar" : "Fechar"}
+        confirmButton={
+          modalType === "create"
+            ? "Criar"
+            : modalType === "edit"
+            ? "Salvar"
+            : "Confirmar exclusão"
+        }
       >
-        {appointmentFocused && (
+        {modalType === "delete" ? (
+          <p className="font-thin">
+            Tem certeza de que deseja excluir o serviço{" "}
+            <span className="font-bold">{serviceFocused?.name}</span>?
+          </p>
+        ) : (
           <div className="p-4">
-            <div className="mb-4">
-              <span className="font-semibold">Cliente:</span>{" "}
-              {appointmentFocused.clientName}
+            <div className="mb-4 flex gap-3 flex-col">
+              <label className="font-thin">Nome do Serviço:</label>
+              <Input
+                value={serviceFocused?.name}
+                onChange={(e) => {
+                  setServiceFocused((prev) => ({
+                    ...prev,
+                    name: e.target.value,
+                  }));
+                }}
+              />
             </div>
-            <div className="mb-4 flex items-center">
-              <span className="font-semibold">Phone:</span>
-              <Button
-                variant={"link"}
-                onClick={() =>
-                  WhatsappService.openChatWith(appointmentFocused.phone)
+            <div className="mb-4 flex gap-3 flex-col">
+              <label className="font-thin">Preço:</label>
+              <MoneyInput
+                defaultValue={serviceFocused?.price}
+                onChange={(value) =>
+                  setServiceFocused((prev) => ({
+                    ...prev,
+                    price: Number(value),
+                  }))
                 }
-              >
-                <MobileIcon />
-                {stringUtils.addPhoneMask(appointmentFocused.phone)}
-              </Button>
+              />
             </div>
-            <div className="mb-4">
-              <span className="font-semibold">Serviço:</span>{" "}
-              {appointmentFocused.service.name}
+            <div className="mb-4 flex gap-3 flex-col">
+              <label className="font-thin">Descrição:</label>
+              <Textarea
+                value={serviceFocused?.description}
+                onChange={(e) =>
+                  setServiceFocused((prev) => ({
+                    ...prev,
+                    description: e.target.value,
+                  }))
+                }
+              />
             </div>
-            <div className="mb-4">
-              <span className="font-semibold">Código:</span>{" "}
-              {appointmentFocused.code}
-            </div>
-            <div className="mb-4">
-              <span className="font-semibold">Data:</span>{" "}
-              {format(appointmentFocused.date, "dd/MM/yyyy")} às{" "}
-              {appointmentFocused.time}
-            </div>
-            <div className="mb-4">
-              <span className="font-semibold">Valor:</span>{" "}
-              {numberUtils.convertToMonetaryBRL(
-                appointmentFocused.service.price
-              )}
-            </div>
-            <div className="mb-4">
-              <span className="font-semibold">Observações: </span>
-              {appointmentFocused.notes}
+            <div className="mb-4 flex gap-3 flex-col">
+              <TimeDurationSelector
+                defaultValue={serviceFocused?.timeDurationInMinutes}
+                onChange={(value) =>
+                  setServiceFocused((prev) => ({
+                    ...prev,
+                    timeDurationInMinutes: Number(value),
+                  }))
+                }
+              />
             </div>
           </div>
         )}
