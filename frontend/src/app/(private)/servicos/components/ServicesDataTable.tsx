@@ -55,14 +55,10 @@ import { Textarea } from "@/components/ui/textarea";
 import MoneyInput from "@/components/ui/input-monetary";
 
 const columnLabels: Record<string, string> = {
-  clientName: "Cliente",
-  time: "Hora",
-  phone: "Telefone",
-  serviceName: "Serviço",
-  servicePrice: "Valor",
-  date: "Data",
-  code: "Código",
-  actions: "Ações",
+  name: "Nome",
+  price: "Preço",
+  description: "Descrição",
+  timeDurationInMinutes: "Tempo",
 };
 
 export function ServicesDataTable() {
@@ -95,6 +91,7 @@ export function ServicesDataTable() {
       header: ({ column }) => {
         return (
           <Button
+            className="p-0 m-0"
             variant="ghost"
             onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           >
@@ -115,6 +112,7 @@ export function ServicesDataTable() {
       header: ({ column }) => {
         return (
           <Button
+            className="p-0 m-0"
             variant="ghost"
             onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           >
@@ -138,6 +136,7 @@ export function ServicesDataTable() {
       header: ({ column }) => {
         return (
           <Button
+            className="p-0 m-0"
             variant="ghost"
             onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           >
@@ -158,6 +157,7 @@ export function ServicesDataTable() {
       header: ({ column }) => {
         return (
           <Button
+            className="p-0 m-0"
             variant="ghost"
             onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           >
