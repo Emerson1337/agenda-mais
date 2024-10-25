@@ -8,13 +8,13 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { flexRender, Table as ReactTable } from "@tanstack/react-table";
-import { Button } from "@/components/ui/button";
+import { Button } from "../../../../components/ui/button";
 
-interface ServiceTableBodyProps {
+interface AppointmentTableBodyProps {
   table: ReactTable<any>;
 }
 
-export function ServiceTableBody({ table }: ServiceTableBodyProps) {
+export function AppointmentTableBody({ table }: AppointmentTableBodyProps) {
   return (
     <div className="rounded-md border">
       <Table>
@@ -54,7 +54,7 @@ export function ServiceTableBody({ table }: ServiceTableBodyProps) {
                 colSpan={table.getAllColumns().length}
                 className="h-24 text-center"
               >
-                Nenhum serviço encontrado.
+                Nenhum agendamento encontrado.
               </TableCell>
             </TableRow>
           )}

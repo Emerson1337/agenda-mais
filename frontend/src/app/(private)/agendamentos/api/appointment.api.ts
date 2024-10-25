@@ -1,10 +1,5 @@
 import { apiUrls } from "@/lib/apiUrls";
-import {
-  QueryClient,
-  useMutation,
-  useQuery,
-  useQueryClient,
-} from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { API } from "@/shared/services/config/config";
 import { AppointmentData } from "@/shared/types/appointment";
 
@@ -23,7 +18,7 @@ export const useDeleteAppointmentQuery = () => {
     onSuccess(_, variables) {
       queryClient.setQueryData<AppointmentData[]>(["appointments"], (data) => {
         return Array.isArray(data)
-          ? data.filter((datum) => datum._id === variables.appointmentId)
+          ? data.filter((datum) => datum._id !== variables.appointmentId)
           : [];
       });
     },
