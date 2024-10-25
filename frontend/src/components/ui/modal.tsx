@@ -18,6 +18,7 @@ export interface Props {
   cancelButton?: React.ReactNode;
   confirmButton?: React.ReactNode;
   cancelStyle?: string;
+  confirmStyle?: string;
 }
 
 export function Modal({
@@ -27,6 +28,7 @@ export function Modal({
   dismiss,
   confirm,
   cancelStyle,
+  confirmStyle,
   cancelButton = <>Cancelar</>,
   confirmButton = <>Confirmar</>,
 }: Props) {
@@ -44,7 +46,7 @@ export function Modal({
             </AlertDialogCancel>
           )}
           {confirm && (
-            <AlertDialogAction onClick={confirm}>
+            <AlertDialogAction className={confirmStyle} onClick={confirm}>
               {confirmButton}
             </AlertDialogAction>
           )}

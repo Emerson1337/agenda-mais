@@ -1,17 +1,12 @@
 "use client";
 
 import * as React from "react";
-import {
-  CaretSortIcon,
-  ChevronDownIcon,
-  MobileIcon,
-} from "@radix-ui/react-icons";
+import { CaretSortIcon } from "@radix-ui/react-icons";
 import {
   ColumnDef,
   ColumnFiltersState,
   SortingState,
   VisibilityState,
-  flexRender,
   getCoreRowModel,
   getFilteredRowModel,
   getPaginationRowModel,
@@ -20,21 +15,6 @@ import {
 } from "@tanstack/react-table";
 
 import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuCheckboxItem,
-  DropdownMenuContent,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Input } from "@/components/ui/input";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
 import { useAppointment } from "../hooks/useAppointment";
 import { AppointmentData } from "@/shared/types/appointment";
 import { Badge } from "@/components/ui/badge";
@@ -48,27 +28,9 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { format, parseISO } from "date-fns";
-import { useBusinessContext } from "@/app/(private)/utils/context/BusinessDataContext";
-import { WhatsappService } from "@/shared/services/whatsapp.service";
-import { useAppointmentMutation } from "@/app/(private)/agendamentos/hooks/useAppointmentMutation";
-import { toast } from "react-toastify";
-import { AxiosError } from "axios";
-import { Modal } from "@/components/ui/modal";
-
-const ONE_SECOND = 1000;
-
-const columnLabels: Record<string, string> = {
-  clientName: "Cliente",
-  time: "Hora",
-  phone: "Telefone",
-  serviceName: "Serviço",
-  servicePrice: "Valor",
-  date: "Data",
-  code: "Código",
-  actions: "Ações",
-};
-
-const hiddenColumns = ["phone", "time"];
+import { AppointmentModal } from "./AppointmentModal";
+import { AppointmentTableBody } from "./AppointmentTableBody";
+import { AppointmentTableHeader } from "./AppointmentTableHeader";
 
 export function AppointmentsDataTable() {
   const [sorting, setSorting] = React.useState<SortingState>([]);
@@ -79,12 +41,9 @@ export function AppointmentsDataTable() {
     React.useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = React.useState({});
   const { data } = useAppointment();
-
-  const { mutateAsync } = useAppointmentMutation();
   const [open, setOpen] = React.useState<boolean>(false);
   const [appointmentFocused, setAppointmentFocused] =
     React.useState<AppointmentData>();
-  const { id: managerId } = useBusinessContext();
 
   const columns: ColumnDef<AppointmentData>[] = [
     {
@@ -248,31 +207,6 @@ export function AppointmentsDataTable() {
     },
   });
 
-  const handleCancelAppointment = async (appointment: AppointmentData) => {
-    try {
-      const response = await mutateAsync({
-        managerId: managerId,
-        appointmentId: appointment._id,
-      });
-
-      toast.success(response.data.body.message);
-      setOpen(false);
-      setTimeout(() => {
-        WhatsappService.warnCancelAppointment({
-          name: appointment?.clientName,
-          code: appointment?.code,
-          day: format(appointment?.date, "dd/MM/yyyy"),
-          time: appointment?.time,
-          phone: appointment.phone,
-        });
-      }, ONE_SECOND);
-    } catch (error: AxiosError | any) {
-      toast.error(
-        error?.response?.data?.message || "Erro ao cancelar agendamento"
-      );
-    }
-  };
-
   return (
     <Card>
       <CardHeader className="px-7">
@@ -283,100 +217,8 @@ export function AppointmentsDataTable() {
       </CardHeader>
       <CardContent>
         <div className="w-full">
-          <div className="flex items-center py-4">
-            <Input
-              placeholder="Filtrar clientes..."
-              value={
-                (table.getColumn("clientName")?.getFilterValue() as string) ??
-                ""
-              }
-              onChange={(event) =>
-                table
-                  .getColumn("clientName")
-                  ?.setFilterValue(event.target.value)
-              }
-              className="max-w-sm"
-            />
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="outline" className="ml-auto">
-                  Colunas <ChevronDownIcon className="ml-2 h-4 w-4" />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
-                {table
-                  .getAllColumns()
-                  .filter(
-                    (column) =>
-                      column.getCanHide() && !hiddenColumns.includes(column.id)
-                  )
-                  .map((column) => {
-                    return (
-                      <DropdownMenuCheckboxItem
-                        key={column.id}
-                        className="capitalize"
-                        checked={column.getIsVisible()}
-                        onCheckedChange={(value) =>
-                          column.toggleVisibility(!!value)
-                        }
-                      >
-                        {columnLabels[column.id] || column.id}
-                      </DropdownMenuCheckboxItem>
-                    );
-                  })}
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </div>
-          <div className="rounded-md border">
-            <Table>
-              <TableHeader>
-                {table.getHeaderGroups().map((headerGroup) => (
-                  <TableRow key={headerGroup.id}>
-                    {headerGroup.headers.map((header) => {
-                      return (
-                        <TableHead key={header.id}>
-                          {header.isPlaceholder
-                            ? null
-                            : flexRender(
-                                header.column.columnDef.header,
-                                header.getContext()
-                              )}
-                        </TableHead>
-                      );
-                    })}
-                  </TableRow>
-                ))}
-              </TableHeader>
-              <TableBody>
-                {table.getRowModel().rows?.length ? (
-                  table.getRowModel().rows.map((row) => (
-                    <TableRow
-                      key={row.id}
-                      data-state={row.getIsSelected() && "selected"}
-                    >
-                      {row.getVisibleCells().map((cell) => (
-                        <TableCell key={cell.id}>
-                          {flexRender(
-                            cell.column.columnDef.cell,
-                            cell.getContext()
-                          )}
-                        </TableCell>
-                      ))}
-                    </TableRow>
-                  ))
-                ) : (
-                  <TableRow>
-                    <TableCell
-                      colSpan={columns.length}
-                      className="h-24 text-center"
-                    >
-                      Sem resultados.
-                    </TableCell>
-                  </TableRow>
-                )}
-              </TableBody>
-            </Table>
-          </div>
+          <AppointmentTableHeader table={table} />
+          <AppointmentTableBody table={table} />
           <div className="flex items-center justify-end space-x-2 py-4">
             <div className="flex-1 text-sm text-muted-foreground">
               Página {table.getState().pagination.pageIndex + 1} de{" "}
@@ -403,63 +245,11 @@ export function AppointmentsDataTable() {
           </div>
         </div>
       </CardContent>
-      <Modal
+      <AppointmentModal
+        appointmentFocused={appointmentFocused}
         open={open}
-        confirm={() => {
-          setOpen(false);
-        }}
-        dismiss={() =>
-          appointmentFocused && handleCancelAppointment(appointmentFocused)
-        }
-        cancelStyle="bg-destructive"
-        title={"Detalhes do agendamento"}
-        cancelButton="Cancelar agendamento"
-        confirmButton="Fechar"
-      >
-        {appointmentFocused && (
-          <div className="p-4">
-            <div className="mb-4">
-              <span className="font-semibold">Cliente:</span>{" "}
-              {appointmentFocused.clientName}
-            </div>
-            <div className="mb-4 flex items-center">
-              <span className="font-semibold">Phone:</span>
-              <Button
-                variant={"link"}
-                onClick={() =>
-                  WhatsappService.openChatWith(appointmentFocused.phone)
-                }
-              >
-                <MobileIcon />
-                {stringUtils.addPhoneMask(appointmentFocused.phone)}
-              </Button>
-            </div>
-            <div className="mb-4">
-              <span className="font-semibold">Serviço:</span>{" "}
-              {appointmentFocused.service.name}
-            </div>
-            <div className="mb-4">
-              <span className="font-semibold">Código:</span>{" "}
-              {appointmentFocused.code}
-            </div>
-            <div className="mb-4">
-              <span className="font-semibold">Data:</span>{" "}
-              {format(appointmentFocused.date, "dd/MM/yyyy")} às{" "}
-              {appointmentFocused.time}
-            </div>
-            <div className="mb-4">
-              <span className="font-semibold">Valor:</span>{" "}
-              {numberUtils.convertToMonetaryBRL(
-                appointmentFocused.service.price
-              )}
-            </div>
-            <div className="mb-4">
-              <span className="font-semibold">Observações: </span>
-              {appointmentFocused.notes}
-            </div>
-          </div>
-        )}
-      </Modal>
+        onDismiss={() => setOpen(false)}
+      />
     </Card>
   );
 }

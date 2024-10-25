@@ -78,8 +78,8 @@ export class SchedulesService {
     await this.salesReportService.update({
       managerId: userId,
       phone: appointmentDeleted.phone,
-      price: service.price,
-      serviceName: service.name,
+      price: service?.price,
+      serviceName: service?.name,
       clientName: appointmentDeleted.clientName,
       code: appointmentDeleted.code,
       notes: appointmentDeleted.notes,
