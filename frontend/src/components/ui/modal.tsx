@@ -34,7 +34,7 @@ export function Modal({
 }: Props) {
   return (
     <AlertDialog open={open}>
-      <AlertDialogContent>
+      <AlertDialogContent className="p-4 px-1 sm:p-6">
         <AlertDialogHeader>
           <AlertDialogTitle className="text-center">{title}</AlertDialogTitle>
         </AlertDialogHeader>
