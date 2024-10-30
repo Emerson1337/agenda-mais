@@ -9,6 +9,7 @@ export class SalesReport extends BaseEntity {
   phone: string;
   code: string;
   serviceName: string;
+  clientName: string;
   notes: string;
   timeDurationInMinutes?: number;
   status: AppointmentStatus;
