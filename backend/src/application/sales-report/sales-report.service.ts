@@ -4,7 +4,7 @@ import { CreateOrUpdateSalesReportDto } from './dtos/create-update-sales-report-
 import { SalesReportRepository } from '@domain/repositories/sales-report.repository';
 import { AppointmentStatus } from '@/domain/entities/enums/appointment-status.enum';
 import { IGetSales } from './dtos/types';
-import { SalesReport } from '../../domain/entities/sales-report.entity';
+import { SalesReport } from '@/domain/entities/sales-report.entity';
 import { format, parseISO } from 'date-fns';
 
 @Injectable()
