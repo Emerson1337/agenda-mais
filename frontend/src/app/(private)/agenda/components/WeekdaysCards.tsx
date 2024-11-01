@@ -1,6 +1,6 @@
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { useFormContext } from "react-hook-form";
-import { ScheduleData } from "../../schemas/schedule.schema";
+import { ScheduleData } from "../schemas/schedule.schema";
 
 export interface WeekdaysCardsProps {
   defaultValue?: number[];
