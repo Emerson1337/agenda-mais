@@ -62,11 +62,7 @@ export function DaysExceptionModal({
             ))}
           </ToggleGroup>
           <span className="flex justify-center mb-4">
-            <Button
-              onClick={reset}
-              variant="default"
-              className="self-center text-white"
-            >
+            <Button onClick={reset} variant="default" className="self-center">
               Remarcar todos os horários
             </Button>
           </span>
@@ -85,7 +81,6 @@ export function DaysExceptionModal({
             Descartar
           </AlertDialogCancel>
           <AlertDialogAction
-            className="text-foreground"
             onClick={() =>
               times.length === timesAvailable?.length
                 ? dismiss(date)

@@ -6,7 +6,7 @@ import { AppointmentStatus } from '@/domain/entities/enums/appointment-status.en
 import { IGetSales } from './dtos/types';
 import { SalesReport } from '@/domain/entities/sales-report.entity';
 import { format, parseISO } from 'date-fns';
-
+import { ptBR } from 'date-fns/locale';
 @Injectable()
 export class SalesReportService {
   constructor(
@@ -216,7 +216,9 @@ export class SalesReportService {
     return Object.values(
       reports.reduce(
         (acc, report) => {
-          const month = format(parseISO(report.date), 'MM-yyyy');
+          const month = format(parseISO(report.date), 'MM-yyyy', {
+            locale: ptBR,
+          });
 
           if (!acc[month]) {
             acc[month] = {
@@ -286,16 +288,19 @@ export class SalesReportService {
       });
 
     return {
-      revenueByMonth: this.revenueByMonth(appointmentsYearlyReports).map(
-        (report) => ({
+      revenueByMonth: this.revenueByMonth(appointmentsYearlyReports)
+        .map((report) => ({
           ...report,
           totalValue: report.totalValue.toFixed(2),
-        }),
-      ),
+        }))
+        .slice(0, 12),
       totalRevenue: this.getTotalRevenue(appointmentsYearlyReports).toFixed(2),
-      serviceRanking: this.getTopServices(appointmentsYearlyReports).map(
-        (report) => ({ ...report, totalValue: report.totalValue.toFixed(2) }),
-      ),
+      serviceRanking: this.getTopServices(appointmentsYearlyReports)
+        .map((report) => ({
+          ...report,
+          totalValue: report.totalValue.toFixed(2),
+        }))
+        .slice(0, 10),
     };
   }
 
