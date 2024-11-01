@@ -3,6 +3,7 @@ const inter = Inter({ subsets: ["latin"] });
 import "@/app/globals.css";
 import { Provider } from "@/shared/utils/Providers";
 import { ThemeProvider } from "@/components/ui/theme-provider";
+import { setDefaultOptions } from "date-fns";
 
 export default async function RootLayout({
   children,

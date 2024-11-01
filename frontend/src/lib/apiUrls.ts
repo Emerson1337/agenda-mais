@@ -43,5 +43,11 @@ export const apiUrls = {
       put: (): string => `/api/dashboard/usuarios`,
       patch: (): string => `/api/dashboard/usuarios/foto`,
     },
+    reports: {
+      getTotalMetrics: (): string => `/api/dashboard/relatorios/total`,
+      getMonthlyMetrics: (date: string): string =>
+        `/api/dashboard/relatorios/mensal/${date}`,
+      getYearlyMetrics: (): string => `/api/dashboard/relatorios/anual`,
+    },
   },
 };

@@ -75,6 +75,8 @@ export class DatesService {
   }: ICreateDateAndTimeSlots): Promise<ISlots[]> {
     const now = endOfToday();
     const end = addMonths(now, monthsAhead);
+    const currentHour = new Date().getHours();
+    const currentMinute = new Date().getMinutes();
 
     const differenceBetweenDatesInDays = differenceInDays(end, now);
     const datesInSchedule: ISlots[] = [];
@@ -83,11 +85,19 @@ export class DatesService {
     for (let index = 0; index <= differenceBetweenDatesInDays; index++) {
       const date = format(addDays(now, index), 'yyyy-MM-dd');
 
+      const availableTimes = schedule.times.filter((time) => {
+        const [hour, minute] = time.split(':').map(Number);
+        return (
+          hour > currentHour ||
+          (hour === currentHour && minute > currentMinute) ||
+          index !== 0
+        );
+      });
       // 0 - monday, 6 - sunday
       if (schedule.weekDays.includes(getDay(date)))
         datesInSchedule.push({
           date,
-          times: schedule.times,
+          times: availableTimes,
         });
     }
 

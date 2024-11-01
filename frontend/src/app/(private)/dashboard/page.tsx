@@ -1,39 +1,20 @@
-import Orders from "./components/Orders";
-import GoalCard from "./components/GoalCard";
-import TotalRevenue from "./components/TotalRevenue";
-import TotalAppointments from "./components/TotalAppointments";
-import TotalAppointmentsScheduled from "./components/TotalAppointmentsScheduled";
-import TotalAppointmentsFinished from "./components/TotalAppointmentsFinished";
-import TopClients from "./components/TopClients";
+import GeneralMetrics from "./components/sections/GeneralMetrics";
+import MonthlyCharts from "./components/sections/MonthlyCharts";
+import MonthlyMetrics from "./components/sections/MonthlyMetrics";
+import YearlyCharts from "./components/sections/YearlyCharts";
+import YearlyMetrics from "./components/sections/YearlyMetrics";
 
 export default function Dashboard() {
   return (
-    <main className="grid flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8 lg:grid-cols-3 xl:grid-cols-3">
-      <div className="grid auto-rows-max items-start gap-4 md:gap-8 lg:col-span-2">
-        <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-2 xl:grid-cols-4">
-          <Orders />
-          <GoalCard
-            title={"This Week"}
-            value={"$1,329"}
-            description={"+25% from last week"}
-            progress={25}
-          />
-          <GoalCard
-            title={"This Month"}
-            value={"$5,329"}
-            description={"+10% from last week"}
-            progress={10}
-          />
-        </div>
-        <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-2 xl:grid-cols-4">
-          <TotalRevenue />
-          <TotalAppointments />
-          <TotalAppointmentsScheduled />
-          <TotalAppointmentsFinished />
-        </div>
+    <main className="flex flex-wrap lg:flex-nowrap p-4 gap-4">
+      <div className="w-full lg:w-2/3 flex flex-col gap-4">
+        <GeneralMetrics />
+        <MonthlyCharts />
+        <YearlyCharts />
       </div>
-      <div>
-        <TopClients />
+      <div className="w-full lg:w-1/3 flex flex-col gap-4">
+        <MonthlyMetrics />
+        <YearlyMetrics />
       </div>
     </main>
   );

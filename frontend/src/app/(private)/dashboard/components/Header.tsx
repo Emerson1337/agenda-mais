@@ -97,12 +97,11 @@ export default function Header() {
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
-          <DropdownMenuLabel>My Account</DropdownMenuLabel>
+          <DropdownMenuItem>
+            <Link href="/detalhes">Configurações</Link>
+          </DropdownMenuItem>
           <DropdownMenuSeparator />
-          <DropdownMenuItem>Settings</DropdownMenuItem>
-          <DropdownMenuItem>Support</DropdownMenuItem>
-          <DropdownMenuSeparator />
-          <DropdownMenuItem>Logout</DropdownMenuItem>
+          <DropdownMenuItem>Sair</DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
     </header>

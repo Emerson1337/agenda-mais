@@ -10,7 +10,7 @@ export class SalesReportController {
 
   @Get('mensal/:date')
   @AuthRequired()
-  async listAppointments(
+  async listMonthlyAppointments(
     @Req() request: Request,
     @Res() response: Response,
     @Param('date') date: string,
@@ -20,9 +20,51 @@ export class SalesReportController {
 
       return response.status(200).send(
         ok(
-          await this.salesReportService.getSales({
+          await this.salesReportService.getMonthlySales({
             managerId: userId,
             date,
+          }),
+        ),
+      );
+    } catch (error) {
+      return response.status(error.status).send(handleError(error));
+    }
+  }
+
+  @Get('anual')
+  @AuthRequired()
+  async listYearlyAppointments(
+    @Req() request: Request,
+    @Res() response: Response,
+  ) {
+    try {
+      const userId = request['user'].id;
+
+      return response.status(200).send(
+        ok(
+          await this.salesReportService.getYearlySales({
+            managerId: userId,
+          }),
+        ),
+      );
+    } catch (error) {
+      return response.status(error.status).send(handleError(error));
+    }
+  }
+
+  @Get('total')
+  @AuthRequired()
+  async listAllAppointments(
+    @Req() request: Request,
+    @Res() response: Response,
+  ) {
+    try {
+      const userId = request['user'].id;
+
+      return response.status(200).send(
+        ok(
+          await this.salesReportService.getAllSales({
+            managerId: userId,
           }),
         ),
       );
