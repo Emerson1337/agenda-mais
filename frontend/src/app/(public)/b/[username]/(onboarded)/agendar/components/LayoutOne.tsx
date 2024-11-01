@@ -101,18 +101,29 @@ const LayoutOne = ({ datesAvailable }: Props): JSX.Element => {
     return <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />;
   }
 
+  const currentHour = new Date().getHours();
+  const currentMinute = new Date().getMinutes();
+
+  const isAvailable = () => {
+    const times = datesAvailable.slots.find(
+      (slot) => slot.date === format(new Date(), "yyyy-MM-dd")
+    )?.times;
+
+    return times?.some((time) => {
+      const [hour, minute] = time.split(":").map(Number);
+
+      return (
+        hour > currentHour || (hour === currentHour && minute > currentMinute)
+      );
+    });
+  };
+
   return (
     <div className="h-full w-full flex flex-wrap justify-evenly">
       <div className="shadow-lg transform duration-200 ease-in-out w-full flex flex-col">
         {/* Header Section with Image */}
         <div className="relative h-32 overflow-hidden">
-          <Image
-            className="w-full"
-            src="https://images.unsplash.com/photo-1605379399642-870262d3d051?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=2000&q=80"
-            alt="Business Cover"
-            layout="fill"
-            objectFit="cover"
-          />
+          <div className="w-full h-full bg-primary opacity-30"></div>
           <div className="absolute inset-x-0 top-16 h-16 bg-gradient-to-t from-background to-transparent pointer-events-none"></div>
         </div>
 
@@ -120,22 +131,33 @@ const LayoutOne = ({ datesAvailable }: Props): JSX.Element => {
         <div className="flex flex-col items-center justify-center px-5 -mt-12 relative z-10">
           {business.profilePhoto && (
             <Image
-              className="h-32 w-32 bg-background p-2 rounded-full"
+              className="h-32 w-32 bg-primary/70 p-2 rounded-full"
               src={getPublicAPIPath(business.profilePhoto)}
               alt="Profile Picture"
               width={200}
               height={200}
             />
           )}
-          <div className="flex gap-2 mt-2">
-            <span className="relative flex h-3 w-3">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span>
-            </span>
-            <span className="text-xs font-light text-green-500">
-              Atendendo agora
-            </span>
-          </div>
+          {isAvailable() ? (
+            <div className="flex gap-2 mt-2">
+              <span className="relative flex h-3 w-3">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span>
+              </span>
+              <span className="text-xs font-light text-green-500">
+                Atendendo agora
+              </span>
+            </div>
+          ) : (
+            <div className="flex gap-2 mt-2">
+              <span className="relative flex h-3 w-3">
+                <span className="relative inline-flex rounded-full h-3 w-3 bg-gray-500"></span>
+              </span>
+              <span className="text-xs font-light text-gray-500">
+                Indisponível
+              </span>
+            </div>
+          )}
         </div>
         <div className="max-w-96 md:max-w-full self-center">
           {/* Introduction Text */}
