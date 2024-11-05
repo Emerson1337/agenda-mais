@@ -19,7 +19,7 @@ export default function TopServices({
       <CardContent className="grid gap-8">
         {services.map((service, index) => (
           <div key={index} className="flex items-center gap-4 flex-wrap">
-            <div className="grid gap-1 w-2/3">
+            <div className="grid gap-1 w-fit">
               <p className="text-sm font-medium leading-none">
                 {service.service}
               </p>

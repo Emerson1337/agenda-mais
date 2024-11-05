@@ -2,13 +2,6 @@ export interface BusinessMonthlyMetrics {
   servicesReportByMonth: ServicesReportByMonth[];
   totalRevenue: string;
   topTenClients: TopTenClient[];
-  reportsByTime: ReportsByTime[];
-}
-
-export interface ReportsByTime {
-  totalAppointments: number;
-  totalValue: string;
-  time: string;
 }
 
 export interface ServicesReportByMonth {

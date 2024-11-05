@@ -21,6 +21,7 @@ const defaultValue: MeType = {
   roles: [],
   plan: "",
   palette: "",
+  profilePhoto: "",
 };
 
 // Create the context

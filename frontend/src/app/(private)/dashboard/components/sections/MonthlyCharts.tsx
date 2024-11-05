@@ -32,31 +32,13 @@ export default function MonthlyCharts() {
     return config;
   }, {} as ChartConfig);
 
-  const areaChartData = data?.reportsByTime.map((service) => ({
-    label: service.time.replace(":", "h"),
-    value: Number(service.totalAppointments),
-    alternativeValue: Number(service.totalValue),
-  }));
-
-  const areaChartConfig = areaChartData?.reduce((config, item) => {
-    config["value"] = {
-      label: "Nº atendimentos",
-      color: `hsl(var(--chart-1))`,
-    };
-    config["alternativeValue"] = {
-      label: "Total (R$)",
-      color: `hsl(var(--chart-2))`,
-    };
-    return config;
-  }, {} as ChartConfig);
-
   return (
     <div className="sm:flex sm:px-6 w-full">
       <div className="flex flex-wrap sm:flex-nowrap gap-4">
         {!isError && pieChartData && pieChartConfig && (
           <>
             <PieChartComponent
-              className="sm:w-1/2 w-full"
+              className="w-full"
               config={pieChartConfig}
               data={pieChartData}
               title={"Top 5 serviços no mês atual"}
@@ -66,25 +48,6 @@ export default function MonthlyCharts() {
                 "Este gráfico mostra os serviços mais procurados no mês atual com número de atendimentos finalizados."
               }
             />
-          </>
-        )}
-        {!isError && areaChartConfig && areaChartData && (
-          <>
-            <AreaChartComponent
-              className="sm:w-1/2 w-full"
-              config={areaChartConfig}
-              data={areaChartData}
-              title={"Atendimentos por horário"}
-              label={
-                "Analise quais os horários mais procurados pelos clientes."
-              }
-              descriptionTitle={
-                "Acompanhe a disparidade entre atendimentos e valores."
-              }
-              description={
-                "Este gráfico mostra a quantidade de atendimentos por horário e o total em R$."
-              }
-            />{" "}
           </>
         )}
       </div>

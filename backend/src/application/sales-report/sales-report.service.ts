@@ -203,12 +203,6 @@ export class SalesReportService {
           totalValue: client.totalValue.toFixed(2),
         }))
         .slice(0, 10),
-      reportsByTime: this.getReportsByTime(appointmentsReports).map(
-        (report) => ({
-          ...report,
-          totalValue: report.totalValue.toFixed(2),
-        }),
-      ),
     };
   }
 
@@ -301,6 +295,12 @@ export class SalesReportService {
           totalValue: report.totalValue.toFixed(2),
         }))
         .slice(0, 10),
+      reportsByTime: this.getReportsByTime(appointmentsYearlyReports).map(
+        (report) => ({
+          ...report,
+          totalValue: report.totalValue.toFixed(2),
+        }),
+      ),
     };
   }
 

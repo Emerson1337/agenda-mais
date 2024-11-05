@@ -15,5 +15,5 @@ interface RootLayoutprops {
 }
 
 export default function RootLayout({ children }: Readonly<RootLayoutprops>) {
-  return { children };
+  return children;
 }
