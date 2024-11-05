@@ -52,7 +52,7 @@ export default function YearlyCharts() {
   }, {} as ChartConfig);
 
   return (
-    <div className="sm:px-6 flex gap-4">
+    <div className="sm:px-6 flex sm:flex-nowrap flex-wrap gap-4">
       {!isError && barChartData && barChartConfig && (
         <MultipleBarChartComponent
           className="sm:w-1/2 w-full"
