@@ -6,7 +6,7 @@ import TotalRevenue from "../TotalRevenue";
 import TotalAppointments from "../TotalAppointments";
 
 export default function GeneralMetrics() {
-  const { data, error, isError, isFetching } = useGetBusinessGeneralMetrics();
+  const { data, isError, isFetching } = useGetBusinessGeneralMetrics();
 
   return (
     <main className="grid flex-1 items-start gap-4 sm:px-6 sm:py-0 md:gap-8 lg:grid-cols-2 xl:grid-cols-2">
@@ -31,7 +31,7 @@ export default function GeneralMetrics() {
                 "Número de agendamentos previstos para os próximos dias."
               }
             />
-            <div className="col-span-full">
+            <div className="xl:col-span-1 col-span-full">
               <TotalRevenue
                 title={"Expectativa de receita"}
                 isLoading={isFetching}
