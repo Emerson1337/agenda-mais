@@ -16,7 +16,7 @@ export default function MonthlyMetrics() {
   return (
     <div className="flex sm:px-6">
       {!isError && (
-        <div className="flex flex-column flex-wrap gap-4">
+        <div className="flex flex-column flex-wrap gap-4 w-full">
           {data?.topTenClients && <TopClients clients={data.topTenClients} />}
           <TotalRevenue
             title={`Receita gerada no mês de ${currentMonth}`}

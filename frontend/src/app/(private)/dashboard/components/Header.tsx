@@ -3,27 +3,12 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import {
-  Calendar,
-  Home,
-  Package2,
-  PanelLeft,
-  Settings,
-  ShoppingCart,
-} from "lucide-react";
+import { Package2, PanelLeft, Settings } from "lucide-react";
 import Link from "next/link";
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
@@ -34,13 +19,20 @@ import { Tooltip } from "@/components/ui/tooltip";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { useBusinessContext } from "../../utils/context/BusinessDataContext";
 import { getPublicAPIPath } from "@/shared/utils/urlUtils";
+import { useRouter } from "next/navigation";
 
 export default function Header() {
   const [isSheetOpen, setIsSheetOpen] = useState(false);
   const checkActivePath = useActivePath();
   const { profilePhoto } = useBusinessContext();
-
+  const router = useRouter();
   const closeSheet = () => setIsSheetOpen(false);
+
+  const logout = async () => {
+    localStorage.removeItem("authorization");
+    localStorage.removeItem("refresh");
+    router.replace("/login");
+  };
 
   return (
     <header className="sticky top-0 z-30 flex h-14 items-center gap-4 border-b bg-background px-4 sm:static sm:h-auto sm:border-0 sm:bg-transparent sm:px-6">
@@ -101,7 +93,9 @@ export default function Header() {
             <Link href="/detalhes">Configurações</Link>
           </DropdownMenuItem>
           <DropdownMenuSeparator />
-          <DropdownMenuItem>Sair</DropdownMenuItem>
+          <DropdownMenuItem className="cursor-pointer" onClick={logout}>
+            Sair
+          </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
     </header>

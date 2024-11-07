@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpStatus, Injectable } from '@nestjs/common';
 import { EncryptAdapter } from '@/infra/adapters/encrypt.adapter';
 import { TokenAdapter } from '@/infra/adapters/token.adapter';
 import {
@@ -40,39 +40,45 @@ export class AuthService {
     const user = await this.bookingManagersService.getManagerByEmail(email);
 
     if (!user) {
-      throw new MultipleErrors([
-        new UnauthorizedError(
-          'email',
-          this.i18n.t('translations.INVALID_FIELD.INVALID_CREDENTIALS', {
-            lang: I18nContext.current().lang,
-          }),
-        ),
-        new UnauthorizedError(
-          'password',
-          this.i18n.t('translations.INVALID_FIELD.INVALID_CREDENTIALS', {
-            lang: I18nContext.current().lang,
-          }),
-        ),
-      ]);
+      throw new MultipleErrors(
+        [
+          new UnauthorizedError(
+            'email',
+            this.i18n.t('translations.INVALID_FIELD.INVALID_CREDENTIALS', {
+              lang: I18nContext.current().lang,
+            }),
+          ),
+          new UnauthorizedError(
+            'password',
+            this.i18n.t('translations.INVALID_FIELD.INVALID_CREDENTIALS', {
+              lang: I18nContext.current().lang,
+            }),
+          ),
+        ],
+        HttpStatus.UNAUTHORIZED,
+      );
     }
 
     if (
       !(await this.encryptAdapter.validatePassword(password, user.password))
     ) {
-      throw new MultipleErrors([
-        new UnauthorizedError(
-          'email',
-          this.i18n.t('translations.INVALID_FIELD.INVALID_CREDENTIALS', {
-            lang: I18nContext.current().lang,
-          }),
-        ),
-        new UnauthorizedError(
-          'password',
-          this.i18n.t('translations.INVALID_FIELD.INVALID_CREDENTIALS', {
-            lang: I18nContext.current().lang,
-          }),
-        ),
-      ]);
+      throw new MultipleErrors(
+        [
+          new UnauthorizedError(
+            'email',
+            this.i18n.t('translations.INVALID_FIELD.INVALID_CREDENTIALS', {
+              lang: I18nContext.current().lang,
+            }),
+          ),
+          new UnauthorizedError(
+            'password',
+            this.i18n.t('translations.INVALID_FIELD.INVALID_CREDENTIALS', {
+              lang: I18nContext.current().lang,
+            }),
+          ),
+        ],
+        HttpStatus.UNAUTHORIZED,
+      );
     }
 
     return user;

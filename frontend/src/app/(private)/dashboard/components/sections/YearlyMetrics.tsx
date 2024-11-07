@@ -17,7 +17,7 @@ export default function YearlyMetrics() {
   return (
     <div className="flex sm:px-6">
       {!isError && (
-        <div className="flex flex-column flex-wrap gap-4">
+        <div className="flex flex-column flex-wrap gap-4 w-full">
           {data?.serviceRanking && (
             <TopServices services={data.serviceRanking} />
           )}
