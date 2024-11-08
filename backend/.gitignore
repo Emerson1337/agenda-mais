@@ -35,8 +35,7 @@ lerna-debug.log*
 !.vscode/extensions.json
 
 # Environment variables
-.env
-.env.*
+.env*
 
 # Uploads and public files
 uploads
