@@ -23,7 +23,6 @@ import {
 import { toast } from "react-toastify";
 import { AxiosError } from "axios";
 import { ReloadIcon } from "@radix-ui/react-icons";
-import { notFound } from "next/navigation";
 
 export default function ProfileDetails() {
   const [profileImage, setProfileImage] = useState<ImageListType>([]);
@@ -82,7 +81,6 @@ export default function ProfileDetails() {
         <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />
       </div>
     );
-  if (error) return notFound();
 
   return (
     <Card className="w-fit">

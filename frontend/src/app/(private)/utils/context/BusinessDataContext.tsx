@@ -34,12 +34,7 @@ export const useBusinessContext = () => useContext(BusinessContext);
 export const BusinessProvider: FC<{
   children: ReactNode;
 }> = ({ children }): ReactNode => {
-  const { data, isError, error } = useGetManager();
-  const router = useRouter();
-
-  if (isError) {
-    router.replace("/not-found");
-  }
+  const { data } = useGetManager();
 
   return (
     <BusinessContext.Provider value={data ?? defaultValue}>

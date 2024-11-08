@@ -1,8 +1,4 @@
 {
-  "INVALID_CREDENTIALS": "Invalid credentials.",
-  "INVALID_REFRESH_TOKEN": "Invalid refresh token.",
-  "INVALID_TOKEN": "Invalid token.",
-  "INVALID_EMAIL": "Invalid email.",
   "CHANGE_PASSWORD": {
     "SUBJECT": "Request to change password.",
     "TEXT": "Click the button below to change your password.",
@@ -26,7 +22,11 @@
       "APPOINTMENT": "Appointment not found.",
       "MANAGER_ID": "Manager ID not found.",
       "USERNAME": "Establishment not found.",
-      "GENERIC_NOT_FOUND": "Item not found."
+      "GENERIC_NOT_FOUND": "Item not found.",
+      "INVALID_CREDENTIALS": "Invalid credentials.",
+      "INVALID_REFRESH_TOKEN": "Invalid refresh token.",
+      "INVALID_TOKEN": "Invalid token.",
+      "INVALID_EMAIL": "Invalid email."
     }
   },
   "VALIDATORS": {

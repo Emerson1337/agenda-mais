@@ -9,7 +9,7 @@ export const fetchBusinessTotalMetric = async (): Promise<
     return (await API.get(apiUrls.internal.reports.getTotalMetrics())).data
       .body;
   } catch (error) {
-    console.error("Error fetching manager data:", error);
+    console.error("Error fetching business total metric data:", error);
     return undefined;
   }
 };

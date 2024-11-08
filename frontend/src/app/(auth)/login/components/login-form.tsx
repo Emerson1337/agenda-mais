@@ -13,45 +13,12 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { ErrorLabel } from "@/components/ui/error-label";
 import { ReloadIcon } from "@radix-ui/react-icons";
 import { useRouter } from "next/navigation";
-import { useRefreshTokenMutation } from "../hooks/useRefreshTokenMutation";
 
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 export function LoginForm({ className, ...props }: UserAuthFormProps) {
   const { mutateAsync } = useLoginMutation();
-  const { mutateAsync: mutateRefreshTokenAsync } = useRefreshTokenMutation();
   const router = useRouter();
-
-  const setTokensToStorage = ({
-    token,
-    refreshToken,
-  }: {
-    token: string;
-    refreshToken: string;
-  }) => {
-    localStorage.setItem("authorization", `Bearer ${token}`);
-    localStorage.setItem("refresh", `${refreshToken}`);
-  };
-
-  React.useLayoutEffect(() => {
-    const checkSession = async () => {
-      const refreshToken = localStorage.getItem("refresh");
-
-      if (refreshToken) {
-        const response = await mutateRefreshTokenAsync({
-          refreshToken,
-        });
-
-        setTokensToStorage({
-          token: response.access_token,
-          refreshToken: response.refresh_token,
-        });
-        router.replace("/dashboard");
-      }
-    };
-
-    checkSession();
-  }, [mutateRefreshTokenAsync, router]);
 
   const {
     register,
@@ -64,11 +31,7 @@ export function LoginForm({ className, ...props }: UserAuthFormProps) {
 
   async function handleLogin(loginForm: ILoginRequest) {
     try {
-      const response = await mutateAsync(loginForm);
-      setTokensToStorage({
-        token: response.access_token,
-        refreshToken: response.refresh_token,
-      });
+      await mutateAsync(loginForm);
       router.replace("/dashboard");
     } catch (error: AxiosError | any) {
       if (error?.response?.status === 401) {

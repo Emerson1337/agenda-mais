@@ -20,6 +20,7 @@ import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { useBusinessContext } from "../../utils/context/BusinessDataContext";
 import { getPublicAPIPath } from "@/shared/utils/urlUtils";
 import { useRouter } from "next/navigation";
+import { logout } from "@/actions/auth/logout";
 
 export default function Header() {
   const [isSheetOpen, setIsSheetOpen] = useState(false);
@@ -28,9 +29,8 @@ export default function Header() {
   const router = useRouter();
   const closeSheet = () => setIsSheetOpen(false);
 
-  const logout = async () => {
-    localStorage.removeItem("authorization");
-    localStorage.removeItem("refresh");
+  const handleLogout = async () => {
+    logout();
     router.replace("/login");
   };
 
@@ -80,6 +80,7 @@ export default function Header() {
             className="overflow-hidden rounded-full"
           >
             <Image
+              priority
               src={getPublicAPIPath(profilePhoto)}
               width={36}
               height={36}
@@ -93,7 +94,7 @@ export default function Header() {
             <Link href="/detalhes">Configurações</Link>
           </DropdownMenuItem>
           <DropdownMenuSeparator />
-          <DropdownMenuItem className="cursor-pointer" onClick={logout}>
+          <DropdownMenuItem className="cursor-pointer" onClick={handleLogout}>
             Sair
           </DropdownMenuItem>
         </DropdownMenuContent>

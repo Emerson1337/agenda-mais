@@ -131,7 +131,35 @@ export class AuthService {
     } catch {
       throw new UnauthorizedError(
         'refreshToken',
-        this.i18n.t('translations.INVALID_REFRESH_TOKEN', {
+        this.i18n.t('translations.INVALID_FIELD.INVALID_REFRESH_TOKEN', {
+          lang: I18nContext.current().lang,
+        }),
+      );
+    }
+  }
+
+  async verifyToken(token: string) {
+    try {
+      const validToken = await this.tokenService.verifyToken(
+        token,
+        'accessToken',
+      );
+
+      if (!validToken) {
+        throw new Error();
+      }
+
+      const decoded = this.tokenService.decodeToken(token) as TokenPayload;
+
+      if (!decoded) {
+        throw new Error();
+      }
+
+      return true;
+    } catch {
+      throw new UnauthorizedError(
+        'accessToken',
+        this.i18n.t('translations.INVALID_FIELD.INVALID_REFRESH_TOKEN', {
           lang: I18nContext.current().lang,
         }),
       );

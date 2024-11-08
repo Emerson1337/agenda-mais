@@ -72,4 +72,15 @@ export class AuthController {
       return response.status(error.status).send(handleError(error));
     }
   }
+
+  @Post('verify-token')
+  async verifyToken(@Body('token') token: string, @Res() response: Response) {
+    try {
+      return response
+        .status(200)
+        .send(ok(await this.authService.verifyToken(token)));
+    } catch (error) {
+      return response.status(error.status).send(handleError(error));
+    }
+  }
 }

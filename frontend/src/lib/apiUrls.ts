@@ -26,6 +26,7 @@ export const apiUrls = {
   internal: {
     auth: {
       login: (): string => `/api/auth/login`,
+      verifyToken: (): string => `/api/auth/verify-token`,
       signUp: (): string => `/api/auth/cadastrar`,
       refreshToken: (): string => `/api/auth/refresh-token`,
       resetPassword: (): string => `/api/auth/resetar-senha`,

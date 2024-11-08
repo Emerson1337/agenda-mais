@@ -12,15 +12,14 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { PhoneInput } from "@/components/ui/phone-input";
 import { Button } from "@/components/ui/button";
-import { IRequestUpdateManager, useGetManagerQuery } from "../api/manager.api";
+import { IRequestUpdateManager } from "../api/manager.api";
 import { ReloadIcon } from "@radix-ui/react-icons";
 import { toast } from "react-toastify";
 import { AxiosError } from "axios";
 import { useManagerMutation } from "../hooks/useManagerMutation";
 import { useForm } from "react-hook-form";
 import { useState, useEffect } from "react";
-import { useGetManager } from "../../dashboard/hooks/useGetManager";
-import { notFound } from "next/navigation";
+import { useGetManager } from "@/app/(private)/dashboard/hooks/useGetManager";
 
 export default function AccountDetails() {
   const { isFetching, data, error } = useGetManager();
@@ -82,7 +81,6 @@ export default function AccountDetails() {
         <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />
       </div>
     );
-  if (error) return notFound();
 
   return (
     <Card className="w-fit">

@@ -31,6 +31,8 @@ export const cancelAppointment = async ({
   phone: string;
 }): Promise<AppointmentCancelled> => {
   return (
-    await API.delete(apiUrls.public.appointment.cancel({ username, code, phone }))
+    await API.delete(
+      apiUrls.public.appointment.cancel({ username, code, phone })
+    )
   ).data.body;
 };

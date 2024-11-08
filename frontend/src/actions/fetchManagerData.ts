@@ -1,7 +1,6 @@
 import { apiUrls } from "@/lib/apiUrls";
-import { BusinessSchedule } from "@/shared/types/times-available";
-import { API } from "../shared/services/config/config";
-import { MeType } from "../shared/types/me";
+import { API } from "@/shared/services/config/config";
+import { MeType } from "@/shared/types/me";
 
 export const fetchManagerData = async (): Promise<MeType | undefined> => {
   try {

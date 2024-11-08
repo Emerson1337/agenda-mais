@@ -16,7 +16,7 @@ import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { ReloadIcon } from "@radix-ui/react-icons";
 import { toast } from "react-toastify";
-import { cancelAppointment } from "@/api/cancelAppointment";
+import { cancelAppointment } from "@/actions/cancelAppointment";
 import { parseRequestError } from "@/shared/utils/errorParser";
 
 interface Props {
@@ -41,7 +41,11 @@ const CancelAppointmentForm = ({ username }: Props): JSX.Element => {
     setIsLoading(true);
 
     try {
-      const response = await cancelAppointment({ username, code, phone: clientPhone });
+      const response = await cancelAppointment({
+        username,
+        code,
+        phone: clientPhone,
+      });
       toast.success(response.message);
       setIsLoading(false);
     } catch (error) {

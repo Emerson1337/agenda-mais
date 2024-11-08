@@ -4,7 +4,7 @@ import { TokenPayload } from '@/application/auth/dtos/token-dto';
 export class TokenAdapter {
   async generateToken(
     payload: TokenPayload,
-    option = 'accessToken' || 'refreshToken' || 'resetToken',
+    option: 'accessToken' | 'refreshToken' | 'resetToken' = 'accessToken',
   ): Promise<string> {
     let secret: string;
     let expiresIn: string;
@@ -34,7 +34,7 @@ export class TokenAdapter {
 
   async verifyToken(
     token: string,
-    option = 'accessToken' || 'refreshToken' || 'resetToken',
+    option: 'accessToken' | 'refreshToken' | 'resetToken' = 'accessToken',
   ): Promise<boolean> {
     try {
       let secret: string;
@@ -56,6 +56,7 @@ export class TokenAdapter {
       await new JwtService().verifyAsync(token, {
         secret: secret,
       });
+
       return true;
     } catch (error) {
       return false;

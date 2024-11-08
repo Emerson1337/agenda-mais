@@ -1,13 +1,31 @@
 import axios from "axios";
-
+import { refreshToken } from "@/actions/auth/refreshToken";
 const BASE_URL = process.env.REACT_APP_BASE_URL || "http://localhost:3001";
 
+// Create axios instance
 export const API = axios.create({
   baseURL: BASE_URL,
-  headers: {
-    authorization:
-      typeof localStorage !== "undefined"
-        ? localStorage.getItem("authorization")
-        : null,
-  },
 });
+
+// Set up a request interceptor
+API.interceptors.response.use(
+  (response) => response,
+  async (error) => {
+    const originalRequest = error.config;
+
+    // Check if the error is a 401 Unauthorized
+    if (error.response?.status === 401 && !originalRequest._retry) {
+      originalRequest._retry = true;
+
+      try {
+        await refreshToken();
+        return API(originalRequest);
+      } catch (refreshError) {
+        console.error("Error refreshing token:", refreshError);
+        return Promise.reject(refreshError);
+      }
+    }
+
+    return Promise.reject(error);
+  }
+);

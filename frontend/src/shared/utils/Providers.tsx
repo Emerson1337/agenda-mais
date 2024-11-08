@@ -1,6 +1,10 @@
 "use client";
 
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import {
+  QueryCache,
+  QueryClient,
+  QueryClientProvider,
+} from "@tanstack/react-query";
 
 import "react-toastify/dist/ReactToastify.css";
 import "@/app/globals.css";
@@ -12,7 +16,7 @@ export interface ProviderProps {
 }
 
 export function Provider({ children }: ProviderProps) {
-  const [queryClient] = useState(() => new QueryClient());
+  const [queryClient] = useState(() => new QueryClient({}));
 
   const contextClass = {
     success: "bg-background",

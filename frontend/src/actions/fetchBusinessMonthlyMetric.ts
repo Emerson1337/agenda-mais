@@ -11,7 +11,7 @@ export const fetchBusinessMonthlyMetric = async ({
     return (await API.get(apiUrls.internal.reports.getMonthlyMetrics(date)))
       .data.body;
   } catch (error) {
-    console.error("Error fetching manager data:", error);
+    console.error("Error fetching business monthly metric data:", error);
     return undefined;
   }
 };
