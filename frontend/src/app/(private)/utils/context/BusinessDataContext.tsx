@@ -46,7 +46,5 @@ export const BusinessProvider: FC<{
 export function BusinessWrapper({ children }: { children: React.ReactNode }) {
   const { palette } = useBusinessContext();
 
-  if (!palette) return;
-
   return <div className={cn(palette)}>{children}</div>;
 }

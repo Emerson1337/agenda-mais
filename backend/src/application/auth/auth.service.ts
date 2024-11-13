@@ -8,14 +8,16 @@ import {
 } from '@/presentation/errors';
 import { UnauthorizedError } from '@/presentation/errors/unauthorized-error';
 
-import { ResetPasswordTokensRepository } from '../../domain/repositories/reset-password-tokens.repository';
-import { MailSenderAdapter } from '../../infra/adapters/mail-sender.adapter';
-import { BookingManagersService } from '../booking-managers/booking-managers.service';
-import { generateFrontendUrl } from '../shared/utils/frontendPathGenerator';
+import { ResetPasswordTokensRepository } from '@/domain/repositories/reset-password-tokens.repository';
+import { MailSenderAdapter } from '@/infra/adapters/mail-sender.adapter';
+import { BookingManagersService } from '@/application/booking-managers/booking-managers.service';
+import { generateFrontendUrl } from '@/application/shared/utils/frontendPathGenerator';
 import { LoginDto, ResetPasswordDto } from './dtos/login-dto';
 import { TokenPayload, TokenResponse } from './dtos/token-dto';
 import { UserDto } from './dtos/user-dto';
 import { I18nContext, I18nService } from 'nestjs-i18n';
+import { SignUpDto } from './dtos/signup-dto';
+import { BookingManagers } from '@/domain/entities/booking-managers.entity';
 
 export interface SocialUserDto {
   id: number | string;
@@ -84,26 +86,8 @@ export class AuthService {
     return user;
   }
 
-  async login(user: UserDto): Promise<TokenResponse> {
-    const payload: TokenPayload = {
-      sub: user.id,
-      username: user.username,
-      email: user.email,
-      roles: user.roles,
-      plan: user.plan,
-      status: user.status,
-    };
-
-    const refresh_token = await this.tokenService.generateToken(
-      payload,
-      'refreshToken',
-    );
-
-    return {
-      user: { ...user, password: undefined },
-      access_token: await this.tokenService.generateToken(payload),
-      refresh_token,
-    };
+  async create(manager: SignUpDto): Promise<BookingManagers | Error> {
+    return await this.bookingManagersService.create(manager);
   }
 
   async loginWithRefreshToken(refreshToken: string) {
@@ -136,6 +120,28 @@ export class AuthService {
         }),
       );
     }
+  }
+
+  async login(user: UserDto): Promise<TokenResponse> {
+    const payload: TokenPayload = {
+      sub: user.id,
+      username: user.username,
+      email: user.email,
+      roles: user.roles,
+      plan: user.plan,
+      status: user.status,
+    };
+
+    const refresh_token = await this.tokenService.generateToken(
+      payload,
+      'refreshToken',
+    );
+
+    return {
+      user: { ...user, password: undefined },
+      access_token: await this.tokenService.generateToken(payload),
+      refresh_token,
+    };
   }
 
   async verifyToken(token: string) {

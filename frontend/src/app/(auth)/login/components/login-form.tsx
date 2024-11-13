@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Link from "next/link";
 import { useLoginMutation } from "../hooks/useLoginMutation";
-import { ILoginRequest, LoginSchema } from "../schemas/auth.schema";
+import { ILoginRequest, LoginSchema } from "../schemas/login.schema";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ErrorLabel } from "@/components/ui/error-label";
@@ -31,7 +31,7 @@ export function LoginForm({ className, ...props }: UserAuthFormProps) {
   async function handleLogin(loginForm: ILoginRequest) {
     try {
       await mutateAsync(loginForm);
-      router.push("/dashboard");
+      window.location.href = "/dashboard";
     } catch (error: any) {
       if (error?.status === 401) {
         setError("email", {

@@ -9,7 +9,6 @@ import { verifyToken } from "./actions/auth/verifyToken";
 export async function middleware(request: NextRequest) {
   const cookieStore = cookies();
   const authToken = cookieStore.get("authorization");
-  console.log("🟢🟢🟢🟢 authToken", authToken);
 
   if (!authToken)
     return NextResponse.redirect(new URL("/login", request.nextUrl.toString()));

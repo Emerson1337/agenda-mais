@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { Package2, PanelLeft, Settings } from "lucide-react";
+import { Package2, PanelLeft, Settings, User2 } from "lucide-react";
 import Link from "next/link";
 import {
   DropdownMenu,
@@ -79,14 +79,18 @@ export default function Header() {
             size="icon"
             className="overflow-hidden rounded-full"
           >
-            <Image
-              priority
-              src={getPublicAPIPath(profilePhoto)}
-              width={36}
-              height={36}
-              alt="Avatar"
-              className="overflow-hidden rounded-full"
-            />
+            {profilePhoto ? (
+              <Image
+                priority
+                src={getPublicAPIPath(profilePhoto)}
+                width={36}
+                height={36}
+                alt="Avatar"
+                className="overflow-hidden rounded-full"
+              />
+            ) : (
+              <User2 className="h-5 w-5" />
+            )}
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">

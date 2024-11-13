@@ -20,6 +20,7 @@ import { useManagerMutation } from "../hooks/useManagerMutation";
 import { useForm } from "react-hook-form";
 import { useState, useEffect } from "react";
 import { useGetManager } from "@/app/(private)/dashboard/hooks/useGetManager";
+import { stringUtils } from "@/shared/utils/stringUtils";
 
 export default function AccountDetails() {
   const { isFetching, data, error } = useGetManager();
@@ -45,17 +46,10 @@ export default function AccountDetails() {
     }
   }, [data, setValue]);
 
-  const formatBusinessNameForURL = (name: string) => {
-    return name
-      .toLowerCase()
-      .replace(/[^a-zA-Z\s]/g, "") // Remove non-letter characters (no numbers or special symbols)
-      .replace(/\s+/g, "-"); // Replace spaces with hyphens
-  };
-
   const [formattedName, setFormattedName] = useState<string>("");
 
   useEffect(() => {
-    setFormattedName(formatBusinessNameForURL(businessName));
+    setFormattedName(stringUtils.formatBusinessNameForURL(businessName));
   }, [businessName]);
 
   const onSubmit = async (formData: IRequestUpdateManager) => {
@@ -64,7 +58,7 @@ export default function AccountDetails() {
         ...data,
         ...formData,
         phone,
-        username: formatBusinessNameForURL(formData.username),
+        username: stringUtils.formatBusinessNameForURL(formData.username),
       };
       await mutateAsync(updatedData);
       toast.success("Dados atualizados com sucesso!");

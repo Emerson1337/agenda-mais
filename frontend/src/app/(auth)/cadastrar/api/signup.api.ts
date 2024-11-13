@@ -1,19 +1,16 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { ILoginRequest } from "@/app/(auth)/login/schemas/auth.schema";
+import { ISignUpRequest } from "@/app/(auth)/cadastrar/schemas/signup.schema";
 import { LoginData } from "@/shared/types/login";
-import { signIn } from "@/actions/auth/signIn";
 import { AxiosError } from "axios";
 import { API } from "@/shared/services/config/config";
 import { apiUrls } from "@/lib/apiUrls";
 
-export const useLoginQuery = () => {
+export const useSignUpQuery = () => {
   const queryClient = useQueryClient();
 
-  return useMutation<LoginData, AxiosError, ILoginRequest>({
-    mutationFn: async (data: ILoginRequest) => {
-      const response = await API.post(apiUrls.internal.auth.login(), data);
-      signIn(response.data.body);
-      return response.data.body;
+  return useMutation<LoginData, AxiosError, ISignUpRequest>({
+    mutationFn: async (data: ISignUpRequest) => {
+      return await API.post(apiUrls.internal.auth.signUp(), data);
     },
     onSuccess(_) {
       queryClient.setQueryData<LoginData>(["auth"], (data) => {

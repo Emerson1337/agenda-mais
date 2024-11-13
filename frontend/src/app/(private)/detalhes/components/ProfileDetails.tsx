@@ -23,6 +23,7 @@ import {
 import { toast } from "react-toastify";
 import { AxiosError } from "axios";
 import { ReloadIcon } from "@radix-ui/react-icons";
+import { User2 } from "lucide-react";
 
 export default function ProfileDetails() {
   const [profileImage, setProfileImage] = useState<ImageListType>([]);
@@ -92,7 +93,7 @@ export default function ProfileDetails() {
       </CardHeader>
       <CardContent>
         <div className="grid gap-6">
-          <div className="relative min-h-[200px] flex justify-center">
+          <div className="relative min-h-[200px] flex justify-center items-center">
             {(croppedProfileImage || data?.profilePhoto) && (
               <Image
                 width={150}
@@ -104,6 +105,9 @@ export default function ProfileDetails() {
                 alt="Cropped Profile"
                 className="rounded-full overflow-hidden object-cover mt-4 h-[150px] w-[150px]"
               />
+            )}
+            {!croppedProfileImage && !data?.profilePhoto && (
+              <User2 className="h-14 w-14" />
             )}
             <ImageUploadingHoverButton
               croppedImage={

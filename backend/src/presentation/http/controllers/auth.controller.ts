@@ -5,10 +5,22 @@ import { LoginDto } from '@/application/auth/dtos/login-dto';
 import { ResetDto } from '@/application/auth/dtos/reset-password-dto';
 import { handleError, ok } from '@/presentation/helpers/http.helper';
 import { Response } from 'express';
+import { SignUpDto } from '@/application/auth/dtos/signup-dto';
 
 @Controller('auth')
 export class AuthController {
   constructor(private authService: AuthService) {}
+
+  @Post('cadastrar')
+  async create(@Body() manager: SignUpDto, @Res() response: Response) {
+    try {
+      return response
+        .status(200)
+        .send(ok(await this.authService.create(manager)));
+    } catch (error) {
+      return response.status(error.status).send(handleError(error));
+    }
+  }
 
   @Post('login')
   async login(@Body() body: LoginDto, @Res() response: Response) {
