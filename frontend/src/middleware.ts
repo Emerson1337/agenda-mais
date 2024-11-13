@@ -9,6 +9,7 @@ import { verifyToken } from "./actions/auth/verifyToken";
 export async function middleware(request: NextRequest) {
   const cookieStore = cookies();
   const authToken = cookieStore.get("authorization");
+  console.log("🟢🟢🟢🟢 authToken", authToken);
 
   if (!authToken)
     return NextResponse.redirect(new URL("/login", request.nextUrl.toString()));
@@ -19,7 +20,6 @@ export async function middleware(request: NextRequest) {
     try {
       const { access_token, refresh_token } = await refreshToken();
       const response = NextResponse.next();
-
       response.cookies.set("authorization", access_token, {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
@@ -30,7 +30,6 @@ export async function middleware(request: NextRequest) {
         secure: process.env.NODE_ENV === "production",
         path: "/",
       });
-
       return response;
     } catch (error) {
       return NextResponse.redirect(
@@ -44,6 +43,7 @@ export async function middleware(request: NextRequest) {
 
 export const config = {
   matcher: [
+    "/",
     "/dashboard/:path*",
     "/agenda/:path*",
     "/detalhes/:path*",

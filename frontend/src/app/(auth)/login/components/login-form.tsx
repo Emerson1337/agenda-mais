@@ -6,7 +6,6 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Link from "next/link";
 import { useLoginMutation } from "../hooks/useLoginMutation";
-import { AxiosError } from "axios";
 import { ILoginRequest, LoginSchema } from "../schemas/auth.schema";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -32,14 +31,14 @@ export function LoginForm({ className, ...props }: UserAuthFormProps) {
   async function handleLogin(loginForm: ILoginRequest) {
     try {
       await mutateAsync(loginForm);
-      router.replace("/dashboard");
-    } catch (error: AxiosError | any) {
-      if (error?.response?.status === 401) {
+      router.push("/dashboard");
+    } catch (error: any) {
+      if (error?.status === 401) {
         setError("email", {
-          message: error.response.data.body.errors[0].message,
+          message: error.data.body.errors[0].message,
         });
         setError("password", {
-          message: error.response.data.body.errors[0].message,
+          message: error.data.body.errors[0].message,
         });
       }
     }

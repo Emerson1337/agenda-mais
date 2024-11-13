@@ -42,7 +42,7 @@ export class BookingManagersMDB
   @Column({ type: 'string' })
   password: string;
 
-  @Column({ type: 'enum', enum: ManagerStatus, default: ManagerStatus.PENDING })
+  @Column({ type: 'enum', enum: ManagerStatus, default: ManagerStatus.ACTIVE })
   status: ManagerStatus;
 
   @Column({ type: 'array', default: [ManagersRolesEnum.USER] })

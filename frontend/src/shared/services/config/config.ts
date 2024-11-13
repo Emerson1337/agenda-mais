@@ -1,5 +1,7 @@
 import axios from "axios";
 import { refreshToken } from "@/actions/auth/refreshToken";
+import { apiUrls } from "@/lib/apiUrls";
+import { redirect } from "next/navigation";
 const BASE_URL = process.env.REACT_APP_BASE_URL || "http://localhost:3001";
 
 // Create axios instance
@@ -12,16 +14,23 @@ API.interceptors.response.use(
   (response) => response,
   async (error) => {
     const originalRequest = error.config;
+    if (
+      error.response?.status === 401 &&
+      (originalRequest.url === apiUrls.internal.auth.refreshToken() ||
+        originalRequest.url === apiUrls.internal.auth.login())
+    ) {
+      return Promise.reject(error.response);
+    }
 
     // Check if the error is a 401 Unauthorized
     if (error.response?.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
-
+      originalRequest;
       try {
         await refreshToken();
         return API(originalRequest);
       } catch (refreshError) {
-        console.error("Error refreshing token:", refreshError);
+        console.error("Error refreshing token on interceptor:", refreshError);
         return Promise.reject(refreshError);
       }
     }
