@@ -6,7 +6,7 @@ export class MailSenderAdapter {
 
   constructor() {
     this.transporter = nodemailer.createTransport({
-      host: 'smtp.mailtrap.io',
+      host: 'sandbox.smtp.mailtrap.io',
       port: 2525,
       auth: {
         user: process.env.MAIL_USER,

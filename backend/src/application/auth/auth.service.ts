@@ -235,7 +235,7 @@ export class AuthService {
     if (!resetTokenData)
       throw new InvalidParamError(
         'token',
-        this.i18n.t('translations.INVALID_TOKEN', {
+        this.i18n.t('translations.INVALID_FIELD.INVALID_TOKEN', {
           lang: I18nContext.current().lang,
         }),
       );
