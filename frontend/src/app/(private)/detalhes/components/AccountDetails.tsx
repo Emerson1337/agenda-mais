@@ -13,7 +13,6 @@ import { Textarea } from "@/components/ui/textarea";
 import { PhoneInput } from "@/components/ui/phone-input";
 import { Button } from "@/components/ui/button";
 import { IRequestUpdateManager } from "../api/manager.api";
-import { ReloadIcon } from "@radix-ui/react-icons";
 import { toast } from "react-toastify";
 import { AxiosError } from "axios";
 import { useManagerMutation } from "../hooks/useManagerMutation";
@@ -68,13 +67,6 @@ export default function AccountDetails() {
       );
     }
   };
-
-  if (isFetching)
-    return (
-      <div>
-        <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />
-      </div>
-    );
 
   return (
     <Card className="w-fit">

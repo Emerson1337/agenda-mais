@@ -39,5 +39,9 @@
   },
   "SCHEDULES": {
     "DELETED": "Schedule deleted successfully!"
+  },
+  "MANAGERS": {
+    "PASSWORD_UPDATED": "Password updated successfully!",
+    "WRONG_PASSWORD": "Password was not updated. The current password is incorrect."
   }
 }

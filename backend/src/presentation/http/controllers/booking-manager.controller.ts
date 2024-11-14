@@ -18,6 +18,7 @@ import { AuthRequired } from '@/application/shared/decorators/auth-required.deco
 import { FileAdapter } from '@/infra/adapters/file.adapter';
 import { Response } from 'express';
 import { UpdateManagerDto } from '@/application/booking-managers/dtos/update-manager-dto';
+import { ChangePasswordDto } from '@/application/booking-managers/dtos/change-password-dto';
 
 @Controller('dashboard/usuarios')
 export class BookingManagerController {
@@ -45,6 +46,26 @@ export class BookingManagerController {
       return response
         .status(200)
         .send(ok(await this.bookingManagersService.listManager(userId)));
+    } catch (error) {
+      return response.status(error.status).send(handleError(error));
+    }
+  }
+
+  @Patch('atualizar-senha')
+  @AuthRequired()
+  async changePassword(
+    @Req() request: Request,
+    @Body() body: ChangePasswordDto,
+    @Res() response: Response,
+  ) {
+    try {
+      const userId = request['user'].id;
+
+      return response
+        .status(200)
+        .send(
+          ok(await this.bookingManagersService.changePassword(userId, body)),
+        );
     } catch (error) {
       return response.status(error.status).send(handleError(error));
     }

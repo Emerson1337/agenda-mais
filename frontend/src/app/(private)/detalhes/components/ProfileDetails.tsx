@@ -15,11 +15,11 @@ import Image from "next/image";
 import ImageUploadingHoverButton from "@/components/upload/ImageUploadingHoverButton";
 import { ThemeCustomizer } from "@/components/ui/theme-customizer";
 import { Button } from "@/components/ui/button";
-import { useGetManager } from "../hooks/useGetManager";
+import { useGetManager } from "@/app/(private)/detalhes/hooks/useGetManager";
 import {
   useManagerMutation,
   useManagerProfileMutation,
-} from "../hooks/useManagerMutation";
+} from "@/app/(private)/detalhes/hooks/useManagerMutation";
 import { toast } from "react-toastify";
 import { AxiosError } from "axios";
 import { ReloadIcon } from "@radix-ui/react-icons";
@@ -32,7 +32,7 @@ export default function ProfileDetails() {
     null
   );
   const [dialogOpen, setDialogOpen] = useState(false);
-  const { isFetching, data, error } = useGetManager();
+  const { data } = useGetManager();
   const {
     mutateAsync: updateManagerMutateAsync,
     isPending: updateManagerIsPending,
@@ -75,13 +75,6 @@ export default function ProfileDetails() {
       );
     }
   };
-
-  if (isFetching)
-    return (
-      <div>
-        <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />
-      </div>
-    );
 
   return (
     <Card className="w-fit">

@@ -12,11 +12,11 @@ import { ResetPasswordTokensRepository } from '@/domain/repositories/reset-passw
 import { MailSenderAdapter } from '@/infra/adapters/mail-sender.adapter';
 import { BookingManagersService } from '@/application/booking-managers/booking-managers.service';
 import { generateFrontendUrl } from '@/application/shared/utils/frontendPathGenerator';
-import { LoginDto, ResetPasswordDto } from './dtos/login-dto';
-import { TokenPayload, TokenResponse } from './dtos/token-dto';
-import { UserDto } from './dtos/user-dto';
+import { LoginDto, ResetPasswordDto } from '@/application/auth/dtos/login-dto';
+import { TokenPayload, TokenResponse } from '@/application/auth/dtos/token-dto';
+import { UserDto } from '@/application/auth/dtos/user-dto';
 import { I18nContext, I18nService } from 'nestjs-i18n';
-import { SignUpDto } from './dtos/signup-dto';
+import { SignUpDto } from '@/application/auth/dtos/signup-dto';
 import { BookingManagers } from '@/domain/entities/booking-managers.entity';
 
 export interface SocialUserDto {

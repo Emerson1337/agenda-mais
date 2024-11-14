@@ -11,14 +11,12 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ErrorLabel } from "@/components/ui/error-label";
 import { ReloadIcon } from "@radix-ui/react-icons";
-import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
 
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 export function LoginForm({ className }: UserAuthFormProps) {
   const { mutateAsync } = useLoginMutation();
-  const router = useRouter();
 
   const {
     register,
@@ -79,7 +77,7 @@ export function LoginForm({ className }: UserAuthFormProps) {
               {...register("password")}
               id="password"
               type="password"
-              placeholder="*********"
+              placeholder="Digite sua senha"
               required
             />
             <ErrorLabel>{errors.password?.message}</ErrorLabel>

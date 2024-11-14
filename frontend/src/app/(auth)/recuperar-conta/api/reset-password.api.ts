@@ -1,5 +1,4 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { LoginData } from "@/shared/types/login";
 import { AxiosError } from "axios";
 import { API } from "@/shared/services/config/config";
 import { apiUrls } from "@/lib/apiUrls";
@@ -21,7 +20,7 @@ export const useResetPasswordQuery = () => {
       return response.data.body;
     },
     onSuccess(_) {
-      queryClient.setQueryData<LoginData>(["resetPassword"], (data) => {
+      queryClient.setQueryData<ResetPassword>(["resetPassword"], (data) => {
         return data;
       });
     },
@@ -40,7 +39,7 @@ export const useResetLinkQuery = () => {
       return response.data.body;
     },
     onSuccess(_) {
-      queryClient.setQueryData<LoginData>(["resetPassword"], (data) => {
+      queryClient.setQueryData<ResetPassword>(["resetPassword"], (data) => {
         return data;
       });
     },
