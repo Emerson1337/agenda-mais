@@ -12,10 +12,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { ErrorLabel } from "@/components/ui/error-label";
 import { ReloadIcon } from "@radix-ui/react-icons";
 import { useRouter } from "next/navigation";
+import { cn } from "@/lib/utils";
 
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
-export function LoginForm({ className, ...props }: UserAuthFormProps) {
+export function LoginForm({ className }: UserAuthFormProps) {
   const { mutateAsync } = useLoginMutation();
   const router = useRouter();
 
@@ -31,7 +32,6 @@ export function LoginForm({ className, ...props }: UserAuthFormProps) {
   async function handleLogin(loginForm: ILoginRequest) {
     try {
       await mutateAsync(loginForm);
-      window.location.href = "/dashboard";
     } catch (error: any) {
       if (error?.status === 401) {
         setError("email", {
@@ -46,7 +46,7 @@ export function LoginForm({ className, ...props }: UserAuthFormProps) {
 
   return (
     <form onSubmit={handleSubmit(handleLogin)}>
-      <div className="mx-auto grid w-[350px] gap-6">
+      <div className={cn("mx-auto grid w-[350px] gap-6", className)}>
         <div className="grid gap-2 text-center">
           <h1 className="text-3xl font-bold">Login</h1>
           <p className="text-balance text-muted-foreground">
@@ -79,6 +79,7 @@ export function LoginForm({ className, ...props }: UserAuthFormProps) {
               {...register("password")}
               id="password"
               type="password"
+              placeholder="*********"
               required
             />
             <ErrorLabel>{errors.password?.message}</ErrorLabel>

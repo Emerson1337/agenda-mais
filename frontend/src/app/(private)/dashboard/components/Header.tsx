@@ -17,7 +17,7 @@ import { useActivePath } from "@/lib/hooks";
 import { MenuItems } from "@/components/ui/menu-items";
 import { Tooltip } from "@/components/ui/tooltip";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
-import { useBusinessContext } from "../../utils/context/BusinessDataContext";
+import { useBusinessContext } from "@/app/(private)/utils/context/BusinessDataContext";
 import { getPublicAPIPath } from "@/shared/utils/urlUtils";
 import { useRouter } from "next/navigation";
 import { logout } from "@/actions/auth/logout";
@@ -31,7 +31,7 @@ export default function Header() {
 
   const handleLogout = async () => {
     logout();
-    router.replace("/login");
+    router.push("/login");
   };
 
   return (
