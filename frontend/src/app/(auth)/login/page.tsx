@@ -1,58 +1,18 @@
-import Image from "next/image";
-import Link from "next/link";
-
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import React from "react";
+import { LoginForm } from "@/app/(auth)/login/components/login-form";
+import Image from "next/image";
+import Banner from "@/assets/banners/auth-banner.jpg";
 
 export default function Login() {
   return (
-    <div className="w-full lg:grid lg:min-h-[600px] lg:grid-cols-2 xl:min-h-[800px]">
-      <div className="flex items-center justify-center py-12">
-        <div className="mx-auto grid w-[350px] gap-6">
-          <div className="grid gap-2 text-center">
-            <h1 className="text-3xl font-bold">Login</h1>
-            <p className="text-balance text-muted-foreground">
-              Digite seu e-mail abaixo para acessar sua conta
-            </p>
-          </div>
-          <div className="grid gap-4">
-            <div className="grid gap-2">
-              <Label htmlFor="email">Email</Label>
-              <Input
-                id="email"
-                type="email"
-                placeholder="exemplo@exemplo.com"
-                required
-              />
-            </div>
-            <div className="grid gap-2">
-              <div className="flex items-center">
-                <Label htmlFor="password">Password</Label>
-                <Link
-                  href="/forgot-password"
-                  className="ml-auto inline-block text-sm underline"
-                >
-                  Esqueceu sua senha?
-                </Link>
-              </div>
-              <Input id="password" type="password" required />
-            </div>
-            <Button type="submit" className="w-full">
-              Entrar
-            </Button>
-            <Button variant="outline" className="w-full">
-              Entrar com Google
-            </Button>
-          </div>
-          <div className="mt-4 text-center text-sm">
-            Não tem uma conta?{" "}
-            <Link href="#" className="underline">
-              Cadastre-se
-            </Link>
-          </div>
+    <div className="container relative h-screen w-screen flex-col items-center justify-center grid lg:max-w-none lg:grid-cols-2 lg:px-0">
+      <div className="w-full flex items-center justify-center">
+        <div className="flex items-center justify-center py-12">
+          <LoginForm />
         </div>
+      </div>
+      <div className="relative hidden h-full flex-col bg-muted p-10 text-white dark:border-r lg:flex">
+        <Image fill src={Banner} alt="banner" className="object-cover" />
       </div>
     </div>
   );

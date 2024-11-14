@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpStatus, Injectable } from '@nestjs/common';
 import { EncryptAdapter } from '@/infra/adapters/encrypt.adapter';
 import { TokenAdapter } from '@/infra/adapters/token.adapter';
 import {
@@ -8,14 +8,16 @@ import {
 } from '@/presentation/errors';
 import { UnauthorizedError } from '@/presentation/errors/unauthorized-error';
 
-import { ResetPasswordTokensRepository } from '../../domain/repositories/reset-password-tokens.repository';
-import { MailSenderAdapter } from '../../infra/adapters/mail-sender.adapter';
-import { BookingManagersService } from '../booking-managers/booking-managers.service';
-import { generateFrontendUrl } from '../shared/utils/frontendPathGenerator';
+import { ResetPasswordTokensRepository } from '@/domain/repositories/reset-password-tokens.repository';
+import { MailSenderAdapter } from '@/infra/adapters/mail-sender.adapter';
+import { BookingManagersService } from '@/application/booking-managers/booking-managers.service';
+import { generateFrontendUrl } from '@/application/shared/utils/frontendPathGenerator';
 import { LoginDto, ResetPasswordDto } from './dtos/login-dto';
 import { TokenPayload, TokenResponse } from './dtos/token-dto';
 import { UserDto } from './dtos/user-dto';
 import { I18nContext, I18nService } from 'nestjs-i18n';
+import { SignUpDto } from './dtos/signup-dto';
+import { BookingManagers } from '@/domain/entities/booking-managers.entity';
 
 export interface SocialUserDto {
   id: number | string;
@@ -40,64 +42,52 @@ export class AuthService {
     const user = await this.bookingManagersService.getManagerByEmail(email);
 
     if (!user) {
-      throw new MultipleErrors([
-        new UnauthorizedError(
-          'email',
-          this.i18n.t('translations.INVALID_FIELD.INVALID_CREDENTIALS', {
-            lang: I18nContext.current().lang,
-          }),
-        ),
-        new UnauthorizedError(
-          'password',
-          this.i18n.t('translations.INVALID_FIELD.INVALID_CREDENTIALS', {
-            lang: I18nContext.current().lang,
-          }),
-        ),
-      ]);
+      throw new MultipleErrors(
+        [
+          new UnauthorizedError(
+            'email',
+            this.i18n.t('translations.INVALID_FIELD.INVALID_CREDENTIALS', {
+              lang: I18nContext.current().lang,
+            }),
+          ),
+          new UnauthorizedError(
+            'password',
+            this.i18n.t('translations.INVALID_FIELD.INVALID_CREDENTIALS', {
+              lang: I18nContext.current().lang,
+            }),
+          ),
+        ],
+        HttpStatus.UNAUTHORIZED,
+      );
     }
 
     if (
       !(await this.encryptAdapter.validatePassword(password, user.password))
     ) {
-      throw new MultipleErrors([
-        new UnauthorizedError(
-          'email',
-          this.i18n.t('translations.INVALID_FIELD.INVALID_CREDENTIALS', {
-            lang: I18nContext.current().lang,
-          }),
-        ),
-        new UnauthorizedError(
-          'password',
-          this.i18n.t('translations.INVALID_FIELD.INVALID_CREDENTIALS', {
-            lang: I18nContext.current().lang,
-          }),
-        ),
-      ]);
+      throw new MultipleErrors(
+        [
+          new UnauthorizedError(
+            'email',
+            this.i18n.t('translations.INVALID_FIELD.INVALID_CREDENTIALS', {
+              lang: I18nContext.current().lang,
+            }),
+          ),
+          new UnauthorizedError(
+            'password',
+            this.i18n.t('translations.INVALID_FIELD.INVALID_CREDENTIALS', {
+              lang: I18nContext.current().lang,
+            }),
+          ),
+        ],
+        HttpStatus.UNAUTHORIZED,
+      );
     }
 
     return user;
   }
 
-  async login(user: UserDto): Promise<TokenResponse> {
-    const payload: TokenPayload = {
-      sub: user.id,
-      username: user.username,
-      email: user.email,
-      roles: user.roles,
-      plan: user.plan,
-      status: user.status,
-    };
-
-    const refresh_token = await this.tokenService.generateToken(
-      payload,
-      'refreshToken',
-    );
-
-    return {
-      user: { ...user, password: undefined },
-      access_token: await this.tokenService.generateToken(payload),
-      refresh_token,
-    };
+  async create(manager: SignUpDto): Promise<BookingManagers | Error> {
+    return await this.bookingManagersService.create(manager);
   }
 
   async loginWithRefreshToken(refreshToken: string) {
@@ -125,7 +115,57 @@ export class AuthService {
     } catch {
       throw new UnauthorizedError(
         'refreshToken',
-        this.i18n.t('translations.INVALID_REFRESH_TOKEN', {
+        this.i18n.t('translations.INVALID_FIELD.INVALID_REFRESH_TOKEN', {
+          lang: I18nContext.current().lang,
+        }),
+      );
+    }
+  }
+
+  async login(user: UserDto): Promise<TokenResponse> {
+    const payload: TokenPayload = {
+      sub: user.id,
+      username: user.username,
+      email: user.email,
+      roles: user.roles,
+      plan: user.plan,
+      status: user.status,
+    };
+
+    const refresh_token = await this.tokenService.generateToken(
+      payload,
+      'refreshToken',
+    );
+
+    return {
+      user: { ...user, password: undefined },
+      access_token: await this.tokenService.generateToken(payload),
+      refresh_token,
+    };
+  }
+
+  async verifyToken(token: string) {
+    try {
+      const validToken = await this.tokenService.verifyToken(
+        token,
+        'accessToken',
+      );
+
+      if (!validToken) {
+        throw new Error();
+      }
+
+      const decoded = this.tokenService.decodeToken(token) as TokenPayload;
+
+      if (!decoded) {
+        throw new Error();
+      }
+
+      return true;
+    } catch {
+      throw new UnauthorizedError(
+        'accessToken',
+        this.i18n.t('translations.INVALID_FIELD.INVALID_REFRESH_TOKEN', {
           lang: I18nContext.current().lang,
         }),
       );
@@ -195,7 +235,7 @@ export class AuthService {
     if (!resetTokenData)
       throw new InvalidParamError(
         'token',
-        this.i18n.t('translations.INVALID_TOKEN', {
+        this.i18n.t('translations.INVALID_FIELD.INVALID_TOKEN', {
           lang: I18nContext.current().lang,
         }),
       );

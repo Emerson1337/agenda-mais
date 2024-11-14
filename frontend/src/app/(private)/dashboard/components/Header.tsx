@@ -3,27 +3,12 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import {
-  Calendar,
-  Home,
-  Package2,
-  PanelLeft,
-  Settings,
-  ShoppingCart,
-} from "lucide-react";
+import { Package2, PanelLeft, Settings, User2 } from "lucide-react";
 import Link from "next/link";
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
@@ -32,15 +17,22 @@ import { useActivePath } from "@/lib/hooks";
 import { MenuItems } from "@/components/ui/menu-items";
 import { Tooltip } from "@/components/ui/tooltip";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
-import { useBusinessContext } from "../../utils/context/BusinessDataContext";
+import { useBusinessContext } from "@/app/(private)/utils/context/BusinessDataContext";
 import { getPublicAPIPath } from "@/shared/utils/urlUtils";
+import { useRouter } from "next/navigation";
+import { logout } from "@/actions/auth/logout";
 
 export default function Header() {
   const [isSheetOpen, setIsSheetOpen] = useState(false);
   const checkActivePath = useActivePath();
   const { profilePhoto } = useBusinessContext();
-
+  const router = useRouter();
   const closeSheet = () => setIsSheetOpen(false);
+
+  const handleLogout = async () => {
+    logout();
+    router.push("/login");
+  };
 
   return (
     <header className="sticky top-0 z-30 flex h-14 items-center gap-4 border-b bg-background px-4 sm:static sm:h-auto sm:border-0 sm:bg-transparent sm:px-6">
@@ -87,13 +79,18 @@ export default function Header() {
             size="icon"
             className="overflow-hidden rounded-full"
           >
-            <Image
-              src={getPublicAPIPath(profilePhoto)}
-              width={36}
-              height={36}
-              alt="Avatar"
-              className="overflow-hidden rounded-full"
-            />
+            {profilePhoto ? (
+              <Image
+                priority
+                src={getPublicAPIPath(profilePhoto)}
+                width={36}
+                height={36}
+                alt="Avatar"
+                className="overflow-hidden rounded-full"
+              />
+            ) : (
+              <User2 className="h-5 w-5" />
+            )}
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
@@ -101,7 +98,9 @@ export default function Header() {
             <Link href="/detalhes">Configurações</Link>
           </DropdownMenuItem>
           <DropdownMenuSeparator />
-          <DropdownMenuItem>Sair</DropdownMenuItem>
+          <DropdownMenuItem className="cursor-pointer" onClick={handleLogout}>
+            Sair
+          </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
     </header>

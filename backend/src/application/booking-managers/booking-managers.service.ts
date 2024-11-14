@@ -80,7 +80,7 @@ export class BookingManagersService {
 
     return await this.bookingManagersRepository.create({
       ...manager,
-      status: ManagerStatus.PENDING,
+      status: ManagerStatus.ACTIVE,
       roles: [ManagersRolesEnum.USER],
       plan: ManagersPlansEnum.BASIC,
       password: passwordHashed,

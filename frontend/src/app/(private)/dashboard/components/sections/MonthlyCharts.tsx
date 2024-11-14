@@ -34,7 +34,7 @@ export default function MonthlyCharts() {
 
   return (
     <div className="sm:flex sm:px-6 w-full">
-      <div className="flex flex-wrap sm:flex-nowrap gap-4">
+      <div className="flex flex-wrap sm:flex-nowrap gap-4 w-full">
         {!isError && pieChartData && pieChartConfig && (
           <>
             <PieChartComponent

@@ -21,10 +21,13 @@ export class MultipleErrors extends Error {
   public errors: InvalidParamError[];
   status: number;
 
-  constructor(errors: InvalidParamError[]) {
+  constructor(
+    errors: InvalidParamError[],
+    status = HttpStatus.UNPROCESSABLE_ENTITY,
+  ) {
     super('Multiple errors occurred');
     this.name = errorCodes.MULTIPLE_INVALID_PARAM_ERRORS;
-    this.status = HttpStatus.UNPROCESSABLE_ENTITY;
+    this.status = status;
     this.stack = errorCodes.MULTIPLE_INVALID_PARAM_ERRORS;
     this.errors = errors;
   }

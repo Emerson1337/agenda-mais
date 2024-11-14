@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { BusinessTotalMetric } from "@/shared/types/business-total-metrics";
-import { fetchBusinessTotalMetric } from "@/api/fetchBusinessTotalMetric";
+import { fetchBusinessTotalMetric } from "@/actions/fetchBusinessTotalMetric";
 
 export const useGetBusinessGeneralMetricsQuery = () => {
   return useQuery<BusinessTotalMetric | undefined>({

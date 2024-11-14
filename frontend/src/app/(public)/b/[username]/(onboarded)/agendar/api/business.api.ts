@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { BusinessFullContext } from "@/shared/types/business";
-import { fetchBusinessData } from "@/api/fetchBusinessData";
+import { fetchBusinessData } from "@/actions/fetchBusinessData";
 
 export const useGetBusinessQuery = ({ username }: { username: string }) => {
   return useQuery<BusinessFullContext | undefined>({

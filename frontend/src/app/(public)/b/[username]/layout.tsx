@@ -1,5 +1,5 @@
 import "@/app/globals.css";
-import { fetchBusinessData } from "@/api/fetchBusinessData";
+import { fetchBusinessData } from "@/actions/fetchBusinessData";
 import { BusinessProvider } from "./utils/context/BusinessDataContext";
 import { Suspense } from "react";
 import { ReloadIcon } from "@radix-ui/react-icons";

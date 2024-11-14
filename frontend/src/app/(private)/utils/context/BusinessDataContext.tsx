@@ -34,10 +34,7 @@ export const useBusinessContext = () => useContext(BusinessContext);
 export const BusinessProvider: FC<{
   children: ReactNode;
 }> = ({ children }): ReactNode => {
-  const { data, isError } = useGetManager();
-  const router = useRouter();
-
-  if (isError) router.replace("/not-found");
+  const { data } = useGetManager();
 
   return (
     <BusinessContext.Provider value={data ?? defaultValue}>
@@ -48,8 +45,6 @@ export const BusinessProvider: FC<{
 
 export function BusinessWrapper({ children }: { children: React.ReactNode }) {
   const { palette } = useBusinessContext();
-
-  if (!palette) return;
 
   return <div className={cn(palette)}>{children}</div>;
 }

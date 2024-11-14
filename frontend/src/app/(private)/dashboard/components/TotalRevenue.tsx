@@ -15,7 +15,7 @@ export default function TotalRevenue({
   isLoading = false,
 }: TotalRevenueProps) {
   return (
-    <Card className="w-full h-full">
+    <Card className="w-full">
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
         {isLoading ? (
           <div className="animate-pulse flex items-center space-x-2">

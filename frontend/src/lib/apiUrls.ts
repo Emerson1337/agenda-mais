@@ -24,6 +24,14 @@ export const apiUrls = {
     },
   },
   internal: {
+    auth: {
+      login: (): string => `/api/auth/login`,
+      verifyToken: (): string => `/api/auth/verify-token`,
+      signUp: (): string => `/api/auth/cadastrar`,
+      refreshToken: (): string => `/api/auth/refresh-token`,
+      resetPassword: (): string => `/api/auth/resetar-senha`,
+      forgotPassword: (): string => `/api/auth/esqueci-senha`,
+    },
     schedule: {
       create: (): string => `/api/dashboard/agendas`,
       get: (): string => `/api/dashboard/agendas`,

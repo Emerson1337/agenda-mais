@@ -12,4 +12,8 @@ export class ResetDto {
   @IsNotEmpty()
   @Match('password')
   confirmPassword: string;
+
+  @IsString()
+  @IsNotEmpty()
+  token: string;
 }

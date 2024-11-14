@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { BusinessMonthlyMetrics } from "@/shared/types/business-monthly-metrics";
-import { fetchBusinessMonthlyMetric } from "@/api/fetchBusinessMonthlyMetric";
+import { fetchBusinessMonthlyMetric } from "@/actions/fetchBusinessMonthlyMetric";
 
 export const useGetBusinessMonthlyMetricsQuery = ({
   date,

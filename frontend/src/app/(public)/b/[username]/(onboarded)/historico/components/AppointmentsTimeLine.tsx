@@ -1,7 +1,10 @@
 "use client";
 
 import React from "react";
-import { AppointmentHistory, AppointmentStatus } from "@/api/fetchPhoneHistory";
+import {
+  AppointmentHistory,
+  AppointmentStatus,
+} from "@/actions/fetchPhoneHistory";
 import { format, parseISO } from "date-fns";
 import { cn } from "@/lib/utils";
 import { dateUtils } from "@/shared/utils/dateUtils";
