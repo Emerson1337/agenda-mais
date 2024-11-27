@@ -5,6 +5,6 @@ import { fetchBusinessData } from "@/actions/fetchBusinessData";
 export const useGetBusinessQuery = ({ username }: { username: string }) => {
   return useQuery<BusinessFullContext | undefined>({
     queryKey: ["business", username],
-    queryFn: async () => (await fetchBusinessData(username)) ?? undefined, //TODO: check how to handle errors using react query
+    queryFn: async () => await fetchBusinessData(username),
   });
 };
