@@ -13,12 +13,12 @@ import ChooseService from "@/public/b/[username]/(onboarded)/agendar/components/
 import { BookAppointmentData } from "@/shared/types/appointment";
 import { bookAppointment } from "@/actions/bookAppointment";
 import { toast } from "react-toastify";
-import { parseRequestError } from "@/shared/utils/errorUtils";
 import { WhatsappService } from "@/shared/services/whatsapp.service";
 import { format, parseISO } from "date-fns";
 import { numberUtils } from "@/shared/utils/numberUtils";
 import { dateUtils } from "@/shared/utils/dateUtils";
 import { getPublicAPIPath } from "@/shared/utils/urlUtils";
+import { isAxiosError } from "axios";
 
 interface Props {
   datesAvailable: BusinessSchedule;
@@ -84,17 +84,21 @@ const LayoutOne = ({ datesAvailable }: Props): JSX.Element => {
               price: numberUtils.convertToMonetaryBRL(selectedService.price),
               notes: notes,
               duration: dateUtils.convertToTime(
-                selectedService.timeDurationInMinutes
+                selectedService.timeDurationInMinutes,
               ),
             },
           });
         }, 3000);
       } catch (error) {
-        const parsedError = parseRequestError(error);
-        toast.error(parsedError.message);
+        if (isAxiosError(error)) {
+          toast.error(
+            error.response?.data.error.message ?? "Erro ao agendar horário",
+          );
+        }
+        console.error(error);
       }
     },
-    [selectedService, business, datesAvailable.scheduleId]
+    [selectedService, business, datesAvailable.scheduleId],
   );
 
   if (loading) {
@@ -106,7 +110,7 @@ const LayoutOne = ({ datesAvailable }: Props): JSX.Element => {
 
   const isAvailable = () => {
     const times = datesAvailable.slots.find(
-      (slot) => slot.date === format(new Date(), "yyyy-MM-dd")
+      (slot) => slot.date === format(new Date(), "yyyy-MM-dd"),
     )?.times;
 
     return times?.some((time) => {
