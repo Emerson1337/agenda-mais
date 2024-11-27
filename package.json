@@ -11,6 +11,7 @@
     "testBE:staged": "cd ./backend && yarn test --findRelatedTests",
     "test:frontend": "cd ./frontend && yarn test",
     "lint:frontend": "cd ./frontend && yarn lint:fix",
+    "prettier:frontend": "cd ./frontend && yarn prettier",
     "prepare": "husky install",
     "lint-staged": "lint-staged",
     "start-app": "concurrently \"cd ./backend && yarn start:dev\" \"cd ./frontend && yarn dev\""

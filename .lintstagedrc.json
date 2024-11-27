@@ -4,5 +4,7 @@
     "yarn testBE:staged"
   ],
   "./frontend/**/*.ts": [
+    "yarn lint:frontend",
+    "yarn prettier:frontend"
   ]
 }
