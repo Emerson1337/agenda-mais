@@ -1,4 +1,3 @@
-import { ResetIcon } from "@radix-ui/react-icons";
 import { Label } from "@radix-ui/react-label";
 import { CheckIcon } from "lucide-react";
 import { useTheme } from "next-themes";
@@ -60,7 +59,7 @@ const ThemeCustomizer = ({ onChange }: Props) => {
                   }}
                   className={cn(
                     "justify-start",
-                    isActive && "border border-primary"
+                    isActive && "border border-primary",
                   )}
                   style={
                     {
@@ -72,7 +71,7 @@ const ThemeCustomizer = ({ onChange }: Props) => {
                 >
                   <span
                     className={cn(
-                      "mr-1 flex h-5 w-5 shrink-0 -translate-x-1 items-center justify-center rounded-full bg-[--theme-primary]"
+                      "mr-1 flex h-5 w-5 shrink-0 -translate-x-1 items-center justify-center rounded-full bg-[--theme-primary]",
                     )}
                   >
                     {isActive && <CheckIcon className="h-4 w-4 text-white" />}

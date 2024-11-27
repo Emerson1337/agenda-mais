@@ -15,11 +15,11 @@ export const useResetPasswordQuery = () => {
     mutationFn: async (data: IResetPasswordRequest) => {
       const response = await API.post(
         apiUrls.internal.auth.resetPassword(),
-        data
+        data,
       );
       return response.data.body;
     },
-    onSuccess(_) {
+    onSuccess() {
       queryClient.setQueryData<ResetPassword>(["resetPassword"], (data) => {
         return data;
       });
@@ -34,11 +34,11 @@ export const useResetLinkQuery = () => {
     mutationFn: async (data: IResetLinkRequest) => {
       const response = await API.post(
         apiUrls.internal.auth.forgotPassword(),
-        data
+        data,
       );
       return response.data.body;
     },
-    onSuccess(_) {
+    onSuccess() {
       queryClient.setQueryData<ResetPassword>(["resetPassword"], (data) => {
         return data;
       });

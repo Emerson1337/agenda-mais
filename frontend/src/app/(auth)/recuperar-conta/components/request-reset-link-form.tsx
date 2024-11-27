@@ -18,7 +18,7 @@ import { toast } from "react-toastify";
 
 interface ResetLinkFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
-export function ResetLinkForm({ className, ...props }: ResetLinkFormProps) {
+export function ResetLinkForm({}: ResetLinkFormProps) {
   const { mutateAsync } = useResetLinkMutation();
   const router = useRouter();
 

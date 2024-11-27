@@ -28,8 +28,8 @@ import { AppointmentData } from "@/shared/types/appointment";
 import { WhatsappService } from "@/shared/services/whatsapp.service";
 import { useAppointmentMutation } from "@/app/(private)/agendamentos/hooks/useAppointmentMutation";
 import { toast } from "react-toastify";
-import { AxiosError } from "axios";
 import { useBusinessContext } from "@/app/(private)/utils/context/BusinessDataContext";
+import { isAxiosResponse } from "@/shared/utils/errorUtils";
 
 const ONE_SECOND = 1000;
 
@@ -62,10 +62,12 @@ export default function AppointmentsList() {
           phone: appointment.phone,
         });
       }, ONE_SECOND);
-    } catch (error: AxiosError | any) {
-      toast.error(
-        error?.response?.data?.message || "Erro ao cancelar agendamento"
-      );
+    } catch (error) {
+      if (isAxiosResponse(error)) {
+        toast.error(
+          error?.data?.body.message || "Erro ao cancelar agendamento",
+        );
+      }
     }
   };
 
@@ -187,7 +189,7 @@ export default function AppointmentsList() {
             <div className="mb-4">
               <span className="font-semibold">Valor:</span>{" "}
               {numberUtils.convertToMonetaryBRL(
-                appointmentFocused.service.price
+                appointmentFocused.service.price,
               )}
             </div>
             <div className="mb-4">

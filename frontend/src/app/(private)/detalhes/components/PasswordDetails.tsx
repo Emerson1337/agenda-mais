@@ -26,7 +26,6 @@ export default function PasswordDetails() {
   const {
     register,
     handleSubmit,
-    setError,
     formState: { errors, isLoading, isSubmitting },
   } = useForm<IChangePasswordRequest>({
     resolver: zodResolver(ChangePasswordSchema),

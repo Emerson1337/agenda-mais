@@ -29,7 +29,7 @@ export const useUpdateManagerQuery = () => {
     mutationFn: (data: IRequestUpdateManager) => {
       return API.put(apiUrls.internal.me.put(), data);
     },
-    onSuccess(_) {
+    onSuccess() {
       queryClient.setQueryData<MeType>(["me"], (data) => {
         return data;
       });
@@ -44,7 +44,7 @@ export const useUpdatePhotoAndThemeQuery = () => {
     mutationFn: (formData: FormData) => {
       return API.patch(apiUrls.internal.me.patch(), formData);
     },
-    onSuccess(_) {
+    onSuccess() {
       queryClient.setQueryData<MeType>(["me"], (data) => {
         return data;
       });

@@ -12,7 +12,7 @@ export const useSignUpQuery = () => {
     mutationFn: async (data: ISignUpRequest) => {
       return await API.post(apiUrls.internal.auth.signUp(), data);
     },
-    onSuccess(_) {
+    onSuccess() {
       queryClient.setQueryData<LoginData>(["auth"], (data) => {
         return data;
       });

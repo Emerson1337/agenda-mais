@@ -17,14 +17,14 @@ import { useSearchParams } from "next/navigation";
 import { ReloadIcon } from "@radix-ui/react-icons";
 import { toast } from "react-toastify";
 import { cancelAppointment } from "@/actions/cancelAppointment";
-import { parseRequestError } from "@/shared/utils/errorUtils";
+import { isAxiosError } from "axios";
 
 interface Props {
   username: string;
 }
 
 const CancelAppointmentForm = ({ username }: Props): JSX.Element => {
-  const { clientPhone, clientName } = useClientInfo();
+  const { clientPhone } = useClientInfo();
   const [code, setCode] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const searchParams = useSearchParams();
@@ -49,15 +49,17 @@ const CancelAppointmentForm = ({ username }: Props): JSX.Element => {
       toast.success(response.message);
       setIsLoading(false);
     } catch (error) {
-      console.error("Error cancelling appointment", error);
-      const parsedError = parseRequestError(error);
-      toast.error(parsedError.message);
-      setIsLoading(false);
+      console.error("Erro ao cancelar agendamento.", error);
+      if (isAxiosError(error)) {
+        return toast.error(error.response?.data.message);
+      }
+
+      toast.error("Erro ao cancelar agendamento.");
     }
   };
 
   const handleInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void = (
-    e
+    e,
   ) => {
     const inputValue = e.target.value.toUpperCase();
     const regex = /^[A-Z0-9]*$/;

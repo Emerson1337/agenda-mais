@@ -14,15 +14,15 @@ import { PhoneInput } from "@/components/ui/phone-input";
 import { Button } from "@/components/ui/button";
 import { IRequestUpdateManager } from "../api/manager.api";
 import { toast } from "react-toastify";
-import { AxiosError } from "axios";
 import { useManagerMutation } from "../hooks/useManagerMutation";
 import { useForm } from "react-hook-form";
 import { useState, useEffect } from "react";
 import { useGetManager } from "@/app/(private)/dashboard/hooks/useGetManager";
 import { stringUtils } from "@/shared/utils/stringUtils";
+import { isAxiosResponse } from "../../../../shared/utils/errorUtils";
 
 export default function AccountDetails() {
-  const { isFetching, data, error } = useGetManager();
+  const { data } = useGetManager();
   const { mutateAsync } = useManagerMutation();
 
   const {
@@ -61,10 +61,10 @@ export default function AccountDetails() {
       };
       await mutateAsync(updatedData);
       toast.success("Dados atualizados com sucesso!");
-    } catch (error: AxiosError | any) {
-      toast.error(
-        error?.response?.data?.message || "Erro ao salvar alterações"
-      );
+    } catch (error) {
+      if (isAxiosResponse(error)) {
+        toast.error(error?.data?.body.message || "Erro ao salvar alterações");
+      }
     }
   };
 

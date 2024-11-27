@@ -21,15 +21,15 @@ import {
   useManagerProfileMutation,
 } from "@/app/(private)/detalhes/hooks/useManagerMutation";
 import { toast } from "react-toastify";
-import { AxiosError } from "axios";
 import { ReloadIcon } from "@radix-ui/react-icons";
 import { User2 } from "lucide-react";
+import { isAxiosResponse } from "@/shared/utils/errorUtils";
 
 export default function ProfileDetails() {
   const [profileImage, setProfileImage] = useState<ImageListType>([]);
   const [newPalette, setNewPalette] = useState<string>();
   const [croppedProfileImage, setCroppedProfileImage] = useState<string | null>(
-    null
+    null,
   );
   const [dialogOpen, setDialogOpen] = useState(false);
   const { data } = useGetManager();
@@ -69,10 +69,10 @@ export default function ProfileDetails() {
       setTimeout(() => {
         location.reload();
       }, 3000);
-    } catch (error: AxiosError | any) {
-      toast.error(
-        error?.response?.data?.message || "Erro ao salvar alterações"
-      );
+    } catch (error) {
+      if (isAxiosResponse(error)) {
+        toast.error(error?.data?.body.message || "Erro ao salvar alterações");
+      }
     }
   };
 

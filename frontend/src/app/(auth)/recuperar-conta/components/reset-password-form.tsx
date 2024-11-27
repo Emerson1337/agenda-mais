@@ -21,11 +21,7 @@ interface ResetPasswordFormProps extends React.HTMLAttributes<HTMLDivElement> {
   token: string;
 }
 
-export function ResetPasswordForm({
-  className,
-  token,
-  ...props
-}: ResetPasswordFormProps) {
+export function ResetPasswordForm({ token }: ResetPasswordFormProps) {
   const { mutateAsync } = useResetPasswordMutation();
   const router = useRouter();
 
@@ -42,7 +38,7 @@ export function ResetPasswordForm({
     try {
       await mutateAsync(resetForm);
       toast.success(
-        "Senha alterada com sucesso. Você será redirecionado para o login."
+        "Senha alterada com sucesso. Você será redirecionado para o login.",
       );
       router.push("/login");
     } catch (error: any) {

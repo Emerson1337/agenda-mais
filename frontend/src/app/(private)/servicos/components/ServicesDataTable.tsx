@@ -30,7 +30,7 @@ import { ServiceTableHeader } from "./ServiceTableHeader";
 import { ServiceTableBody } from "./ServiceTableBody";
 import { numberUtils } from "@/shared/utils/numberUtils";
 import { dateUtils } from "@/shared/utils/dateUtils";
-import { AxiosError } from "axios";
+import { isAxiosResponse } from "@/shared/utils/errorUtils";
 
 export function ServicesDataTable() {
   const { data } = useService();
@@ -42,7 +42,7 @@ export function ServicesDataTable() {
   const [rowSelection, setRowSelection] = React.useState({});
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
-    []
+    [],
   );
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({});
@@ -96,7 +96,7 @@ export function ServicesDataTable() {
         <div className="font-medium">
           {row.getValue<ServiceData["price"]>("price") !== undefined &&
             numberUtils.convertToMonetaryBRL(
-              row.getValue<ServiceData["price"]>("price")
+              row.getValue<ServiceData["price"]>("price"),
             )}
         </div>
       ),
@@ -141,8 +141,8 @@ export function ServicesDataTable() {
         <div className="font-medium">
           {dateUtils.convertToTime(
             row.getValue<ServiceData["timeDurationInMinutes"]>(
-              "timeDurationInMinutes"
-            )
+              "timeDurationInMinutes",
+            ),
           )}
         </div>
       ),
@@ -217,14 +217,14 @@ export function ServicesDataTable() {
       if (modalType === "delete") {
         if (!serviceFocused?.id)
           return toast.error(
-            "Erro ao deletar serviço! Verifique os dados e tente novamente"
+            "Erro ao deletar serviço! Verifique os dados e tente novamente",
           );
         await deleteMutation.mutateAsync({ id: serviceFocused.id });
         toast.success("Serviço removido com sucesso!");
       } else if (modalType === "edit") {
         if (!serviceFocused?.id)
           return toast.error(
-            "Erro ao editar serviço! Verifique os dados e tente novamente"
+            "Erro ao editar serviço! Verifique os dados e tente novamente",
           );
         await updateMutation.mutateAsync({
           id: serviceFocused.id,
@@ -234,16 +234,16 @@ export function ServicesDataTable() {
       } else {
         if (!serviceFocused)
           return toast.error(
-            "Erro ao criar serviço! Verifique os dados e tente novamente"
+            "Erro ao criar serviço! Verifique os dados e tente novamente",
           );
         await createMutation.mutateAsync(serviceFocused);
         toast.success("Serviço criado com sucesso!");
       }
       setOpenServiceModal(false);
-    } catch (error: AxiosError | any) {
-      error?.response?.data?.body?.errors.map((error: any) => {
-        toast.error(error?.message || "Erro ao salvar alterações");
-      });
+    } catch (error) {
+      if (isAxiosResponse(error)) {
+        toast.error(error?.data.body.message || "Erro ao salvar alterações");
+      }
     }
   }
 
