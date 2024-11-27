@@ -22,23 +22,15 @@ import {
   VisibilityState,
 } from "@tanstack/react-table";
 import { useService } from "../hooks/useService";
-import { useServiceMutation } from "../hooks/useServiceMutation";
 import { ServiceData } from "@/shared/types/service";
-import { toast } from "react-toastify";
 import { ServiceModal } from "./ServiceModal";
 import { ServiceTableHeader } from "./ServiceTableHeader";
 import { ServiceTableBody } from "./ServiceTableBody";
 import { numberUtils } from "@/shared/utils/numberUtils";
 import { dateUtils } from "@/shared/utils/dateUtils";
-import { isAxiosResponse } from "@/shared/utils/errorUtils";
 
 export function ServicesDataTable() {
   const { data } = useService();
-  const {
-    delete: deleteMutation,
-    update: updateMutation,
-    create: createMutation,
-  } = useServiceMutation();
   const [rowSelection, setRowSelection] = React.useState({});
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
@@ -212,41 +204,6 @@ export function ServicesDataTable() {
     setOpenServiceModal(true);
   }
 
-  async function handleConfirm() {
-    try {
-      if (modalType === "delete") {
-        if (!serviceFocused?.id)
-          return toast.error(
-            "Erro ao deletar serviço! Verifique os dados e tente novamente",
-          );
-        await deleteMutation.mutateAsync({ id: serviceFocused.id });
-        toast.success("Serviço removido com sucesso!");
-      } else if (modalType === "edit") {
-        if (!serviceFocused?.id)
-          return toast.error(
-            "Erro ao editar serviço! Verifique os dados e tente novamente",
-          );
-        await updateMutation.mutateAsync({
-          id: serviceFocused.id,
-          updatedData: serviceFocused,
-        });
-        toast.success("Serviço editado com sucesso!");
-      } else {
-        if (!serviceFocused)
-          return toast.error(
-            "Erro ao criar serviço! Verifique os dados e tente novamente",
-          );
-        await createMutation.mutateAsync(serviceFocused);
-        toast.success("Serviço criado com sucesso!");
-      }
-      setOpenServiceModal(false);
-    } catch (error) {
-      if (isAxiosResponse(error)) {
-        toast.error(error?.data.body.message || "Erro ao salvar alterações");
-      }
-    }
-  }
-
   return (
     <>
       <Card>
@@ -299,12 +256,14 @@ export function ServicesDataTable() {
         </CardContent>
       </Card>
       <ServiceModal
+        key={modalType}
         open={openServiceModal}
-        onConfirm={handleConfirm}
-        onCancel={() => setOpenServiceModal(false)}
+        onClose={() => {
+          setOpenServiceModal(false);
+          setServiceFocused(undefined);
+        }}
         modalType={modalType}
         serviceFocused={serviceFocused}
-        setServiceFocused={setServiceFocused}
       />
     </>
   );

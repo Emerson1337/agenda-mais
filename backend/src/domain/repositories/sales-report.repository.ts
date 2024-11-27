@@ -34,4 +34,5 @@ export abstract class SalesReportRepository {
     limit?: number;
     offset?: number;
   }): Promise<SalesReport[]>;
+  abstract getSaleReportByCode(code: string): Promise<SalesReport | null>;
 }

@@ -1,12 +1,10 @@
 import * as z from "zod";
 
 export const ServiceDataSchema = z.object({
-  id: z.string(),
-  name: z.string(),
-  price: z.number(),
-  description: z.string(),
-  timeDurationInMinutes: z.number(),
-  createdAt: z.coerce.date(),
-  updatedAt: z.coerce.date(),
+  name: z.string().min(1, "Campo obrigatório"),
+  price: z.number({ required_error: "Campo obrigatório" }),
+  description: z.string().min(1, "Campo obrigatório"),
+  timeDurationInMinutes: z.number({ required_error: "Campo obrigatório" }),
 });
-export type ServiceData = z.infer<typeof ServiceDataSchema>;
+
+export type ServiceData = z.infer<typeof ServiceDataSchema> & { id: string };

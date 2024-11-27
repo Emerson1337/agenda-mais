@@ -143,6 +143,7 @@ export default function AppointmentsList() {
         </Table>
       </CardContent>
       <Modal
+        description="Confira as informações do agendamento."
         open={open}
         confirm={() => {
           setOpen(false);
@@ -159,7 +160,9 @@ export default function AppointmentsList() {
           <div className="p-4">
             <div className="mb-4">
               <span className="font-semibold">Cliente:</span>{" "}
-              {appointmentFocused.clientName}
+              <span className="text-muted-foreground">
+                {appointmentFocused.clientName}
+              </span>
             </div>
             <div className="mb-4 flex items-center">
               <span className="font-semibold">Phone:</span>
@@ -170,31 +173,43 @@ export default function AppointmentsList() {
                 }
               >
                 <MobileIcon />
-                {stringUtils.addPhoneMask(appointmentFocused.phone)}
+                <span className="text-muted-foreground">
+                  {stringUtils.addPhoneMask(appointmentFocused.phone)}
+                </span>
               </Button>
             </div>
             <div className="mb-4">
               <span className="font-semibold">Serviço:</span>{" "}
-              {appointmentFocused.service.name}
+              <span className="text-muted-foreground">
+                {appointmentFocused.service.name}
+              </span>
             </div>
             <div className="mb-4">
               <span className="font-semibold">Código:</span>{" "}
-              {appointmentFocused.code}
+              <span className="text-muted-foreground">
+                {appointmentFocused.code}
+              </span>
             </div>
             <div className="mb-4">
               <span className="font-semibold">Data:</span>{" "}
-              {format(appointmentFocused.date, "dd/MM/yyyy")} às{" "}
-              {appointmentFocused.time}
+              <span className="text-muted-foreground">
+                {format(appointmentFocused.date, "dd/MM/yyyy")} às{" "}
+                {appointmentFocused.time}
+              </span>
             </div>
             <div className="mb-4">
               <span className="font-semibold">Valor:</span>{" "}
-              {numberUtils.convertToMonetaryBRL(
-                appointmentFocused.service.price,
-              )}
+              <span className="text-muted-foreground">
+                {numberUtils.convertToMonetaryBRL(
+                  appointmentFocused.service.price,
+                )}
+              </span>
             </div>
             <div className="mb-4">
               <span className="font-semibold">Observações: </span>
-              {appointmentFocused.notes}
+              <span className="text-muted-foreground">
+                {appointmentFocused.notes}
+              </span>
             </div>
           </div>
         )}

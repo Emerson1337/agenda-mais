@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button";
 import { MobileIcon } from "@radix-ui/react-icons";
 import { stringUtils } from "@/shared/utils/stringUtils";
 import { numberUtils } from "@/shared/utils/numberUtils";
-import { isAxiosResponse } from "@/shared/utils/errorUtils";
+import { isAxiosError } from "axios";
 
 const ONE_SECOND = 1000;
 
@@ -35,7 +35,9 @@ export function AppointmentModal({
         appointmentId: appointment._id,
       });
 
-      toast.success(response.data.body.message);
+      toast.success(
+        response.data.body.message ?? "Agendamento cancelado com sucesso!",
+      );
       onDismiss();
       setTimeout(() => {
         WhatsappService.warnCancelAppointment({
@@ -47,9 +49,9 @@ export function AppointmentModal({
         });
       }, ONE_SECOND);
     } catch (error) {
-      if (isAxiosResponse(error)) {
+      if (isAxiosError(error)) {
         toast.error(
-          error?.data?.body.message || "Erro ao cancelar agendamento",
+          error?.response?.data.body.message || "Erro ao cancelar agendamento",
         );
       }
     }
@@ -58,11 +60,12 @@ export function AppointmentModal({
   return (
     <Modal
       open={open}
+      description="Confira as informações do agendamento."
       confirm={() => {
         appointmentFocused && handleCancelAppointment(appointmentFocused);
       }}
       dismiss={onDismiss}
-      confirmStyle="bg-destructive"
+      confirmStyle="bg-destructive text-destructive-foreground hover:bg-destructive/70"
       title={"Detalhes do agendamento"}
       cancelButton="Fechar"
       confirmButton="Cancelar agendamento"
@@ -71,7 +74,9 @@ export function AppointmentModal({
         <div className="p-4">
           <div className="mb-4">
             <span className="font-semibold">Cliente:</span>{" "}
-            {appointmentFocused.clientName}
+            <span className="text-muted-foreground">
+              {appointmentFocused.clientName}
+            </span>
           </div>
           <div className="mb-4 flex items-center">
             <span className="font-semibold">Phone:</span>
@@ -83,33 +88,46 @@ export function AppointmentModal({
               }
             >
               <MobileIcon />
-              {stringUtils.addPhoneMask(
-                appointmentFocused.phone,
-              )} (Enviar mensagem)
+              <span className="text-muted-foreground">
+                {stringUtils.addPhoneMask(appointmentFocused.phone)} (Enviar
+                mensagem)
+              </span>
             </Button>
           </div>
           <div className="mb-4">
             <span className="font-semibold">Serviço:</span>{" "}
-            {appointmentFocused.service.name}
+            <span className="text-muted-foreground">
+              {appointmentFocused.service.name}
+            </span>
           </div>
           <div className="mb-4">
             <span className="font-semibold">Código:</span>{" "}
-            {appointmentFocused.code}
+            <span className="text-muted-foreground">
+              {appointmentFocused.code}
+            </span>
           </div>
           <div className="mb-4">
             <span className="font-semibold">Data:</span>{" "}
-            {format(appointmentFocused.date, "dd/MM/yyyy")} às{" "}
-            {appointmentFocused.time}
+            <span className="text-muted-foreground">
+              {format(appointmentFocused.date, "dd/MM/yyyy")} às{" "}
+              {appointmentFocused.time}
+            </span>
           </div>
           <div className="mb-4">
             <span className="font-semibold">Valor:</span>{" "}
-            {numberUtils.convertToMonetaryBRL(appointmentFocused.service.price)}
+            <span className="text-muted-foreground">
+              {numberUtils.convertToMonetaryBRL(
+                appointmentFocused.service.price,
+              )}
+            </span>
           </div>
           <div className="mb-4">
             <span className="font-semibold">Observações: </span>
-            {appointmentFocused.notes.length
-              ? appointmentFocused.notes
-              : "Sem observações."}
+            <span className="text-muted-foreground">
+              {appointmentFocused.notes.length
+                ? appointmentFocused.notes
+                : "Sem observações."}
+            </span>
           </div>
         </div>
       )}

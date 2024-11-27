@@ -14,7 +14,7 @@ type ErrorResponse<T> = {
 
 const applyErrorsToForm = <T extends FieldValues>(
   setError: UseFormSetError<T>,
-  errorResponse: ErrorResponse<T>
+  errorResponse: ErrorResponse<T>,
 ) => {
   if (!errorResponse?.body?.errors) return;
 
@@ -22,7 +22,7 @@ const applyErrorsToForm = <T extends FieldValues>(
     setError(error.name, {
       type: error.stack,
       message: error.message,
-    })
+    }),
   );
 };
 

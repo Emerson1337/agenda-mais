@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { ManagerServices } from '@/domain/entities/manager-services.entity';
 import { ManagerServicesRepository } from '@/domain/repositories/manager-services.repository';
-import { InvalidParamError } from '@/presentation/errors';
+import { InvalidParamError, MultipleErrors } from '@/presentation/errors';
 
 import { CreateUpdateManagerServiceDto } from './dtos/create-update-manager-service.dto';
 import { I18nService, I18nContext } from 'nestjs-i18n';
@@ -23,13 +23,16 @@ export class ManagerServicesService {
       managerId,
     );
 
-    if (managerWithSameName)
-      throw new InvalidParamError(
-        'name',
-        this.i18n.t('translations.INVALID_FIELD.ALREADY_EXISTS.NAME', {
-          lang: I18nContext.current().lang,
-        }),
-      );
+    if (managerWithSameName) {
+      throw new MultipleErrors([
+        new InvalidParamError(
+          'name',
+          this.i18n.t('translations.INVALID_FIELD.ALREADY_EXISTS.NAME', {
+            lang: I18nContext.current().lang,
+          }),
+        ),
+      ]);
+    }
 
     const managerServiceToSave = { ...managerService, managerId };
 
@@ -47,13 +50,16 @@ export class ManagerServicesService {
         managerId,
       );
 
-    if (managerWithSameName)
-      throw new InvalidParamError(
-        'name',
-        this.i18n.t('translations.INVALID_FIELD.ALREADY_EXISTS.NAME', {
-          lang: I18nContext.current().lang,
-        }),
-      );
+    if (managerWithSameName) {
+      throw new MultipleErrors([
+        new InvalidParamError(
+          'name',
+          this.i18n.t('translations.INVALID_FIELD.ALREADY_EXISTS.NAME', {
+            lang: I18nContext.current().lang,
+          }),
+        ),
+      ]);
+    }
 
     const managerServiceToSave = { ...managerService, managerId };
 

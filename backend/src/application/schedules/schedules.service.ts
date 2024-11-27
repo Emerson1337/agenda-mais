@@ -7,17 +7,17 @@ import { DeleteScheduleDto } from './dtos/delete-schedule.dto';
 import { I18nContext, I18nService } from 'nestjs-i18n';
 import { Appointments } from '@/domain/entities/appointment.entity';
 import { IDelete } from './dtos/types';
-import { SalesReportService } from '@/application/sales-report/sales-report.service';
 import { ManagerServicesRepository } from '@/domain/repositories/manager-services.repository';
 import { AppointmentStatus } from '@/domain/entities/enums/appointment-status.enum';
+import { SalesReportRepository } from '@/domain/repositories/sales-report.repository';
 
 @Injectable()
 export class SchedulesService {
   constructor(
     private readonly schedulesRepository: SchedulesRepository,
     private readonly managerServicesRepository: ManagerServicesRepository,
-    private readonly salesReportService: SalesReportService,
     private readonly appointmentsRepository: AppointmentsRepository,
+    private readonly salesReportRepository: SalesReportRepository,
     private readonly i18n: I18nService,
   ) {}
 
@@ -70,22 +70,21 @@ export class SchedulesService {
       managerId: userId,
     });
 
-    const service = await this.managerServicesRepository.findById({
-      managerId: userId,
-      managerServiceId: appointmentDeleted.serviceId,
-    });
+    const saleReport = await this.salesReportRepository.getSaleReportByCode(
+      appointmentDeleted.code,
+    );
 
-    await this.salesReportService.update({
+    await this.salesReportRepository.update({
       managerId: userId,
       phone: appointmentDeleted.phone,
-      price: service?.price,
-      serviceName: service?.name,
-      clientName: appointmentDeleted.clientName,
+      price: saleReport?.price,
       code: appointmentDeleted.code,
       notes: appointmentDeleted.notes,
       date: appointmentDeleted.date,
       time: appointmentDeleted.time,
       status: AppointmentStatus.CANCELLED,
+      clientName: saleReport.clientName,
+      serviceName: saleReport.serviceName,
     });
 
     return appointmentDeleted;

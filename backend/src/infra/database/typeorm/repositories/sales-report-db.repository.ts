@@ -16,6 +16,12 @@ export class TypeOrmSalesReportRepository implements SalesReportRepository {
   constructor(private typeormService: TypeormService) {
     this.repository = typeormService.getMongoRepository(SalesReportMDB);
   }
+  async getSaleReportByCode(code: string): Promise<SalesReport | null> {
+    return await this.repository.findOne({
+      where: { code },
+    });
+  }
+
   async getReportsByPhoneAndManagerId({
     phone,
     managerId,
@@ -138,10 +144,7 @@ export class TypeOrmSalesReportRepository implements SalesReportRepository {
       {
         managerId: report.managerId,
         time: report.time,
-        serviceName: report.serviceName,
-        notes: report.notes,
-        date: report.date,
-        phone: report.phone,
+        code: report.code,
       },
       { $set: report },
     ));
