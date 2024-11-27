@@ -17,7 +17,7 @@ import { useSearchParams } from "next/navigation";
 import { ReloadIcon } from "@radix-ui/react-icons";
 import { toast } from "react-toastify";
 import { cancelAppointment } from "@/actions/cancelAppointment";
-import { parseRequestError } from "@/shared/utils/errorParser";
+import { parseRequestError } from "@/shared/utils/errorUtils";
 
 interface Props {
   username: string;

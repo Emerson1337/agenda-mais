@@ -13,7 +13,7 @@ import ChooseService from "@/public/b/[username]/(onboarded)/agendar/components/
 import { BookAppointmentData } from "@/shared/types/appointment";
 import { bookAppointment } from "@/actions/bookAppointment";
 import { toast } from "react-toastify";
-import { parseRequestError } from "@/shared/utils/errorParser";
+import { parseRequestError } from "@/shared/utils/errorUtils";
 import { WhatsappService } from "@/shared/services/whatsapp.service";
 import { format, parseISO } from "date-fns";
 import { numberUtils } from "@/shared/utils/numberUtils";
