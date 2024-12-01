@@ -6,7 +6,7 @@ interface ImageUploadingButtonProps {
   value: ImageListType;
   onChange: (imageList: ImageListType, addUpdateIndex?: number[]) => void;
   croppedImage?: string | null;
-  [key: string]: any;
+  [key: string]: unknown;
 }
 
 const ImageUploadingHoverButton: React.FC<ImageUploadingButtonProps> = ({
@@ -23,7 +23,7 @@ const ImageUploadingHoverButton: React.FC<ImageUploadingButtonProps> = ({
             "flex cursor-pointer items-center transition-opacity duration-100 justify-center mt-4 w-[150px] h-[150px] bg-secondary rounded-full absolute",
             {
               "opacity-0 hover:opacity-60": croppedImage,
-            }
+            },
           )}
         >
           <button

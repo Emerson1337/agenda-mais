@@ -25,6 +25,13 @@ module.exports = [
           ignoreRestSiblings: false,
         },
       ],
+      "@typescript-eslint/no-explicit-any": [
+        "error",
+        {
+          fixToUnknown: false, // Suggest 'unknown' instead of 'any'
+          ignoreRestArgs: false, // Disallow `any` even in rest parameters
+        },
+      ],
       "todo-plz/ticket-ref": [
         "warn",
         {

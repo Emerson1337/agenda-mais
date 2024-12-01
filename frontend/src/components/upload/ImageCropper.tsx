@@ -15,7 +15,7 @@ interface ImageCropperProps {
   onComplete: (croppedImage: string | void) => void;
   containerStyle?: React.CSSProperties;
   onClose?: () => void;
-  [key: string]: any;
+  [key: string]: unknown;
 }
 
 const ImageCropper: React.FC<ImageCropperProps> = ({
@@ -55,7 +55,7 @@ const ImageCropper: React.FC<ImageCropperProps> = ({
           onClick={async () => {
             if (croppedAreaPixels) {
               onComplete(
-                await cropImage(image, croppedAreaPixels, console.log)
+                await cropImage(image, croppedAreaPixels, console.log),
               );
             } else {
               console.error("Cropped area is not defined");

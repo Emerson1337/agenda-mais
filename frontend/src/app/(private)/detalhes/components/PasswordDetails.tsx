@@ -19,6 +19,7 @@ import {
 } from "@/app/(private)/detalhes/schemas/change-password.schema";
 import { ErrorLabel } from "@/components/ui/error-label";
 import { toast } from "react-toastify";
+import { isAxiosError } from "axios";
 
 export default function PasswordDetails() {
   const { mutateAsync } = useChangePasswordMutation();
@@ -35,8 +36,10 @@ export default function PasswordDetails() {
     try {
       const response = await mutateAsync(changePassword);
       toast.success(response.data.body.message);
-    } catch (error: any) {
-      toast.error(error?.response.data.body.error.message);
+    } catch (error) {
+      if (isAxiosError(error) && error.response) {
+        toast.error(error.response.data.body.error.message);
+      }
     }
   }
 
