@@ -42,7 +42,7 @@ export function ResetPasswordForm({ token }: ResetPasswordFormProps) {
         "Senha alterada com sucesso. Você será redirecionado para o login.",
       );
       router.push("/login");
-    } catch (error: any) {
+    } catch (error) {
       if (isAxiosResponse(error)) {
         return applyErrorsToForm(setError, error.data);
       }
