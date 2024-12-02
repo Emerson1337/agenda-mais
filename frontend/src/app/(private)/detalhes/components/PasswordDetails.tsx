@@ -22,10 +22,37 @@ export default function PasswordDetails() {
         </CardDescription>
       </CardHeader>
       <CardContent>
+<<<<<<< Updated upstream
         <div className="grid gap-6">
           <div className="grid gap-3">
             <Label htmlFor="name">Senha atual</Label>
             <Input id="password" type="password" className="w-full" />
+=======
+        <form onSubmit={handleSubmit(handleChangePassword)}>
+          <div className="grid gap-6">
+            <div className="grid gap-2">
+              <Label htmlFor="password">Senha Atual</Label>
+              <Input
+                id="password"
+                type="password"
+                placeholder="Digite sua senha atual"
+                required
+                {...register("password")}
+              />
+              <ErrorLabel>{errors.password?.message}</ErrorLabel>
+            </div>
+            <div className="grid gap-2">
+              <Label htmlFor="confirmPassword">Confirmar Nova Senha</Label>
+              <Input
+                id="confirmPassword"
+                type="password"
+                placeholder="Confirme sua nova senha"
+                required
+                {...register("newPassword")}
+              />
+              <ErrorLabel>{errors.newPassword?.message}</ErrorLabel>
+            </div>
+>>>>>>> Stashed changes
           </div>
           <div className="grid gap-3">
             <Label htmlFor="name">Nova senha</Label>

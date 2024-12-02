@@ -19,7 +19,7 @@ export interface AppointmentHistory {
   managerId: string;
   code: string;
   clientName: string;
-  date: Date;
+  date: string;
   time: string;
   status: AppointmentStatus;
 }
@@ -46,7 +46,7 @@ export const fetchPhoneHistory = async ({
           limit,
           offset,
         },
-      }
+      },
     )
   ).data.body;
 };

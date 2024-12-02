@@ -25,6 +25,71 @@ export function ServiceModal({
   onCancel,
   setServiceFocused,
 }: ServiceModalProps) {
+<<<<<<< Updated upstream
+=======
+  const {
+    register,
+    handleSubmit,
+    reset,
+    setValue,
+    getValues,
+    setError,
+    clearErrors,
+    formState: { errors, isLoading, isSubmitting },
+  } = useForm<ServiceData>({
+    defaultValues: serviceFocused,
+    resolver: zodResolver(ServiceDataSchema),
+  });
+
+  const {
+    delete: deleteMutation,
+    update: updateMutation,
+    create: createMutation,
+  } = useServiceMutation();
+
+  React.useEffect(() => {
+    reset(serviceFocused);
+  }, [serviceFocused, reset]);
+
+  async function handleConfirm(data: ServiceData) {
+    try {
+      if (modalType === "delete") {
+        if (!serviceFocused?.id)
+          return toast.error(
+            "Erro ao deletar serviço! Verifique os dados e tente novamente",
+          );
+        await deleteMutation.mutateAsync({ id: serviceFocused.id });
+        toast.success("Serviço removido com sucesso!");
+      } else if (modalType === "edit") {
+        if (!serviceFocused?.id)
+          return toast.error(
+            "Erro ao editar serviço! Verifique os dados e tente novamente",
+          );
+        await updateMutation.mutateAsync({
+          id: serviceFocused.id,
+          updatedData: data,
+        });
+        toast.success("Serviço editado com sucesso!");
+      } else {
+        if (!data)
+          return toast.error(
+            "Erro ao criar serviço! Verifique os dados e tente novamente",
+          );
+        await createMutation.mutateAsync(data);
+        toast.success("Serviço criado com sucesso!");
+      }
+
+      onClose();
+      clearErrors();
+    } catch (error) {
+      if (isAxiosError(error)) {
+        toast.error("Erro ao salvar alterações");
+        return applyErrorsToForm(setError, error.response?.data);
+      }
+    }
+  }
+
+>>>>>>> Stashed changes
   return (
     <Modal
       open={open}

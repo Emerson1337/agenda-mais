@@ -13,21 +13,29 @@ export default function TopClients({ clients }: { clients: TopTenClient[] }) {
         </CardTitle>
       </CardHeader>
       <CardContent className="grid gap-8">
-        {clients.map((client, index) => (
-          <div key={index} className="flex items-center gap-4 flex-wrap">
-            <div className="grid gap-1">
-              <p className="text-sm font-medium leading-none">{client.name}</p>
-              <p className="text-sm text-muted-foreground">
-                {stringUtils.addPhoneMask(client.phone)}
-              </p>
+        {clients.length ? (
+          clients.map((client, index) => (
+            <div key={index} className="flex items-center gap-4 flex-wrap">
+              <div className="grid gap-1">
+                <p className="text-sm font-medium leading-none">
+                  {client.name}
+                </p>
+                <p className="text-sm text-muted-foreground">
+                  {stringUtils.addPhoneMask(client.phone)}
+                </p>
+              </div>
+              <div className="ml-auto font-medium">
+                {client.totalValue
+                  ? numberUtils.convertToMonetaryBRL(Number(client.totalValue))
+                  : 0}
+              </div>
             </div>
-            <div className="ml-auto font-medium">
-              {client.totalValue
-                ? numberUtils.convertToMonetaryBRL(Number(client.totalValue))
-                : 0}
-            </div>
-          </div>
-        ))}
+          ))
+        ) : (
+          <p className="text-sm text-muted-foreground">
+            Sem histórico de clientes
+          </p>
+        )}
       </CardContent>
     </Card>
   );
