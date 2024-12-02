@@ -60,12 +60,12 @@ export function ServiceModal({
         await deleteMutation.mutateAsync({ id: serviceFocused.id });
         toast.success("Serviço removido com sucesso!");
       } else if (modalType === "edit") {
-        if (!data?.id)
+        if (!serviceFocused?.id)
           return toast.error(
             "Erro ao editar serviço! Verifique os dados e tente novamente",
           );
         await updateMutation.mutateAsync({
-          id: data.id,
+          id: serviceFocused.id,
           updatedData: data,
         });
         toast.success("Serviço editado com sucesso!");

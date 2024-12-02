@@ -10,7 +10,7 @@ export const ChangePasswordSchema = z.object({
     .regex(/\d/, "A nova senha deve conter pelo menos um número.")
     .regex(
       /[!@#$%^&*(),.?":{}|<>]/,
-      "A nova senha deve conter pelo menos um caractere especial."
+      "A nova senha deve conter pelo menos um caractere especial.",
     ),
 });
 export type IChangePasswordRequest = z.infer<typeof ChangePasswordSchema>;

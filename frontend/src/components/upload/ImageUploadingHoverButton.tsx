@@ -27,7 +27,7 @@ const ImageUploadingHoverButton: React.FC<ImageUploadingButtonProps> = ({
           )}
         >
           <button
-            className="text-secondary-foreground"
+            className="text-secondary-foreground w-full h-full flex items-center justify-center"
             onClick={
               value.length === 0 ? onImageUpload : () => onImageUpdate(0)
             }

@@ -10,7 +10,7 @@ import {
 import { flexRender, Table as ReactTable } from "@tanstack/react-table";
 
 interface AppointmentTableBodyProps {
-  table: ReactTable<any>;
+  table: ReactTable<unknown>;
 }
 
 export function AppointmentTableBody({ table }: AppointmentTableBodyProps) {

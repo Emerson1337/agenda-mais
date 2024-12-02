@@ -56,11 +56,11 @@ export default function PasswordDetails() {
         <form onSubmit={handleSubmit(handleChangePassword)}>
           <div className="grid gap-6">
             <div className="grid gap-2">
-              <Label htmlFor="password">Nova Senha</Label>
+              <Label htmlFor="password">Senha Atual</Label>
               <Input
                 id="password"
                 type="password"
-                placeholder="Digite sua nova senha"
+                placeholder="Digite sua senha atual"
                 required
                 {...register("password")}
               />
@@ -77,6 +77,10 @@ export default function PasswordDetails() {
               />
               <ErrorLabel>{errors.newPassword?.message}</ErrorLabel>
             </div>
+          </div>
+          <div className="grid gap-3">
+            <Label htmlFor="name">Nova senha</Label>
+            <Input id="new_password" type="password" className="w-full" />
           </div>
           <Button
             type="submit"

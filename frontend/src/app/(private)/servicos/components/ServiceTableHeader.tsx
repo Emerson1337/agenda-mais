@@ -11,7 +11,7 @@ import { ChevronDownIcon } from "@radix-ui/react-icons";
 import { Table } from "@tanstack/react-table";
 
 interface ServiceTableHeaderProps {
-  table: Table<any>;
+  table: Table<unknown>;
 }
 
 const columnLabels: Record<string, string> = {

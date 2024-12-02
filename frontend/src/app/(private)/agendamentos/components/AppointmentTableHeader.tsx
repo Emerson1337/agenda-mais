@@ -11,7 +11,7 @@ import { ChevronDownIcon } from "@radix-ui/react-icons";
 import { Table } from "@tanstack/react-table";
 
 interface ServiceTableHeaderProps {
-  table: Table<any>;
+  table: Table<unknown>;
 }
 
 const hiddenColumns = ["phone", "time"];
@@ -50,7 +50,7 @@ export function AppointmentTableHeader({ table }: ServiceTableHeaderProps) {
             .getAllColumns()
             .filter(
               (column) =>
-                column.getCanHide() && !hiddenColumns.includes(column.id)
+                column.getCanHide() && !hiddenColumns.includes(column.id),
             )
             .map((column) => {
               return (

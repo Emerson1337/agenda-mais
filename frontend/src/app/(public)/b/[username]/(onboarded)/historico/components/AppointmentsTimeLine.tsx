@@ -42,7 +42,7 @@ const AppointmentsTimeLine = ({ appointmentsHistory }: Props): JSX.Element => {
               <StatusBadge variant={appointment.status} />
             </h3>
             <time className="block mb-2 text-sm font-normal leading-none text-gray-400 dark:text-gray-500">
-              {format(parseISO(appointment.createdAt), "dd/MM/yyyy")} -{" "}
+              {format(parseISO(appointment.date), "dd/MM/yyyy")} -{" "}
               {appointment.time}
             </time>
             <p className="mb-1 text-base font-normal text-gray-500 dark:text-gray-400">
