@@ -17,7 +17,8 @@ import {
   IUpdateManagerAsAdmin,
   IUpdatePasswordById,
   IUpdatePicture,
-} from './dtos/types';
+} from '@/application/booking-managers/dtos/types';
+import { ChangePasswordDto } from '@/application/booking-managers/dtos/change-password-dto';
 
 @Injectable()
 export class BookingManagersService {
@@ -240,6 +241,39 @@ export class BookingManagersService {
     return (await this.bookingManagersRepository.getAll()).map((manager) =>
       removeAttributes<BookingManagers>(manager, ['password']),
     );
+  }
+
+  async changePassword(
+    id: string,
+    changePassword: ChangePasswordDto,
+  ): Promise<{ success: boolean; message: string }> {
+    const manager = await this.bookingManagersRepository.findById(id);
+
+    const validPassword = await this.encryptAdapter.validatePassword(
+      changePassword.password,
+      manager.password,
+    );
+
+    if (!validPassword) {
+      throw new InvalidParamError(
+        'password',
+        this.i18n.t('translations.MANAGERS.WRONG_PASSWORD', {
+          lang: I18nContext.current().lang,
+        }),
+      );
+    }
+
+    await this.bookingManagersRepository.updatePasswordById(
+      id,
+      await this.encryptAdapter.encryptPassword(changePassword.newPassword),
+    );
+
+    return {
+      success: true,
+      message: this.i18n.t('translations.MANAGERS.PASSWORD_UPDATED', {
+        lang: I18nContext.current().lang,
+      }),
+    };
   }
 
   async listManager(id: string): Promise<BookingManagers | Error> {

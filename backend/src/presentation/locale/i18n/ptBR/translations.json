@@ -39,5 +39,9 @@
   },
   "SCHEDULES": {
     "DELETED": "Agenda deletada com sucesso!"
+  },
+  "MANAGERS": {
+    "PASSWORD_UPDATED": "Senha alterada com sucesso!",
+    "WRONG_PASSWORD": "A senha não foi alterada. A senha atual está incorreta."
   }
 }

@@ -50,6 +50,7 @@ export const apiUrls = {
       get: (): string => `/api/dashboard/usuarios/me`,
       put: (): string => `/api/dashboard/usuarios`,
       patch: (): string => `/api/dashboard/usuarios/foto`,
+      changePassword: (): string => `/api/dashboard/usuarios/atualizar-senha`,
     },
     reports: {
       getTotalMetrics: (): string => `/api/dashboard/relatorios/total`,

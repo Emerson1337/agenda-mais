@@ -1,7 +1,6 @@
 "use client";
 
 import { MeType } from "@/shared/types/me";
-import { useRouter } from "next/navigation";
 import React, { createContext, FC, ReactNode, useContext } from "react";
 import { useGetManager } from "@/private/dashboard/hooks/useGetManager";
 import { cn } from "@/lib/utils";

@@ -16,16 +16,13 @@ import {
   ResetPasswordSchema,
 } from "@/app/(auth)/recuperar-conta/schemas/reset-password.schema";
 import { toast } from "react-toastify";
+import applyErrorsToForm, { isAxiosResponse } from "@/shared/utils/errorUtils";
 
 interface ResetPasswordFormProps extends React.HTMLAttributes<HTMLDivElement> {
   token: string;
 }
 
-export function ResetPasswordForm({
-  className,
-  token,
-  ...props
-}: ResetPasswordFormProps) {
+export function ResetPasswordForm({ token }: ResetPasswordFormProps) {
   const { mutateAsync } = useResetPasswordMutation();
   const router = useRouter();
 
@@ -42,18 +39,12 @@ export function ResetPasswordForm({
     try {
       await mutateAsync(resetForm);
       toast.success(
-        "Senha alterada com sucesso. Você será redirecionado para o login."
+        "Senha alterada com sucesso. Você será redirecionado para o login.",
       );
       router.push("/login");
-    } catch (error: any) {
-      if (error?.status === 400) {
-        setError("password", {
-          message: "Erro ao redefinir a senha. Verifique os dados informados.",
-        });
-      }
-
-      if (error?.status === 500) {
-        toast.error("Algo inesperado aconteceu. Tente novamente mais tarde.");
+    } catch (error) {
+      if (isAxiosResponse(error)) {
+        return applyErrorsToForm(setError, error.data);
       }
     }
   }

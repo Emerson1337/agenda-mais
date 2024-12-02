@@ -8,7 +8,6 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { flexRender, Table as ReactTable } from "@tanstack/react-table";
-import { Button } from "@/components/ui/button";
 
 interface ServiceTableBodyProps {
   table: ReactTable<any>;
@@ -27,7 +26,7 @@ export function ServiceTableBody({ table }: ServiceTableBodyProps) {
                     ? null
                     : flexRender(
                         header.column.columnDef.header,
-                        header.getContext()
+                        header.getContext(),
                       )}
                 </TableHead>
               ))}

@@ -4,40 +4,49 @@ import {
   AlertDialogAction,
   AlertDialogCancel,
   AlertDialogContent,
+  AlertDialogDescription,
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
 } from "./alert-dialog";
+import { ReloadIcon } from "@radix-ui/react-icons";
 
 export interface Props {
   open: boolean;
   children: React.ReactNode;
   dismiss?: () => void;
   title: string;
+  description: string;
   confirm?: () => void;
   cancelButton?: React.ReactNode;
   confirmButton?: React.ReactNode;
   cancelStyle?: string;
   confirmStyle?: string;
+  isLoading?: boolean;
 }
 
 export function Modal({
   children,
   title,
+  description,
   open,
   dismiss,
   confirm,
   cancelStyle,
   confirmStyle,
+  isLoading = false,
   cancelButton = <>Cancelar</>,
   confirmButton = <>Confirmar</>,
 }: Props) {
   return (
     <AlertDialog open={open}>
-      <AlertDialogContent className="p-4 px-1 sm:p-6">
+      <AlertDialogContent className="p-4 px-4 sm:p-6">
         <AlertDialogHeader>
           <AlertDialogTitle className="text-center">{title}</AlertDialogTitle>
         </AlertDialogHeader>
+        <AlertDialogDescription className="px-4 AlertDialogDescription">
+          {description}
+        </AlertDialogDescription>
         <>{children}</>
         <AlertDialogFooter>
           {dismiss && (
@@ -47,6 +56,9 @@ export function Modal({
           )}
           {confirm && (
             <AlertDialogAction className={confirmStyle} onClick={confirm}>
+              {isLoading && (
+                <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />
+              )}{" "}
               {confirmButton}
             </AlertDialogAction>
           )}

@@ -5,6 +5,7 @@ import type { NextRequest } from "next/server";
 import { cookies } from "next/headers";
 import { refreshToken } from "./actions/auth/refreshToken";
 import { verifyToken } from "./actions/auth/verifyToken";
+import { isAxiosError } from "axios";
 
 export async function middleware(request: NextRequest) {
   const cookieStore = cookies();
@@ -16,24 +17,27 @@ export async function middleware(request: NextRequest) {
   try {
     await verifyToken();
   } catch (error) {
-    try {
-      const { access_token, refresh_token } = await refreshToken();
-      const response = NextResponse.next();
-      response.cookies.set("authorization", access_token, {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
-        path: "/",
-      });
-      response.cookies.set("refreshToken", refresh_token, {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
-        path: "/",
-      });
-      return response;
-    } catch (error) {
-      return NextResponse.redirect(
-        new URL("/login", request.nextUrl.toString())
-      );
+    if (isAxiosError(error) && error.response?.status !== 401) {
+      try {
+        const { access_token, refresh_token } = await refreshToken();
+        const response = NextResponse.next();
+        response.cookies.set("authorization", access_token, {
+          httpOnly: true,
+          secure: process.env.NODE_ENV === "production",
+          path: "/",
+        });
+        response.cookies.set("refreshToken", refresh_token, {
+          httpOnly: true,
+          secure: process.env.NODE_ENV === "production",
+          path: "/",
+        });
+        return response;
+      } catch (error) {
+        console.error(error);
+        return NextResponse.redirect(
+          new URL("/login", request.nextUrl.toString()),
+        );
+      }
     }
   }
 

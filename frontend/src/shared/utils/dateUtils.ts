@@ -1,7 +1,5 @@
 import { startOfToday, subDays } from "date-fns";
 import { DateExceptions } from "@/app/(private)/agenda/schemas/schedule.schema";
-import { formatDuration, intervalToDuration } from "date-fns";
-import { ptBR } from "date-fns/locale";
 
 export namespace dateUtils {
   export const getTimes = (start: number, end: number): string[] => {

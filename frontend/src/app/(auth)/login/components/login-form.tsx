@@ -5,20 +5,22 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Link from "next/link";
-import { useLoginMutation } from "../hooks/useLoginMutation";
-import { ILoginRequest, LoginSchema } from "../schemas/login.schema";
+import { useLoginMutation } from "@/app/(auth)/login/hooks/useLoginMutation";
+import {
+  ILoginRequest,
+  LoginSchema,
+} from "@/app/(auth)/login/schemas/login.schema";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ErrorLabel } from "@/components/ui/error-label";
 import { ReloadIcon } from "@radix-ui/react-icons";
-import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
+import applyErrorsToForm, { isAxiosResponse } from "@/shared/utils/errorUtils";
 
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 export function LoginForm({ className }: UserAuthFormProps) {
   const { mutateAsync } = useLoginMutation();
-  const router = useRouter();
 
   const {
     register,
@@ -32,15 +34,11 @@ export function LoginForm({ className }: UserAuthFormProps) {
   async function handleLogin(loginForm: ILoginRequest) {
     try {
       await mutateAsync(loginForm);
-    } catch (error: any) {
-      if (error?.status === 401) {
-        setError("email", {
-          message: error.data.body.errors[0].message,
-        });
-        setError("password", {
-          message: error.data.body.errors[0].message,
-        });
+    } catch (error) {
+      if (isAxiosResponse(error)) {
+        return applyErrorsToForm(setError, error.data);
       }
+      console.error(error);
     }
   }
 
@@ -79,7 +77,7 @@ export function LoginForm({ className }: UserAuthFormProps) {
               {...register("password")}
               id="password"
               type="password"
-              placeholder="*********"
+              placeholder="Digite sua senha"
               required
             />
             <ErrorLabel>{errors.password?.message}</ErrorLabel>

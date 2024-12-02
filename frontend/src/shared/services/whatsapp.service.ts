@@ -1,5 +1,3 @@
-import { Service } from "../types/appointment";
-
 interface WarnCancelAppointmentProps {
   name: string;
   code: string;

@@ -2,17 +2,14 @@
 
 import { numberUtils } from "@/shared/utils/numberUtils";
 import TotalRevenue from "../TotalRevenue";
-import { format, setDefaultOptions } from "date-fns";
+import { setDefaultOptions } from "date-fns";
 import { ptBR } from "date-fns/locale";
-import TopClients from "../TopClients";
 import { useGetBusinessYearlyMetrics } from "@/app/(private)/dashboard/hooks/useGetBusinessYearlyMetrics";
 import TopServices from "../TopServices";
 setDefaultOptions({ locale: ptBR });
 
 export default function YearlyMetrics() {
   const { data, isError, isFetching } = useGetBusinessYearlyMetrics();
-
-  const currentMonth = format(new Date(), "MMMM");
 
   return (
     <div className="flex sm:px-6">

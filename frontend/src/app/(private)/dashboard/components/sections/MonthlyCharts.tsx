@@ -5,12 +5,11 @@ import { format, setDefaultOptions, startOfMonth } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { PieChartComponent } from "@/components/ui/charts/PieChart";
 import { ChartConfig } from "@/components/ui/chart";
-import { AreaChartComponent } from "@/components/ui/charts/AreaChart";
 
 setDefaultOptions({ locale: ptBR });
 
 export default function MonthlyCharts() {
-  const { data, error, isError, isFetching } = useGetBusinessMonthlyMetrics();
+  const { data, isError } = useGetBusinessMonthlyMetrics();
 
   const beginOfMonth = format(startOfMonth(new Date()), "dd/MM/yyyy");
   const currentDate = format(new Date(), "dd/MM/yyyy");

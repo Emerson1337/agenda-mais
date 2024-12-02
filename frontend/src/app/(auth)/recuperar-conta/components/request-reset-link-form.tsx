@@ -15,10 +15,11 @@ import {
 } from "@/app/(auth)/recuperar-conta/schemas/reset-password.schema";
 import { useResetLinkMutation } from "@/app/(auth)/recuperar-conta/hooks/useResetLinkMutation";
 import { toast } from "react-toastify";
+import { isAxiosError } from "axios";
 
 interface ResetLinkFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
-export function ResetLinkForm({ className, ...props }: ResetLinkFormProps) {
+export function ResetLinkForm({}: ResetLinkFormProps) {
   const { mutateAsync } = useResetLinkMutation();
   const router = useRouter();
 
@@ -36,11 +37,15 @@ export function ResetLinkForm({ className, ...props }: ResetLinkFormProps) {
       await mutateAsync(resetForm);
       toast.success("Link enviado com sucesso! Confira o seu e-mail.");
       router.push("/login");
-    } catch (error: any) {
-      if (error?.status === 400) {
-        setError("email", {
-          message: error.data.body.errors[0].message,
-        });
+    } catch (error) {
+      if (isAxiosError(error) && error.response) {
+        if (error.status === 400) {
+          return setError("email", {
+            message: error.response.data.body.errors[0].message,
+          });
+        }
+
+        return toast.error("Algo deu errado. Tente novamente mais tarde.");
       }
     }
   }

@@ -1,5 +1,4 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { LoginData } from "@/shared/types/login";
 import { AxiosError } from "axios";
 import { API } from "@/shared/services/config/config";
 import { apiUrls } from "@/lib/apiUrls";
@@ -16,12 +15,12 @@ export const useResetPasswordQuery = () => {
     mutationFn: async (data: IResetPasswordRequest) => {
       const response = await API.post(
         apiUrls.internal.auth.resetPassword(),
-        data
+        data,
       );
       return response.data.body;
     },
-    onSuccess(_) {
-      queryClient.setQueryData<LoginData>(["resetPassword"], (data) => {
+    onSuccess() {
+      queryClient.setQueryData<ResetPassword>(["resetPassword"], (data) => {
         return data;
       });
     },
@@ -35,12 +34,12 @@ export const useResetLinkQuery = () => {
     mutationFn: async (data: IResetLinkRequest) => {
       const response = await API.post(
         apiUrls.internal.auth.forgotPassword(),
-        data
+        data,
       );
       return response.data.body;
     },
-    onSuccess(_) {
-      queryClient.setQueryData<LoginData>(["resetPassword"], (data) => {
+    onSuccess() {
+      queryClient.setQueryData<ResetPassword>(["resetPassword"], (data) => {
         return data;
       });
     },

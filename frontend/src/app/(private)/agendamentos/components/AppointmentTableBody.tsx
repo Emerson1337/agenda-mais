@@ -8,7 +8,6 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { flexRender, Table as ReactTable } from "@tanstack/react-table";
-import { Button } from "../../../../components/ui/button";
 
 interface AppointmentTableBodyProps {
   table: ReactTable<any>;
@@ -27,7 +26,7 @@ export function AppointmentTableBody({ table }: AppointmentTableBodyProps) {
                     ? null
                     : flexRender(
                         header.column.columnDef.header,
-                        header.getContext()
+                        header.getContext(),
                       )}
                 </TableHead>
               ))}

@@ -10,15 +10,18 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { ErrorLabel } from "@/components/ui/error-label";
 import { ReloadIcon } from "@radix-ui/react-icons";
 import { useRouter } from "next/navigation";
-import { useSignUpMutation } from "../hooks/useSignUpMutation";
-import { ISignUpRequest, SignUpSchema } from "../schemas/signup.schema";
+import { useSignUpMutation } from "@/app/(auth)/cadastrar/hooks/useSignUpMutation";
+import {
+  ISignUpRequest,
+  SignUpSchema,
+} from "@/app/(auth)/cadastrar/schemas/signup.schema";
 import { stringUtils } from "@/shared/utils/stringUtils";
 import { PhoneInput } from "@/components/ui/phone-input";
 import { AxiosError } from "axios";
 
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
-export function SignUpForm({ className, ...props }: UserAuthFormProps) {
+export function SignUpForm({ className }: UserAuthFormProps) {
   const { mutateAsync } = useSignUpMutation();
   const router = useRouter();
   const [formattedName, setFormattedName] = React.useState<string>("");
@@ -43,7 +46,7 @@ export function SignUpForm({ className, ...props }: UserAuthFormProps) {
             setError(err.name as keyof ISignUpRequest, {
               message: err.message,
             });
-          }
+          },
         );
       }
     }
@@ -78,7 +81,7 @@ export function SignUpForm({ className, ...props }: UserAuthFormProps) {
               className="w-full"
               onChange={(e) => {
                 setFormattedName(
-                  stringUtils.formatBusinessNameForURL(e.target.value)
+                  stringUtils.formatBusinessNameForURL(e.target.value),
                 );
               }}
             />

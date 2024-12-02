@@ -4,7 +4,7 @@ import ImageUploading, { ImageListType } from "react-images-uploading";
 interface ImageUploadingButtonProps {
   value: ImageListType;
   onChange: (imageList: ImageListType, addUpdateIndex?: number[]) => void;
-  [key: string]: any;
+  [key: string]: unknown;
 }
 
 const ImageUploadingButton: React.FC<ImageUploadingButtonProps> = ({

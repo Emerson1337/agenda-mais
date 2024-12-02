@@ -5,12 +5,12 @@ import { ptBR } from "date-fns/locale";
 import { ChartConfig } from "@/components/ui/chart";
 import { useGetBusinessYearlyMetrics } from "@/app/(private)/dashboard/hooks/useGetBusinessYearlyMetrics";
 import { MultipleBarChartComponent } from "@/components/ui/charts/MultipleBarChart";
-import { AreaChartComponent } from "../../../../../components/ui/charts/AreaChart";
+import { AreaChartComponent } from "@/components/ui/charts/AreaChart";
 
 setDefaultOptions({ locale: ptBR });
 
 export default function YearlyCharts() {
-  const { data, isError, isFetching } = useGetBusinessYearlyMetrics();
+  const { data, isError } = useGetBusinessYearlyMetrics();
 
   const barChartData = data?.revenueByMonth.map((service) => {
     const date = parse(service.month, "MM-yyyy", new Date());
@@ -21,7 +21,7 @@ export default function YearlyCharts() {
     };
   });
 
-  const barChartConfig = barChartData?.reduce((config, item) => {
+  const barChartConfig = barChartData?.reduce((config) => {
     config["value"] = {
       label: "Nº atendimentos",
       color: `hsl(var(--chart-1))`,
@@ -39,7 +39,7 @@ export default function YearlyCharts() {
     alternativeValue: Number(service.totalValue),
   }));
 
-  const areaChartConfig = areaChartData?.reduce((config, item) => {
+  const areaChartConfig = areaChartData?.reduce((config) => {
     config["value"] = {
       label: "Nº atendimentos",
       color: `hsl(var(--chart-1))`,

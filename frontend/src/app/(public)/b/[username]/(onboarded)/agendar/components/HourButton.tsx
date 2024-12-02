@@ -1,5 +1,4 @@
 import React from "react";
-import { MouseEventHandler } from "react";
 import { Button } from "@/components/ui/button";
 
 export interface HourButtonDTO {

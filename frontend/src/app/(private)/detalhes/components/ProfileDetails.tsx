@@ -15,24 +15,24 @@ import Image from "next/image";
 import ImageUploadingHoverButton from "@/components/upload/ImageUploadingHoverButton";
 import { ThemeCustomizer } from "@/components/ui/theme-customizer";
 import { Button } from "@/components/ui/button";
-import { useGetManager } from "../hooks/useGetManager";
+import { useGetManager } from "@/app/(private)/detalhes/hooks/useGetManager";
 import {
   useManagerMutation,
   useManagerProfileMutation,
-} from "../hooks/useManagerMutation";
+} from "@/app/(private)/detalhes/hooks/useManagerMutation";
 import { toast } from "react-toastify";
-import { AxiosError } from "axios";
 import { ReloadIcon } from "@radix-ui/react-icons";
 import { User2 } from "lucide-react";
+import { isAxiosResponse } from "@/shared/utils/errorUtils";
 
 export default function ProfileDetails() {
   const [profileImage, setProfileImage] = useState<ImageListType>([]);
   const [newPalette, setNewPalette] = useState<string>();
   const [croppedProfileImage, setCroppedProfileImage] = useState<string | null>(
-    null
+    null,
   );
   const [dialogOpen, setDialogOpen] = useState(false);
-  const { isFetching, data, error } = useGetManager();
+  const { data } = useGetManager();
   const {
     mutateAsync: updateManagerMutateAsync,
     isPending: updateManagerIsPending,
@@ -69,19 +69,12 @@ export default function ProfileDetails() {
       setTimeout(() => {
         location.reload();
       }, 3000);
-    } catch (error: AxiosError | any) {
-      toast.error(
-        error?.response?.data?.message || "Erro ao salvar alterações"
-      );
+    } catch (error) {
+      if (isAxiosResponse(error)) {
+        toast.error(error?.data?.body.message || "Erro ao salvar alterações");
+      }
     }
   };
-
-  if (isFetching)
-    return (
-      <div>
-        <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />
-      </div>
-    );
 
   return (
     <Card className="w-fit">

@@ -1,7 +1,6 @@
 import axios from "axios";
 import { refreshToken } from "@/actions/auth/refreshToken";
 import { apiUrls } from "@/lib/apiUrls";
-import { redirect } from "next/navigation";
 const BASE_URL = process.env.REACT_APP_BASE_URL || "http://localhost:3001";
 
 // Create axios instance

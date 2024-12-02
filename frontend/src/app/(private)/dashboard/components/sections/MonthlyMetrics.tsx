@@ -5,11 +5,11 @@ import TotalRevenue from "../TotalRevenue";
 import { useGetBusinessMonthlyMetrics } from "@/app/(private)/dashboard/hooks/useGetBusinessMonthlyMetrics";
 import { format, setDefaultOptions } from "date-fns";
 import { ptBR } from "date-fns/locale";
-import TopClients from "../TopClients";
+import TopClients from "@/app/(private)/dashboard/components/TopClients";
 setDefaultOptions({ locale: ptBR });
 
 export default function MonthlyMetrics() {
-  const { data, error, isError, isFetching } = useGetBusinessMonthlyMetrics();
+  const { data, isError, isFetching } = useGetBusinessMonthlyMetrics();
 
   const currentMonth = format(new Date(), "MMMM");
 
