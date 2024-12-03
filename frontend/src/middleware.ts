@@ -5,7 +5,7 @@ import type { NextRequest } from "next/server";
 import { cookies } from "next/headers";
 import { refreshToken } from "./actions/auth/refreshToken";
 import { verifyToken } from "./actions/auth/verifyToken";
-import { isAxiosError } from "axios";
+import { isAxiosResponse } from "./shared/utils/errorUtils";
 
 export async function middleware(request: NextRequest) {
   const cookieStore = cookies();
@@ -17,9 +17,10 @@ export async function middleware(request: NextRequest) {
   try {
     await verifyToken();
   } catch (error) {
-    if (isAxiosError(error) && error.response?.status !== 401) {
+    if (isAxiosResponse(error) && error.status === 401) {
       try {
         const { access_token, refresh_token } = await refreshToken();
+
         const response = NextResponse.next();
         response.cookies.set("authorization", access_token, {
           httpOnly: true,

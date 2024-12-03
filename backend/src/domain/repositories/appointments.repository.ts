@@ -1,6 +1,6 @@
 import { CreateAppointmentDto } from '@/application/public-routes/dtos/create-appointment-dto';
 
-import { Appointments } from '../entities/appointment.entity';
+import { Appointments } from '@/domain/entities/appointment.entity';
 
 export abstract class AppointmentsRepository {
   abstract create(appointment: CreateAppointmentDto): Promise<Appointments>;
@@ -40,4 +40,11 @@ export abstract class AppointmentsRepository {
     managerId: string;
   }): Promise<Appointments>;
   abstract getByManagerId(managerId: string): Promise<Appointments[]>;
+  abstract findPastAppointments({
+    time,
+    date,
+  }: {
+    time: string;
+    date: string;
+  }): Promise<Appointments[]>;
 }

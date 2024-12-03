@@ -35,4 +35,5 @@ export abstract class SalesReportRepository {
     offset?: number;
   }): Promise<SalesReport[]>;
   abstract getSaleReportByCode(code: string): Promise<SalesReport | null>;
+  abstract setFinishedStatusByCode(code: string): Promise<SalesReport>;
 }
