@@ -22,6 +22,16 @@ export class TypeOrmSalesReportRepository implements SalesReportRepository {
     });
   }
 
+  async setFinishedStatusByCode(code: string): Promise<SalesReport> {
+    const result = await this.repository.findOneAndUpdate(
+      { code: code },
+      { $set: { status: AppointmentStatus.FINISHED } },
+      { returnDocument: 'after' },
+    );
+
+    return result.value as SalesReport;
+  }
+
   async getReportsByPhoneAndManagerId({
     phone,
     managerId,

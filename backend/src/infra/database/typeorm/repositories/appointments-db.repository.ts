@@ -4,8 +4,8 @@ import { Appointments } from '@/domain/entities/appointment.entity';
 import { AppointmentsRepository } from '@/domain/repositories/appointments.repository';
 import { MongoRepository } from 'typeorm';
 
-import { AppointmentsMDB } from '../entities/appointments-db.entity';
-import { TypeormService } from '../typeorm.service';
+import { AppointmentsMDB } from '@/infra/database/typeorm/entities/appointments-db.entity';
+import { TypeormService } from '@/infra/database/typeorm/typeorm.service';
 import { ObjectId } from 'mongodb';
 
 @Injectable()
@@ -15,6 +15,22 @@ export class TypeOrmAppointmentsRepository implements AppointmentsRepository {
   constructor(private typeormService: TypeormService) {
     this.repository = typeormService.getMongoRepository(AppointmentsMDB);
   }
+  async findPastAppointments({
+    time,
+    date,
+  }: {
+    time: string;
+    date: string;
+  }): Promise<Appointments[]> {
+    const pastAppointments = await this.repository.find({
+      where: {
+        $or: [{ date: { $lt: date } }, { date, time: { $lt: time } }],
+      },
+    });
+
+    return pastAppointments;
+  }
+
   async deleteById({
     id,
     managerId,
