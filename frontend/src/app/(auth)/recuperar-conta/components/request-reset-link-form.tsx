@@ -39,9 +39,9 @@ export function ResetLinkForm({}: ResetLinkFormProps) {
       router.push("/login");
     } catch (error) {
       if (isAxiosError(error) && error.response) {
-        if (error.status === 400) {
+        if (error.response.status === 422) {
           return setError("email", {
-            message: error.response.data.body.errors[0].message,
+            message: error.response.data.body.error.message,
           });
         }
 

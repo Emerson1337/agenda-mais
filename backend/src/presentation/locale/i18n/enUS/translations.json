@@ -22,12 +22,12 @@
       "APPOINTMENT": "Appointment not found.",
       "MANAGER_ID": "Manager ID not found.",
       "USERNAME": "Establishment not found.",
-      "GENERIC_NOT_FOUND": "Item not found.",
-      "INVALID_CREDENTIALS": "Invalid credentials.",
-      "INVALID_REFRESH_TOKEN": "Invalid refresh token.",
-      "INVALID_TOKEN": "Invalid token.",
-      "INVALID_EMAIL": "Invalid email."
-    }
+      "GENERIC_NOT_FOUND": "Item not found."
+    },
+    "INVALID_CREDENTIALS": "Invalid credentials.",
+    "INVALID_REFRESH_TOKEN": "Invalid refresh token.",
+    "INVALID_TOKEN": "Invalid token.",
+    "INVALID_EMAIL": "Invalid email."
   },
   "VALIDATORS": {
     "VALID_MONGO_ID": "The provided identifiers need to be valid."

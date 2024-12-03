@@ -180,7 +180,7 @@ export class AuthService {
     if (!user)
       throw new InvalidParamError(
         'email',
-        this.i18n.t('translations.INVALID_EMAIL', {
+        this.i18n.t('translations.INVALID_FIELD.INVALID_EMAIL', {
           lang: I18nContext.current().lang,
         }),
       );

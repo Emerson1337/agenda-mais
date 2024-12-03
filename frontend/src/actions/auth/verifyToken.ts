@@ -9,11 +9,11 @@ export const verifyToken = async (): Promise<RefreshToken> => {
   try {
     const token = cookies().get("authorization")?.value;
 
-    const response = await API.post(apiUrls.internal.auth.verifyToken(), {
-      token: token?.replace("Bearer ", ""),
-    });
-
-    return response.data.body;
+    return (
+      await API.post(apiUrls.internal.auth.verifyToken(), {
+        token: token?.replace("Bearer ", ""),
+      })
+    ).data.body;
   } catch (error) {
     console.error("Error verifying token");
     throw error;
