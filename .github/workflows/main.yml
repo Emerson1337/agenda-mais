@@ -13,7 +13,7 @@ concurrency:
 
 jobs:
   lint-and-test:
-    runs-on: [self-hosted, macOS]
+    runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
       - name: Checkout
@@ -46,7 +46,7 @@ jobs:
         run: yarn prettier:frontend
 
   deploy-to-staging:
-    runs-on: [self-hosted, macOS]
+    runs-on: ubuntu-latest
     timeout-minutes: 10
 
     needs:
