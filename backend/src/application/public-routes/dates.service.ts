@@ -39,7 +39,7 @@ export class DatesService {
     managerId,
     date,
   }: ICheckTimeAvailability): Promise<ITimeAvailability> {
-    const weekDay = Number(format(date, 'e'));
+    const weekDay = Number(format(date, 'e')) - 1;
 
     const schedule = await this.scheduleRepository.findByIdAndTimeAvailable({
       id,
