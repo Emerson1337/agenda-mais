@@ -39,17 +39,19 @@ jobs:
               sudo chmod +x /usr/local/bin/docker-compose
             fi
 
-            # Prepare the application directory
+            # Prepare the application directory and set permissions
             mkdir -p ~/app
-            cd ~/app
-
-            # Remove existing Docker containers and images
-            sudo docker-compose down || true
+            chmod 755 ~/app
           EOF
+
+      - name: Check Directory Contents
+        run: |
+          pwd
+          ls -alh
 
       - name: Upload Docker Compose and Application Files
         run: |
-          scp -o StrictHostKeyChecking=no -r docker-compose.yaml frontend backend ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}:~/app/
+          scp -o StrictHostKeyChecking=no -r ./docker-compose.yaml ./frontend ./backend ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}:~/app/
 
       - name: Deploy Application
         run: |
