@@ -23,7 +23,7 @@ jobs:
         with:
           ssh-private-key: ${{ secrets.EC2_PRIVATE_KEY }}
 
-      - name: Copy Docker Compose to EC2
+      - name: Prepare EC2 Environment
         run: |
           ssh -o StrictHostKeyChecking=no ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} << EOF
             # Install Docker and Docker Compose if not already installed
@@ -39,23 +39,24 @@ jobs:
               sudo chmod +x /usr/local/bin/docker-compose
             fi
 
-            # Prepare the application directory and set permissions
-            mkdir -p ~/app
-            chmod 755 ~/app
+            # Prepare the application directory with correct ownership
+            sudo mkdir -p /home/${{ secrets.EC2_USER }}/app
+            sudo chown -R ${{ secrets.EC2_USER }}:${{ secrets.EC2_USER }} /home/${{ secrets.EC2_USER }}/app
           EOF
 
-      - name: Check Directory Contents
+      - name: Check Directory Contents Locally
         run: |
           pwd
           ls -alh
 
       - name: Upload Docker Compose and Application Files
         run: |
-          scp -o StrictHostKeyChecking=no -r ./docker-compose.yaml ./frontend ./backend ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}:~/app/
+          scp -o StrictHostKeyChecking=no -r docker-compose.yaml frontend backend ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}:/home/${{ secrets.EC2_USER }}/app/
 
       - name: Deploy Application
         run: |
           ssh -o StrictHostKeyChecking=no ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} << EOF
-            cd ~/app
-            sudo docker-compose up -d --build
+            cd /home/${{ secrets.EC2_USER }}/app
+            docker-compose down || true
+            docker-compose up -d --build
           EOF
