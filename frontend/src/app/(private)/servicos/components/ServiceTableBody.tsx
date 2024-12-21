@@ -9,11 +9,11 @@ import {
 } from "@/components/ui/table";
 import { flexRender, Table as ReactTable } from "@tanstack/react-table";
 
-interface ServiceTableBodyProps {
-  table: ReactTable<unknown>;
+interface ServiceTableBodyProps<T> {
+  table: ReactTable<T>;
 }
 
-export function ServiceTableBody({ table }: ServiceTableBodyProps) {
+export function ServiceTableBody<T>({ table }: ServiceTableBodyProps<T>) {
   return (
     <div className="rounded-md border">
       <Table>

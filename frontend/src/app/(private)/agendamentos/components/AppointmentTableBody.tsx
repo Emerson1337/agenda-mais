@@ -9,11 +9,13 @@ import {
 } from "@/components/ui/table";
 import { flexRender, Table as ReactTable } from "@tanstack/react-table";
 
-interface AppointmentTableBodyProps {
-  table: ReactTable<unknown>;
+interface AppointmentTableBodyProps<T> {
+  table: ReactTable<T>;
 }
 
-export function AppointmentTableBody({ table }: AppointmentTableBodyProps) {
+export function AppointmentTableBody<T>({
+  table,
+}: AppointmentTableBodyProps<T>) {
   return (
     <div className="rounded-md border">
       <Table>

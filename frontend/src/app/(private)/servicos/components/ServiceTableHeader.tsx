@@ -10,8 +10,8 @@ import {
 import { ChevronDownIcon } from "@radix-ui/react-icons";
 import { Table } from "@tanstack/react-table";
 
-interface ServiceTableHeaderProps {
-  table: Table<unknown>;
+interface ServiceTableHeaderProps<T> {
+  table: Table<T>;
 }
 
 const columnLabels: Record<string, string> = {
@@ -21,7 +21,7 @@ const columnLabels: Record<string, string> = {
   timeDurationInMinutes: "Tempo",
 };
 
-export function ServiceTableHeader({ table }: ServiceTableHeaderProps) {
+export function ServiceTableHeader<T>({ table }: ServiceTableHeaderProps<T>) {
   return (
     <div className="flex items-center py-4">
       <Input

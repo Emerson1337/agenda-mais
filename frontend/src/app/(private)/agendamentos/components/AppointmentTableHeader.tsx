@@ -10,8 +10,8 @@ import {
 import { ChevronDownIcon } from "@radix-ui/react-icons";
 import { Table } from "@tanstack/react-table";
 
-interface ServiceTableHeaderProps {
-  table: Table<unknown>;
+interface ServiceTableHeaderProps<T> {
+  table: Table<T>;
 }
 
 const hiddenColumns = ["phone", "time"];
@@ -26,7 +26,9 @@ const columnLabels: Record<string, string> = {
   code: "Código",
   actions: "Ações",
 };
-export function AppointmentTableHeader({ table }: ServiceTableHeaderProps) {
+export function AppointmentTableHeader<T>({
+  table,
+}: ServiceTableHeaderProps<T>) {
   return (
     <div className="flex items-center py-4">
       <Input

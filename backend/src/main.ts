@@ -20,6 +20,6 @@ async function bootstrap() {
     new I18nValidationPipe(),
   );
   app.use('/public', express.static('public'));
-  await app.listen(3000);
+  await app.listen(4000);
 }
 bootstrap();
