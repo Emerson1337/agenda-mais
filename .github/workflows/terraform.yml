@@ -44,23 +44,20 @@ jobs:
           aws-region: ${{inputs.aws-region}}
 
       - name: Terraform Init
-        run: terraform -chdir=infra init \
-          -backend-config="bucket=agendazap-sa-east-1-terraform-statefile" \
-          -backend-config="key=agenda-zap" \
-          -backend-config="region=sa-east-1" \
-          -backend-config="dynamodb_table=agendazap-sa-east-1-terraform-lock"
+        run: cd infra &&
+          terraform init -backend-config="bucket=agendazap-sa-east-1-terraform-statefile" -backend-config="key=agenda-zap" -backend-config="region=sa-east-1" -backend-config="dynamodb_table=agendazap-sa-east-1-terraform-lock"
 
       - name: Terraform Validate
         run: terraform validate
 
       - name: Terraform Plan
         id: terraform-plan
-        run:
-          terraform -chdir=infra workspace select ${{ inputs.environment }} || terraform workspace new ${{ inputs.environment }} &&
+        run: cd infra &&
+          terraform workspace select ${{ inputs.environment }} || terraform workspace new ${{ inputs.environment }} &&
           terraform plan -var-file="./envs/${{ inputs.environment }}/terraform.tfvars" -out="${{ inputs.environment }}.plan"
 
       - name: Terraform Apply
         id: terraform-apply
-        run:
-          terraform -chdir=infra workspace select ${{ inputs.environment }} || terraform workspace new ${{ inputs.environment }} &&
+        run: cd infra &&
+          terraform workspace select ${{ inputs.environment }} || terraform workspace new ${{ inputs.environment }} &&
           terraform apply "${{ inputs.environment }}.plan"
