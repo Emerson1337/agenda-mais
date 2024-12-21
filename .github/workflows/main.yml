@@ -48,9 +48,9 @@ jobs:
           EOF
 
       - name: Check Directory Contents
-      run: |
-        pwd
-        ls -alh
+        run: |
+          pwd
+          ls -alh
 
       - name: Upload Docker Compose and Application Files
         run: |
