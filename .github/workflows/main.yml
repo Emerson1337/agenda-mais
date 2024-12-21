@@ -47,10 +47,9 @@ jobs:
             sudo docker-compose down || true
           EOF
 
-        - name: Show folders
-        run: |
-          ls -la
-
+      - name: Show folders
+      run: |
+        ls -la
 
       - name: Upload Docker Compose and Application Files
         run: |
