@@ -18,3 +18,5 @@ services:
       - "3000:4000"
     environment:
       - NODE_ENV=staging
+    env_file:
+      - ./backend/.env

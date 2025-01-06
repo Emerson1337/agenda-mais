@@ -1,7 +1,7 @@
 import axios from "axios";
 import { refreshToken } from "@/actions/auth/refreshToken";
 import { apiUrls } from "@/lib/apiUrls";
-const BASE_URL = process.env.REACT_APP_BASE_URL || "http://localhost:3001";
+const BASE_URL = process.env.REACT_APP_BASE_URL;
 
 // Create axios instance
 export const API = axios.create({
