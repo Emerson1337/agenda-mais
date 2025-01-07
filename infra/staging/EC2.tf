@@ -33,7 +33,7 @@ resource "aws_security_group" "agendazap-security-group" {
 
 resource "aws_instance" "agendazap-web-server" {
   ami           = "ami-03c4a8310002221c7" # Amazon Linux 2 AMI
-  instance_type = "t2.micro"
+  instance_type = "t2.small"
   user_data = file("./user_data.sh")
   vpc_security_group_ids = [aws_security_group.agendazap-security-group.id]
 }
