@@ -7,9 +7,6 @@ node_modules
 # Ignore log files
 *.log
 
-# Ignore environment files (if not needed in the container)
-.env
-
 # Ignore Git repository
 .git
 .gitignore

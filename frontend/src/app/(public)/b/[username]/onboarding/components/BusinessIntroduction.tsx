@@ -1,17 +1,19 @@
+"use client";
+
 import Image from "next/image";
-import { useBusinessContext } from "../../utils/context/BusinessDataContext";
+import { useBusinessContext } from "@/app/(public)/b/[username]/utils/context/BusinessDataContext";
 import { notFound } from "next/navigation";
-import { getPublicAPIPath } from "@/shared/utils/urlUtils";
+import { useGetPublicAssets } from "@/shared/utils/urlUtils";
 
 const BusinessIntroduction = (): JSX.Element => {
   const { business } = useBusinessContext();
   if (!business) notFound();
-
+  const photoUrl = useGetPublicAssets(business.profilePhoto);
   return (
     <>
       <div className="flex justify-center items-center">
         <Image
-          src={getPublicAPIPath(business.profilePhoto)}
+          src={photoUrl}
           className="rounded-full mb-8 z-10"
           alt="logo"
           width={155}

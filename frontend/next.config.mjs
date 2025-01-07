@@ -8,15 +8,13 @@ const nextConfig = {
       },
       {
         protocol: "http",
-        hostname: "localhost",
-        port: "3000",
-        pathname: "/**",
+        hostname: "**",
       },
     ],
   },
   async rewrites() {
     const API_BASE_URL =
-      process.env.REACT_APP_API_BASE_URL || "http://localhost:4000"; // Fallback if .env is not set
+      process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhosta:4000"; // Fallback if .env is not set
     return [
       {
         // Proxy API requests from `/api` to the configured API base URL
@@ -24,22 +22,6 @@ const nextConfig = {
         destination: `${API_BASE_URL}/:path*`,
       },
     ];
-  },
-  images: {
-    remotePatterns: [
-      {
-        protocol: "https",
-        hostname: "*",
-        port: "",
-        pathname: "/**",
-      },
-      {
-        protocol: "http",
-        hostname: "localhost",
-        port: "3000",
-        pathname: "/**",
-      },
-    ],
   },
 };
 

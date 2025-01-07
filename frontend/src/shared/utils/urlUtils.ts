@@ -1,7 +1,4 @@
-"use client";
-
 export const useGetPublicAssets = (path: string): string => {
-  const domain = window.location.origin;
-
-  return `${domain}/api/${path}`;
+  const domain = process.env.NEXT_PUBLIC_API_BASE_URL;
+  return `${domain}/${path}`;
 };

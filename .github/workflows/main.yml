@@ -63,6 +63,11 @@ jobs:
           echo "MAIL_SENDER=${{ secrets.MAIL_SENDER }}" >> backend/.env
           echo "BASE_URL=${{ vars.BASE_URL }}" >> backend/.env
 
+      - name: Generate Frontend .env File
+        run: |
+          mkdir -p frontend
+          echo "NEXT_PUBLIC_API_BASE_URL=${{ vars.NEXT_PUBLIC_API_BASE_URL }}" > frontend/.env
+
       - name: Upload Docker Compose and Application Files
         run: |
           tar -czf app.tar.gz docker-compose.yaml frontend backend
