@@ -12,7 +12,7 @@ export const useLoginQuery = () => {
   return useMutation<LoginData, AxiosResponse, ILoginRequest>({
     mutationFn: async (data: ILoginRequest) => {
       const response = await API.post(apiUrls.internal.auth.login(), data);
-      signIn({
+      await signIn({
         access_token: response.data.body.access_token,
         refresh_token: response.data.body.refresh_token,
       });

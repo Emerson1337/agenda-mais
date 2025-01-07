@@ -1,14 +1,16 @@
 "use server";
 
 import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
+import { delay } from "@/lib/utils";
 
-export const signIn = ({
+export const signIn = async ({
   access_token,
   refresh_token,
 }: {
   access_token: string;
   refresh_token: string;
-}): void => {
+}) => {
   cookies().set("authorization", access_token, {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
@@ -19,4 +21,8 @@ export const signIn = ({
     secure: process.env.NODE_ENV === "production",
     path: "/",
   });
+
+  await delay(2000);
+
+  redirect("/dashboard");
 };
