@@ -12,13 +12,15 @@ export const signIn = async ({
 }) => {
   cookies().set("authorization", access_token, {
     httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
+    secure: false,
     path: "/",
+    sameSite: "none",
   });
   cookies().set("refreshToken", refresh_token, {
     httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
+    secure: false,
     path: "/",
+    sameSite: "none",
   });
 
   await delay(2000);

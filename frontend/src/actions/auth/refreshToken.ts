@@ -17,15 +17,15 @@ export const refreshToken = async (): Promise<RefreshToken> => {
 
       cookies().set("authorization", access_token, {
         httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
-        sameSite: "lax",
+        secure: false,
         path: "/",
+        sameSite: "none",
       });
       cookies().set("refreshToken", refresh_token, {
         httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
-        sameSite: "lax",
+        secure: false,
         path: "/",
+        sameSite: "none",
       });
     } catch {}
 

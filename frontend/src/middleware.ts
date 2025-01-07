@@ -28,15 +28,15 @@ export async function middleware(request: NextRequest) {
         const response = NextResponse.next();
         response.cookies.set("authorization", access_token, {
           httpOnly: true,
-          secure: process.env.NODE_ENV === "production",
+          secure: false,
           path: "/",
-          sameSite: "lax",
+          sameSite: "none",
         });
         response.cookies.set("refreshToken", refresh_token, {
           httpOnly: true,
-          secure: process.env.NODE_ENV === "production",
+          secure: false,
           path: "/",
-          sameSite: "lax",
+          sameSite: "none",
         });
         return response;
       } catch (error) {
