@@ -66,10 +66,9 @@ jobs:
       - name: Generate Frontend .env File
         run: |
           mkdir -p frontend
-          echo "REACT_APP_API_BASE_URL=${{ vars.REACT_APP_API_BASE_URL }}" > frontend/.env
+          echo "NEXT_PUBLIC_API_BASE_URL=${{ vars.NEXT_PUBLIC_API_BASE_URL }}" > frontend/.env
           echo "NEXT_PUBLIC_BASE_URL=${{ vars.NEXT_PUBLIC_BASE_URL }}" > frontend/.env
           echo "NODE_ENV=${{ vars.NODE_ENV }}" > frontend/.env
-          echo "TEST=${{ vars.TEST }}" > frontend/.env
 
       - name: Upload Docker Compose and Application Files
         run: |
