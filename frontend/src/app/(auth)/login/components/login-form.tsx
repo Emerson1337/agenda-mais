@@ -16,6 +16,7 @@ import { ErrorLabel } from "@/components/ui/error-label";
 import { ReloadIcon } from "@radix-ui/react-icons";
 import { cn } from "@/lib/utils";
 import applyErrorsToForm, { isAxiosResponse } from "@/shared/utils/errorUtils";
+import { useRouter } from "next/router";
 
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
@@ -30,10 +31,12 @@ export function LoginForm({ className }: UserAuthFormProps) {
   } = useForm<ILoginRequest>({
     resolver: zodResolver(LoginSchema),
   });
+  const router = useRouter();
 
   async function handleLogin(loginForm: ILoginRequest) {
     try {
       await mutateAsync(loginForm);
+      router.push("/dashboard");
     } catch (error) {
       if (isAxiosResponse(error)) {
         return applyErrorsToForm(setError, error.data);
