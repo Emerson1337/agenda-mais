@@ -46,25 +46,28 @@ jobs:
 
       - name: Generate Backend .env File
         run: |
-          echo "DB_URL=${{ secrets.DB_URL }}" >> .env
-          echo "NODE_ENV=${{ secrets.NODE_ENV }}" >> .env
-          echo "DB_HOST=${{ secrets.DB_HOST }}" >> .env
-          echo "DB_PORT=${{ secrets.DB_PORT }}" >> .env
-          echo "DB_USERNAME=${{ secrets.DB_USERNAME }}" >> .env
-          echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> .env
-          echo "DB_DATABASE=${{ secrets.DB_DATABASE }}" >> .env
-          echo "ACCESS_TOKEN_SECRET=${{ secrets.ACCESS_TOKEN_SECRET }}" >> .env
-          echo "ACCESS_TOKEN_EXPIRATION=${{ secrets.ACCESS_TOKEN_EXPIRATION }}" >> .env
-          echo "REFRESH_TOKEN_SECRET=${{ secrets.REFRESH_TOKEN_SECRET }}" >> .env
-          echo "REFRESH_TOKEN_EXPIRATION=${{ secrets.REFRESH_TOKEN_EXPIRATION }}" >> .env
-          echo "MAIL_USER=${{ secrets.MAIL_USER }}" >> .env
-          echo "MAIL_PASSWORD=${{ secrets.MAIL_PASSWORD }}" >> .env
-          echo "MAIL_SENDER=${{ secrets.MAIL_SENDER }}" >> .env
-          echo "BASE_URL=${{ vars.BASE_URL }}" >> .env
+          mkdir -p backend
+          echo "DB_URL=${{ secrets.DB_URL }}" > backend/.env
+          echo "NODE_ENV=${{ secrets.NODE_ENV }}" >> backend/.env
+          echo "DB_HOST=${{ secrets.DB_HOST }}" >> backend/.env
+          echo "DB_PORT=${{ secrets.DB_PORT }}" >> backend/.env
+          echo "DB_USERNAME=${{ secrets.DB_USERNAME }}" >> backend/.env
+          echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> backend/.env
+          echo "DB_DATABASE=${{ secrets.DB_DATABASE }}" >> backend/.env
+          echo "ACCESS_TOKEN_SECRET=${{ secrets.ACCESS_TOKEN_SECRET }}" >> backend/.env
+          echo "ACCESS_TOKEN_EXPIRATION=${{ secrets.ACCESS_TOKEN_EXPIRATION }}" >> backend/.env
+          echo "REFRESH_TOKEN_SECRET=${{ secrets.REFRESH_TOKEN_SECRET }}" >> backend/.env
+          echo "REFRESH_TOKEN_EXPIRATION=${{ secrets.REFRESH_TOKEN_EXPIRATION }}" >> backend/.env
+          echo "MAIL_USER=${{ secrets.MAIL_USER }}" >> backend/.env
+          echo "MAIL_PASSWORD=${{ secrets.MAIL_PASSWORD }}" >> backend/.env
+          echo "MAIL_SENDER=${{ secrets.MAIL_SENDER }}" >> backend/.env
+          echo "BASE_URL=${{ vars.BASE_URL }}" >> backend/.env
 
       - name: Upload Docker Compose and Application Files
         run: |
-          scp -o StrictHostKeyChecking=no -r docker-compose.yaml frontend backend ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}:/home/${{ secrets.EC2_USER }}/app/
+          tar -czf app.tar.gz docker-compose.yaml frontend backend
+          scp -o StrictHostKeyChecking=no app.tar.gz ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}:/home/${{ secrets.EC2_USER }}/app/
+          ssh -o StrictHostKeyChecking=no ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} "tar -xzf /home/${{ secrets.EC2_USER }}/app/app.tar.gz -C /home/${{ secrets.EC2_USER }}/app && rm /home/${{ secrets.EC2_USER }}/app/app.tar.gz"
 
       - name: Deploy Application
         run: |
