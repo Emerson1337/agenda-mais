@@ -1,0 +1,16 @@
+# Ignore node_modules
+node_modules
+
+# Ignore log files
+*.log
+
+# Ignore environment files (if not needed in the container)
+.env
+
+# Ignore Git repository
+.git
+.gitignore
+
+# Ignore Docker-specific files (if not needed inside the container)
+.dockerignore
+Dockerfile
