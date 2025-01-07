@@ -24,6 +24,7 @@ import { toast } from "react-toastify";
 import { ReloadIcon } from "@radix-ui/react-icons";
 import { User2 } from "lucide-react";
 import { isAxiosResponse } from "@/shared/utils/errorUtils";
+import { useGetPublicAssets } from "@/shared/utils/urlUtils";
 
 export default function ProfileDetails() {
   const [profileImage, setProfileImage] = useState<ImageListType>([]);
@@ -76,6 +77,8 @@ export default function ProfileDetails() {
     }
   };
 
+  const profileUrl = useGetPublicAssets(data?.profilePhoto ?? "");
+
   return (
     <Card className="w-fit">
       <CardHeader>
@@ -89,12 +92,10 @@ export default function ProfileDetails() {
           <div className="relative min-h-[200px] flex justify-center items-center">
             {(croppedProfileImage || data?.profilePhoto) && (
               <Image
+                priority
                 width={150}
                 height={150}
-                src={
-                  croppedProfileImage ??
-                  `http://localhost:3000/${data?.profilePhoto}`
-                }
+                src={croppedProfileImage ?? profileUrl}
                 alt="Cropped Profile"
                 className="rounded-full overflow-hidden object-cover mt-4 h-[150px] w-[150px]"
               />
@@ -103,10 +104,7 @@ export default function ProfileDetails() {
               <User2 className="h-14 w-14" />
             )}
             <ImageUploadingHoverButton
-              croppedImage={
-                croppedProfileImage ??
-                `http://localhost:3000/${data?.profilePhoto}`
-              }
+              croppedImage={croppedProfileImage ?? profileUrl}
               value={profileImage}
               onChange={(newImage) => {
                 setDialogOpen(true);

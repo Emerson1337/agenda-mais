@@ -1,3 +1,7 @@
-export const getPublicAPIPath = (path: string): string => {
-  return `http://localhost:3000/${path}`;
+"use client";
+
+export const useGetPublicAssets = (path: string): string => {
+  const domain = window.location.origin;
+
+  return `${domain}/api/${path}`;
 };

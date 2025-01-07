@@ -18,7 +18,7 @@ import { MenuItems } from "@/components/ui/menu-items";
 import { Tooltip } from "@/components/ui/tooltip";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { useBusinessContext } from "@/app/(private)/utils/context/BusinessDataContext";
-import { getPublicAPIPath } from "@/shared/utils/urlUtils";
+import { useGetPublicAssets } from "@/shared/utils/urlUtils";
 import { useRouter } from "next/navigation";
 import { logout } from "@/actions/auth/logout";
 
@@ -33,6 +33,8 @@ export default function Header() {
     logout();
     router.push("/login");
   };
+
+  const profileUrl = useGetPublicAssets(profilePhoto);
 
   return (
     <header className="sticky top-0 z-30 flex h-14 items-center gap-4 border-b bg-background px-4 sm:static sm:h-auto sm:border-0 sm:bg-transparent sm:px-6">
@@ -82,7 +84,7 @@ export default function Header() {
             {profilePhoto ? (
               <Image
                 priority
-                src={getPublicAPIPath(profilePhoto)}
+                src={profileUrl}
                 width={36}
                 height={36}
                 alt="Avatar"

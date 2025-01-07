@@ -17,8 +17,8 @@ import { WhatsappService } from "@/shared/services/whatsapp.service";
 import { format, parseISO } from "date-fns";
 import { numberUtils } from "@/shared/utils/numberUtils";
 import { dateUtils } from "@/shared/utils/dateUtils";
-import { getPublicAPIPath } from "@/shared/utils/urlUtils";
 import { isAxiosError } from "axios";
+import { useGetPublicAssets } from "@/shared/utils/urlUtils";
 
 interface Props {
   datesAvailable: BusinessSchedule;
@@ -122,6 +122,8 @@ const LayoutOne = ({ datesAvailable }: Props): JSX.Element => {
     });
   };
 
+  const profileUrl = useGetPublicAssets(business.profilePhoto);
+
   return (
     <div className="h-full w-full flex flex-wrap justify-evenly">
       <div className="shadow-lg transform duration-200 ease-in-out w-full flex flex-col">
@@ -136,7 +138,7 @@ const LayoutOne = ({ datesAvailable }: Props): JSX.Element => {
           {business.profilePhoto && (
             <Image
               className="h-32 w-32 bg-primary/70 p-2 rounded-full"
-              src={getPublicAPIPath(business.profilePhoto)}
+              src={profileUrl}
               alt="Profile Picture"
               width={200}
               height={200}
