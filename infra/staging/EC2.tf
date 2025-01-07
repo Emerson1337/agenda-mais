@@ -10,8 +10,8 @@ resource "aws_security_group" "agendazap-security-group" {
   }
 
   ingress {
-    from_port   = 4000
-    to_port     = 4000
+    from_port   = 3000
+    to_port     = 3000
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
