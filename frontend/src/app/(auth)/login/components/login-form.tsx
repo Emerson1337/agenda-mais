@@ -16,11 +16,13 @@ import { ErrorLabel } from "@/components/ui/error-label";
 import { ReloadIcon } from "@radix-ui/react-icons";
 import { cn } from "@/lib/utils";
 import applyErrorsToForm, { isAxiosResponse } from "@/shared/utils/errorUtils";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 export function LoginForm({ className }: UserAuthFormProps) {
+  const router = useRouter();
+
   const { mutateAsync } = useLoginMutation();
 
   const {
@@ -31,7 +33,6 @@ export function LoginForm({ className }: UserAuthFormProps) {
   } = useForm<ILoginRequest>({
     resolver: zodResolver(LoginSchema),
   });
-  const router = useRouter();
 
   async function handleLogin(loginForm: ILoginRequest) {
     try {
