@@ -1,7 +1,6 @@
 "use server";
 
 import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
 import { delay } from "@/lib/utils";
 
 export const signIn = async ({
@@ -23,6 +22,4 @@ export const signIn = async ({
   });
 
   await delay(2000);
-
-  redirect("/dashboard");
 };

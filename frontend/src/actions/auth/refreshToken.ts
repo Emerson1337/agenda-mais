@@ -14,7 +14,6 @@ export const refreshToken = async (): Promise<RefreshToken> => {
     });
     try {
       const { access_token, refresh_token } = response.data.body;
-      console.log("🟢🟢🟢🟢 process.env.NODE_ENV", process.env.NODE_ENV);
 
       cookies().set("authorization", access_token, {
         httpOnly: true,
