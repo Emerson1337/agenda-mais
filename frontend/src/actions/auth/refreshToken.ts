@@ -19,13 +19,15 @@ export const refreshToken = async (): Promise<RefreshToken> => {
         httpOnly: true,
         secure: false,
         path: "/",
-        sameSite: "none",
+        sameSite: "lax",
+        maxAge: 999999,
       });
       cookies().set("refreshToken", refresh_token, {
         httpOnly: true,
         secure: false,
         path: "/",
-        sameSite: "none",
+        sameSite: "lax",
+        maxAge: 999999,
       });
     } catch {}
 

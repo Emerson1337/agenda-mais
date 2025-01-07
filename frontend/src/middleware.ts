@@ -10,8 +10,6 @@ import { isAxiosResponse } from "./shared/utils/errorUtils";
 export async function middleware(request: NextRequest) {
   const cookieStore = cookies();
   const authToken = cookieStore.get("authorization");
-  console.log("🟢🟢🟢🟢 getAll", cookieStore.getAll());
-  console.log("🟢🟢🟢🟢 authToken", authToken);
 
   if (!authToken)
     return NextResponse.redirect(new URL("/login", request.nextUrl.toString()));
@@ -19,8 +17,6 @@ export async function middleware(request: NextRequest) {
   try {
     await verifyToken();
   } catch (error) {
-    console.log("🟢🟢🟢🟢 error", error);
-
     if (isAxiosResponse(error) && error.status === 401) {
       try {
         const { access_token, refresh_token } = await refreshToken();
@@ -30,13 +26,15 @@ export async function middleware(request: NextRequest) {
           httpOnly: true,
           secure: false,
           path: "/",
-          sameSite: "none",
+          sameSite: "lax",
+          maxAge: 999999,
         });
         response.cookies.set("refreshToken", refresh_token, {
           httpOnly: true,
           secure: false,
           path: "/",
-          sameSite: "none",
+          sameSite: "lax",
+          maxAge: 999999,
         });
         return response;
       } catch (error) {

@@ -14,13 +14,15 @@ export const signIn = async ({
     httpOnly: true,
     secure: false,
     path: "/",
-    sameSite: "none",
+    sameSite: "lax",
+    maxAge: 999999,
   });
   cookies().set("refreshToken", refresh_token, {
     httpOnly: true,
     secure: false,
     path: "/",
-    sameSite: "none",
+    sameSite: "lax",
+    maxAge: 999999,
   });
 
   await delay(2000);
