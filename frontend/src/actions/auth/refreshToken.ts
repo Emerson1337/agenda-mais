@@ -18,11 +18,13 @@ export const refreshToken = async (): Promise<RefreshToken> => {
       cookies().set("authorization", access_token, {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
+        sameSite: "lax",
         path: "/",
       });
       cookies().set("refreshToken", refresh_token, {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
+        sameSite: "lax",
         path: "/",
       });
     } catch {}
