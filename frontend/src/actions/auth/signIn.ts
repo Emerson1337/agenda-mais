@@ -12,16 +12,16 @@ export const signIn = async ({
 }) => {
   cookies().set("authorization", access_token, {
     httpOnly: true,
-    secure: false,
+    secure: true,
     path: "/",
-    sameSite: "lax",
+    sameSite: "none",
     maxAge: 999999,
   });
   cookies().set("refreshToken", refresh_token, {
     httpOnly: true,
-    secure: false,
+    secure: true,
     path: "/",
-    sameSite: "lax",
+    sameSite: "none",
     maxAge: 999999,
   });
 

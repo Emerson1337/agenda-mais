@@ -24,16 +24,16 @@ export async function middleware(request: NextRequest) {
         const response = NextResponse.next();
         response.cookies.set("authorization", access_token, {
           httpOnly: true,
-          secure: false,
+          secure: true,
           path: "/",
-          sameSite: "lax",
+          sameSite: "none",
           maxAge: 999999,
         });
         response.cookies.set("refreshToken", refresh_token, {
           httpOnly: true,
-          secure: false,
+          secure: true,
           path: "/",
-          sameSite: "lax",
+          sameSite: "none",
           maxAge: 999999,
         });
         return response;
