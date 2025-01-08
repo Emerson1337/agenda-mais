@@ -69,7 +69,6 @@ const LayoutOne = ({ datesAvailable }: Props): JSX.Element => {
         });
 
         toast.success(response.message);
-        setIsOpen(false);
 
         // Delay WhatsApp notification for better UX
         WhatsappService.sendAppointmentConfirmation({
@@ -87,6 +86,8 @@ const LayoutOne = ({ datesAvailable }: Props): JSX.Element => {
             ),
           },
         });
+
+        setIsOpen(false);
       } catch (error) {
         if (isAxiosError(error)) {
           toast.error(
