@@ -64,7 +64,7 @@ resource "aws_lb_target_group" "agendazap_target_group" {
 resource "aws_lb_target_group" "agendazap_api_target_group" {
   name     = "agendazap-api-target-group"
   port     = 3000
-  protocol = "HTTP"
+  protocol = "HTTPS"
   vpc_id   = "vpc-0a315c5eae678cd2d"
 }
 
