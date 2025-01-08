@@ -10,6 +10,7 @@ import { isAxiosResponse } from "./shared/utils/errorUtils";
 export async function middleware(request: NextRequest) {
   const cookieStore = cookies();
   const authToken = cookieStore.get("authorization");
+  console.log("🟢🟢🟢🟢 authToken", authToken);
 
   if (!authToken)
     return NextResponse.redirect(new URL("/login", request.nextUrl.toString()));
@@ -28,6 +29,7 @@ export async function middleware(request: NextRequest) {
           path: "/",
           sameSite: "none",
           maxAge: 999999,
+          domain: process.env.NEXT_PUBLIC_DOMAIN,
         });
         response.cookies.set("refreshToken", refresh_token, {
           httpOnly: true,
@@ -35,6 +37,7 @@ export async function middleware(request: NextRequest) {
           path: "/",
           sameSite: "none",
           maxAge: 999999,
+          domain: process.env.NEXT_PUBLIC_DOMAIN,
         });
         return response;
       } catch (error) {

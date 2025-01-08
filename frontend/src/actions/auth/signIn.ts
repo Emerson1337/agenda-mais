@@ -16,6 +16,7 @@ export const signIn = async ({
     path: "/",
     sameSite: "none",
     maxAge: 999999,
+    domain: process.env.NEXT_PUBLIC_DOMAIN,
   });
   cookies().set("refreshToken", refresh_token, {
     httpOnly: true,
@@ -23,6 +24,7 @@ export const signIn = async ({
     path: "/",
     sameSite: "none",
     maxAge: 999999,
+    domain: process.env.NEXT_PUBLIC_DOMAIN,
   });
 
   await delay(2000);
