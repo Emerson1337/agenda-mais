@@ -8,9 +8,8 @@ import { verifyToken } from "./actions/auth/verifyToken";
 import { isAxiosResponse } from "./shared/utils/errorUtils";
 
 export async function middleware(request: NextRequest) {
-  const cookieStore = cookies();
-  const authToken = cookieStore.get("authorization");
-  console.log("🟢🟢🟢🟢 authToken", authToken, request.nextUrl.toString());
+  const authToken = cookies().get("authorization");
+  console.log("🟢🟢🟢🟢 authToken", authToken, request.toString());
 
   if (!authToken)
     return NextResponse.redirect(new URL("/login", request.nextUrl.toString()));
