@@ -2,7 +2,7 @@ import { Controller, Get, Res } from '@nestjs/common';
 import { handleError, ok } from '@/presentation/helpers/http.helper';
 import { Response } from 'express';
 
-@Controller('')
+@Controller('infra')
 export class InfraController {
   constructor() {}
 
