@@ -9,7 +9,6 @@ import { isAxiosResponse } from "./shared/utils/errorUtils";
 
 export async function middleware(request: NextRequest) {
   const authToken = cookies().get("authorization");
-  console.log("🟢🟢🟢🟢 authToken", authToken, cookies().getAll());
 
   if (!authToken)
     return NextResponse.redirect(new URL("/login", request.nextUrl.toString()));

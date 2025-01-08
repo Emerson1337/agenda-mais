@@ -6,6 +6,7 @@ const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 // Create axios instance
 export const API = axios.create({
   baseURL: BASE_URL,
+  withCredentials: true,
 });
 
 // Set up a request interceptor
