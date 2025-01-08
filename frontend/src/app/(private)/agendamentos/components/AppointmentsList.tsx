@@ -31,8 +31,6 @@ import { toast } from "react-toastify";
 import { useBusinessContext } from "@/app/(private)/utils/context/BusinessDataContext";
 import { isAxiosResponse } from "@/shared/utils/errorUtils";
 
-const ONE_SECOND = 1000;
-
 export default function AppointmentsList() {
   const { data, isFetching } = useAppointment();
   const { mutateAsync } = useAppointmentMutation();
@@ -53,15 +51,6 @@ export default function AppointmentsList() {
 
       toast.success(response.data.body.message);
       setOpen(false);
-      setTimeout(() => {
-        WhatsappService.warnCancelAppointment({
-          name: appointment?.clientName,
-          code: appointment?.code,
-          day: format(appointment?.date, "dd/MM/yyyy"),
-          time: appointment?.time,
-          phone: appointment.phone,
-        });
-      }, ONE_SECOND);
     } catch (error) {
       if (isAxiosResponse(error)) {
         toast.error(
@@ -69,6 +58,15 @@ export default function AppointmentsList() {
         );
       }
     }
+  };
+
+  const openWhatsapp = (appointment: AppointmentData) => {
+    WhatsappService.warnCancelAppointment({
+      name: appointment?.clientName,
+      day: format(appointment?.date, "dd/MM/yyyy"),
+      time: appointment?.time,
+      phone: appointment.phone,
+    });
   };
 
   return (
@@ -148,9 +146,10 @@ export default function AppointmentsList() {
         confirm={() => {
           setOpen(false);
         }}
-        dismiss={() =>
-          appointmentFocused && handleCancelAppointment(appointmentFocused)
-        }
+        dismiss={() => {
+          appointmentFocused && handleCancelAppointment(appointmentFocused);
+          appointmentFocused && openWhatsapp(appointmentFocused);
+        }}
         cancelStyle="bg-destructive"
         title={"Detalhes do agendamento"}
         cancelButton="Cancelar agendamento"
