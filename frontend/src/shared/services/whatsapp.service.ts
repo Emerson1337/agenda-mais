@@ -34,12 +34,12 @@ export class WhatsappService {
     day,
     time,
     phone,
-  }: WarnCancelAppointmentProps): void {
+  }: WarnCancelAppointmentProps): string {
     const message = `🔔 *Prezado(a) ${name}*,\n\nSeu agendamento com código *${code}* em *${day}* às *${time}* foi cancelado. ❌\n\nPedimos desculpas por qualquer inconveniente causado. 🙏\n\nVocê ainda pode realizar um novo agendamento na plataforma. Aguardamos você lá. 🙂`;
     const whatsappLink = `https://wa.me/${phone}?text=${encodeURIComponent(
       message,
     )}`;
-    window.open(whatsappLink, "_blank");
+    return whatsappLink;
   }
 
   static sendAppointmentConfirmation({
@@ -59,8 +59,6 @@ export class WhatsappService {
     const whatsappLink = `https://wa.me/${phone}?text=${encodeURIComponent(
       message,
     )}`;
-
-    window.open(whatsappLink, "_blank");
 
     return whatsappLink;
   }

@@ -54,13 +54,15 @@ export default function AppointmentsList() {
       toast.success(response.data.body.message);
       setOpen(false);
       setTimeout(() => {
-        WhatsappService.warnCancelAppointment({
+        const url = WhatsappService.warnCancelAppointment({
           name: appointment?.clientName,
           code: appointment?.code,
           day: format(appointment?.date, "dd/MM/yyyy"),
           time: appointment?.time,
           phone: appointment.phone,
         });
+
+        window.location.href = url;
       }, ONE_SECOND);
     } catch (error) {
       if (isAxiosResponse(error)) {

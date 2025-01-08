@@ -24,6 +24,8 @@ interface Props {
   datesAvailable: BusinessSchedule;
 }
 
+const ONE_SECOND = 1000;
+
 const LayoutOne = ({ datesAvailable }: Props): JSX.Element => {
   const [selectedDate, setSelectedDate] = useState<Slot>();
   const [selectedTime, setSelectedTime] = useState<string>();
@@ -69,25 +71,27 @@ const LayoutOne = ({ datesAvailable }: Props): JSX.Element => {
         });
 
         toast.success(response.message);
-
-        // Delay WhatsApp notification for better UX
-        WhatsappService.sendAppointmentConfirmation({
-          name: clientName,
-          code: response.appointment.code,
-          day: format(parseISO(date), "dd/MM/yyyy"),
-          time,
-          phone,
-          service: {
-            name: selectedService.name,
-            price: numberUtils.convertToMonetaryBRL(selectedService.price),
-            notes: notes,
-            duration: dateUtils.convertToTime(
-              selectedService.timeDurationInMinutes,
-            ),
-          },
-        });
-
         setIsOpen(false);
+        // Delay WhatsApp notification for better UX
+        setTimeout(() => {
+          const url = WhatsappService.sendAppointmentConfirmation({
+            name: clientName,
+            code: response.appointment.code,
+            day: format(parseISO(date), "dd/MM/yyyy"),
+            time,
+            phone,
+            service: {
+              name: selectedService.name,
+              price: numberUtils.convertToMonetaryBRL(selectedService.price),
+              notes: notes,
+              duration: dateUtils.convertToTime(
+                selectedService.timeDurationInMinutes,
+              ),
+            },
+          });
+
+          window.location.href = url;
+        }, ONE_SECOND);
       } catch (error) {
         if (isAxiosError(error)) {
           toast.error(
