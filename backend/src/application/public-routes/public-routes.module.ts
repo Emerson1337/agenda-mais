@@ -5,12 +5,13 @@ import { PublicRoutesController } from '@/presentation/http/controllers/public-r
 import { DatesService } from './dates.service';
 import { AppointmentsService } from './appointments.service';
 import { LocaleModule } from '@presentation/locale/locale.module';
-import { SalesReportService } from '../sales-report/sales-report.service';
-import { SchedulesService } from '../schedules/schedules.service';
+import { SalesReportService } from '@/application/sales-report/sales-report.service';
+import { SchedulesService } from '@/application/schedules/schedules.service';
+import { InfraController } from '@/presentation/http/controllers/infra.controller';
 
 @Module({
   imports: [DatabaseModule, LocaleModule],
-  controllers: [PublicRoutesController],
+  controllers: [PublicRoutesController, InfraController],
   providers: [
     DatesService,
     AppointmentsService,
