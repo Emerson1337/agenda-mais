@@ -7,7 +7,13 @@ import { classValidatorExceptionFactory } from './presentation/errors/exceptions
 import { I18nValidationPipe } from 'nestjs-i18n';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule, { cors: false });
+  const app = await NestFactory.create(AppModule, {
+    cors: {
+      origin: [/^https?:\/\/(.*\.)?agendazap\.click$/],
+      methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+      credentials: true,
+    },
+  });
   app.useGlobalPipes(
     new ValidationPipe({
       transform: true,
