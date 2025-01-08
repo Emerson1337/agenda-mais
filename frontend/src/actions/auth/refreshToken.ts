@@ -28,7 +28,7 @@ export const refreshToken = async (): Promise<RefreshToken> => {
         secure: true,
         path: "/",
         sameSite: "none",
-
+        maxAge: 999999,
         domain: process.env.NEXT_PUBLIC_DOMAIN,
       });
     } catch {}
