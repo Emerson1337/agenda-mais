@@ -54,7 +54,8 @@ const LayoutOne = ({ datesAvailable }: Props): JSX.Element => {
       time,
     }: Omit<BookAppointmentData, "scheduleId" | "serviceId">) => {
       if (!selectedService) {
-        return toast.error("Serviço não selecionado");
+        toast.error("Serviço não selecionado");
+        return undefined;
       }
 
       try {
@@ -71,24 +72,7 @@ const LayoutOne = ({ datesAvailable }: Props): JSX.Element => {
         toast.success(response.message);
         setIsOpen(false);
 
-        // Delay WhatsApp notification for better UX
-        setTimeout(() => {
-          WhatsappService.sendAppointmentConfirmation({
-            name: clientName,
-            code: response.appointment.code,
-            day: format(parseISO(date), "dd/MM/yyyy"),
-            time,
-            phone,
-            service: {
-              name: selectedService.name,
-              price: numberUtils.convertToMonetaryBRL(selectedService.price),
-              notes: notes,
-              duration: dateUtils.convertToTime(
-                selectedService.timeDurationInMinutes,
-              ),
-            },
-          });
-        }, 3000);
+        return response.appointment;
       } catch (error) {
         if (isAxiosError(error)) {
           toast.error(
@@ -96,6 +80,7 @@ const LayoutOne = ({ datesAvailable }: Props): JSX.Element => {
           );
         }
         console.error(error);
+        return undefined;
       }
     },
     [selectedService, business, datesAvailable.scheduleId],
@@ -119,6 +104,34 @@ const LayoutOne = ({ datesAvailable }: Props): JSX.Element => {
       return (
         hour > currentHour || (hour === currentHour && minute > currentMinute)
       );
+    });
+  };
+
+  const openWhatsapp = ({
+    clientName,
+    phone,
+    date,
+    notes,
+    time,
+  }: Omit<BookAppointmentData, "scheduleId" | "serviceId">) => {
+    if (!selectedService) {
+      return toast.error("Serviço não selecionado");
+    }
+
+    // Delay WhatsApp notification for better UX
+    WhatsappService.sendAppointmentConfirmation({
+      name: clientName,
+      day: format(parseISO(date), "dd/MM/yyyy"),
+      time: time,
+      phone: phone,
+      service: {
+        name: selectedService.name,
+        price: numberUtils.convertToMonetaryBRL(selectedService.price),
+        notes: notes,
+        duration: dateUtils.convertToTime(
+          selectedService.timeDurationInMinutes,
+        ),
+      },
     });
   };
 
@@ -193,7 +206,10 @@ const LayoutOne = ({ datesAvailable }: Props): JSX.Element => {
                 moveBack={() => setStep(1)}
                 open={isOpen}
                 setOpen={setIsOpen}
-                finish={handleFinish}
+                finish={(data) => {
+                  handleFinish(data);
+                  openWhatsapp({ ...data });
+                }}
               />
             )}
           </div>

@@ -12,8 +12,6 @@ import { stringUtils } from "@/shared/utils/stringUtils";
 import { numberUtils } from "@/shared/utils/numberUtils";
 import { isAxiosError } from "axios";
 
-const ONE_SECOND = 1000;
-
 interface AppointmentModalProps {
   appointmentFocused?: AppointmentData;
   open: boolean;
@@ -39,15 +37,6 @@ export function AppointmentModal({
         response.data.body.message ?? "Agendamento cancelado com sucesso!",
       );
       onDismiss();
-      setTimeout(() => {
-        WhatsappService.warnCancelAppointment({
-          name: appointment?.clientName,
-          code: appointment?.code,
-          day: format(appointment?.date, "dd/MM/yyyy"),
-          time: appointment?.time,
-          phone: appointment.phone,
-        });
-      }, ONE_SECOND);
     } catch (error) {
       if (isAxiosError(error)) {
         toast.error(
@@ -57,12 +46,22 @@ export function AppointmentModal({
     }
   };
 
+  const openWhatsapp = (appointment: AppointmentData) => {
+    WhatsappService.warnCancelAppointment({
+      name: appointment?.clientName,
+      day: format(appointment?.date, "dd/MM/yyyy"),
+      time: appointment?.time,
+      phone: appointment.phone,
+    });
+  };
+
   return (
     <Modal
       open={open}
       description="Confira as informações do agendamento."
       confirm={() => {
         appointmentFocused && handleCancelAppointment(appointmentFocused);
+        appointmentFocused && openWhatsapp(appointmentFocused);
       }}
       dismiss={onDismiss}
       confirmStyle="bg-destructive text-destructive-foreground hover:bg-destructive/70"
