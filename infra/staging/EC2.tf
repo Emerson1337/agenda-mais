@@ -64,7 +64,7 @@ resource "aws_lb_target_group" "agendazap_target_group" {
 resource "aws_lb_target_group" "agendazap_api_target_group" {
   name     = "agendazap-api-target-group"
   port     = 3000
-  protocol = "HTTPS"
+  protocol = "HTTP"
   vpc_id   = "vpc-0a315c5eae678cd2d"
 }
 
@@ -108,7 +108,9 @@ resource "aws_lb_listener" "http_listener" {
 resource "aws_lb_listener" "api_listener" {
   load_balancer_arn = aws_lb.agendazap_lb.arn
   port              = 3000
-  protocol          = "HTTP"
+  protocol          = "HTTPS"
+  ssl_policy        = "ELBSecurityPolicy-TLS13-1-2-2021-06"
+  certificate_arn   = "arn:aws:acm:sa-east-1:294562550042:certificate/9986e96c-29d2-41f5-b860-3a062d7e098b"
 
   default_action {
     type             = "forward"
