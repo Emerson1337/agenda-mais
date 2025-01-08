@@ -72,23 +72,21 @@ const LayoutOne = ({ datesAvailable }: Props): JSX.Element => {
         setIsOpen(false);
 
         // Delay WhatsApp notification for better UX
-        setTimeout(() => {
-          WhatsappService.sendAppointmentConfirmation({
-            name: clientName,
-            code: response.appointment.code,
-            day: format(parseISO(date), "dd/MM/yyyy"),
-            time,
-            phone,
-            service: {
-              name: selectedService.name,
-              price: numberUtils.convertToMonetaryBRL(selectedService.price),
-              notes: notes,
-              duration: dateUtils.convertToTime(
-                selectedService.timeDurationInMinutes,
-              ),
-            },
-          });
-        }, 3000);
+        WhatsappService.sendAppointmentConfirmation({
+          name: clientName,
+          code: response.appointment.code,
+          day: format(parseISO(date), "dd/MM/yyyy"),
+          time,
+          phone,
+          service: {
+            name: selectedService.name,
+            price: numberUtils.convertToMonetaryBRL(selectedService.price),
+            notes: notes,
+            duration: dateUtils.convertToTime(
+              selectedService.timeDurationInMinutes,
+            ),
+          },
+        });
       } catch (error) {
         if (isAxiosError(error)) {
           toast.error(
