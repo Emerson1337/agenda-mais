@@ -55,7 +55,7 @@ const BookAppointment: React.FC<BookAppointmentProps> = ({
   const handleDayClick = (date: Date) => {
     const dateAvailable = datesAvailable.find(
       (dateAvailable) =>
-        parseISO(dateAvailable.date).getTime() === date.getTime()
+        parseISO(dateAvailable.date).getTime() === date.getTime(),
     );
 
     if (dateAvailable) {

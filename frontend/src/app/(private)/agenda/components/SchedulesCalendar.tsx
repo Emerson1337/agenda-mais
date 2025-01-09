@@ -13,6 +13,7 @@ import {
 import { dateUtils } from "@/shared/utils/dateUtils";
 import { DateExceptions } from "@/app/(private)/agenda/schemas/schedule.schema";
 import React from "react";
+import { ptBR } from "date-fns/locale";
 
 export interface SchedulesCalendarProps {
   times: string[];
@@ -29,7 +30,7 @@ export function SchedulesCalendar({
 }: SchedulesCalendarProps) {
   const [open, setOpen] = useState<boolean>(false);
   const [dates, setDates] = useState<Date[]>(
-    defaultValue?.map((value) => startOfDay(parseISO(value.date))) ?? []
+    defaultValue?.map((value) => startOfDay(parseISO(value.date))) ?? [],
   );
 
   const [exceptionDate, setExceptionDate] = useState<Date | undefined>();
@@ -37,6 +38,7 @@ export function SchedulesCalendar({
   return (
     <>
       <Calendar
+        locale={ptBR}
         mode="multiple"
         disabled={dateUtils.getPastDaysFromToday()}
         selected={dates}
@@ -78,8 +80,8 @@ export function SchedulesCalendar({
           dismiss={(exceptionDate) => {
             setDates(
               dates.filter(
-                (date) => exceptionDate && !isSameDay(date, exceptionDate)
-              )
+                (date) => exceptionDate && !isSameDay(date, exceptionDate),
+              ),
             );
             exceptionDate &&
               onDismiss({
