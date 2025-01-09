@@ -8,6 +8,8 @@ import { ThemeWrapper } from "@/components/ui/theme-wrapper";
 import { Button } from "./button";
 import { baseColors } from "@/registry/registry-colors";
 import { Skeleton } from "@/registry/new-york/ui/skeleton";
+import { useGetManager } from "@/app/(private)/dashboard/hooks/useGetManager";
+import { extractBaseColorFromTheme } from "@/shared/utils/themeUtils";
 
 interface Props {
   onChange?: (theme: string) => void;
@@ -17,10 +19,16 @@ const ThemeCustomizer = ({ onChange }: Props) => {
   const [mounted, setMounted] = React.useState(false);
   const { resolvedTheme: mode } = useTheme();
   const [config, setConfig] = useConfig();
+  const { data } = useGetManager();
 
   React.useEffect(() => {
     setMounted(true);
-  }, []);
+    data?.palette &&
+      setConfig({
+        ...config,
+        theme: extractBaseColorFromTheme(data.palette),
+      });
+  }, [data]);
 
   return (
     <ThemeWrapper
