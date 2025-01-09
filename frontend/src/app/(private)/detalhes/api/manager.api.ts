@@ -3,6 +3,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { API } from "@/shared/services/config/config";
 import { MeType } from "@/shared/types/me";
 import { IChangePasswordRequest } from "@/app/(private)/detalhes/schemas/change-password.schema";
+import { ThemeStrings } from "@/registry/registry-colors";
 
 export const useGetManagerQuery = () => {
   return useQuery<MeType>({
@@ -19,7 +20,7 @@ export interface IRequestUpdateManager {
   email: string;
   phone: string;
   appointmentsPerPhone: number;
-  palette: string;
+  palette: ThemeStrings;
 }
 
 export const useUpdateManagerQuery = () => {
