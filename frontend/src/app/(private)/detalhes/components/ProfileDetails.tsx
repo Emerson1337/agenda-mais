@@ -25,10 +25,11 @@ import { ReloadIcon } from "@radix-ui/react-icons";
 import { User2 } from "lucide-react";
 import { isAxiosResponse } from "@/shared/utils/errorUtils";
 import { useGetPublicAssets } from "@/shared/utils/urlUtils";
+import { ThemeStrings } from "@/registry/registry-colors";
 
 export default function ProfileDetails() {
   const [profileImage, setProfileImage] = useState<ImageListType>([]);
-  const [newPalette, setNewPalette] = useState<string>();
+  const [newPalette, setNewPalette] = useState<ThemeStrings>();
   const [croppedProfileImage, setCroppedProfileImage] = useState<string | null>(
     null,
   );

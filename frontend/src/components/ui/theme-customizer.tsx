@@ -10,9 +10,10 @@ import { baseColors } from "@/registry/registry-colors";
 import { Skeleton } from "@/registry/new-york/ui/skeleton";
 import { useGetManager } from "@/app/(private)/dashboard/hooks/useGetManager";
 import { extractBaseColorFromTheme } from "@/shared/utils/themeUtils";
+import { ThemeStrings } from "@/registry/registry-colors";
 
 interface Props {
-  onChange?: (theme: string) => void;
+  onChange?: (theme: ThemeStrings) => void;
 }
 
 const ThemeCustomizer = ({ onChange }: Props) => {

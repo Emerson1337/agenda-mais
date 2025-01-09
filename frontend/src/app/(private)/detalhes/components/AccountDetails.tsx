@@ -19,7 +19,7 @@ import { useForm } from "react-hook-form";
 import { useState, useEffect } from "react";
 import { useGetManager } from "@/app/(private)/dashboard/hooks/useGetManager";
 import { stringUtils } from "@/shared/utils/stringUtils";
-import { isAxiosResponse } from "../../../../shared/utils/errorUtils";
+import { isAxiosResponse } from "@/shared/utils/errorUtils";
 
 export default function AccountDetails() {
   const { data } = useGetManager();
