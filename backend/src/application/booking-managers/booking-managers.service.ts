@@ -172,24 +172,25 @@ export class BookingManagersService {
         }),
       );
 
-    picturePath = await this.fileAdapter.moveFile(
-      picturePath,
-      `public/${managerId}/${filename}`,
-    );
+    const { fileUrl } = await this.fileAdapter.uploadFile({
+      filePath: picturePath,
+      fileName: filename,
+      contentType: 'image/jpeg',
+    });
 
     const manager = await this.bookingManagersRepository.findById(managerId);
 
     if (manager.profilePhoto) {
       try {
-        this.fileAdapter.removeFile(manager.profilePhoto);
+        this.fileAdapter.deleteFile(picturePath);
       } catch (error) {
-        error; //file not found
+        console.log('🟢🟢🟢🟢 error', error);
       }
     }
 
     return await this.bookingManagersRepository.updatePicture(
       managerId,
-      picturePath,
+      fileUrl,
     );
   }
 

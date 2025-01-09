@@ -37,6 +37,3 @@ lerna-debug.log*
 # Environment variables
 .env*
 
-# Uploads and public files
-uploads
-public
