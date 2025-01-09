@@ -1,3 +1,5 @@
+import { ThemeStrings } from "@/registry/registry-colors";
+
 export type MeType = {
   id: string;
   createdAt: Date;
@@ -12,5 +14,5 @@ export type MeType = {
   status: string;
   roles: string[];
   plan: string;
-  palette: string;
+  palette: ThemeStrings;
 };

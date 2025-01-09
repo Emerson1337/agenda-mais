@@ -754,3 +754,19 @@ export const baseColors = [
 ] as const;
 
 export type BaseColor = (typeof baseColors)[number];
+
+export type ThemeStrings = `theme-${ThemeColors}`;
+
+export type ThemeColors =
+  | "zinc"
+  | "slate"
+  | "stone"
+  | "gray"
+  | "neutral"
+  | "red"
+  | "rose"
+  | "orange"
+  | "green"
+  | "blue"
+  | "yellow"
+  | "violet";

@@ -62,6 +62,8 @@ jobs:
           echo "MAIL_PASSWORD=${{ secrets.MAIL_PASSWORD }}" >> backend/.env
           echo "MAIL_SENDER=${{ secrets.MAIL_SENDER }}" >> backend/.env
           echo "BASE_URL=${{ vars.BASE_URL }}" >> backend/.env
+          echo "AWS_REGION=${{ vars.AWS_REGION }}" >> backend/.env
+          echo "S3_BUCKET=${{ vars.S3_BUCKET }}" >> backend/.env
 
       - name: Generate Frontend .env File
         run: |
