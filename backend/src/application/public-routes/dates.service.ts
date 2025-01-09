@@ -94,6 +94,7 @@ export class DatesService {
         );
       });
       // 0 - monday, 6 - sunday
+      // TODO: check this logic later
       if (schedule.weekDays.includes(getDay(date)))
         datesInSchedule.push({
           date,
