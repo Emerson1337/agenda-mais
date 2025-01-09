@@ -19,7 +19,7 @@ const defaultValue: MeType = {
   status: "",
   roles: [],
   plan: "",
-  palette: "",
+  palette: "theme-zinc",
   profilePhoto: "",
 };
 
