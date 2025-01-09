@@ -1,3 +1,4 @@
+import { ThemeStrings } from "@/registry/registry-colors";
 export interface LoginData {
   user: User;
   access_token: string;
@@ -17,7 +18,7 @@ export interface User {
   appointmentsPerPhone: number;
   status: string;
   roles: string[];
-  palette: string;
+  palette: ThemeStrings;
   plan: string;
 }
 
