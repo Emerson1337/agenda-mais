@@ -208,7 +208,6 @@ const BookAppointment: React.FC<BookAppointmentProps> = ({
               <Input
                 onChange={(event) => setClientName(event.target.value)}
                 value={clientName}
-                autoFocus
                 className="text-xl text-center"
               />
             </p>
@@ -219,7 +218,6 @@ const BookAppointment: React.FC<BookAppointmentProps> = ({
                 onChange={(value) => setClientPhone(value)}
                 countries={["BR"]}
                 defaultCountry="BR"
-                autoFocus
               />
             </p>
           </div>

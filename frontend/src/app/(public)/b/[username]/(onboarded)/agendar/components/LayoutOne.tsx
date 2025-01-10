@@ -109,7 +109,6 @@ const LayoutOne = ({ datesAvailable }: Props): JSX.Element => {
 
   const openWhatsapp = ({
     clientName,
-    phone,
     date,
     notes,
     time,
@@ -123,7 +122,7 @@ const LayoutOne = ({ datesAvailable }: Props): JSX.Element => {
       name: clientName,
       day: format(parseISO(date), "dd/MM/yyyy"),
       time: time,
-      phone: phone,
+      phone: business.phone,
       service: {
         name: selectedService.name,
         price: numberUtils.convertToMonetaryBRL(selectedService.price),
