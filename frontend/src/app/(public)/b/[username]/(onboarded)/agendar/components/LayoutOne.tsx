@@ -180,7 +180,7 @@ const LayoutOne = ({ datesAvailable }: Props): JSX.Element => {
         <div className="max-w-96 md:max-w-full self-center">
           {/* Introduction Text */}
           <div className="mt-8 px-4 text-center">
-            <p className="text-secondary-foreground text-xs font-thin">
+            <p className="text-secondary-foreground text-xs font-light">
               {business.welcomeMessage}
             </p>
           </div>
@@ -214,7 +214,7 @@ const LayoutOne = ({ datesAvailable }: Props): JSX.Element => {
           </div>
         </div>
       </div>
-      <div className="flex justify-center my-4">
+      <div className="flex justify-center my-4 h-16 w-full">
         {/* <SocialNetwork className="text-foreground h-6" /> */}
       </div>
     </div>
