@@ -6,7 +6,7 @@ import { BusinessSchedule, Slot } from "@/shared/types/times-available";
 import { notFound, useRouter } from "next/navigation";
 import { ReloadIcon } from "@radix-ui/react-icons";
 import { useBusinessContext } from "@/public/b/[username]/utils/context/BusinessDataContext";
-import { SocialNetwork } from "@/public/b/[username]/(onboarded)/agendar/components/SocialNetwork";
+// import { SocialNetwork } from "@/public/b/[username]/(onboarded)/agendar/components/SocialNetwork";
 import { Service } from "@/shared/types/business";
 import BookAppointment from "@/public/b/[username]/(onboarded)/agendar/components/BookAppointment";
 import ChooseService from "@/public/b/[username]/(onboarded)/agendar/components/ChooseService";
@@ -215,7 +215,7 @@ const LayoutOne = ({ datesAvailable }: Props): JSX.Element => {
         </div>
       </div>
       <div className="flex justify-center my-4">
-        <SocialNetwork className="text-foreground h-6" />
+        {/* <SocialNetwork className="text-foreground h-6" /> */}
       </div>
     </div>
   );
