@@ -50,7 +50,8 @@ export class WhatsappService {
       service.name
     }\n💵 *Valor*: ${service.price} Reais${
       service.notes ? `\n\nAlgumas observações: ${service.notes}` : ""
-    }\n\nAguardo ansiosamente pelo atendimento! 😊`;
+    }\n\nAguardo ansiosamente pelo atendimento! 😊
+    \n\n\n❌ Caso deseje cancelar o atendimento, acesse: [Cancelar Atendimento](${process.env.NEXT_PUBLIC_BASE_URL}/historico) e escolha qual atendimento deseja cancelar.`;
 
     const whatsappLink = `https://api.whatsapp.com/send/?phone=${phone}&text=${encodeURIComponent(
       message,
