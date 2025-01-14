@@ -136,12 +136,16 @@ const Header = () => {
                               href={menuItem.path}
                               className={`ud-menu-scroll flex py-2 text-base lg:inline-flex lg:px-0 lg:py-6 ${
                                 sticky
-                                  ? "text-primary group-hover:text-secondary-foreground dark:text-secondary dark:group-hover:text-primary"
+                                  ? "text-secondary-foreground group-hover:text-primary dark:text-secondary dark:group-hover:text-primary"
                                   : "text-body-color dark:text-secondary lg:text-secondary"
                               } ${
                                 pathUrl === menuItem?.path &&
                                 sticky &&
                                 "!text-primary"
+                              } ${
+                                pathUrl === menuItem?.path &&
+                                !sticky &&
+                                "!text-secondary-foreground"
                               }`}
                             >
                               {menuItem.title}

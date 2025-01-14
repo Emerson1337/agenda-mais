@@ -1,8 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
 import HeroImage from "@/assets/images/hero/hero.gif";
-import { Dots } from '@/components/ui/Hero/Dots';
-import { WhatsappIcon } from '@/components/ui/Hero/WhatsappIcon';
+import { Dots } from "@/components/ui/Hero/Dots";
+import { WhatsappIcon } from "@/components/ui/Hero/WhatsappIcon";
 
 const Hero = () => {
   return (
@@ -44,7 +44,7 @@ const Hero = () => {
                     <Link
                       href="https://github.com/nextjsTemplates/play-nextjs"
                       target="_blank"
-                      className="flex items-center gap-4 rounded-md bg-white/[0.12] px-6 py-[14px] text-base font-medium text-secondary transition duration-300 ease-in-out hover:bg-white hover:text-secondary"
+                      className="flex items-center gap-4 rounded-md bg-white/[0.12] px-6 py-[14px] text-base font-medium text-secondary dark:hover:text-secondary transition duration-300 ease-in-out hover:bg-white hover:text-secondary-foreground"
                     >
                       <WhatsappIcon />
                       Tirar Dúvidas
