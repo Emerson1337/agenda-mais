@@ -7,7 +7,6 @@ import Features from "@/components/ui/Features";
 import Hero from "@/components/ui/Hero";
 import Pricing from "@/components/ui/Pricing";
 import Team from "@/components/ui/Team";
-// import Testimonials from "@/components/ui/Testimonials";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -25,7 +24,6 @@ export default function Home() {
       <About />
       <CallToAction />
       <Pricing />
-      {/* <Testimonials /> */}
       <Faq />
       <Team />
       <Contact />
