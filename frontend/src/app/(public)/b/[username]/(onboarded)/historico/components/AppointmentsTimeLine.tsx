@@ -54,7 +54,7 @@ const AppointmentsTimeLine = ({ appointmentsHistory }: Props): JSX.Element => {
             {appointment.notes && (
               <p className="mb-4 text-base text-gray-500 dark:text-gray-400">
                 <span className="font-bold"> Obs:</span>{" "}
-                <span className="font-thin">{appointment.notes}</span>
+                <span className="font-light">{appointment.notes}</span>
               </p>
             )}
             {[AppointmentStatus.ACTIVE].includes(appointment.status) && (

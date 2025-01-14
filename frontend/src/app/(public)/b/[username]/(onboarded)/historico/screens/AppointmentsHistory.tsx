@@ -35,7 +35,7 @@ const AppointmentsHistory = ({ username }: Props): JSX.Element => {
   if (!appointmentsHistory || appointmentsHistory.length === 0) {
     return (
       <div className="text-center h-screen w-screen flex items-center justify-center">
-        <h1 className="text-2xl font-thin">
+        <h1 className="text-2xl font-light">
           Você ainda não possui histórico de agendamentos
         </h1>
       </div>
