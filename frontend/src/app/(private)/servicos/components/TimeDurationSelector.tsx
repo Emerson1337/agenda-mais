@@ -26,7 +26,7 @@ export function TimeDurationSelector({
 
   return (
     <div className="w-full flex gap-4 flex-col">
-      <span className="font-thin">Qual o tempo de duração do serviço?</span>
+      <span className="font-light">Qual o tempo de duração do serviço?</span>
       <Select
         defaultValue={defaultValue ? String(defaultValue) : undefined}
         onValueChange={(value) => {

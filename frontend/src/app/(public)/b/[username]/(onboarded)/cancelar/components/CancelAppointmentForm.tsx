@@ -49,11 +49,10 @@ const CancelAppointmentForm = ({ username }: Props): JSX.Element => {
       toast.success(response.message);
       setIsLoading(false);
     } catch (error) {
-      console.error("Erro ao cancelar agendamento.", error);
+      setIsLoading(false);
       if (isAxiosError(error)) {
-        return toast.error(error.response?.data.message);
+        return toast.error(error.response?.data.body.error.message);
       }
-
       toast.error("Erro ao cancelar agendamento.");
     }
   };

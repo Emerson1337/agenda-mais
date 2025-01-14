@@ -10,7 +10,7 @@ const FillName = ({ onChange, value }: Props): JSX.Element => {
     <div>
       <div className="text-2xl text-center font-medium text-white dark:text-white mb-8">
         <div className="font-bold">Quase lá!</div>
-        <div className="font-thin">Como podemos te chamar? 😁</div>
+        <div className="font-light">Como podemos te chamar? 😁</div>
       </div>
       <Input
         onChange={(event) => {

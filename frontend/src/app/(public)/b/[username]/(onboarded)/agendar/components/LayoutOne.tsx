@@ -6,7 +6,7 @@ import { BusinessSchedule, Slot } from "@/shared/types/times-available";
 import { notFound, useRouter } from "next/navigation";
 import { ReloadIcon } from "@radix-ui/react-icons";
 import { useBusinessContext } from "@/public/b/[username]/utils/context/BusinessDataContext";
-import { SocialNetwork } from "@/public/b/[username]/(onboarded)/agendar/components/SocialNetwork";
+// import { SocialNetwork } from "@/public/b/[username]/(onboarded)/agendar/components/SocialNetwork";
 import { Service } from "@/shared/types/business";
 import BookAppointment from "@/public/b/[username]/(onboarded)/agendar/components/BookAppointment";
 import ChooseService from "@/public/b/[username]/(onboarded)/agendar/components/ChooseService";
@@ -109,7 +109,6 @@ const LayoutOne = ({ datesAvailable }: Props): JSX.Element => {
 
   const openWhatsapp = ({
     clientName,
-    phone,
     date,
     notes,
     time,
@@ -123,7 +122,7 @@ const LayoutOne = ({ datesAvailable }: Props): JSX.Element => {
       name: clientName,
       day: format(parseISO(date), "dd/MM/yyyy"),
       time: time,
-      phone: phone,
+      phone: business.phone,
       service: {
         name: selectedService.name,
         price: numberUtils.convertToMonetaryBRL(selectedService.price),
@@ -181,7 +180,7 @@ const LayoutOne = ({ datesAvailable }: Props): JSX.Element => {
         <div className="max-w-96 md:max-w-full self-center">
           {/* Introduction Text */}
           <div className="mt-8 px-4 text-center">
-            <p className="text-secondary-foreground text-xs font-thin">
+            <p className="text-secondary-foreground text-xs font-light">
               {business.welcomeMessage}
             </p>
           </div>
@@ -215,8 +214,8 @@ const LayoutOne = ({ datesAvailable }: Props): JSX.Element => {
           </div>
         </div>
       </div>
-      <div className="flex justify-center my-4">
-        <SocialNetwork className="text-foreground h-6" />
+      <div className="flex justify-center my-4 h-16 w-full">
+        {/* <SocialNetwork className="text-foreground h-6" /> */}
       </div>
     </div>
   );

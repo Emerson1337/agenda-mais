@@ -131,7 +131,7 @@ const BookAppointment: React.FC<BookAppointmentProps> = ({
           </AlertDialogHeader>
 
           {/* Selected Date Display */}
-          <div className="my-4 text-center font-thin">
+          <div className="my-4 text-center font-light">
             Agendamento para <strong>{formattedSelectedDate}</strong>
           </div>
 
@@ -153,10 +153,10 @@ const BookAppointment: React.FC<BookAppointmentProps> = ({
           {/* Note Input and Confirmation */}
           {selectedTime && (
             <>
-              <div className="my-4 text-center font-thin">
+              <div className="my-4 text-center font-light">
                 Horário selecionado: <strong>{selectedTime}</strong>
               </div>
-              <span className="block my-4 text-center font-thin">
+              <span className="block my-4 text-center font-light">
                 Deseja adicionar alguma observação?
               </span>
               <Textarea
@@ -193,22 +193,21 @@ const BookAppointment: React.FC<BookAppointmentProps> = ({
           <div className="my-4 text-center flex flex-col gap-2">
             <p>
               <strong>Data:</strong>
-              <span className="font-thin"> {formattedSelectedDate}</span>
+              <span className="font-light"> {formattedSelectedDate}</span>
             </p>
             <p>
               <strong>Horário:</strong>
-              <span className="font-thin"> {selectedTime}</span>
+              <span className="font-light"> {selectedTime}</span>
             </p>
             <p>
               <strong>Observações:</strong>
-              <span className="font-thin"> {notes || "Nenhuma"}</span>
+              <span className="font-light"> {notes || "Nenhuma"}</span>
             </p>
             <p className="mt-2 flex flex-col gap-4">
               <strong>Nome:</strong>
               <Input
                 onChange={(event) => setClientName(event.target.value)}
                 value={clientName}
-                autoFocus
                 className="text-xl text-center"
               />
             </p>
@@ -219,7 +218,6 @@ const BookAppointment: React.FC<BookAppointmentProps> = ({
                 onChange={(value) => setClientPhone(value)}
                 countries={["BR"]}
                 defaultCountry="BR"
-                autoFocus
               />
             </p>
           </div>

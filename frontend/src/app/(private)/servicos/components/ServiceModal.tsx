@@ -116,14 +116,14 @@ export function ServiceModal({
       }
     >
       {modalType === "delete" ? (
-        <p className="font-thin">
+        <p className="font-light">
           Tem certeza de que deseja excluir o serviço{" "}
           <span className="font-bold">{serviceFocused?.name}</span>?
         </p>
       ) : (
         <div className="p-4">
           <div className="flex gap-3 flex-col">
-            <label className="font-thin">Nome do Serviço:</label>
+            <label className="font-light">Nome do Serviço:</label>
             <Input
               placeholder="Digite o nome do serviço"
               {...register("name")}
@@ -131,7 +131,7 @@ export function ServiceModal({
             <ErrorLabel>{errors.name?.message}</ErrorLabel>
           </div>
           <div className="flex gap-3 flex-col">
-            <label className="font-thin">Preço:</label>
+            <label className="font-light">Preço:</label>
             <MoneyInput
               placeholder="Digite o preço do serviço"
               defaultValue={getValues()?.price}
@@ -140,7 +140,7 @@ export function ServiceModal({
             <ErrorLabel>{errors.price?.message}</ErrorLabel>
           </div>
           <div className="flex gap-3 flex-col">
-            <label className="font-thin">Descrição:</label>
+            <label className="font-light">Descrição:</label>
             <Textarea
               placeholder="Digite a descrição do serviço"
               {...register("description")}
@@ -148,7 +148,7 @@ export function ServiceModal({
             <ErrorLabel>{errors.description?.message}</ErrorLabel>
           </div>
           <div className="flex gap-3 flex-col">
-            <label className="font-thin">Tempo:</label>
+            <label className="font-light">Tempo:</label>
             <TimeDurationSelector
               defaultValue={getValues()?.timeDurationInMinutes}
               onChange={(value) => setValue("timeDurationInMinutes", value)}
