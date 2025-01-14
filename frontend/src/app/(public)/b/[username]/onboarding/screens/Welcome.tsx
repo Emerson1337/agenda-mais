@@ -1,7 +1,7 @@
 import Particles from "../components/Particles";
 import { SparklesCore } from "../components/SparklesCore";
 import OnboardingFlow from "../components/OnboardingFlow";
-import "@/app/globals.css";
+import "@/shared/styles/globals.css";
 
 const Welcome = async () => {
   return (

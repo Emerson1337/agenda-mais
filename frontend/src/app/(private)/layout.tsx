@@ -1,4 +1,4 @@
-import "../globals.css";
+import "@/shared/styles/globals.css";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { Sidebar } from "@/components/ui/sidebar";
 import Header from "./dashboard/components/Header";

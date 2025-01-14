@@ -1,4 +1,4 @@
-import "@/app/globals.css";
+import "@/shared/styles/globals.css";
 import { ScheduleOptions } from "../components/ScheduleOptions";
 
 interface RootLayoutProps {
