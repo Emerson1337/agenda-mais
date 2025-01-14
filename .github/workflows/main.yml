@@ -40,6 +40,8 @@ jobs:
             fi
 
             # Prepare the application directory with correct ownership
+            sudo rm -rf /home/${{ secrets.EC2_USER }}/app
+
             sudo mkdir -p /home/${{ secrets.EC2_USER }}/app
             sudo chown -R ${{ secrets.EC2_USER }}:${{ secrets.EC2_USER }} /home/${{ secrets.EC2_USER }}/app
           EOF
