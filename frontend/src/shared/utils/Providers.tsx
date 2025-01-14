@@ -1,12 +1,9 @@
 "use client";
 
-import {
-  QueryClient,
-  QueryClientProvider,
-} from "@tanstack/react-query";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 import "react-toastify/dist/ReactToastify.css";
-import "@/app/globals.css";
+import "@/shared/styles/globals.css";
 import { ToastContainer } from "react-toastify";
 import { ReactNode, useState } from "react";
 

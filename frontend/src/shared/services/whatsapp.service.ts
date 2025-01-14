@@ -58,4 +58,12 @@ export class WhatsappService {
 
     window.open(whatsappLink, "_blank");
   }
+
+  static contactForDeal(customMessage?: string): string {
+    const message =
+      customMessage ?? `👋 *Olá! Gostaria de entender mais sobre o AgendaZap.`;
+    const phone = "5585986160705";
+
+    return `https://api.whatsapp.com/send/?phone=${phone}&text=${message}`;
+  }
 }

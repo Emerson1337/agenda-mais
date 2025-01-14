@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import "@/app/globals.css";
+import "@/shared/styles/globals.css";
 import { Suspense } from "react";
 import { ReloadIcon } from "@radix-ui/react-icons";
 

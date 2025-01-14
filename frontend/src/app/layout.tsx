@@ -1,8 +1,10 @@
 import { Inter } from "next/font/google";
 const inter = Inter({ subsets: ["latin"] });
-import "@/app/globals.css";
+import "@/shared/styles/globals.css";
 import { Provider } from "@/shared/utils/Providers";
 import { ThemeProvider } from "@/components/ui/theme-provider";
+import "@/shared/styles/index.css";
+import "@/shared/styles/prism-vsc-dark-plus.css";
 
 export default async function RootLayout({
   children,
