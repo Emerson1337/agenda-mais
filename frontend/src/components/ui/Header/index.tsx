@@ -105,18 +105,18 @@ const Header = () => {
                 </button>
                 <nav
                   id="navbarCollapse"
-                  className={`navbar absolute right-0 z-30 w-[250px] rounded border-[.5px] border-body-color/50 dark:bg-secondary bg-secondary-foreground px-6 py-4 duration-300 dark:border-body-color/20 dark:bg-dark-2 lg:visible lg:static lg:w-auto lg:border-none lg:!bg-transparent lg:p-0 lg:opacity-100 lg:dark:bg-transparent ${
+                  className={`navbar absolute right-0 z-30 w-[250px] rounded border-[.5px] border-body-color/50 bg-[#128c7e] px-6 py-4 duration-300 dark:border-body-color/20 dark:bg-dark-2 lg:visible lg:static lg:w-auto lg:border-none lg:!bg-transparent lg:p-0 lg:opacity-100 lg:dark:bg-transparent ${
                     navbarOpen
                       ? "visibility top-full opacity-100"
                       : "invisible top-[120%] opacity-0"
                   }`}
                 >
                   <ul className="block lg:ml-8 lg:flex lg:gap-x-8 xl:ml-14 xl:gap-x-12">
-                    <li className="block sm:hidden group relative">
+                    <li className="block sm:hidden group relative my-2">
                       <Link
                         prefetch
                         href="/dashboard"
-                        className="bg-secondary-foreground p-3 rounded-xl py-2 text-base lg:px-0 lg:py-6 text-secondary"
+                        className="bg-secondary-foreground block text-center w-full p-3 rounded-xl py-2 text-base lg:px-0 lg:py-6 text-secondary"
                       >
                         Acessar Plataforma
                       </Link>
@@ -144,7 +144,7 @@ const Header = () => {
                               scroll={false}
                               href={menuItem.path}
                               className={`ud-menu-scroll flex py-2 text-base lg:inline-flex lg:px-0 lg:py-6 text-white 
-                                ${pathUrl === menuItem?.path && !sticky && "!text-secondary-foreground"}
+                                ${pathUrl === menuItem?.path && !sticky && "lg:!text-secondary-foreground !text-secondary"}
                                 ${pathUrl === menuItem?.path && sticky && "!text-primary"}
                                 ${
                                   sticky
