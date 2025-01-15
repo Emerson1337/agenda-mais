@@ -16,15 +16,15 @@ export class FileAdapter {
   private region: string;
 
   constructor() {
-    this.s3Client = new S3Client({ region: process.env.AWS_REGION });
+    this.s3Client = new S3Client({
+      region: process.env.AWS_REGION,
+      credentials: {
+        accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+        secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+      },
+    });
     this.region = process.env.AWS_REGION;
     this.bucket = process.env.S3_BUCKET;
-
-    console.log(
-      '🟢🟢🟢🟢 process.env.AWS_REGION, process.env.S3_BUCKET',
-      process.env.AWS_REGION,
-      process.env.S3_BUCKET,
-    );
   }
 
   ensureUploadDirExists(): void {

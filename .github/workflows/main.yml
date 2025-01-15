@@ -66,6 +66,8 @@ jobs:
           echo "BASE_URL=${{ vars.BASE_URL }}" >> backend/.env
           echo "AWS_REGION=${{ vars.AWS_REGION }}" >> backend/.env
           echo "S3_BUCKET=${{ vars.S3_BUCKET }}" >> backend/.env
+          echo "AWS_ACCESS_KEY_ID=${{ vars.AWS_ACCESS_KEY_ID }}" >> backend/.env
+          echo "AWS_SECRET_ACCESS_KEY=${{ vars.AWS_SECRET_ACCESS_KEY }}" >> backend/.env
 
       - name: Generate Frontend .env File
         run: |
