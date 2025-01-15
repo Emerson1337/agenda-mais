@@ -102,15 +102,20 @@ export default function AccountDetails() {
               </p>
             )}
             {/* Display the formatted example */}
-            <div className="text-sm text-gray-500 flex justify-start flex-wrap gap-2">
-              <span className="w-full">Exemplo de URL: </span>
-              <div className="flex justify-between w-full">
+            <div className="text-sm flex flex-col items-center text-gray-500">
+              <div className="flex justify-start flex-wrap w-full gap-2">
+                <span>Exemplo de URL: </span>
                 <span className="font-mono">/b/{formattedName}</span>
-                <ClipboardCopyIcon
-                  className="h-5 w-5 ml-2 cursor-pointer text-gray-500"
-                  onClick={copyToClipboard}
-                />
               </div>
+              <Button
+                type="button"
+                onClick={copyToClipboard}
+                variant={"outline"}
+                className="mt-4 w-full"
+              >
+                Copiar link
+                <ClipboardCopyIcon className="h-5 w-5 ml-2 cursor-pointer text-gray-500" />
+              </Button>
             </div>
           </div>
           <div className="grid gap-3">
