@@ -24,7 +24,7 @@ export function AppointmentModal({
   onDismiss,
 }: AppointmentModalProps) {
   const { mutateAsync } = useAppointmentMutation();
-  const { id: managerId } = useBusinessContext();
+  const { id: managerId, username } = useBusinessContext();
 
   const handleCancelAppointment = async (appointment: AppointmentData) => {
     try {
@@ -49,6 +49,7 @@ export function AppointmentModal({
   const openWhatsapp = (appointment: AppointmentData) => {
     WhatsappService.warnCancelAppointment({
       name: appointment?.clientName,
+      business: username,
       day: format(appointment?.date, "dd/MM/yyyy"),
       time: appointment?.time,
       phone: appointment.phone,

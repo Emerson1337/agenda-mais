@@ -2,6 +2,7 @@ interface WarnCancelAppointmentProps {
   name: string;
   day: string;
   time: string;
+  business: string;
   phone: string;
 }
 
@@ -10,6 +11,7 @@ interface BookAppointmentProps {
   day: string;
   time: string;
   phone: string;
+  business: string;
   service: {
     name: string;
     price: string;
@@ -29,10 +31,11 @@ export class WhatsappService {
   static warnCancelAppointment({
     name,
     day,
+    business,
     time,
     phone,
   }: WarnCancelAppointmentProps): void {
-    const message = `🔔 *Prezado(a) ${name}*,\n\nSeu agendamento em *${day}* às *${time}* foi cancelado. ❌\n\nPedimos desculpas por qualquer inconveniente causado. 🙏\n\nVocê ainda pode realizar um novo agendamento na plataforma. Aguardamos você lá. 🙂`;
+    const message = `🔔 *Prezado(a) ${name}*,\n\nSeu agendamento em *${day}* às *${time}* foi cancelado. ❌\n\nPedimos desculpas por qualquer inconveniente causado. 🙏\n\nVocê ainda pode realizar um novo agendamento na plataforma. Aguardamos você lá. 🙂\n\n Acesse: ${process.env.NEXT_PUBLIC_BASE_URL}/b/${business}`;
     const whatsappLink = `https://api.whatsapp.com/send/?phone=${phone}&text=${encodeURIComponent(
       message,
     )}`;
@@ -44,6 +47,7 @@ export class WhatsappService {
     day,
     time,
     service,
+    business,
     phone,
   }: BookAppointmentProps): void {
     const message = `👋 *Olá, sou ${name} e estou realizando um agendamento!*\n\n📅 *Data*: ${day}\n🕒 *Hora*: ${time}\n🔨 *Serviço*: ${
@@ -51,7 +55,7 @@ export class WhatsappService {
     }\n💵 *Valor*: ${service.price} Reais${
       service.notes ? `\n\nAlgumas observações: ${service.notes}` : ""
     }\n\nAguardo ansiosamente pelo atendimento! 😊
-    \n\n\n❌ Caso deseje cancelar o atendimento, acesse: ${process.env.NEXT_PUBLIC_BASE_URL}/historico e escolha qual atendimento deseja cancelar.`;
+    \n\n\n❌ Caso deseje cancelar o atendimento, acesse: ${process.env.NEXT_PUBLIC_BASE_URL}/b/${business}/historico e escolha qual atendimento deseja cancelar.`;
 
     const whatsappLink = `https://api.whatsapp.com/send/?phone=${phone}&text=${encodeURIComponent(
       message,

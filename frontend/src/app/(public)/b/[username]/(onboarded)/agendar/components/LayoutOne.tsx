@@ -122,6 +122,7 @@ const LayoutOne = ({ datesAvailable }: Props): JSX.Element => {
       name: clientName,
       day: format(parseISO(date), "dd/MM/yyyy"),
       time: time,
+      business: business.username,
       phone: business.phone,
       service: {
         name: selectedService.name,

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { WhatsappService } from "../../../shared/services/whatsapp.service";
 
 const CallToAction = () => {
   return (
@@ -16,7 +17,7 @@ const CallToAction = () => {
                   acesso gratuito.
                 </p>
                 <Link
-                  href="/"
+                  href={WhatsappService.contactForDeal()}
                   className="inline-block rounded-md border border-transparent bg-secondary px-7 py-3 text-base font-medium text-primary transition hover:bg-secondary-foreground"
                 >
                   Assinar agora

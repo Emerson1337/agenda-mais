@@ -102,14 +102,16 @@ export default function AccountDetails() {
               </p>
             )}
             {/* Display the formatted example */}
-            <p className="text-sm text-gray-500 flex justify-around">
-              Exemplo de URL:{" "}
-              <span className="font-mono">/b/{formattedName}</span>
-              <ClipboardCopyIcon
-                className="h-5 w-5 ml-2 cursor-pointer text-gray-500"
-                onClick={copyToClipboard}
-              />
-            </p>
+            <div className="text-sm text-gray-500 flex justify-start flex-wrap gap-2">
+              <span className="w-full">Exemplo de URL: </span>
+              <div className="flex justify-between w-full">
+                <span className="font-mono">/b/{formattedName}</span>
+                <ClipboardCopyIcon
+                  className="h-5 w-5 ml-2 cursor-pointer text-gray-500"
+                  onClick={copyToClipboard}
+                />
+              </div>
+            </div>
           </div>
           <div className="grid gap-3">
             <Label htmlFor="description">Mensagem de boas vindas:</Label>

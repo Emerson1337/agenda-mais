@@ -1,26 +1,10 @@
-import axios from "axios";
 import React from "react";
 import OfferList from "./OfferList";
 import { Price } from "@/shared/types/price";
+import Link from "next/link";
+import { WhatsappService } from "@/shared/services/whatsapp.service";
 
 const PricingBox = ({ product }: { product: Price }) => {
-  // POST request
-  const handleSubscription = async (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
-    const { data } = await axios.post(
-      "/api/payment",
-      {
-        priceId: product.id,
-      },
-      {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      },
-    );
-    window.location.assign(data);
-  };
-
   return (
     <div className="w-full px-4 md:w-1/2 lg:w-1/3">
       <div
@@ -59,12 +43,12 @@ const PricingBox = ({ product }: { product: Price }) => {
           </div>
         </div>
         <div className="w-full">
-          <button
-            onClick={handleSubscription}
+          <Link
+            href={WhatsappService.contactForDeal()}
             className="inline-block rounded-md bg-primary px-7 py-3 text-center text-base font-medium text-secondary transition duration-300 hover:bg-primary/90"
           >
             Assinar agora
-          </button>
+          </Link>
         </div>
       </div>
     </div>

@@ -35,7 +35,7 @@ const Hero = () => {
                 <ul className="mb-10 flex flex-wrap items-center justify-center gap-5">
                   <li>
                     <Link
-                      href="https://nextjstemplates.com/templates/play"
+                      href={WhatsappService.contactForDeal()}
                       className="inline-flex items-center justify-center rounded-md bg-secondary px-7 py-[14px] text-center text-base font-medium text-primary shadow-1 transition duration-300 ease-in-out hover:bg-gray-2"
                     >
                       Assinar agora

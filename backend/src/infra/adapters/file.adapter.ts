@@ -19,6 +19,12 @@ export class FileAdapter {
     this.s3Client = new S3Client({ region: process.env.AWS_REGION });
     this.region = process.env.AWS_REGION;
     this.bucket = process.env.S3_BUCKET;
+
+    console.log(
+      '🟢🟢🟢🟢 process.env.AWS_REGION, process.env.S3_BUCKET',
+      process.env.AWS_REGION,
+      process.env.S3_BUCKET,
+    );
   }
 
   ensureUploadDirExists(): void {
