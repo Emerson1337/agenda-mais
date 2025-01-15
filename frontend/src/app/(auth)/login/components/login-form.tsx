@@ -17,6 +17,7 @@ import { ReloadIcon } from "@radix-ui/react-icons";
 import { cn } from "@/lib/utils";
 import applyErrorsToForm, { isAxiosResponse } from "@/shared/utils/errorUtils";
 import { useRouter } from "next/navigation";
+import { toast } from "react-toastify";
 
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
@@ -43,6 +44,8 @@ export function LoginForm({ className }: UserAuthFormProps) {
         return applyErrorsToForm(setError, error.data);
       }
       console.error(error);
+
+      toast.error("Erro ao fazer login, tente novamente mais tarde");
     }
   }
 

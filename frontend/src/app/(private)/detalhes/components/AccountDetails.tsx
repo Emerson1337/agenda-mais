@@ -1,6 +1,7 @@
 "use client";
 
 import { Label } from "@radix-ui/react-label";
+import { ClipboardCopyIcon } from "@radix-ui/react-icons";
 import {
   Card,
   CardContent,
@@ -44,6 +45,13 @@ export default function AccountDetails() {
       setPhone(data.phone);
     }
   }, [data, setValue]);
+
+  const copyToClipboard = () => {
+    navigator.clipboard.writeText(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/b/${formattedName}`,
+    );
+    toast.success("Link copiado para a área de transferência!");
+  };
 
   const [formattedName, setFormattedName] = useState<string>("");
 
@@ -94,9 +102,13 @@ export default function AccountDetails() {
               </p>
             )}
             {/* Display the formatted example */}
-            <p className="text-sm text-gray-500">
+            <p className="text-sm text-gray-500 flex justify-around">
               Exemplo de URL:{" "}
-              <span className="font-mono">/{formattedName}</span>
+              <span className="font-mono">/b/{formattedName}</span>
+              <ClipboardCopyIcon
+                className="h-5 w-5 ml-2 cursor-pointer text-gray-500"
+                onClick={copyToClipboard}
+              />
             </p>
           </div>
           <div className="grid gap-3">

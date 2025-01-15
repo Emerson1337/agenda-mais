@@ -105,13 +105,22 @@ const Header = () => {
                 </button>
                 <nav
                   id="navbarCollapse"
-                  className={`navbar absolute right-0 z-30 w-[250px] rounded border-[.5px] border-body-color/50 bg-white px-6 py-4 duration-300 dark:border-body-color/20 dark:bg-dark-2 lg:visible lg:static lg:w-auto lg:border-none lg:!bg-transparent lg:p-0 lg:opacity-100 lg:dark:bg-transparent ${
+                  className={`navbar absolute right-0 z-30 w-[250px] rounded border-[.5px] border-body-color/50 dark:bg-secondary bg-secondary-foreground px-6 py-4 duration-300 dark:border-body-color/20 dark:bg-dark-2 lg:visible lg:static lg:w-auto lg:border-none lg:!bg-transparent lg:p-0 lg:opacity-100 lg:dark:bg-transparent ${
                     navbarOpen
                       ? "visibility top-full opacity-100"
                       : "invisible top-[120%] opacity-0"
                   }`}
                 >
                   <ul className="block lg:ml-8 lg:flex lg:gap-x-8 xl:ml-14 xl:gap-x-12">
+                    <li className="block sm:hidden group relative">
+                      <Link
+                        prefetch
+                        href="/dashboard"
+                        className="ud-menu-scroll flex py-2 text-base lg:inline-flex lg:px-0 lg:py-6 text-body-color dark:text-secondary-foreground lg:text-secondary text-secondary"
+                      >
+                        Acessar Plataforma
+                      </Link>
+                    </li>
                     {menuData.map((menuItem, index) =>
                       menuItem.path ? (
                         <li key={index} className="group relative">
@@ -134,19 +143,7 @@ const Header = () => {
                             <Link
                               scroll={false}
                               href={menuItem.path}
-                              className={`ud-menu-scroll flex py-2 text-base lg:inline-flex lg:px-0 lg:py-6 ${
-                                sticky
-                                  ? "text-secondary-foreground group-hover:text-primary dark:text-secondary dark:group-hover:text-primary"
-                                  : "text-body-color dark:text-secondary lg:text-secondary"
-                              } ${
-                                pathUrl === menuItem?.path &&
-                                sticky &&
-                                "!text-primary"
-                              } ${
-                                pathUrl === menuItem?.path &&
-                                !sticky &&
-                                "!text-secondary-foreground"
-                              }`}
+                              className={`ud-menu-scroll flex py-2 text-base lg:inline-flex lg:px-0 lg:py-6 text-body-color dark:text-secondary-foreground lg:text-secondary text-secondary`}
                             >
                               {menuItem.title}
                             </Link>
@@ -238,6 +235,13 @@ const Header = () => {
                 </nav>
               </div>
               <div className="hidden items-center justify-end pr-16 sm:flex lg:pr-0">
+                <Link
+                  prefetch
+                  href="/dashboard"
+                  className="mx-4 font-bold bg-secondary-foreground p-3 rounded-xl text-primary-foreground text-xs"
+                >
+                  Acessar Plataforma
+                </Link>
                 {/* theme toggler */}
                 <button
                   aria-label="theme toggler"

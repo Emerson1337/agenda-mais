@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { WhatsappIcon } from "../Hero/WhatsappIcon";
+import { WhatsappService } from "../../../shared/services/whatsapp.service";
 const Contact = () => {
   return (
     <section id="contact" className="relative py-20 md:py-[120px]">
@@ -50,7 +51,7 @@ const Contact = () => {
                 Nos envie uma mensagem
               </h3>
               <Link
-                href="https://github.com/nextjsTemplates/play-nextjs"
+                href={WhatsappService.contactForDeal()}
                 target="_blank"
                 className="flex w-fit items-center gap-4 rounded-md bg-primary px-6 py-[14px] text-base font-medium text-secondary transition duration-300 ease-in-out hover:bg-secondary-foreground hover:text-secondary"
               >
