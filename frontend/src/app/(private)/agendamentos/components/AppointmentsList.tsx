@@ -37,7 +37,7 @@ export default function AppointmentsList() {
   const [open, setOpen] = useState<boolean>(false);
   const [appointmentFocused, setAppointmentFocused] =
     useState<AppointmentData>();
-  const { id: managerId } = useBusinessContext();
+  const { id: managerId, username } = useBusinessContext();
 
   if (isFetching)
     return <ReloadIcon className="mr-2 h-4 animate-spin w-full" />;
@@ -63,6 +63,7 @@ export default function AppointmentsList() {
   const openWhatsapp = (appointment: AppointmentData) => {
     WhatsappService.warnCancelAppointment({
       name: appointment?.clientName,
+      business: username,
       day: format(appointment?.date, "dd/MM/yyyy"),
       time: appointment?.time,
       phone: appointment.phone,

@@ -67,7 +67,7 @@ const ThemeCustomizer = ({ onChange }: Props) => {
                     onChange?.(`theme-${theme.name}`);
                   }}
                   className={cn(
-                    "justify-start",
+                    "justify-start truncate",
                     isActive && "border border-primary",
                   )}
                   style={
