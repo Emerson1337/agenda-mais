@@ -1,8 +1,8 @@
 import React from "react";
 import OfferList from "./OfferList";
 import { Price } from "@/shared/types/price";
-import Link from "next/link";
 import { WhatsappService } from "@/shared/services/whatsapp.service";
+import { Button } from "@/components/ui/button";
 
 const PricingBox = ({ product }: { product: Price }) => {
   return (
@@ -20,7 +20,7 @@ const PricingBox = ({ product }: { product: Price }) => {
           {product.nickname}
         </span>
         <h2 className="mb-11 text-4xl font-semibold text-primary dark:text-secondary xl:text-[42px] xl:leading-[1.21]">
-          <span className="text-xl font-medium">$ </span>
+          <span className="text-xl font-medium">R$ </span>
           <span className="-ml-1 -tracking-[2px]">
             {(product.unit_amount / 100).toLocaleString("pt-BR", {
               currency: "BRL",
@@ -36,19 +36,19 @@ const PricingBox = ({ product }: { product: Price }) => {
           <h3 className="mb-5 text-lg font-medium text-primary dark:text-secondary">
             Funcionalidades
           </h3>
-          <div className="mb-10">
+          <div className="mb-10 flex flex-col gap-2">
             {product?.offers.map((offer, i) => (
               <OfferList key={i} text={offer} />
             ))}
           </div>
         </div>
-        <div className="w-full">
-          <Link
-            href={WhatsappService.contactForDeal()}
-            className="inline-block rounded-md bg-primary px-7 py-3 text-center text-base font-medium text-secondary transition duration-300 hover:bg-primary/90"
+        <div className="w-full flex justify-center">
+          <Button
+            className="mt-8 inline-flex h-12 animate-shimmer items-center justify-center rounded-md border border-primary bg-[linear-gradient(110deg,#ffffff,45%,#ededee,55%,#ffffff)] bg-[length:200%_100%] px-6 font-medium text-primary transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-primary"
+            onClick={() => window.open(WhatsappService.contactForDeal())}
           >
             Assinar agora
-          </Link>
+          </Button>
         </div>
       </div>
     </div>

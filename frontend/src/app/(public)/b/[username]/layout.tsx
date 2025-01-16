@@ -23,7 +23,9 @@ async function BusinessWrapper({
   const businessInformation = await fetchBusinessData(username);
   return (
     <BusinessProvider defaultValue={businessInformation}>
-      <div className={cn(businessInformation?.layout)}>{children}</div>
+      <div id="body-theme" className={cn(businessInformation?.layout)}>
+        {children}
+      </div>
     </BusinessProvider>
   );
 }

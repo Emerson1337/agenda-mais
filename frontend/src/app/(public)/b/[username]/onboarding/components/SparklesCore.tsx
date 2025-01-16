@@ -6,6 +6,7 @@ import type { Container, SingleOrMultiple } from "@tsparticles/engine";
 import { loadSlim } from "@tsparticles/slim";
 import { motion, useAnimation } from "framer-motion";
 import { cn } from "@/lib/utils";
+import { hslToHex } from "../../../../../../shared/utils/themeUtils";
 
 type ParticlesProps = {
   id?: string;
@@ -26,7 +27,7 @@ export const SparklesCore = (props: ParticlesProps): JSX.Element => {
     minSize,
     maxSize,
     speed,
-    particleColor,
+    particleColor = "#fff",
     particleDensity,
   } = props;
   const [init, setInit] = useState(false);
@@ -38,6 +39,27 @@ export const SparklesCore = (props: ParticlesProps): JSX.Element => {
     });
   }, []);
   const controls = useAnimation();
+
+  const [primaryColor, setPrimaryColor] = useState<string>(particleColor);
+
+  useEffect(() => {
+    // Access the CSS variable value
+    const getPrimaryColor = () => {
+      const bodyThemeElement = document.getElementById("body-theme");
+
+      if (bodyThemeElement) {
+        const [h, s, l] = getComputedStyle(bodyThemeElement)
+          .getPropertyValue("--primary")
+          .split(" ");
+
+        return hslToHex(h, s, l);
+      }
+
+      return particleColor;
+    };
+
+    setPrimaryColor(getPrimaryColor());
+  }, []);
 
   const particlesLoaded = async (container?: Container) => {
     if (container) {
@@ -121,7 +143,7 @@ export const SparklesCore = (props: ParticlesProps): JSX.Element => {
                 },
               },
               color: {
-                value: particleColor || "#ffffff",
+                value: primaryColor,
                 animation: {
                   h: {
                     count: 0,
