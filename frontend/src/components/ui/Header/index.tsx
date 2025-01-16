@@ -78,7 +78,7 @@ const Header = () => {
                   <span
                     className={`relative my-1.5 block h-0.5 w-[30px] transition-all duration-300 ${
                       navbarOpen ? " top-[7px] rotate-45" : " "
-                    } ${pathUrl !== "/" && "!bg-dark dark:!bg-secondary"} ${
+                    } ${pathUrl !== "/" && "!bg-dark dark:!bg-[#128c7e]"} ${
                       pathUrl === "/" && sticky
                         ? "bg-dark dark:bg-secondary"
                         : "bg-secondary"
@@ -87,7 +87,7 @@ const Header = () => {
                   <span
                     className={`relative my-1.5 block h-0.5 w-[30px] transition-all duration-300 ${
                       navbarOpen ? "opacity-0 " : " "
-                    } ${pathUrl !== "/" && "!bg-dark dark:!bg-secondary"} ${
+                    } ${pathUrl !== "/" && "!bg-dark dark:!bg-[#128c7e]"} ${
                       pathUrl === "/" && sticky
                         ? "bg-dark dark:bg-secondary"
                         : "bg-secondary"
@@ -96,7 +96,7 @@ const Header = () => {
                   <span
                     className={`relative my-1.5 block h-0.5 w-[30px] transition-all duration-300 ${
                       navbarOpen ? " top-[-8px] -rotate-45" : " "
-                    } ${pathUrl !== "/" && "!bg-dark dark:!bg-secondary"} ${
+                    } ${pathUrl !== "/" && "!bg-dark dark:!bg-[#128c7e]"} ${
                       pathUrl === "/" && sticky
                         ? "bg-dark dark:bg-secondary"
                         : "bg-secondary"

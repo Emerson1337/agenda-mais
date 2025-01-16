@@ -1,25 +1,26 @@
 import Link from "next/link";
-import { WhatsappIcon } from "../Hero/WhatsappIcon";
-import { WhatsappService } from "../../../shared/services/whatsapp.service";
+import { WhatsappIcon } from "@/components/ui/Hero/WhatsappIcon";
+import { WhatsappService } from "@/shared/services/whatsapp.service";
+
 const Contact = () => {
   return (
-    <section id="contact" className="relative py-20 md:py-[120px]">
-      <div className="absolute left-0 top-0 -z-[1] h-full w-full dark:bg-dark"></div>
-      <div className="absolute left-0 top-0 -z-[1] h-1/2 w-full bg-dark-2 dark:bg-dark-700 lg:h-[45%] xl:h-1/2"></div>
+    <section id="contact" className="relative py-20 md:py-32">
+      <div className="absolute inset-0 -z-10 h-full bg-dark dark:bg-dark-700"></div>
+      <div className="absolute inset-0 -z-10 h-1/2 bg-dark-2 lg:h-[45%] xl:h-1/2"></div>
       <div className="container px-4">
-        <div className="-mx-4 flex flex-wrap items-center">
+        <div className="flex flex-wrap items-center">
           <div className="w-full px-4 lg:w-7/12 xl:w-8/12">
-            <div className="ud-contact-content-wrapper">
-              <div className="ud-contact-title mb-12 lg:mb-[150px]">
-                <span className="mb-6 block text-base font-medium text-primary dark:text-primary">
+            <div>
+              <div className="mb-12 lg:mb-[150px]">
+                <span className="block mb-6 text-base font-medium text-primary">
                   CONTATE-NOS
                 </span>
-                <h2 className="max-w-[260px] text-[35px] font-semibold leading-[1.14] text-primary dark:text-primary">
+                <h2 className="text-[35px] font-semibold leading-snug text-primary">
                   Vamos conversar.
                 </h2>
               </div>
-              <div className="mb-12 flex flex-wrap justify-between lg:mb-0">
-                <div className="mb-8 flex w-[330px] max-w-full">
+              <div className="flex flex-wrap justify-between">
+                <div className="flex w-[330px] mb-8">
                   <div className="mr-6 text-[32px] text-primary">
                     <svg
                       width="34"
@@ -31,10 +32,10 @@ const Contact = () => {
                     </svg>
                   </div>
                   <div>
-                    <h3 className="mb-[18px] text-lg font-semibold text-primary dark:text-primary">
+                    <h3 className="mb-4 text-lg font-semibold text-primary">
                       Como Podemos Ajudar?
                     </h3>
-                    <p className="text-base text-body-color dark:text-dark-6">
+                    <p className="text-base text-body-color">
                       app.agendazap@gmail.com
                     </p>
                   </div>
@@ -43,17 +44,14 @@ const Contact = () => {
             </div>
           </div>
           <div className="w-full px-4 lg:w-5/12 xl:w-4/12">
-            <div
-              className="wow fadeInUp rounded-lg bg-white px-8 py-10 shadow-testimonial dark:bg-dark-2 dark:shadow-none sm:px-10 sm:py-12 md:p-[60px] lg:p-10 lg:px-10 lg:py-12 2xl:p-[60px]"
-              data-wow-delay=".2s"
-            >
-              <h3 className="mb-8 text-2xl font-semibold text-primary dark:text-primary md:text-[28px] md:leading-[1.42]">
+            <div className="rounded-lg bg-white px-8 py-10 shadow-md dark:bg-dark-2">
+              <h3 className="mb-8 text-2xl font-semibold text-primary">
                 Nos envie uma mensagem
               </h3>
               <Link
                 href={WhatsappService.contactForDeal()}
                 target="_blank"
-                className="flex w-fit items-center gap-4 rounded-md bg-primary px-6 py-[14px] text-base font-medium text-secondary transition duration-300 ease-in-out hover:bg-secondary-foreground hover:text-secondary"
+                className="flex items-center gap-4 rounded-md bg-primary px-6 py-3 text-base font-medium text-secondary transition hover:bg-secondary-foreground hover:text-secondary"
               >
                 <WhatsappIcon />
                 Tirar Dúvidas
