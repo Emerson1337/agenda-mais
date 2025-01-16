@@ -110,7 +110,7 @@ export class BookingManagerController {
           await this.bookingManagersService.updatePicture({
             managerId: userId,
             picturePath: request['file'].path as string,
-            filename: request['file'].filename as string,
+            filename: `${userId}-${request['file'].filename}` as string,
           }),
         ),
       );

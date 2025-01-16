@@ -19,6 +19,7 @@ import {
   IUpdatePicture,
 } from '@/application/booking-managers/dtos/types';
 import { ChangePasswordDto } from '@/application/booking-managers/dtos/change-password-dto';
+import { defaultProfilePhoto } from '@/application/shared/constants/index';
 
 @Injectable()
 export class BookingManagersService {
@@ -81,6 +82,7 @@ export class BookingManagersService {
 
     return await this.bookingManagersRepository.create({
       ...manager,
+      profilePhoto: defaultProfilePhoto,
       status: ManagerStatus.ACTIVE,
       roles: [ManagersRolesEnum.USER],
       plan: ManagersPlansEnum.BASIC,
