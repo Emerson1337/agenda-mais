@@ -5,7 +5,7 @@ provider "aws" {
 
 terraform {
   backend "s3" {
-    bucket = "agendamais-terraform-state-staging"
+    bucket = "agendamais-terraform-state"
     key    = "agendamais.tfstate"
     region = "sa-east-1"
     // Same as above
