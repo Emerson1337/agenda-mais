@@ -3,8 +3,8 @@ import Contact from "@/components/ui/Contact";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "AgendaZap | Contatos",
-  description: "Confira as formas de contato com o AgendaZap.",
+  title: "Agenda+ | Contatos",
+  description: "Confira as formas de contato com o Agenda+.",
 };
 
 const ContactPage = () => {

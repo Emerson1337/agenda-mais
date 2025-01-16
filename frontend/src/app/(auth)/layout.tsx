@@ -4,7 +4,7 @@ import { Suspense } from "react";
 import { ReloadIcon } from "@radix-ui/react-icons";
 
 export const metadata: Metadata = {
-  title: "AgendaZap",
+  title: "Agenda+",
   description: "Administre a sua agenda de forma simples e eficiente!",
 };
 

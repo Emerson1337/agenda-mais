@@ -1,1 +1,1 @@
-bucket_name="prod-sa-east-1-buildrun-agendazap"
+bucket_name="prod-sa-east-1-buildrun-agendamais"

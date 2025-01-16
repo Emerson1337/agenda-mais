@@ -17,7 +17,7 @@ const Faq = () => {
           <div className="w-full px-4 lg:w-1/2">
             <SingleFaq
               question="Como faço para assinar a plataforma?"
-              answer="O AgendaZap é uma plataforma gratuita de agendamento online para pequenos negócios. Para assinar a plataforma, basta criar uma conta na plataforma e entrar em contato conosco via WhatsApp. Nós iremos te ajudar a configurar a sua conta e a plataforma de acordo com as suas necessidades."
+              answer="O Agenda+ é uma plataforma gratuita de agendamento online para pequenos negócios. Para assinar a plataforma, basta criar uma conta na plataforma e entrar em contato conosco via WhatsApp. Nós iremos te ajudar a configurar a sua conta e a plataforma de acordo com as suas necessidades."
             />
             <SingleFaq
               question="Eu irei pagar alguma coisa?"
@@ -39,8 +39,8 @@ const Faq = () => {
               answer="A plataforma disponibiliza diversas análises métricas e gráficos para você analisar o desempenho do seu negócio. Além disso, você pode criar promoções e cupons de desconto para atrair mais clientes. Nós iremos te ajudar a criar uma estratégia de marketing digital para o seu negócio."
             />
             <SingleFaq
-              question="Eu possuo alternativas ao AgendaZap?"
-              answer="Sim. Existem diversas plataformas por aí. No entanto, o AgendaZap é a única plataforma que oferece um aplicativo de agendamento de maneira gratuita. Nós oferecemos uma plataforma fácil de usar e com diversas funcionalidades para você gerenciar o seu negócio."
+              question="Eu possuo alternativas ao Agenda+?"
+              answer="Sim. Existem diversas plataformas por aí. No entanto, o Agenda+ é a única plataforma que oferece um aplicativo de agendamento de maneira gratuita. Nós oferecemos uma plataforma fácil de usar e com diversas funcionalidades para você gerenciar o seu negócio."
             />
           </div>
         </div>

@@ -36,7 +36,7 @@ const Contact = () => {
                       Como Podemos Ajudar?
                     </h3>
                     <p className="text-base text-body-color">
-                      app.agendazap@gmail.com
+                      app.agendamais@gmail.com
                     </p>
                   </div>
                 </div>

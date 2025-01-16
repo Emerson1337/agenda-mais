@@ -21,7 +21,7 @@ const Hero = () => {
               >
                 <h1 className="mb-6 text-3xl font-bold leading-snug text-secondary sm:text-4xl sm:leading-snug lg:text-5xl lg:leading-[1.2]">
                   Organize a sua <span className="underline">agenda</span> com o{" "}
-                  <span className="text-secondary-foreground">Agenda</span>Zap
+                  <span className="text-secondary-foreground">Agenda</span>+
                   <span className="text-secondary-foreground">!</span>
                 </h1>
                 <p className="mx-auto mb-9 max-w-[600px] text-base font-medium text-secondary sm:text-lg sm:leading-[1.44]">

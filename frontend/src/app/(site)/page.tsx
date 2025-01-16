@@ -10,9 +10,9 @@ import Team from "@/components/ui/Team";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "AgendaZap - Gerencie seus compromissos de forma simples e eficiente.",
+  title: "Agenda+ - Gerencie seus compromissos de forma simples e eficiente.",
   description:
-    "Acabe com a dor de cabeça ao gerenciar seus compromissos. AgendaZap é a solução perfeita para você organizar sua rotina de forma simples, moderna e eficiente.",
+    "Acabe com a dor de cabeça ao gerenciar seus compromissos. Agenda+ é a solução perfeita para você organizar sua rotina de forma simples, moderna e eficiente.",
 };
 
 export default function Home() {

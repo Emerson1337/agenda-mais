@@ -114,7 +114,7 @@ const Footer = () => {
                     target="_blank"
                     className="text-gray-1 hover:underline"
                   >
-                    AgendaZap
+                    Agenda+
                   </a>
                 </p>
               </div>

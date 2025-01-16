@@ -1,4 +1,4 @@
-# Agendazap project guide
+# AgendaMais project guide
 
 # **Database used**
 
@@ -45,7 +45,6 @@ docker restart <container_id>
 
 If you did once, only `yarn db:dev` should be enough.
 
-
 # **BACKEND**
 
 Make sure you copy and paste .env.example with right values.
@@ -88,7 +87,6 @@ database: localhost:27017
 
 We have on the app Husky and Lintstaged configured. It means: any commit sending a broken service already covered by a test won’t be accepted to go to the repository. And also a “lint” command is run to fix and detect problems related to coding out the pattern.
 
-
 # **Troubleshooting:**
 
 Database problems
@@ -98,6 +96,7 @@ If you get this
 ```jsx
 Error: NotYetInitialized: Cannot use non-local read concern until replica set is finished initializing.
 ```
+
 Means the replicate set is not configured on your container, so you must open the container, go inside mongosh and run:
 
 ```
@@ -106,4 +105,5 @@ $ rs.initiate({_id: "rs0", members: [{_id: 0, host: "127.0.0.1:27017"}] })
 ```
 
 # **Postman collection for API endpoints:**
+
 - Soon

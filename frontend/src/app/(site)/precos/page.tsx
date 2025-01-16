@@ -4,7 +4,7 @@ import Pricing from "@/components/ui/Pricing";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "AgendaZap | Consulte os nossos planos",
+  title: "Agenda+ | Consulte os nossos planos",
   description:
     "Consulte os nossos planos e escolha o que melhor se encaixa para você.",
 };

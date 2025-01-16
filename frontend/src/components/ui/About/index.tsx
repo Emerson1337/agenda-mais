@@ -12,14 +12,14 @@ const About = () => {
           <div className="w-full  lg:w-1/2">
             <div className="mb-12 max-w-[540px] lg:mb-0">
               <h2 className="mb-5 text-3xl font-bold leading-tight text-primary sm:text-4xl">
-                O AgendaZap traz consigo um suporte 24h.
+                O Agenda+ traz consigo um suporte 24h.
               </h2>
               <p className="mb-10 text-base leading-relaxed text-body-color">
-                Disponha de um time compromissado a trazer novas
-                funcionalidades e resolver eventuais problemas que possam
-                acontecer durante o uso do aplicativo. Nossa equipe é formada
-                por especialistas que buscam sempre a melhor experiência para o
-                usuário e providenciam as melhores tecnologias do mercado.
+                Disponha de um time compromissado a trazer novas funcionalidades
+                e resolver eventuais problemas que possam acontecer durante o
+                uso do aplicativo. Nossa equipe é formada por especialistas que
+                buscam sempre a melhor experiência para o usuário e providenciam
+                as melhores tecnologias do mercado.
                 <br />
                 <br />
                 Nos ajude a construir um ótimo app, nos envie sugestões e

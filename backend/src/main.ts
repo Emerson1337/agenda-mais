@@ -9,7 +9,7 @@ import { I18nValidationPipe } from 'nestjs-i18n';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
     cors: {
-      origin: [/^https?:\/\/(.*\.)?agendazap\.click$/],
+      origin: [/^https?:\/\/(.*\.)?agendamais\.click$/],
       methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
       credentials: true,
     },

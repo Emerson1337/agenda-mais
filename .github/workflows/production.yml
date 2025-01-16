@@ -14,7 +14,7 @@ jobs:
     uses: ./.github/workflows/terraform.yml
     with:
       environment: production
-      aws-assume-role-arn: "arn:aws:iam::294562550042:role/github-actions-agendazap"
+      aws-assume-role-arn: "arn:aws:iam::294562550042:role/github-actions-agendamais"
       aws-region: "sa-east-1"
-      aws-statefile-s3-bucket: "agendazap-sa-east-1-terraform-statefile"
-      aws-lock-dynamodb-table: "agendazap-sa-east-1-terraform-lock"
+      aws-statefile-s3-bucket: "agendamais-sa-east-1-terraform-statefile"
+      aws-lock-dynamodb-table: "agendamais-sa-east-1-terraform-lock"

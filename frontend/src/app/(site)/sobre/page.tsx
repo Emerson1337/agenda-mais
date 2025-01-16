@@ -4,8 +4,8 @@ import Team from "@/components/ui/Team";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "AgendaZap | Sobre nós - Quem somos?",
-  description: "Descubra quem somos e o que fazemos no AgendaZap.",
+  title: "Agenda+ | Sobre nós - Quem somos?",
+  description: "Descubra quem somos e o que fazemos no Agenda+.",
 };
 
 const AboutPage = () => {

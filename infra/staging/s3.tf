@@ -1,9 +1,9 @@
-resource "aws_s3_bucket" "agendazap-assets" {
-  bucket = "agendazap-assets-${var.env}"
+resource "aws_s3_bucket" "agendamais-assets" {
+  bucket = "agendamais-assets-${var.env}"
 }
 
-resource "aws_s3_bucket_policy" "link-policy-agendazap-assets" {
-  bucket = aws_s3_bucket.agendazap-assets.id
+resource "aws_s3_bucket_policy" "link-policy-agendamais-assets" {
+  bucket = aws_s3_bucket.agendamais-assets.id
   policy = data.aws_iam_policy_document.allow_public_access_to_assets.json
 }
 
@@ -19,13 +19,13 @@ data "aws_iam_policy_document" "allow_public_access_to_assets" {
     ]
 
     resources = [
-      "${aws_s3_bucket.agendazap-assets.arn}/*",
+      "${aws_s3_bucket.agendamais-assets.arn}/*",
     ]
   }
 }
 
-resource "aws_s3_bucket_public_access_block" "agendazap-assets-public-access" {
-  bucket = aws_s3_bucket.agendazap-assets.id
+resource "aws_s3_bucket_public_access_block" "agendamais-assets-public-access" {
+  bucket = aws_s3_bucket.agendamais-assets.id
 
   block_public_acls       = false
   block_public_policy     = false

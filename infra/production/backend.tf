@@ -1,15 +1,15 @@
 provider "aws" {
   region = "sa-east-1"
-  profile = "agendazap"
+  profile = "agendamais"
 }
 
 terraform {
   backend "s3" {
-    bucket = "agendazap-terraform-state-production"
-    key    = "agendazap.tfstate"
+    bucket = "agendamais-terraform-state-production"
+    key    = "agendamais.tfstate"
     region = "sa-east-1"
     // Same as above
-    profile = "agendazap"
+    profile = "agendamais"
   }
 
   required_providers {
