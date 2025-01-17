@@ -3,8 +3,15 @@ import { TopTenClient } from "@/shared/types/business-monthly-metrics";
 import { numberUtils } from "@/shared/utils/numberUtils";
 import { stringUtils } from "@/shared/utils/stringUtils";
 import { Trophy } from "lucide-react";
+import { InfoCircledIcon } from "@radix-ui/react-icons";
 
-export default function TopClients({ clients }: { clients: TopTenClient[] }) {
+export default function TopClients({
+  clients,
+  emptyState,
+}: {
+  clients: TopTenClient[];
+  emptyState: string;
+}) {
   return (
     <Card className="w-full">
       <CardHeader>
@@ -32,9 +39,10 @@ export default function TopClients({ clients }: { clients: TopTenClient[] }) {
             </div>
           ))
         ) : (
-          <p className="text-sm text-muted-foreground">
-            Sem histórico de clientes
-          </p>
+          <div className="flex items-center text-xs justify-start gap-2 h-full text-muted-foreground">
+            <InfoCircledIcon className="h-4 w-4" />
+            <span>{emptyState}</span>
+          </div>
         )}
       </CardContent>
     </Card>

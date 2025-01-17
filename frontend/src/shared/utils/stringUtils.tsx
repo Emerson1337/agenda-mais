@@ -15,3 +15,9 @@ export namespace stringUtils {
       .replace(/\s+/g, "-"); // Replace spaces with hyphens
   };
 }
+
+export const copyToClipboard = (formattedName: string) => {
+  navigator.clipboard.writeText(
+    `${process.env.NEXT_PUBLIC_BASE_URL}/b/${formattedName}`,
+  );
+};

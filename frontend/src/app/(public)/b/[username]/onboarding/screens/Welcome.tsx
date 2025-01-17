@@ -15,7 +15,7 @@ const Welcome = async () => {
           particleDensity={1200}
           className="w-full h-full"
         />
-        <div className="absolute inset-0 w-full h-full bg-background [mask-image:radial-gradient(350px_200px_at_top,transparent_30%,white)]" />
+        <div className="absolute bg-gradient-to-t from-background to-transparent inset-0 w-full h-full bg-background [mask-image:radial-gradient(350px_200px_at_top,transparent_30%,white)]" />
       </div>
       <OnboardingFlow />
     </div>

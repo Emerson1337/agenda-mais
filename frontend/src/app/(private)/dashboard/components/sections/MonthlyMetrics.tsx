@@ -17,7 +17,12 @@ export default function MonthlyMetrics() {
     <div className="flex sm:px-6">
       {!isError && (
         <div className="flex flex-column flex-wrap gap-4 w-full">
-          {data?.topTenClients && <TopClients clients={data.topTenClients} />}
+          {data?.topTenClients && (
+            <TopClients
+              emptyState="Dados insuficientes."
+              clients={data.topTenClients}
+            />
+          )}
           <TotalRevenue
             title={`Receita gerada no mês de ${currentMonth}`}
             isLoading={isFetching}

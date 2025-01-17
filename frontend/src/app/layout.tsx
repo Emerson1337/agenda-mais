@@ -5,6 +5,8 @@ import { Provider } from "@/shared/utils/Providers";
 import { ThemeProvider } from "@/components/ui/theme-provider";
 import "@/shared/styles/index.css";
 import "@/shared/styles/prism-vsc-dark-plus.css";
+import CookieConsent from "@/components/ui/Cookies/CookieConsent";
+import NextTopLoader from "nextjs-toploader";
 
 export default async function RootLayout({
   children,
@@ -27,6 +29,8 @@ export default async function RootLayout({
             defaultTheme="dark"
             disableTransitionOnChange
           >
+            <NextTopLoader color="#18181A" />
+            <CookieConsent variant="small" />
             {children}
           </ThemeProvider>
         </Provider>

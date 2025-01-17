@@ -8,7 +8,7 @@ const Footer = () => {
       className="wow fadeInUp relative z-10 bg-[#075e54] pt-20 lg:pt-[100px]"
       data-wow-delay=".15s"
     >
-      <div className="container">
+      <div className="container text-white">
         <div className="-mx-4 flex flex-wrap">
           <div className="w-full px-4 sm:w-1/2 md:w-1/2 lg:w-4/12 xl:w-3/12">
             <div className="mb-10 w-full">
@@ -49,7 +49,7 @@ const Footer = () => {
           </div>
           <div className="w-full px-4 sm:w-1/2 md:w-1/2 lg:w-2/12 xl:w-2/12">
             <div className="mb-10 w-full">
-              <h4 className="mb-9 text-lg font-semibold text-secondary">
+              <h4 className="mb-9 text-lg font-semibold text-white">
                 Links úteis
               </h4>
               <ul>

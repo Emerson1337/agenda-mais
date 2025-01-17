@@ -36,10 +36,10 @@ export default function TotalRevenue({
             <div className="h-3 bg-muted-foreground rounded w-1/2"></div>
           </div>
         ) : (
-          <>
+          <div className="flex flex-col gap-2">
             <div className="text-2xl font-bold">{value}</div>
             <p className="text-xs text-muted-foreground">{description}</p>
-          </>
+          </div>
         )}
       </CardContent>
     </Card>

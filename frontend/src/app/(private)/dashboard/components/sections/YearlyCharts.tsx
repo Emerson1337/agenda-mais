@@ -58,6 +58,7 @@ export default function YearlyCharts() {
           className="sm:w-1/2 w-full"
           config={barChartConfig}
           data={barChartData}
+          emptyState="Dados insuficientes."
           title={`Atendimentos e faturamento por mês`}
           label={"Faturamento do último ano."}
           descriptionTitle={"Analise o faturamento do último ano."}
@@ -71,6 +72,7 @@ export default function YearlyCharts() {
           className="sm:w-1/2 w-full"
           config={areaChartConfig}
           data={areaChartData}
+          emptyState="Dados insuficientes."
           title={"Atendimentos por horário"}
           label={"Analise quais os horários mais procurados pelos clientes."}
           descriptionTitle={

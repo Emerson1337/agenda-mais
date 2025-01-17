@@ -18,6 +18,7 @@ import {
   ChartTooltipContent,
 } from "@/components/ui/chart";
 import { cn } from "@/lib/utils";
+import { InfoCircledIcon } from "@radix-ui/react-icons";
 
 export const description = "A stacked area chart";
 
@@ -25,12 +26,14 @@ export function AreaChartComponent({
   data,
   config,
   title,
+  emptyState,
   label,
   descriptionTitle,
   description,
   className,
 }: {
   config: ChartConfig;
+  emptyState: string;
   data: { label: string; value: number; alternativeValue?: number }[];
   title: string;
   label: string;
@@ -46,45 +49,52 @@ export function AreaChartComponent({
       </CardHeader>
       <CardContent>
         <ChartContainer config={config}>
-          <AreaChart
-            accessibilityLayer
-            data={data}
-            margin={{
-              left: 12,
-              right: 12,
-            }}
-          >
-            <CartesianGrid vertical={false} />
-            <XAxis
-              dataKey="label"
-              tickLine={false}
-              axisLine={false}
-              tickMargin={8}
-              tickFormatter={(value) => value.slice(0, 3)}
-            />
-            <ChartTooltip
-              cursor={false}
-              content={
-                <ChartTooltipContent className="w-[150px]" indicator="dot" />
-              }
-            />
-            <Area
-              dataKey="value"
-              type="natural"
-              fill="var(--color-value)"
-              fillOpacity={0.4}
-              stroke="var(--color-value)"
-              stackId="a"
-            />
-            <Area
-              dataKey="alternativeValue"
-              type="natural"
-              fill="var(--color-alternativeValue)"
-              fillOpacity={0.4}
-              stroke="var(--color-alternativeValue)"
-              stackId="a"
-            />
-          </AreaChart>
+          {data.length ? (
+            <AreaChart
+              accessibilityLayer
+              data={data}
+              margin={{
+                left: 12,
+                right: 12,
+              }}
+            >
+              <CartesianGrid vertical={false} />
+              <XAxis
+                dataKey="label"
+                tickLine={false}
+                axisLine={false}
+                tickMargin={8}
+                tickFormatter={(value) => value.slice(0, 3)}
+              />
+              <ChartTooltip
+                cursor={false}
+                content={
+                  <ChartTooltipContent className="w-[150px]" indicator="dot" />
+                }
+              />
+              <Area
+                dataKey="value"
+                type="natural"
+                fill="var(--color-value)"
+                fillOpacity={0.4}
+                stroke="var(--color-value)"
+                stackId="a"
+              />
+              <Area
+                dataKey="alternativeValue"
+                type="natural"
+                fill="var(--color-alternativeValue)"
+                fillOpacity={0.4}
+                stroke="var(--color-alternativeValue)"
+                stackId="a"
+              />
+            </AreaChart>
+          ) : (
+            <div className="flex items-center text-xs justify-center gap-2 h-full text-muted-foreground">
+              <InfoCircledIcon className="h-4 w-4" />
+              <span>{emptyState}</span>
+            </div>
+          )}
         </ChartContainer>
       </CardContent>
       <CardFooter>

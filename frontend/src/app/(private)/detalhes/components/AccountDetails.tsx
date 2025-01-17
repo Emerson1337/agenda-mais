@@ -21,6 +21,7 @@ import { useState, useEffect } from "react";
 import { useGetManager } from "@/app/(private)/dashboard/hooks/useGetManager";
 import { stringUtils } from "@/shared/utils/stringUtils";
 import { isAxiosResponse } from "@/shared/utils/errorUtils";
+import { copyToClipboard } from "../../../../shared/utils/stringUtils";
 
 export default function AccountDetails() {
   const { data } = useGetManager();
@@ -46,10 +47,8 @@ export default function AccountDetails() {
     }
   }, [data, setValue]);
 
-  const copyToClipboard = () => {
-    navigator.clipboard.writeText(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/b/${formattedName}`,
-    );
+  const copyLink = () => {
+    copyToClipboard(formattedName);
     toast.success("Link copiado para a área de transferência!");
   };
 
@@ -109,7 +108,7 @@ export default function AccountDetails() {
               </div>
               <Button
                 type="button"
-                onClick={copyToClipboard}
+                onClick={copyLink}
                 variant={"outline"}
                 className="mt-4 w-full"
               >

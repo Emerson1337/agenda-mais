@@ -3,6 +3,7 @@
 import * as React from "react";
 import { TrendingUp } from "lucide-react";
 import { Label, Pie, PieChart } from "recharts";
+import { InfoCircledIcon } from "@radix-ui/react-icons";
 
 import {
   Card,
@@ -25,6 +26,7 @@ export function PieChartComponent({
   config,
   title,
   label,
+  emptyState,
   descriptionTitle,
   description,
   className,
@@ -35,6 +37,7 @@ export function PieChartComponent({
   label: string;
   descriptionTitle: string;
   description: string;
+  emptyState: string;
   className?: string;
 }) {
   const totalValue = React.useMemo(() => {
@@ -52,51 +55,58 @@ export function PieChartComponent({
           config={config}
           className="mx-auto aspect-square max-h-[250px]"
         >
-          <PieChart>
-            <ChartTooltip
-              cursor={false}
-              content={
-                <ChartTooltipContent className="w-[150px] gap-4" hideLabel />
-              }
-            />
-            <Pie
-              data={data}
-              dataKey="value"
-              nameKey="label"
-              innerRadius={60}
-              strokeWidth={5}
-            >
-              <Label
-                content={({ viewBox }) => {
-                  if (viewBox && "cx" in viewBox && "cy" in viewBox) {
-                    return (
-                      <text
-                        x={viewBox.cx}
-                        y={viewBox.cy}
-                        textAnchor="middle"
-                        dominantBaseline="middle"
-                      >
-                        <tspan
+          {data.length > 0 ? (
+            <PieChart>
+              <ChartTooltip
+                cursor={false}
+                content={
+                  <ChartTooltipContent className="w-[150px] gap-4" hideLabel />
+                }
+              />
+              <Pie
+                data={data}
+                dataKey="value"
+                nameKey="label"
+                innerRadius={60}
+                strokeWidth={5}
+              >
+                <Label
+                  content={({ viewBox }) => {
+                    if (viewBox && "cx" in viewBox && "cy" in viewBox) {
+                      return (
+                        <text
                           x={viewBox.cx}
                           y={viewBox.cy}
-                          className="fill-foreground text-3xl font-bold"
+                          textAnchor="middle"
+                          dominantBaseline="middle"
                         >
-                          {totalValue.toLocaleString()}
-                        </tspan>
-                        <tspan
-                          x={viewBox.cx}
-                          y={(viewBox.cy || 0) + 24}
-                          className="fill-muted-foreground"
-                        >
-                          R$
-                        </tspan>
-                      </text>
-                    );
-                  }
-                }}
-              />
-            </Pie>
-          </PieChart>
+                          <tspan
+                            x={viewBox.cx}
+                            y={viewBox.cy}
+                            className="fill-foreground text-3xl font-bold"
+                          >
+                            {totalValue.toLocaleString()}
+                          </tspan>
+                          <tspan
+                            x={viewBox.cx}
+                            y={(viewBox.cy || 0) + 24}
+                            className="fill-muted-foreground"
+                          >
+                            R$
+                          </tspan>
+                        </text>
+                      );
+                    }
+                  }}
+                />
+              </Pie>
+            </PieChart>
+          ) : (
+            <div className="flex items-center justify-center gap-2 h-full text-muted-foreground">
+              <InfoCircledIcon className="h-4 w-4" />
+              <span>{emptyState}</span>
+            </div>
+          )}
         </ChartContainer>
       </CardContent>
       <CardFooter className="flex-col gap-2 text-sm">

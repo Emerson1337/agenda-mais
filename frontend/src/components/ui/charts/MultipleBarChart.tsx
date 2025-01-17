@@ -18,6 +18,7 @@ import {
   ChartTooltipContent,
 } from "@/components/ui/chart";
 import { cn } from "@/lib/utils";
+import { InfoCircledIcon } from "@radix-ui/react-icons";
 
 export const description = "A multiple bar chart";
 
@@ -25,6 +26,7 @@ export function MultipleBarChartComponent({
   data,
   config,
   title,
+  emptyState,
   label,
   descriptionTitle,
   description,
@@ -34,6 +36,7 @@ export function MultipleBarChartComponent({
   data: { label: string; value: number; alternativeValue?: number }[];
   title: string;
   label: string;
+  emptyState: string;
   descriptionTitle: string;
   description: string;
   className?: string;
@@ -46,32 +49,39 @@ export function MultipleBarChartComponent({
       </CardHeader>
       <CardContent>
         <ChartContainer config={config}>
-          <BarChart accessibilityLayer data={data}>
-            <CartesianGrid vertical={false} />
-            <XAxis
-              dataKey="label"
-              tickLine={false}
-              tickMargin={10}
-              axisLine={false}
-              className="capitalize"
-              tickFormatter={(value) => value.slice(0, 3)}
-            />
-            <ChartTooltip
-              cursor={false}
-              content={
-                <ChartTooltipContent
-                  className="capitalize w-[150px]"
-                  indicator="dashed"
-                />
-              }
-            />
-            <Bar dataKey="value" fill="var(--color-value)" radius={4} />
-            <Bar
-              dataKey="alternativeValue"
-              fill="var(--color-alternativeValue)"
-              radius={4}
-            />
-          </BarChart>
+          {data.length ? (
+            <BarChart accessibilityLayer data={data}>
+              <CartesianGrid vertical={false} />
+              <XAxis
+                dataKey="label"
+                tickLine={false}
+                tickMargin={10}
+                axisLine={false}
+                className="capitalize"
+                tickFormatter={(value) => value.slice(0, 3)}
+              />
+              <ChartTooltip
+                cursor={false}
+                content={
+                  <ChartTooltipContent
+                    className="capitalize w-[150px]"
+                    indicator="dashed"
+                  />
+                }
+              />
+              <Bar dataKey="value" fill="var(--color-value)" radius={4} />
+              <Bar
+                dataKey="alternativeValue"
+                fill="var(--color-alternativeValue)"
+                radius={4}
+              />
+            </BarChart>
+          ) : (
+            <div className="flex items-center text-xs justify-center gap-2 h-full text-muted-foreground">
+              <InfoCircledIcon className="h-4 w-4" />
+              <span>{emptyState}</span>
+            </div>
+          )}
         </ChartContainer>
       </CardContent>
       <CardFooter className="flex-col items-start gap-2 text-sm">

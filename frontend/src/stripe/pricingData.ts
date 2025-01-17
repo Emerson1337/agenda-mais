@@ -4,14 +4,13 @@ export const pricingData: Price[] = [
   {
     id: "price_1NQk5TLtGdPVhGLecVfQ7mn0",
     unit_amount: 0,
-    nickname: "Basic",
+    nickname: "Free",
     offers: [
       "1 Usuário",
       "Customização de tema e URL",
       "Agendamentos ilimitados",
-      "Receita gerada",
       "Relatórios de atendimentos",
-      "24h de suporte",
+      "Suporte 24h",
     ],
   },
   // {

@@ -16,7 +16,10 @@ export default function YearlyMetrics() {
       {!isError && (
         <div className="flex flex-column flex-wrap gap-4 w-full">
           {data?.serviceRanking && (
-            <TopServices services={data.serviceRanking} />
+            <TopServices
+              emptyState="Dados insuficientes."
+              services={data.serviceRanking}
+            />
           )}
           <TotalRevenue
             title={`Receita gerada no último ano`}

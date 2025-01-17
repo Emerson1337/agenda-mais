@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { Link2Icon } from "@radix-ui/react-icons";
 import { Package2, PanelLeft, Settings, User2 } from "lucide-react";
 import Link from "next/link";
 import {
@@ -21,17 +22,24 @@ import { useBusinessContext } from "@/app/(private)/utils/context/BusinessDataCo
 import { useGetPublicAssets } from "@/shared/utils/urlUtils";
 import { useRouter } from "next/navigation";
 import { logout } from "@/actions/auth/logout";
+import { copyToClipboard } from "@/shared/utils/stringUtils";
+import { toast } from "react-toastify";
 
 export default function Header() {
   const [isSheetOpen, setIsSheetOpen] = useState(false);
   const checkActivePath = useActivePath();
-  const { profilePhoto } = useBusinessContext();
+  const { profilePhoto, username } = useBusinessContext();
   const router = useRouter();
   const closeSheet = () => setIsSheetOpen(false);
 
   const handleLogout = async () => {
     logout();
     router.push("/login");
+  };
+
+  const copyLink = (formattedName: string) => {
+    copyToClipboard(formattedName);
+    toast.success("Link copiado para a área de transferência!");
   };
 
   const profileUrl = useGetPublicAssets(profilePhoto);
@@ -71,6 +79,13 @@ export default function Header() {
         </SheetContent>
       </Sheet>
       <div className="relative ml-auto flex-1 md:grow-0"></div>
+      <Button
+        onClick={() => copyLink(username)}
+        type="button"
+        className="items-center justify-center rounded-md text-sm p-0 font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 border border-input bg-background shadow-sm hover:bg-accent text-accent-foreground size-9"
+      >
+        <Link2Icon className="h-5 w-5 transition-all group-hover:scale-110" />
+      </Button>
       <Tooltip>
         <ThemeToggle />
       </Tooltip>

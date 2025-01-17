@@ -139,7 +139,7 @@ const LayoutOne = ({ datesAvailable }: Props): JSX.Element => {
 
   return (
     <div className="h-full w-full flex flex-wrap justify-evenly">
-      <div className="shadow-lg transform duration-200 ease-in-out w-full flex flex-col">
+      <div className="transform duration-200 ease-in-out w-full flex flex-col">
         {/* Header Section with Image */}
         <div className="relative h-32 overflow-hidden">
           <div className="w-full h-full bg-primary opacity-30"></div>

@@ -40,6 +40,7 @@ export default function MonthlyCharts() {
               className="w-full"
               config={pieChartConfig}
               data={pieChartData}
+              emptyState="Dados insuficientes."
               title={"Top 5 serviços no mês atual"}
               label={`${beginOfMonth} - ${currentDate}`}
               descriptionTitle={"Serviços mais procurados no mês atual."}
