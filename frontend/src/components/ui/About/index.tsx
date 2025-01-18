@@ -36,11 +36,12 @@ const About = () => {
           <div className="w-full  lg:w-1/2">
             <div className="flex flex-wrap -mx-2">
               <div className="w-full px-2 sm:w-1/2">
-                <div className="relative mb-4 sm:mb-8 h-96 lg:h-[400px]">
+                <div className="relative mb-4 sm:mb-8 h-96 lg:h-full">
                   <Image
                     src="/images/about/about-image-01.jpg"
                     alt="about image"
                     fill
+                    sizes="100vw"
                     className="object-cover object-center"
                   />
                 </div>
@@ -51,11 +52,12 @@ const About = () => {
                     src="/images/about/about-image-02.jpg"
                     alt="about image"
                     fill
+                    sizes="100vw"
                     className="object-cover object-center"
                   />
                 </div>
                 <div className="relative flex items-center justify-center overflow-hidden bg-primary px-6 py-12 sm:h-40">
-                  <div className="text-center">
+                  <div className="text-start">
                     <span className="block text-5xl font-extrabold text-secondary">
                       10
                     </span>

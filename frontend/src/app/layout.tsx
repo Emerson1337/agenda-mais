@@ -29,7 +29,7 @@ export default async function RootLayout({
             defaultTheme="dark"
             disableTransitionOnChange
           >
-            <NextTopLoader color="#18181A" />
+            <NextTopLoader color="#21c55e" />
             <CookieConsent variant="small" />
             {children}
           </ThemeProvider>
