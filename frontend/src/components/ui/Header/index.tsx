@@ -1,5 +1,4 @@
 "use client";
-import { useTheme } from "next-themes";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -38,7 +37,6 @@ const Header = () => {
     }
   };
 
-  const { theme, setTheme } = useTheme();
 
   return (
     <>
@@ -253,7 +251,7 @@ const Header = () => {
                 >
                   Acessar Plataforma
                 </Link>
-                {/* theme toggler */}
+                {/* theme toggler
                 <button
                   aria-label="theme toggler"
                   onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
@@ -278,7 +276,7 @@ const Header = () => {
                       </g>
                     </svg>
                   </span>
-                </button>
+                </button> */}
               </div>
             </div>
           </div>

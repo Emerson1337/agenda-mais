@@ -1,6 +1,6 @@
 import React from "react";
 import { SignUpForm } from "@/app/(auth)/cadastrar/components/sign-up-form";
-import Banner from "@/assets/banners/auth-banner.jpg";
+import Banner from "@/assets/banners/auth-banner.png";
 import Image from "next/image";
 
 export default function SignUp() {

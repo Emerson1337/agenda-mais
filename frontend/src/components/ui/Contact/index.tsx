@@ -5,8 +5,8 @@ import { WhatsappService } from "@/shared/services/whatsapp.service";
 const Contact = () => {
   return (
     <section id="contact" className="relative py-20 md:py-32">
-      <div className="absolute inset-0 -z-10 h-full bg-dark dark:bg-dark-700"></div>
-      <div className="absolute inset-0 -z-10 h-1/2 bg-dark-2 lg:h-[45%] xl:h-1/2"></div>
+      <div className="absolute inset-0 -z-10 h-full dark:bg-dark-700"></div>
+      <div className="absolute inset-0 -z-10 h-1/2  lg:h-[45%] xl:h-1/2"></div>
       <div className="container px-4">
         <div className="flex flex-wrap items-center">
           <div className="w-full px-4 lg:w-7/12 xl:w-8/12">
@@ -16,7 +16,7 @@ const Contact = () => {
                   CONTATE-NOS
                 </span>
                 <h2 className="text-[35px] font-semibold leading-snug text-primary">
-                  Vamos conversar.
+                  Vamos conversar e quem sabe criar novas funcionalidades para o aplicativo baseado em suas necessidades 🙂.
                 </h2>
               </div>
               <div className="flex flex-wrap justify-between">

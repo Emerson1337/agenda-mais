@@ -4,6 +4,8 @@ import { BusinessProvider } from "./utils/context/BusinessDataContext";
 import { Suspense } from "react";
 import { ReloadIcon } from "@radix-ui/react-icons";
 import { cn } from "@/lib/utils";
+import { Tooltip, TooltipProvider } from "@/components/ui/tooltip";
+import { ThemeToggle } from "@/components/ui/theme-toggle";
 
 interface RootLayoutProps {
   children: React.ReactNode;
@@ -42,7 +44,14 @@ export default function RootLayout({
         </div>
       }
     >
-      <BusinessWrapper username={params.username}>{children}</BusinessWrapper>
+      <TooltipProvider>
+        <div className="fixed z-30 bottom-10 right-10">
+          <Tooltip>
+            <ThemeToggle />
+          </Tooltip>
+        </div>
+        <BusinessWrapper username={params.username}>{children}</BusinessWrapper>
+      </TooltipProvider>
     </Suspense>
   );
 }

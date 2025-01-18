@@ -5,7 +5,7 @@ import { WhatsappService } from "@/shared/services/whatsapp.service";
 const Footer = () => {
   return (
     <footer
-      className="wow fadeInUp relative z-10 bg-[#075e54] pt-20 lg:pt-[100px]"
+      className="wow fadeInUp relative z-10 bg-secondary-foreground pt-20 lg:pt-[100px]"
       data-wow-delay=".15s"
     >
       <div className="container text-white">
@@ -69,6 +69,22 @@ const Footer = () => {
                     className="mb-3 inline-block text-base text-gray-7 hover:text-primary"
                   >
                     Sobre
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="/termos-de-uso"
+                    className="mb-3 inline-block text-base text-gray-7 hover:text-primary"
+                  >
+                    Termos de uso
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="/politicas-de-privacidade"
+                    className="mb-3 inline-block text-base text-gray-7 hover:text-primary"
+                  >
+                    Politicas de privacidade
                   </a>
                 </li>
               </ul>

@@ -16,7 +16,11 @@ import {
 import Image from "next/image";
 import { useActivePath } from "@/lib/hooks";
 import { MenuItems } from "@/components/ui/menu-items";
-import { Tooltip } from "@/components/ui/tooltip";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { useBusinessContext } from "@/app/(private)/utils/context/BusinessDataContext";
 import { useGetPublicAssets } from "@/shared/utils/urlUtils";
@@ -45,7 +49,7 @@ export default function Header() {
   const profileUrl = useGetPublicAssets(profilePhoto);
 
   return (
-    <header className="sticky top-0 z-30 flex h-14 items-center gap-4 border-b bg-background px-4 sm:static sm:h-auto sm:border-0 sm:bg-transparent sm:px-6">
+    <header className="sticky top-0 z-30 flex h-14 items-center gap-4 border-b bg-background px-4 sm:static sm:h-auto sm:border-0 sm:bg-transparent sm:px-10">
       <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
         <SheetTrigger asChild>
           <Button size="icon" variant="outline" className="sm:hidden">
@@ -79,13 +83,21 @@ export default function Header() {
         </SheetContent>
       </Sheet>
       <div className="relative ml-auto flex-1 md:grow-0"></div>
-      <Button
-        onClick={() => copyLink(username)}
-        type="button"
-        className="items-center justify-center rounded-md text-sm p-0 font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 border border-input bg-background shadow-sm hover:bg-accent text-accent-foreground size-9"
-      >
-        <Link2Icon className="h-5 w-5 transition-all group-hover:scale-110" />
-      </Button>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <Button
+            onClick={() => copyLink(username)}
+            type="button"
+            className="items-center justify-center rounded-md text-sm p-0 font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 border border-input bg-background shadow-sm hover:bg-accent text-accent-foreground size-9"
+          >
+            <Link2Icon className="h-5 w-5 transition-all group-hover:scale-110" />
+          </Button>
+        </TooltipTrigger>
+        <TooltipContent side="right">
+          Envie este link para os seus clientes.
+        </TooltipContent>
+      </Tooltip>
+
       <Tooltip>
         <ThemeToggle />
       </Tooltip>

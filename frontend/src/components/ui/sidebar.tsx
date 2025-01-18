@@ -1,6 +1,6 @@
-import { Package2 } from "lucide-react";
 import Link from "next/link";
 import { MenuItems, SettingsItem } from "./menu-items";
+import Image from "next/image";
 
 export function Sidebar() {
   return (
@@ -8,9 +8,15 @@ export function Sidebar() {
       <nav className="flex flex-col items-center gap-4 px-2 sm:py-4">
         <Link
           href="/dashboard"
-          className="group flex h-9 w-9 shrink-0 items-center justify-center gap-2 rounded-full bg-primary text-lg font-semibold text-primary-foreground md:h-8 md:w-8 md:text-base"
+          className="group flex h-9 w-9 p-2 shrink-0 items-center justify-center gap-2 rounded-full bg-green-800 text-lg font-semibold text-primary-foreground md:h-8 md:w-8 md:text-base"
         >
-          <Package2 className="h-4 w-4 transition-all group-hover:scale-110" />
+          <Image
+            src="/images/logo/logo.png"
+            alt="logo"
+            width={140}
+            height={30}
+            className="w-full h-full"
+          />
           <span className="sr-only">Acme Inc</span>
         </Link>
         <MenuItems tooltip />

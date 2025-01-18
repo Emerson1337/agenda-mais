@@ -1,7 +1,7 @@
 import React from "react";
 import { LoginForm } from "@/app/(auth)/login/components/login-form";
 import Image from "next/image";
-import Banner from "@/assets/banners/auth-banner.jpg";
+import Banner from "@/assets/banners/auth-banner.png";
 
 export default function Login() {
   return (

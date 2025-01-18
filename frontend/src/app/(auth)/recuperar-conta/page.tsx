@@ -2,7 +2,7 @@
 
 import React from "react";
 import Image from "next/image";
-import Banner from "@/assets/banners/auth-banner.jpg";
+import Banner from "@/assets/banners/auth-banner.png";
 import { ResetPasswordForm } from "@/app/(auth)/recuperar-conta/components/reset-password-form";
 import { useSearchParams } from "next/navigation";
 import { ResetLinkForm } from "@/app/(auth)/recuperar-conta/components/request-reset-link-form";
