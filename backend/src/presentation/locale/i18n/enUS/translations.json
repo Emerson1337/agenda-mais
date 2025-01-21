@@ -25,6 +25,7 @@
       "GENERIC_NOT_FOUND": "Item not found."
     },
     "INVALID_CREDENTIALS": "Invalid credentials.",
+    "INVALID_STATUS": "Invalid status provided.",
     "INVALID_REFRESH_TOKEN": "Invalid refresh token.",
     "INVALID_TOKEN": "Invalid token.",
     "INVALID_EMAIL": "Invalid email."
@@ -35,7 +36,8 @@
   "APPOINTMENT": {
     "CREATED": "Appointment scheduled successfully!",
     "CANCELLED": "Appointment cancelled successfully!",
-    "ERROR": "Unable to schedule the appointment. It may have been booked by someone else while you were trying. Please try again."
+    "ERROR": "Unable to schedule the appointment. It may have been booked by someone else while you were trying. Please try again.",
+    "UPDATED": "Appointment updated successfully!"
   },
   "SCHEDULES": {
     "DELETED": "Schedule deleted successfully!"

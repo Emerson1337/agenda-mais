@@ -20,6 +20,7 @@ import {
 } from '@/application/booking-managers/dtos/types';
 import { ChangePasswordDto } from '@/application/booking-managers/dtos/change-password-dto';
 import { defaultProfilePhoto } from '@/application/shared/constants/index';
+import { ServerError } from '../../presentation/errors/server-error';
 
 @Injectable()
 export class BookingManagersService {
@@ -186,7 +187,7 @@ export class BookingManagersService {
       try {
         this.fileAdapter.deleteFile(picturePath);
       } catch (error) {
-        console.log('🟢🟢🟢🟢 error', error);
+        throw new ServerError(error);
       }
     }
 

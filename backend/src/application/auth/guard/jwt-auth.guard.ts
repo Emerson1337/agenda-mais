@@ -100,6 +100,6 @@ export class JwtAuthGuard implements CanActivate {
       return match ? decodeURIComponent(match[1]) : undefined;
     }
 
-    return undefined;
+    return request.headers['authorization'].split(' ')[1] || undefined;
   }
 }

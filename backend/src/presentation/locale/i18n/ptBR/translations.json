@@ -24,6 +24,7 @@
       "USERNAME": "Estabelecimento não encontrado.",
       "GENERIC_NOT_FOUND": "Item não encontrado."
     },
+    "INVALID_STATUS": "Status inválido fornecido.",
     "INVALID_CREDENTIALS": "Credenciais inválidas.",
     "INVALID_REFRESH_TOKEN": "Refresh token inválido.",
     "INVALID_TOKEN": "Token inválido.",
@@ -35,7 +36,8 @@
   "APPOINTMENT": {
     "CREATED": "Horário agendado com sucesso!",
     "CANCELLED": "Agendamento cancelado com sucesso!",
-    "ERROR": "Não foi possível agendar o atendimento. Ele pode ter sido marcado por outra pessoa enquanto você tentava. Por favor, tente novamente."
+    "ERROR": "Não foi possível agendar o atendimento. Ele pode ter sido marcado por outra pessoa enquanto você tentava. Por favor, tente novamente.",
+    "UPDATED": "Agendamento atualizado com sucesso!"
   },
   "SCHEDULES": {
     "DELETED": "Agenda deletada com sucesso!"
