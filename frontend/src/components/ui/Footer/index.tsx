@@ -28,7 +28,7 @@ const Footer = () => {
                 <a
                   target="_blank"
                   aria-label="social link"
-                  href="https://www.instagram.com/erms1337"
+                  href="https://www.instagram.com/app.agendamais"
                   className="px-3 text-gray-7 hover:text-secondary"
                 >
                   <svg
