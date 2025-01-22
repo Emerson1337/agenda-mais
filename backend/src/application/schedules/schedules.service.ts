@@ -115,7 +115,10 @@ export class SchedulesService {
     status: AppointmentStatus;
     managerId: string;
   }): Promise<IUpdate | Error> {
-    if (status == AppointmentStatus.ACTIVE) {
+    if (
+      status !== AppointmentStatus.MISSED &&
+      status !== AppointmentStatus.FINISHED
+    ) {
       throw new InvalidParamError(
         'status',
         this.i18n.t('translations.INVALID_FIELD.INVALID_STATUS', {

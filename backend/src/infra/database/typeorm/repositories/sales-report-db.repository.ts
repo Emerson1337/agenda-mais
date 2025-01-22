@@ -44,7 +44,12 @@ export class TypeOrmSalesReportRepository implements SalesReportRepository {
       { returnDocument: 'after' },
     );
 
-    return result.value as SalesReport;
+    if (result) {
+      const { _id, ...rest } = result;
+      return { id: _id.toHexString(), ...rest } as SalesReport;
+    }
+
+    return null;
   }
 
   async getFinishedAppointmentsByManagerId({
@@ -60,7 +65,11 @@ export class TypeOrmSalesReportRepository implements SalesReportRepository {
       where: {
         managerId: new ObjectId(managerId),
         status: {
-          $in: [AppointmentStatus.ACTIVE, AppointmentStatus.CANCELLED],
+          $in: [
+            AppointmentStatus.FINISHED,
+            AppointmentStatus.CANCELLED,
+            AppointmentStatus.MISSED,
+          ],
         },
       },
       skip: offset,
@@ -81,7 +90,7 @@ export class TypeOrmSalesReportRepository implements SalesReportRepository {
       { returnDocument: 'after' },
     );
 
-    return result.value as SalesReport;
+    return result as SalesReport;
   }
 
   async getReportsByPhoneAndManagerId({

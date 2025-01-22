@@ -1,7 +1,7 @@
 import React from "react";
 import { translateStatus } from "@/shared/utils/statusParser";
 import { cn } from "@/lib/utils";
-import { AppointmentStatus } from "@/actions/fetchPhoneHistory";
+import { AppointmentStatus } from "@/shared/types/appointment";
 
 type StatusBadgeProps = {
   variant: AppointmentStatus;
@@ -18,7 +18,9 @@ const StatusBadge: React.FC<StatusBadgeProps> = ({ variant }) => {
           "bg-primary text-primary-foreground",
         status === AppointmentStatus.CANCELLED &&
           "bg-destructive text-destructive-foreground",
-        status === AppointmentStatus.FINISHED && "bg-gray-100 text-gray-800"
+        status === AppointmentStatus.MISSED &&
+          "bg-yellow-500 text-destructive-foreground",
+        status === AppointmentStatus.FINISHED && "bg-gray-100 text-gray-800",
       )}
     >
       {label}
