@@ -47,4 +47,11 @@ export abstract class AppointmentsRepository {
     time: string;
     date: string;
   }): Promise<Appointments[]>;
+  abstract getAppointmentsFromPhoneNumber({
+    phoneNumber,
+    managerId,
+  }: {
+    phoneNumber: string;
+    managerId: string;
+  }): Promise<Appointments[]>;
 }

@@ -1,5 +1,6 @@
 import { CreateOrUpdateSalesReportDto } from '@application/sales-report/dtos/create-update-sales-report-dto';
-import { SalesReport } from '../entities/sales-report.entity';
+import { SalesReport } from '@/domain/entities/sales-report.entity';
+import { AppointmentStatus } from '@/domain/entities/enums/appointment-status.enum';
 
 export abstract class SalesReportRepository {
   abstract create(report: CreateOrUpdateSalesReportDto): Promise<boolean>;
@@ -35,5 +36,30 @@ export abstract class SalesReportRepository {
     offset?: number;
   }): Promise<SalesReport[]>;
   abstract getSaleReportByCode(code: string): Promise<SalesReport | null>;
+  abstract getSaleReportByCodeAndManagerId({
+    code,
+    managerId,
+  }: {
+    code: string;
+    managerId: string;
+  }): Promise<SalesReport | null>;
   abstract setFinishedStatusByCode(code: string): Promise<SalesReport>;
+  abstract getFinishedAppointmentsByManagerId({
+    managerId,
+    limit,
+    offset,
+  }: {
+    managerId: string;
+    limit: number;
+    offset: number;
+  }): Promise<SalesReport[]>;
+  abstract updateFinishedAppointmentByCodeAndManagerId({
+    managerId,
+    code,
+    status,
+  }: {
+    managerId: string;
+    code: string;
+    status: AppointmentStatus;
+  }): Promise<SalesReport>;
 }

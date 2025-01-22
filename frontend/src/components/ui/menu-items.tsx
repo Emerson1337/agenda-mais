@@ -1,7 +1,14 @@
 "use client";
 
 import React from "react";
-import { Home, Calendar, Settings, Hammer, History } from "lucide-react";
+import {
+  Home,
+  Calendar,
+  Settings,
+  Hammer,
+  History,
+  CalendarCheck,
+} from "lucide-react";
 import { Tooltip, TooltipContent, TooltipTrigger } from "./tooltip";
 import { useActivePath } from "@/lib/hooks";
 import Link from "next/link";
@@ -26,9 +33,14 @@ export function MenuItems({ tooltip = false, closeSheet }: Props) {
       url: "/agenda",
     },
     {
-      icon: <History className="h-5 w-5" />,
+      icon: <CalendarCheck className="h-5 w-5" />,
       title: "Agendamentos",
       url: "/agendamentos",
+    },
+    {
+      icon: <History className="h-5 w-5" />,
+      title: "Histórico de agendamentos",
+      url: "/agendamentos-finalizados",
     },
     {
       icon: <Hammer className="h-5 w-5" />,
@@ -69,7 +81,7 @@ export function MenuItems({ tooltip = false, closeSheet }: Props) {
             {menu.icon}
             {menu.title}
           </Link>
-        )
+        ),
       )}
     </>
   );

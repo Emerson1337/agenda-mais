@@ -38,6 +38,10 @@ export const apiUrls = {
     },
     appointment: {
       getAll: (): string => `/api/dashboard/agendas/agendamentos`,
+      getAllFinishedAppointments: (): string =>
+        `/api/dashboard/agendas/historico`,
+      updateFinishedAppointment: (): string =>
+        `/api/dashboard/agendas/atualizar-agendamento-finalizado`,
       cancel: (): string => `/api/dashboard/agendas/cancelar-agendamento`,
     },
     service: {

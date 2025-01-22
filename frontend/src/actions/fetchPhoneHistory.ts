@@ -1,11 +1,6 @@
 import { apiUrls } from "@/lib/apiUrls";
 import { API } from "@/shared/services/config/config";
-
-export enum AppointmentStatus {
-  ACTIVE = "ACTIVE",
-  CANCELLED = "CANCELLED",
-  FINISHED = "FINISHED",
-}
+import { AppointmentStatus } from "@/shared/types/appointment";
 
 export interface AppointmentHistory {
   id: string;

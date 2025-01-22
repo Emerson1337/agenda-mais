@@ -30,8 +30,8 @@ export default function GeneralMetrics() {
               title={"Top serviço"}
               isLoading={yearlyIsFetching}
               value={
-                yearlyData?.serviceRanking[0]
-                  ? String(yearlyData?.serviceRanking[0])
+                yearlyData?.serviceRanking[0]?.service
+                  ? String(yearlyData?.serviceRanking[0].service)
                   : "Nenhum."
               }
               description={"Serviço mais procurado."}

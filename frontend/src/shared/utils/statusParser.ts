@@ -1,5 +1,4 @@
-import { AppointmentStatus } from "@/actions/fetchPhoneHistory";
-
+import { AppointmentStatus } from "../types/appointment";
 export function translateStatus(status: AppointmentStatus): {
   label: string;
   status: AppointmentStatus;
@@ -11,6 +10,8 @@ export function translateStatus(status: AppointmentStatus): {
       return { label: "Cancelado", status: AppointmentStatus.CANCELLED };
     case AppointmentStatus.FINISHED:
       return { label: "Finalizado", status: AppointmentStatus.FINISHED };
+    case AppointmentStatus.MISSED:
+      return { label: "Não compareceu", status: AppointmentStatus.MISSED };
     default:
       return { label: "Desconhecido", status: AppointmentStatus.FINISHED };
   }

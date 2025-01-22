@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { MongoRepository } from 'typeorm';
-import { TypeormService } from '../typeorm.service';
+import { TypeormService } from '@/infra/database/typeorm/typeorm.service';
 import { SalesReportRepository } from '@domain/repositories/sales-report.repository';
 import { CreateOrUpdateSalesReportDto } from '@application/sales-report/dtos/create-update-sales-report-dto';
-import { SalesReportMDB } from '../entities/sales-report-db.entity';
+import { SalesReportMDB } from '@/infra/database/typeorm/entities/sales-report-db.entity';
 import { SalesReport } from '@domain/entities/sales-report.entity';
 import { ObjectId } from 'mongodb';
 import { getMonth, getYear } from 'date-fns';
@@ -16,6 +16,67 @@ export class TypeOrmSalesReportRepository implements SalesReportRepository {
   constructor(private typeormService: TypeormService) {
     this.repository = typeormService.getMongoRepository(SalesReportMDB);
   }
+
+  async getSaleReportByCodeAndManagerId({
+    code,
+    managerId,
+  }: {
+    code: string;
+    managerId: string;
+  }): Promise<SalesReport | null> {
+    return await this.repository.findOne({
+      where: { code, managerId: new ObjectId(managerId) },
+    });
+  }
+
+  async updateFinishedAppointmentByCodeAndManagerId({
+    managerId,
+    code,
+    status,
+  }: {
+    managerId: string;
+    code: string;
+    status: AppointmentStatus;
+  }): Promise<SalesReport> {
+    const result = await this.repository.findOneAndUpdate(
+      { managerId: new ObjectId(managerId), code },
+      { $set: { status } },
+      { returnDocument: 'after' },
+    );
+
+    if (result) {
+      const { _id, ...rest } = result;
+      return { id: _id.toHexString(), ...rest } as SalesReport;
+    }
+
+    return null;
+  }
+
+  async getFinishedAppointmentsByManagerId({
+    managerId,
+    limit,
+    offset,
+  }: {
+    managerId: string;
+    limit: number;
+    offset: number;
+  }): Promise<SalesReport[]> {
+    return await this.repository.find({
+      where: {
+        managerId: new ObjectId(managerId),
+        status: {
+          $in: [
+            AppointmentStatus.FINISHED,
+            AppointmentStatus.CANCELLED,
+            AppointmentStatus.MISSED,
+          ],
+        },
+      },
+      skip: offset,
+      take: limit,
+    });
+  }
+
   async getSaleReportByCode(code: string): Promise<SalesReport | null> {
     return await this.repository.findOne({
       where: { code },
@@ -29,7 +90,7 @@ export class TypeOrmSalesReportRepository implements SalesReportRepository {
       { returnDocument: 'after' },
     );
 
-    return result.value as SalesReport;
+    return result as SalesReport;
   }
 
   async getReportsByPhoneAndManagerId({

@@ -6,16 +6,16 @@ import { CreateScheduleDto } from './dtos/create-schedule.dto';
 import { DeleteScheduleDto } from './dtos/delete-schedule.dto';
 import { I18nContext, I18nService } from 'nestjs-i18n';
 import { Appointments } from '@/domain/entities/appointment.entity';
-import { IDelete } from './dtos/types';
-import { ManagerServicesRepository } from '@/domain/repositories/manager-services.repository';
+import { IDelete, IUpdate } from '@/application/schedules/dtos/types';
 import { AppointmentStatus } from '@/domain/entities/enums/appointment-status.enum';
 import { SalesReportRepository } from '@/domain/repositories/sales-report.repository';
+import { SalesReport } from '@/domain/entities/sales-report.entity';
+import { InvalidParamError } from '../../presentation/errors/invalid-param-error';
 
 @Injectable()
 export class SchedulesService {
   constructor(
     private readonly schedulesRepository: SchedulesRepository,
-    private readonly managerServicesRepository: ManagerServicesRepository,
     private readonly appointmentsRepository: AppointmentsRepository,
     private readonly salesReportRepository: SalesReportRepository,
     private readonly i18n: I18nService,
@@ -39,7 +39,16 @@ export class SchedulesService {
   }: {
     managerId: string;
   }): Promise<Appointments[] | Error> {
-    return await this.appointmentsRepository.getByManagerId(managerId);
+    let appointments =
+      await this.appointmentsRepository.getByManagerId(managerId);
+
+    appointments = appointments.sort((a, b) => {
+      const dateA = new Date(a.date + ' ' + a.time);
+      const dateB = new Date(b.date + ' ' + b.time);
+      return dateA.getTime() - dateB.getTime();
+    });
+
+    return appointments;
   }
 
   async delete({
@@ -88,5 +97,83 @@ export class SchedulesService {
     });
 
     return appointmentDeleted;
+  }
+
+  async getAppointmentsFinished({
+    userId,
+    limit,
+    offset,
+  }: {
+    userId: string;
+    limit: number;
+    offset: number;
+  }): Promise<SalesReport[] | Error> {
+    const finishedAppointments =
+      await this.salesReportRepository.getFinishedAppointmentsByManagerId({
+        managerId: userId,
+        limit,
+        offset,
+      });
+
+    const finishedAppointmentsSorted = finishedAppointments.sort((a, b) => {
+      const dateA = new Date(a.date + ' ' + a.time);
+      const dateB = new Date(b.date + ' ' + b.time);
+      return dateA.getTime() - dateB.getTime();
+    });
+
+    return finishedAppointmentsSorted;
+  }
+
+  async updateFinishedAppointment({
+    code,
+    status,
+    managerId,
+  }: {
+    code: string;
+    status: AppointmentStatus;
+    managerId: string;
+  }): Promise<IUpdate | Error> {
+    if (
+      status !== AppointmentStatus.MISSED &&
+      status !== AppointmentStatus.FINISHED
+    ) {
+      throw new InvalidParamError(
+        'status',
+        this.i18n.t('translations.INVALID_FIELD.INVALID_STATUS', {
+          lang: I18nContext.current().lang,
+        }),
+      );
+    }
+
+    const appointmentByCode =
+      await this.salesReportRepository.getSaleReportByCode(code);
+
+    if (!appointmentByCode) {
+      throw new InvalidParamError(
+        'code',
+        this.i18n.t(
+          'translations.INVALID_FIELD.MISSING_DATA.GENERIC_NOT_FOUND',
+          {
+            lang: I18nContext.current().lang,
+          },
+        ),
+      );
+    }
+
+    const appointment =
+      await this.salesReportRepository.updateFinishedAppointmentByCodeAndManagerId(
+        {
+          code,
+          status,
+          managerId,
+        },
+      );
+
+    return {
+      message: this.i18n.t('translations.APPOINTMENT.UPDATED', {
+        lang: I18nContext.current().lang,
+      }),
+      appointment,
+    };
   }
 }

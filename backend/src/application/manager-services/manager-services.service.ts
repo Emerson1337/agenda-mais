@@ -82,12 +82,9 @@ export class ManagerServicesService {
     if (!managerExists)
       throw new InvalidParamError(
         'managerServiceId',
-        this.i18n.t(
-          'translations.INVALID_FIELD.MISSING_DATE.GENERIC_NOT_FOUND',
-          {
-            lang: I18nContext.current().lang,
-          },
-        ),
+        this.i18n.t('translations.INVALID_FIELD.INVALID_STATUS', {
+          lang: I18nContext.current().lang,
+        }),
       );
 
     await this.managerServicesRepository.softDeleteById(

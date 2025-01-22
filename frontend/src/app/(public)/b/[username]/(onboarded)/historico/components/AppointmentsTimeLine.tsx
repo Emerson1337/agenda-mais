@@ -1,10 +1,7 @@
 "use client";
 
 import React from "react";
-import {
-  AppointmentHistory,
-  AppointmentStatus,
-} from "@/actions/fetchPhoneHistory";
+import { AppointmentHistory } from "@/actions/fetchPhoneHistory";
 import { format, parseISO } from "date-fns";
 import { cn } from "@/lib/utils";
 import { dateUtils } from "@/shared/utils/dateUtils";
@@ -13,6 +10,7 @@ import { TrashIcon, CalendarIcon } from "@radix-ui/react-icons";
 import StatusBadge from "@/components/ui/badge-status";
 import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
+import { AppointmentStatus } from "@/shared/types/appointment";
 interface Props {
   appointmentsHistory: AppointmentHistory[];
 }

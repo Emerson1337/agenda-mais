@@ -18,7 +18,7 @@ export const useDeleteAppointmentQuery = () => {
     onSuccess(_, variables) {
       queryClient.setQueryData<AppointmentData[]>(["appointments"], (data) => {
         return Array.isArray(data)
-          ? data.filter((datum) => datum._id !== variables.appointmentId)
+          ? data.filter((datum) => datum.id !== variables.appointmentId)
           : [];
       });
     },
@@ -30,7 +30,7 @@ export const useGetAppointmentQuery = () => {
     queryKey: ["appointments"],
     queryFn: () =>
       API.get(apiUrls.internal.appointment.getAll()).then(
-        (response) => response.data.body
+        (response) => response.data.body,
       ),
   });
 };
