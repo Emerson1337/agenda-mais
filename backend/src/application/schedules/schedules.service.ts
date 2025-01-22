@@ -39,7 +39,16 @@ export class SchedulesService {
   }: {
     managerId: string;
   }): Promise<Appointments[] | Error> {
-    return await this.appointmentsRepository.getByManagerId(managerId);
+    let appointments =
+      await this.appointmentsRepository.getByManagerId(managerId);
+
+    appointments = appointments.sort((a, b) => {
+      const dateA = new Date(a.date + ' ' + a.time);
+      const dateB = new Date(b.date + ' ' + b.time);
+      return dateA.getTime() - dateB.getTime();
+    });
+
+    return appointments;
   }
 
   async delete({
@@ -99,11 +108,20 @@ export class SchedulesService {
     limit: number;
     offset: number;
   }): Promise<SalesReport[] | Error> {
-    return await this.salesReportRepository.getFinishedAppointmentsByManagerId({
-      managerId: userId,
-      limit,
-      offset,
+    const finishedAppointments =
+      await this.salesReportRepository.getFinishedAppointmentsByManagerId({
+        managerId: userId,
+        limit,
+        offset,
+      });
+
+    const finishedAppointmentsSorted = finishedAppointments.sort((a, b) => {
+      const dateA = new Date(a.date + ' ' + a.time);
+      const dateB = new Date(b.date + ' ' + b.time);
+      return dateA.getTime() - dateB.getTime();
     });
+
+    return finishedAppointmentsSorted;
   }
 
   async updateFinishedAppointment({

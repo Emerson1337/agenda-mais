@@ -46,7 +46,7 @@ export default function AppointmentsList() {
     try {
       const response = await mutateAsync({
         managerId: managerId,
-        appointmentId: appointment._id,
+        appointmentId: appointment.id,
       });
 
       toast.success(response.data.body.message);

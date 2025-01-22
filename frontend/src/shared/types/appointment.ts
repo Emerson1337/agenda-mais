@@ -8,7 +8,7 @@ export enum AppointmentStatus {
 }
 
 export const ServiceSchema = z.object({
-  _id: z.string(),
+  id: z.string(),
   name: z.string(),
   price: z.number(),
   description: z.string(),
