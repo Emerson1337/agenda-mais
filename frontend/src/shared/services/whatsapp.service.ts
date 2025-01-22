@@ -67,14 +67,14 @@ export class WhatsappService {
   static contactForDeal(customMessage?: string): string {
     const message =
       customMessage ?? `👋 *Olá! Gostaria de entender mais sobre o AgendaMais.`;
-    const phone = "5585986160705";
+    const phone = "5585989546398";
 
     return `https://api.whatsapp.com/send/?phone=${phone}&text=${message}`;
   }
 
   static contactAboutPlan(plan: string): string {
     const message = `👋 *Olá! Gostaria de entender mais sobre o plano ${plan} do AgendaMais.`;
-    const phone = "5585986160705";
+    const phone = "5585989546398";
 
     return `https://api.whatsapp.com/send/?phone=${phone}&text=${message}`;
   }
