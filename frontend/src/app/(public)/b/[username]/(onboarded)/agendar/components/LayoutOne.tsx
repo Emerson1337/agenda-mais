@@ -88,8 +88,6 @@ const LayoutOne = ({ datesAvailable }: Props): JSX.Element => {
 
         return response.appointment;
       } catch (error) {
-        console.log("🟢🟢🟢🟢 error", error);
-
         if (isAxiosError(error)) {
           toast.error(
             error.response?.data.body.error.message ??
