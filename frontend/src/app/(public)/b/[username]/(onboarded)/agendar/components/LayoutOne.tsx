@@ -4,7 +4,7 @@ import { useState, useEffect, useCallback } from "react";
 import Image from "next/image";
 import { BusinessSchedule, Slot } from "@/shared/types/times-available";
 import { notFound, useRouter } from "next/navigation";
-import { ReloadIcon } from "@radix-ui/react-icons";
+import { ExclamationTriangleIcon, ReloadIcon } from "@radix-ui/react-icons";
 import { useBusinessContext } from "@/public/b/[username]/utils/context/BusinessDataContext";
 // import { SocialNetwork } from "@/public/b/[username]/(onboarded)/agendar/components/SocialNetwork";
 import { Service } from "@/shared/types/business";
@@ -19,6 +19,9 @@ import { numberUtils } from "@/shared/utils/numberUtils";
 import { dateUtils } from "@/shared/utils/dateUtils";
 import { isAxiosError } from "axios";
 import { useGetPublicAssets } from "@/shared/utils/urlUtils";
+import { useGetPhoneHistory } from "@/public/b/[username]/(onboarded)/historico/hooks/useGetPhoneHistory";
+import { useClientInfo } from "@/lib/hooks";
+import { AppointmentStatus } from "@/shared/types/appointment";
 
 interface Props {
   datesAvailable: BusinessSchedule;
@@ -31,9 +34,20 @@ const LayoutOne = ({ datesAvailable }: Props): JSX.Element => {
   const [selectedService, setSelectedService] = useState<Service>();
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(true);
-
+  const { clientPhone } = useClientInfo();
   const { business, services } = useBusinessContext();
   if (!business) notFound();
+
+  const { data: appointmentsHistory } = useGetPhoneHistory({
+    phone: clientPhone,
+    username: business.username,
+    limit: 5,
+  });
+
+  const userAlreadyHaveTwoOpenedAppointments =
+    (appointmentsHistory?.filter((appointment) => {
+      return appointment.status === AppointmentStatus.ACTIVE;
+    }).length ?? 0) >= 2;
 
   const router = useRouter();
 
@@ -74,9 +88,12 @@ const LayoutOne = ({ datesAvailable }: Props): JSX.Element => {
 
         return response.appointment;
       } catch (error) {
+        console.log("🟢🟢🟢🟢 error", error);
+
         if (isAxiosError(error)) {
           toast.error(
-            error.response?.data.error.message ?? "Erro ao agendar horário",
+            error.response?.data.body.error.message ??
+              "Erro ao agendar horário",
           );
         }
         console.error(error);
@@ -186,33 +203,48 @@ const LayoutOne = ({ datesAvailable }: Props): JSX.Element => {
             </p>
           </div>
 
-          {/* Main Content */}
-          <div className="w-full">
-            {step === 1 ? (
-              <ChooseService
-                services={services}
-                onSelectService={(service) => {
-                  setSelectedService(service);
-                  setStep(2);
-                }}
-              />
-            ) : (
-              <BookAppointment
-                datesAvailable={datesAvailable.slots}
-                selectedDate={selectedDate}
-                setSelectedDate={setSelectedDate}
-                selectedTime={selectedTime}
-                setSelectedTime={setSelectedTime}
-                moveBack={() => setStep(1)}
-                open={isOpen}
-                setOpen={setIsOpen}
-                finish={(data) => {
-                  handleFinish(data);
-                  openWhatsapp({ ...data });
-                }}
-              />
-            )}
-          </div>
+          {userAlreadyHaveTwoOpenedAppointments ? (
+            <div className="mt-6 px-6 py-8 text-center flex flex-col items-center justify-center h-full">
+              <ExclamationTriangleIcon className="h-10 w-10 mb-4 text-yellow-500" />
+              <h3 className="text-xl font-semibold text-secondary-foreground">
+                Limite de Agendamentos Atingido
+              </h3>
+              <p className="text-secondary-foreground max-w-md text-base mt-2">
+                Você já possui{" "}
+                <span className="font-bold">2 agendamentos em aberto</span>. Por
+                favor, cancele um deles se desejar gerar um novo agendamento.
+              </p>
+            </div>
+          ) : (
+            <>
+              <div className="w-full">
+                {step === 1 ? (
+                  <ChooseService
+                    services={services}
+                    onSelectService={(service) => {
+                      setSelectedService(service);
+                      setStep(2);
+                    }}
+                  />
+                ) : (
+                  <BookAppointment
+                    datesAvailable={datesAvailable.slots}
+                    selectedDate={selectedDate}
+                    setSelectedDate={setSelectedDate}
+                    selectedTime={selectedTime}
+                    setSelectedTime={setSelectedTime}
+                    moveBack={() => setStep(1)}
+                    open={isOpen}
+                    setOpen={setIsOpen}
+                    finish={(data) => {
+                      handleFinish(data);
+                      openWhatsapp({ ...data });
+                    }}
+                  />
+                )}
+              </div>
+            </>
+          )}
         </div>
       </div>
       <div className="flex justify-center my-4 h-16 w-full">

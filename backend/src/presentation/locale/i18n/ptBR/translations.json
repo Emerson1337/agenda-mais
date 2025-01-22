@@ -37,7 +37,8 @@
     "CREATED": "Horário agendado com sucesso!",
     "CANCELLED": "Agendamento cancelado com sucesso!",
     "ERROR": "Não foi possível agendar o atendimento. Ele pode ter sido marcado por outra pessoa enquanto você tentava. Por favor, tente novamente.",
-    "UPDATED": "Agendamento atualizado com sucesso!"
+    "UPDATED": "Agendamento atualizado com sucesso!",
+    "LIMIT_REACHED": "O número máximo de agendamentos permitido para o seu número de telefone foi atingido para esta agenda."
   },
   "SCHEDULES": {
     "DELETED": "Agenda deletada com sucesso!"

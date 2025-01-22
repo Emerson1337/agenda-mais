@@ -37,7 +37,8 @@
     "CREATED": "Appointment scheduled successfully!",
     "CANCELLED": "Appointment cancelled successfully!",
     "ERROR": "Unable to schedule the appointment. It may have been booked by someone else while you were trying. Please try again.",
-    "UPDATED": "Appointment updated successfully!"
+    "UPDATED": "Appointment updated successfully!",
+    "LIMIT_REACHED": "The maximum number of appointments for your phone number has been reached for this schedule."
   },
   "SCHEDULES": {
     "DELETED": "Schedule deleted successfully!"

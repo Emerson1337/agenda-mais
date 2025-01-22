@@ -51,6 +51,21 @@ export class AppointmentsService {
       );
     }
 
+    const appointmentsAlreadyBooked =
+      await this.appointmentsRepository.getAppointmentsFromPhoneNumber({
+        phoneNumber: phone,
+        managerId: manager.id,
+      });
+
+    if (appointmentsAlreadyBooked.length >= 2) {
+      throw new InvalidParamError(
+        'managerUsername',
+        this.i18n.t('translations.APPOINTMENT.LIMIT_REACHED', {
+          lang: I18nContext.current().lang,
+        }),
+      );
+    }
+
     const { isTimeAvailable, schedule } =
       await this.datesService.checkTimeAvailability({
         id: scheduleId,

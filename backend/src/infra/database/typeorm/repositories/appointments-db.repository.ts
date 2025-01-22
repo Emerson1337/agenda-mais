@@ -15,6 +15,20 @@ export class TypeOrmAppointmentsRepository implements AppointmentsRepository {
   constructor(private typeormService: TypeormService) {
     this.repository = typeormService.getMongoRepository(AppointmentsMDB);
   }
+  async getAppointmentsFromPhoneNumber({
+    phoneNumber,
+    managerId,
+  }: {
+    phoneNumber: string;
+    managerId: string;
+  }): Promise<Appointments[]> {
+    return await this.repository.find({
+      where: {
+        phone: phoneNumber,
+        managerId: new ObjectId(managerId),
+      },
+    });
+  }
 
   async findPastAppointments({
     time,
