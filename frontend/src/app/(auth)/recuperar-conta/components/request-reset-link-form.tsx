@@ -16,6 +16,7 @@ import {
 import { useResetLinkMutation } from "@/app/(auth)/recuperar-conta/hooks/useResetLinkMutation";
 import { toast } from "react-toastify";
 import { isAxiosError } from "axios";
+import Link from 'next/link';
 
 interface ResetLinkFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
@@ -81,6 +82,14 @@ export function ResetLinkForm({}: ResetLinkFormProps) {
             )}
             Solicitar link de recuperação
           </Button>
+          <div className="flex justify-center">
+            <Link
+              href="/login"
+              className="inline-block text-sm underline"
+            >
+              Lembrou? Faça login
+            </Link>
+          </div>
         </div>
       </div>
     </form>
