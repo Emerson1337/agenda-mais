@@ -4,4 +4,8 @@ export class ForgotDto {
   @IsString()
   @IsNotEmpty()
   email: string;
+
+  @IsString()
+  @IsNotEmpty()
+  recaptchaToken: string;
 }

@@ -68,4 +68,8 @@ export class SignUpDto {
 
   @IsOptional()
   palette: ThemePalettesEnum;
+
+  @IsString()
+  @IsNotEmpty()
+  recaptchaToken: string;
 }

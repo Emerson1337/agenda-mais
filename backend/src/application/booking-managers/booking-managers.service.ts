@@ -20,7 +20,7 @@ import {
 } from '@/application/booking-managers/dtos/types';
 import { ChangePasswordDto } from '@/application/booking-managers/dtos/change-password-dto';
 import { defaultProfilePhoto } from '@/application/shared/constants/index';
-import { ServerError } from '../../presentation/errors/server-error';
+import { ServerError } from '@/presentation/errors/server-error';
 
 @Injectable()
 export class BookingManagersService {

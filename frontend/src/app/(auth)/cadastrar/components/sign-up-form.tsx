@@ -53,6 +53,10 @@ export function SignUpForm({ className }: UserAuthFormProps) {
       router.push("/login");
     } catch (error: unknown) {
       if (error instanceof AxiosError) {
+        if (error.response?.data.body.error) {
+          return toast.error(error.response?.data.body.error.message);
+        }
+
         error.response?.data.body.errors.forEach(
           (err: { name: string; message: string }) => {
             setError(err.name as keyof ISignUpRequest, {

@@ -45,7 +45,14 @@ export class AuthController {
     try {
       return response
         .status(200)
-        .send(ok(await this.authService.forgotPassword(body.email)));
+        .send(
+          ok(
+            await this.authService.forgotPassword(
+              body.email,
+              body.recaptchaToken,
+            ),
+          ),
+        );
     } catch (error) {
       return response.status(error.status).send(handleError(error));
     }
