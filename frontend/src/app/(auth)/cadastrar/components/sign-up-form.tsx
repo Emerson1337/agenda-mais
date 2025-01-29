@@ -18,11 +18,15 @@ import {
 import { stringUtils } from "@/shared/utils/stringUtils";
 import { PhoneInput } from "@/components/ui/phone-input";
 import { AxiosError } from "axios";
+import Captcha from "@/components/ui/Captcha/captcha";
+import { useState } from "react";
+import { toast } from "react-toastify";
 
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 export function SignUpForm({ className }: UserAuthFormProps) {
   const { mutateAsync } = useSignUpMutation();
+  const [recaptchaToken, setRecaptchaToken] = useState<string | null>(null);
   const router = useRouter();
   const [formattedName, setFormattedName] = React.useState<string>("");
   const {
@@ -36,8 +40,16 @@ export function SignUpForm({ className }: UserAuthFormProps) {
   });
 
   async function handleSignUp(signUpForm: ISignUpRequest) {
+    if (!recaptchaToken) {
+      return toast.error("Por favor, complete o captcha.");
+    }
+
     try {
-      await mutateAsync({ ...signUpForm, username: formattedName });
+      await mutateAsync({
+        ...signUpForm,
+        username: formattedName,
+        recaptchaToken,
+      });
       router.push("/login");
     } catch (error: unknown) {
       if (error instanceof AxiosError) {
@@ -107,6 +119,7 @@ export function SignUpForm({ className }: UserAuthFormProps) {
             <div className="grid gap-3">
               <Label htmlFor="phone">Número de telefone:</Label>
               <PhoneInput
+                placeholder="(99)99999-9999"
                 countries={["BR"]}
                 defaultCountry="BR"
                 onChange={(value) => setValue("phone", value)}
@@ -118,6 +131,7 @@ export function SignUpForm({ className }: UserAuthFormProps) {
             <Label htmlFor="password">Password</Label>
             <Input
               id="password"
+              placeholder="Defina a sua senha"
               type="password"
               required
               {...register("password")}
@@ -128,6 +142,7 @@ export function SignUpForm({ className }: UserAuthFormProps) {
             <Label htmlFor="confirmPassword">Confirmar Senha</Label>
             <Input
               id="confirmPassword"
+              placeholder="Confirme a sua senha"
               type="password"
               required
               {...register("confirmPassword")}
@@ -135,7 +150,7 @@ export function SignUpForm({ className }: UserAuthFormProps) {
             <ErrorLabel>{errors.confirmPassword?.message}</ErrorLabel>
           </div>
           <Button
-            disabled={isLoading || isSubmitting}
+            disabled={isLoading || isSubmitting || !recaptchaToken}
             type="submit"
             className="w-full"
           >
@@ -151,6 +166,8 @@ export function SignUpForm({ className }: UserAuthFormProps) {
             Login
           </Link>
         </div>
+
+        <Captcha className="flex justify-center" onChange={setRecaptchaToken} />
       </div>
     </form>
   );

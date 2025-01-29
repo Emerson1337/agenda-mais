@@ -7,16 +7,16 @@ export const ResetPasswordSchema = z
       .min(8, "A nova senha deve ter no mínimo 8 caracteres.")
       .regex(
         /[A-Z]/,
-        "A nova senha deve conter pelo menos uma letra maiúscula."
+        "A nova senha deve conter pelo menos uma letra maiúscula.",
       )
       .regex(
         /[a-z]/,
-        "A nova senha deve conter pelo menos uma letra minúscula."
+        "A nova senha deve conter pelo menos uma letra minúscula.",
       )
       .regex(/\d/, "A nova senha deve conter pelo menos um número.")
       .regex(
         /[!@#$%^&*(),.?":{}|<>]/,
-        "A nova senha deve conter pelo menos um caractere especial."
+        "A nova senha deve conter pelo menos um caractere especial.",
       ),
     confirmPassword: z.string(),
     token: z.string(),
