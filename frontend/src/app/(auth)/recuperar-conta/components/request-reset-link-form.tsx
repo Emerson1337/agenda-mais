@@ -16,13 +16,15 @@ import {
 import { useResetLinkMutation } from "@/app/(auth)/recuperar-conta/hooks/useResetLinkMutation";
 import { toast } from "react-toastify";
 import { isAxiosError } from "axios";
+import Link from "next/link";
+import { useState } from "react";
+import Captcha from "@/components/ui/Captcha/captcha";
 
-interface ResetLinkFormProps extends React.HTMLAttributes<HTMLDivElement> {}
-
-export function ResetLinkForm({}: ResetLinkFormProps) {
+export function ResetLinkForm() {
   const { mutateAsync } = useResetLinkMutation();
   const router = useRouter();
-
+  const [recaptchaToken, setRecaptchaToken] = useState<string | null>(null);
+  const [captchaKey, setCaptchaKey] = useState<number>(0);
   const {
     register,
     handleSubmit,
@@ -33,11 +35,18 @@ export function ResetLinkForm({}: ResetLinkFormProps) {
   });
 
   async function handleResetLink(resetForm: IResetLinkRequest) {
+    if (!recaptchaToken) {
+      return toast.error("Por favor, complete o captcha.");
+    }
+
     try {
-      await mutateAsync(resetForm);
+      await mutateAsync({ ...resetForm, recaptchaToken });
       toast.success("Link enviado com sucesso! Confira o seu e-mail.");
       router.push("/login");
     } catch (error) {
+      setCaptchaKey((prevKey) => prevKey + 1);
+      setRecaptchaToken(null);
+
       if (isAxiosError(error) && error.response) {
         if (error.response.status === 422) {
           return setError("email", {
@@ -72,7 +81,7 @@ export function ResetLinkForm({}: ResetLinkFormProps) {
             <ErrorLabel>{errors.email?.message}</ErrorLabel>
           </div>
           <Button
-            disabled={isLoading || isSubmitting}
+            disabled={isLoading || isSubmitting || !recaptchaToken}
             type="submit"
             className="w-full"
           >
@@ -81,7 +90,17 @@ export function ResetLinkForm({}: ResetLinkFormProps) {
             )}
             Solicitar link de recuperação
           </Button>
+          <div className="flex justify-center">
+            <Link href="/login" className="inline-block text-sm underline">
+              Lembrou? Faça login
+            </Link>
+          </div>
         </div>
+        <Captcha
+          key={captchaKey}
+          className="flex justify-center"
+          onChange={setRecaptchaToken}
+        />
       </div>
     </form>
   );

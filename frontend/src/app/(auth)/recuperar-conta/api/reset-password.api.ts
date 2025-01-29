@@ -30,8 +30,14 @@ export const useResetPasswordQuery = () => {
 export const useResetLinkQuery = () => {
   const queryClient = useQueryClient();
 
-  return useMutation<ResetPassword, AxiosError, IResetLinkRequest>({
-    mutationFn: async (data: IResetLinkRequest) => {
+  return useMutation<
+    ResetPassword,
+    AxiosError,
+    IResetLinkRequest & { recaptchaToken: string }
+  >({
+    mutationFn: async (
+      data: IResetLinkRequest & { recaptchaToken: string },
+    ) => {
       const response = await API.post(
         apiUrls.internal.auth.forgotPassword(),
         data,

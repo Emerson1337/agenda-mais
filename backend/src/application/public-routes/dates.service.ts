@@ -52,10 +52,6 @@ export class DatesService {
       return { isTimeAvailable: false };
     }
 
-    const isDateNotAvailable = schedule.dateExceptions?.some(
-      (exception) => exception.date === date,
-    );
-
     const isSlotNotAvailable =
       !!(await this.appointmentRepository.findByTimeAndDateAndManagerId({
         time,
@@ -64,7 +60,7 @@ export class DatesService {
       }));
 
     return {
-      isTimeAvailable: !isSlotNotAvailable && !isDateNotAvailable,
+      isTimeAvailable: !isSlotNotAvailable,
       schedule,
     };
   }

@@ -6,14 +6,14 @@ import {
 
 import { errorCodes } from '../error-codes';
 
-type InvidivualErrorConstraint = {
+type IndividualErrorConstraint = {
   name: string;
   stack: string;
   message: string | { [type: string]: string };
 };
 
 type ErrorConstraint = {
-  errors: InvidivualErrorConstraint[];
+  errors: IndividualErrorConstraint[];
 };
 
 type NestedObject = ErrorConstraint | undefined;

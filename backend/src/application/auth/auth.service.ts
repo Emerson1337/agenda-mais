@@ -18,6 +18,7 @@ import { UserDto } from '@/application/auth/dtos/user-dto';
 import { I18nContext, I18nService } from 'nestjs-i18n';
 import { SignUpDto } from '@/application/auth/dtos/signup-dto';
 import { BookingManagers } from '@/domain/entities/booking-managers.entity';
+import RecaptchaService from '@/application/shared/services/recaptcha';
 
 export interface SocialUserDto {
   id: number | string;
@@ -87,6 +88,19 @@ export class AuthService {
   }
 
   async create(manager: SignUpDto): Promise<BookingManagers | Error> {
+    const validCaptcha = await RecaptchaService.validateResponse(
+      manager.recaptchaToken,
+    );
+
+    if (!validCaptcha) {
+      throw new InvalidParamError(
+        'username',
+        this.i18n.t('translations.CAPTCHA.INVALID', {
+          lang: I18nContext.current().lang,
+        }),
+      );
+    }
+
     return await this.bookingManagersService.create(manager);
   }
 
@@ -174,7 +188,20 @@ export class AuthService {
 
   async forgotPassword(
     email: string,
+    recaptchaToken: string,
   ): Promise<{ success: boolean; message: string }> {
+    const validCaptcha =
+      await RecaptchaService.validateResponse(recaptchaToken);
+
+    if (!validCaptcha) {
+      throw new InvalidParamError(
+        'username',
+        this.i18n.t('translations.CAPTCHA.INVALID', {
+          lang: I18nContext.current().lang,
+        }),
+      );
+    }
+
     const user = await this.bookingManagersService.getManagerByEmail(email);
 
     if (!user)

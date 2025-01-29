@@ -8,7 +8,11 @@ import { apiUrls } from "@/lib/apiUrls";
 export const useSignUpQuery = () => {
   const queryClient = useQueryClient();
 
-  return useMutation<LoginData, AxiosError, ISignUpRequest>({
+  return useMutation<
+    LoginData,
+    AxiosError,
+    ISignUpRequest & { recaptchaToken: string }
+  >({
     mutationFn: async (data: ISignUpRequest) => {
       return await API.post(apiUrls.internal.auth.signUp(), data);
     },

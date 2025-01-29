@@ -46,5 +46,8 @@
   "MANAGERS": {
     "PASSWORD_UPDATED": "Password updated successfully!",
     "WRONG_PASSWORD": "Password was not updated. The current password is incorrect."
+  },
+  "CAPTCHA": {
+    "INVALID": "Invalid captcha."
   }
 }

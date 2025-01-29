@@ -10,37 +10,39 @@ import { IsDateFormat } from '@/application/shared/decorators/date-validator.dec
 
 export class CreateAppointmentDto {
   @IsOptional()
-  @IsMongoId()
+  @IsMongoId({ message: 'O campo managerId deve ser um ID MongoDB válido.' })
   managerId?: string;
 
-  @IsMongoId()
+  @IsMongoId({ message: 'O campo serviceId deve ser um ID MongoDB válido.' })
   serviceId: string;
 
   @IsOptional()
   code?: string;
 
-  @IsString()
-  @IsNotEmpty()
+  @IsString({ message: 'O campo nome do cliente deve ser uma string.' })
+  @IsNotEmpty({ message: 'O campo nome do cliente não pode estar vazio.' })
   clientName: string;
 
-  @IsPhoneNumber()
-  @IsNotEmpty()
+  @IsPhoneNumber(null, {
+    message: 'O campo telefone deve ser um número de telefone válido.',
+  })
+  @IsNotEmpty({ message: 'O campo telefone não pode estar vazio.' })
   phone: string;
 
-  @IsString()
-  @IsNotEmpty()
-  @IsMongoId()
+  @IsString({ message: 'O campo scheduleId deve ser uma string.' })
+  @IsNotEmpty({ message: 'O campo scheduleId não pode estar vazio.' })
+  @IsMongoId({ message: 'O campo scheduleId deve ser um ID MongoDB válido.' })
   scheduleId: string;
 
-  @IsTimeFormat()
-  @IsNotEmpty()
+  @IsTimeFormat({ message: 'O campo hora deve estar no formato HH:MM.' })
+  @IsNotEmpty({ message: 'O campo hora não pode estar vazio.' })
   time: string;
 
-  @IsDateFormat()
-  @IsNotEmpty()
+  @IsDateFormat({ message: 'O campo data deve estar no formato YYYY-MM-DD.' })
+  @IsNotEmpty({ message: 'O campo data não pode estar vazio.' })
   date: string;
 
-  @IsString()
+  @IsString({ message: 'O campo notas deve ser uma string.' })
   @IsOptional()
   notes: string;
 }

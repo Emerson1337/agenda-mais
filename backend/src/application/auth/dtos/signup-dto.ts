@@ -16,45 +16,53 @@ import {
 import { ThemePalettesEnum } from '@/domain/entities/enums/theme-palettes.enum';
 
 export class SignUpDto {
-  @IsString()
+  @IsString({ message: 'O campo mensagem de boas-vindas deve ser uma string.' })
   @IsOptional()
   @Transform((object) => (object === null ? undefined : object.value))
   welcomeMessage?: string;
 
-  @IsString()
-  @IsNotEmpty()
-  @IsValidUsername()
+  @IsString({ message: 'O campo nome de usuário deve ser uma string.' })
+  @IsNotEmpty({ message: 'O campo nome de usuário não pode estar vazio.' })
+  @IsValidUsername({ message: 'O nome de usuário não é válido.' })
   username: string;
 
-  @IsString()
-  @IsNotEmpty()
+  @IsString({ message: 'O campo primeiro nome deve ser uma string.' })
+  @IsNotEmpty({ message: 'O campo primeiro nome não pode estar vazio.' })
   firstName: string;
 
+  @IsString({ message: 'O campo sobrenome deve ser uma string.' })
   @IsOptional()
   @Transform((object) => (object === null ? undefined : object.value))
   lastName?: string;
 
-  @IsEmail()
-  @IsNotEmpty()
+  @IsEmail({}, { message: 'O campo email deve ser um email válido.' })
+  @IsNotEmpty({ message: 'O campo email não pode estar vazio.' })
   email: string;
 
-  @IsPhoneNumber()
-  @IsNotEmpty()
+  @IsPhoneNumber(null, {
+    message: 'O campo telefone deve ser um número de telefone válido.',
+  })
+  @IsNotEmpty({ message: 'O campo telefone não pode estar vazio.' })
   phone: string;
 
-  @IsString()
+  @IsString({ message: 'O campo foto de perfil deve ser uma string.' })
   @IsOptional()
   @Transform((object) => (object === null ? undefined : object.value))
   profilePhoto?: string;
 
-  @IsNumber()
-  @IsPositive()
+  @IsNumber(
+    {},
+    { message: 'O campo compromissos por telefone deve ser um número.' },
+  )
+  @IsPositive({
+    message: 'O campo compromissos por telefone deve ser um número positivo.',
+  })
   @IsOptional()
   @Transform((object) => (object === null ? undefined : object.value))
   appointmentsPerPhone?: number;
 
-  @IsStrongPassword()
-  @IsNotEmpty()
+  @IsStrongPassword({}, { message: 'A senha deve ser forte.' })
+  @IsNotEmpty({ message: 'O campo senha não pode estar vazio.' })
   password: string;
 
   @IsOptional()
@@ -68,4 +76,8 @@ export class SignUpDto {
 
   @IsOptional()
   palette: ThemePalettesEnum;
+
+  @IsString({ message: 'O campo token do reCAPTCHA deve ser uma string.' })
+  @IsNotEmpty({ message: 'O campo token do reCAPTCHA não pode estar vazio.' })
+  recaptchaToken: string;
 }

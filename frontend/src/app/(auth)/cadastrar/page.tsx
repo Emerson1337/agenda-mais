@@ -5,7 +5,7 @@ import Image from "next/image";
 
 export default function SignUp() {
   return (
-    <div className="container relative h-screen w-screen flex-col items-center justify-center grid lg:max-w-none lg:grid-cols-2 lg:px-0">
+    <div className="container overflow-x-hidden relative h-screen w-screen flex-col items-center justify-center grid lg:max-w-none lg:grid-cols-2 lg:px-0">
       <div className="w-full flex items-center justify-center">
         <div className="flex items-center justify-center py-12">
           <SignUpForm />

@@ -16,60 +16,75 @@ import {
 import { IsArrayTimeFormat } from '@/application/shared/decorators/time-array-validator.decorator';
 
 export class SchedulesTime {
-  @IsNotEmpty()
-  @IsTimeFormat()
+  @IsNotEmpty({ message: 'O campo início não pode estar vazio.' })
+  @IsTimeFormat({ message: 'O campo início deve estar no formato HH:MM.' })
   start: string;
 
-  @IsNotEmpty()
-  @IsTimeFormat()
+  @IsNotEmpty({ message: 'O campo fim não pode estar vazio.' })
+  @IsTimeFormat({ message: 'O campo fim deve estar no formato HH:MM.' })
   end: string;
 }
 
 export class SchedulesDateExceptions {
-  @IsNotEmpty()
-  @IsDateFormat()
+  @IsNotEmpty({ message: 'O campo data não pode estar vazio.' })
+  @IsDateFormat({ message: 'O campo data deve estar no formato YYYY-MM-DD.' })
   date: string;
 
-  @IsNotEmpty()
-  @IsArrayTimeFormat()
-  @ArrayMinSize(1)
-  @ArrayMaxSize(24)
+  @IsNotEmpty({ message: 'O campo horários não pode estar vazio.' })
+  @IsArrayTimeFormat({ message: 'Cada horário deve estar no formato HH:MM.' })
+  @ArrayMinSize(1, { message: 'O campo horários deve ter pelo menos 1 item.' })
+  @ArrayMaxSize(24, {
+    message: 'O campo horários deve ter no máximo 24 itens.',
+  })
   times: string[];
 }
 
 export class CreateScheduleDto {
-  @IsNotEmpty()
+  @IsNotEmpty({ message: 'O campo managerId não pode estar vazio.' })
   @IsOptional()
-  @IsMongoId()
+  @IsMongoId({ message: 'O campo managerId deve ser um ID MongoDB válido.' })
   managerId: string;
 
-  @IsNotEmpty()
-  @ArrayMinSize(1)
-  @ArrayMaxSize(7)
-  @IsArray()
-  @IsNumber({}, { each: true })
+  @IsNotEmpty({ message: 'O campo dias da semana não pode estar vazio.' })
+  @ArrayMinSize(1, {
+    message: 'O campo dias da semana deve ter pelo menos 1 item.',
+  })
+  @ArrayMaxSize(7, {
+    message: 'O campo dias da semana deve ter no máximo 7 itens.',
+  })
+  @IsArray({ message: 'O campo dias da semana deve ser um array.' })
+  @IsNumber(
+    {},
+    { each: true, message: 'Cada dia da semana deve ser um número.' },
+  )
   weekDays: number[];
 
-  @IsNotEmpty()
-  @ValidateNested()
+  @IsNotEmpty({ message: 'O campo intervalo de tempo não pode estar vazio.' })
+  @ValidateNested({
+    message: 'O campo intervalo de tempo deve ser um objeto válido.',
+  })
   @Type(() => SchedulesTime)
   timeRange: SchedulesTime;
 
-  @IsNotEmpty()
-  @IsArrayTimeFormat()
-  @ArrayMinSize(1)
-  @ArrayMaxSize(24)
-  @IsArray()
+  @IsNotEmpty({ message: 'O campo horários não pode estar vazio.' })
+  @IsArrayTimeFormat({ message: 'Cada horário deve estar no formato HH:MM.' })
+  @ArrayMinSize(1, { message: 'O campo horários deve ter pelo menos 1 item.' })
+  @ArrayMaxSize(24, {
+    message: 'O campo horários deve ter no máximo 24 itens.',
+  })
+  @IsArray({ message: 'O campo horários deve ser um array.' })
   times: string[];
 
-  @IsNotEmpty()
-  @IsNumber()
-  @Max(12)
-  @Min(1)
+  @IsNotEmpty({ message: 'O campo meses à frente não pode estar vazio.' })
+  @IsNumber({}, { message: 'O campo meses à frente deve ser um número.' })
+  @Max(12, { message: 'O campo meses à frente deve ser no máximo 12.' })
+  @Min(1, { message: 'O campo meses à frente deve ser no mínimo 1.' })
   monthsAhead: number;
 
   @IsOptional()
-  @ValidateNested()
+  @ValidateNested({
+    message: 'O campo exceções de datas deve ser um objeto válido.',
+  })
   @Type(() => SchedulesDateExceptions)
   dateExceptions?: SchedulesDateExceptions[];
 }

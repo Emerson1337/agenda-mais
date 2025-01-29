@@ -48,7 +48,7 @@ const AppointmentsHistory = ({ username }: Props): JSX.Element => {
         <AppointmentsTimeLine appointmentsHistory={appointmentsHistory} />
         {limit <= appointmentsHistory.length && (
           <button
-            className="mt-4 px-4 py-2 bg-secondary text-white rounded hover:bg-primary-foreground transition-all"
+            className="mt-4 px-4 py-2 bg-primary text-primary-foreground rounded hover:bg-primary-foreground transition-all"
             onClick={handleLoadMore}
             disabled={isFetching}
           >
