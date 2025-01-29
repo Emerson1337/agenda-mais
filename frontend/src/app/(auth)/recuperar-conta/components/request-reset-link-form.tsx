@@ -24,7 +24,7 @@ export function ResetLinkForm() {
   const { mutateAsync } = useResetLinkMutation();
   const router = useRouter();
   const [recaptchaToken, setRecaptchaToken] = useState<string | null>(null);
-
+  const [captchaKey, setCaptchaKey] = useState<number>(0);
   const {
     register,
     handleSubmit,
@@ -44,6 +44,9 @@ export function ResetLinkForm() {
       toast.success("Link enviado com sucesso! Confira o seu e-mail.");
       router.push("/login");
     } catch (error) {
+      setCaptchaKey((prevKey) => prevKey + 1);
+      setRecaptchaToken(null);
+
       if (isAxiosError(error) && error.response) {
         if (error.response.status === 422) {
           return setError("email", {
@@ -93,7 +96,11 @@ export function ResetLinkForm() {
             </Link>
           </div>
         </div>
-        <Captcha className="flex justify-center" onChange={setRecaptchaToken} />
+        <Captcha
+          key={captchaKey}
+          className="flex justify-center"
+          onChange={setRecaptchaToken}
+        />
       </div>
     </form>
   );

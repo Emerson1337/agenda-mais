@@ -12,38 +12,43 @@ import { IsDateFormat } from '@/application/shared/decorators/date-validator.dec
 import { IsTimeFormat } from '@/application/shared/decorators/time-validator.decorator';
 
 export class CreateOrUpdateSalesReportDto {
-  @IsString()
-  @IsMongoId()
+  @IsString({ message: 'O campo managerId deve ser uma string.' })
+  @IsMongoId({ message: 'O campo managerId deve ser um ID MongoDB válido.' })
   managerId: string;
 
-  @IsNumber()
+  @IsNumber({}, { message: 'O campo preço deve ser um número.' })
   price: number;
 
-  @IsDateFormat()
+  @IsDateFormat({ message: 'O campo data deve estar no formato YYYY-MM-DD.' })
   date: string;
 
-  @IsTimeFormat()
+  @IsTimeFormat({ message: 'O campo hora deve estar no formato HH:MM.' })
   time: string;
 
-  @IsPhoneNumber()
+  @IsPhoneNumber(null, {
+    message: 'O campo telefone deve ser um número de telefone válido.',
+  })
   phone: string;
 
-  @IsNotEmpty()
+  @IsNotEmpty({ message: 'O campo nome do cliente não pode estar vazio.' })
   clientName: string;
 
-  @IsNotEmpty()
+  @IsNotEmpty({ message: 'O campo código não pode estar vazio.' })
   code: string;
 
-  @IsNotEmpty()
+  @IsNotEmpty({ message: 'O campo nome do serviço não pode estar vazio.' })
   serviceName: string;
 
-  @IsNotEmpty()
+  @IsNotEmpty({ message: 'O campo notas não pode estar vazio.' })
   notes: string;
 
   @IsOptional()
+  @IsNumber({}, { message: 'O campo duração em minutos deve ser um número.' })
   timeDurationInMinutes?: number;
 
   @IsOptional()
-  @IsEnum(AppointmentStatus)
+  @IsEnum(AppointmentStatus, {
+    message: 'O campo status deve ser um valor válido.',
+  })
   status?: AppointmentStatus;
 }

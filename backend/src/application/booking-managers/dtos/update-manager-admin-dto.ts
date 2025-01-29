@@ -5,12 +5,19 @@ import { IsEnum, IsOptional } from 'class-validator';
 
 export class UpdateManagerAdminDto {
   @IsOptional()
-  @IsEnum(ManagerStatus)
+  @IsEnum(ManagerStatus, {
+    message: 'O campo status deve ser um valor válido.',
+  })
   status: ManagerStatus;
 
-  @IsEnum(ManagersRolesEnum, { each: true })
+  @IsEnum(ManagersRolesEnum, {
+    each: true,
+    message: 'Cada valor do campo roles deve ser um valor válido.',
+  })
   roles: ManagersRolesEnum[];
 
-  @IsEnum(ManagersPlansEnum)
+  @IsEnum(ManagersPlansEnum, {
+    message: 'O campo plano deve ser um valor válido.',
+  })
   plan: ManagersPlansEnum;
 }

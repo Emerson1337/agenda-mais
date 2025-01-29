@@ -27,6 +27,7 @@ interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 export function SignUpForm({ className }: UserAuthFormProps) {
   const { mutateAsync } = useSignUpMutation();
   const [recaptchaToken, setRecaptchaToken] = useState<string | null>(null);
+  const [captchaKey, setCaptchaKey] = useState<number>(0);
   const router = useRouter();
   const [formattedName, setFormattedName] = React.useState<string>("");
   const {
@@ -52,6 +53,9 @@ export function SignUpForm({ className }: UserAuthFormProps) {
       });
       router.push("/login");
     } catch (error: unknown) {
+      setCaptchaKey((prevKey) => prevKey + 1);
+      setRecaptchaToken(null);
+
       if (error instanceof AxiosError) {
         if (error.response?.data.body.error) {
           return toast.error(error.response?.data.body.error.message);
@@ -171,7 +175,11 @@ export function SignUpForm({ className }: UserAuthFormProps) {
           </Link>
         </div>
 
-        <Captcha className="flex justify-center" onChange={setRecaptchaToken} />
+        <Captcha
+          key={captchaKey}
+          className="flex justify-center"
+          onChange={setRecaptchaToken}
+        />
       </div>
     </form>
   );
