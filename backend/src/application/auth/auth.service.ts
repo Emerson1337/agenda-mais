@@ -280,7 +280,7 @@ export class AuthService {
         subject: this.i18n.t('translations.CHANGED_PASSWORD.SUBJECT', {
           lang: I18nContext.current().lang,
         }),
-        text: this.i18n.t('translations.CHANGED_PASSWORD.SUBJECT', {
+        text: this.i18n.t('translations.CHANGED_PASSWORD.TEXT', {
           lang: I18nContext.current().lang,
           args: {
             mail_sender: process.env.MAIL_SENDER,
