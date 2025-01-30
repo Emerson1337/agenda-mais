@@ -69,6 +69,7 @@ jobs:
           echo "AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}" >> backend/.env
           echo "AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}" >> backend/.env
           echo "RECAPTCHA_SITE_KEY=${{ secrets.RECAPTCHA_SITE_KEY }}" >> backend/.env
+          echo "MAIL_HOST=${{ secrets.MAIL_HOST }}" >> backend/.env
 
       - name: Generate Frontend .env File
         run: |
