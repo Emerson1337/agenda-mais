@@ -229,7 +229,7 @@ export class AuthService {
           lang: I18nContext.current().lang,
         }),
         variables: {
-          resetLink: generateFrontendUrl(`/reset-password?token=${token}`),
+          resetLink: generateFrontendUrl(`/recuperar-conta?token=${token}`),
         },
         view: 'reset_password',
       });
