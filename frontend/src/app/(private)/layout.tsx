@@ -3,6 +3,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { Sidebar } from "@/components/ui/sidebar";
 import Header from "./dashboard/components/Header";
 import { cn } from "@/lib/utils";
+import { Metadata } from "next";
 import {
   BusinessProvider,
   BusinessWrapper,
@@ -11,6 +12,10 @@ import {
 interface RootLayoutProps {
   children: React.ReactNode;
 }
+export const metadata: Metadata = {
+  title: "Agenda+",
+  description: "| Gerencie o seu negócio",
+};
 
 export default function RootLayout({ children }: Readonly<RootLayoutProps>) {
   return (
