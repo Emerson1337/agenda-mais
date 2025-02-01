@@ -2,11 +2,26 @@ import { startOfToday, subDays } from "date-fns";
 import { DateExceptions } from "@/app/(private)/agenda/schemas/schedule.schema";
 
 export namespace dateUtils {
-  export const getTimes = (start: number, end: number): string[] => {
-    const times = [];
+  export const getTimes = (
+    startTime: string,
+    endTime: string,
+    interval: number,
+  ): string[] => {
+    const times: string[] = [];
 
-    for (let index = start; index <= end; index++) {
-      times.push(`${index < 10 ? "0" + index : index}:00`);
+    const [startHours, startMinutes] = startTime.split(":").map(Number);
+    const [endHours, endMinutes] = endTime.split(":").map(Number);
+
+    let currentTime = startHours * 60 + startMinutes; // Convert start time to minutes
+    const endTimeMinutes = endHours * 60 + endMinutes; // Convert end time to minutes
+
+    while (currentTime <= endTimeMinutes) {
+      const hours = Math.floor(currentTime / 60);
+      const minutes = currentTime % 60;
+      times.push(
+        `${hours.toString().padStart(2, "0")}:${minutes.toString().padStart(2, "0")}`,
+      );
+      currentTime += interval;
     }
 
     return times;

@@ -81,6 +81,12 @@ export class CreateScheduleDto {
   @Min(1, { message: 'O campo meses à frente deve ser no mínimo 1.' })
   monthsAhead: number;
 
+  @IsNotEmpty({ message: 'O campo frequência não pode estar vazio.' })
+  @IsNumber({}, { message: 'O campo frequência deve ser um número.' })
+  @Max(120, { message: 'O campo frequência deve ser no máximo 120.' })
+  @Min(15, { message: 'O campo frequência deve ser no mínimo 15.' })
+  gapTimeInMinutes: number;
+
   @IsOptional()
   @ValidateNested({
     message: 'O campo exceções de datas deve ser um objeto válido.',

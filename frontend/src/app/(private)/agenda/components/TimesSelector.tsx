@@ -1,7 +1,6 @@
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { dateUtils } from "@/shared/utils/dateUtils";
 import { useFormContext } from "react-hook-form";
-import { stringUtils } from "@/shared/utils/stringUtils";
 import { useCallback, useEffect, useState } from "react";
 import { TimesExceptionSelector } from "./TimesExceptionSelector";
 import { ScheduleData } from "@/app/(private)/agenda/schemas/schedule.schema";
@@ -13,17 +12,14 @@ interface Props {
 
 export function TimesSelector({ defaultValue }: Props) {
   const { setValue, watch } = useFormContext<ScheduleData>();
-  const [timeRange] = watch(["timeRange"]);
+  const [timeRange, gapTimeInMinutes] = watch(["timeRange", "gapTimeInMinutes"]);
   const [times, setTimes] = useState<string[]>(defaultValue ?? []);
 
   const getTimesInRange = useCallback(() => {
     if (!timeRange || !timeRange.start || !timeRange.end) return [];
 
-    const hourStart = stringUtils.getHourNumber(timeRange.start);
-    const hourEnd = stringUtils.getHourNumber(timeRange.end);
-
-    return dateUtils.getTimes(hourStart, hourEnd);
-  }, [timeRange]);
+    return dateUtils.getTimes(timeRange.start, timeRange.end, gapTimeInMinutes);
+  }, [timeRange, gapTimeInMinutes]);
 
   useEffect(() => {
     const timesRange = getTimesInRange();
@@ -67,6 +63,14 @@ const TimesCards = ({
             Agora, selecione os horários que deseja disponibilizar para
             agendamento.
           </p>
+          <div className="flex gap-8 justify-center w-full mt-8">
+            <div className="flex gap-2 items-center">
+              <div className="size-4 bg-primary rounded-full" /><span>Selecionado</span>
+            </div>
+            <div className="flex gap-2 items-center">
+              <div className="size-4 border border-primary bg-background rounded-full" /><span>Não selecionado</span>
+            </div>
+          </div>
         </div>
         {timesInRangeSelected.map((time, key) => (
           <ToggleGroupItem className="m-1" key={key} value={time}>

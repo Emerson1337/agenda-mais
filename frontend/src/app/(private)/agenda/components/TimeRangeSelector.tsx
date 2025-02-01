@@ -8,7 +8,6 @@ import {
 } from "@/components/ui/select";
 import { useFormContext } from "react-hook-form";
 import { dateUtils } from "@/shared/utils/dateUtils";
-import { stringUtils } from "@/shared/utils/stringUtils";
 import { TimeRange } from "@/app/(private)/agenda/schemas/schedule.schema";
 
 export interface TimeRangeSelectorProps {
@@ -22,11 +21,12 @@ export function TimeRangeSelector({
 }: TimeRangeSelectorProps) {
   const { setValue, getValues } = useFormContext();
 
-  const allTimes = dateUtils.getTimes(stringUtils.getHourNumber("00:00"), 23);
+  const allTimes = dateUtils.getTimes("00:00", "23:00", getValues("gapTimeInMinutes"));
 
   const allTimesPossible = dateUtils.getTimes(
-    stringUtils.getHourNumber(getValues().timeRange?.start ?? "00:00"),
-    23
+    (getValues().timeRange?.start ?? "00:00"),
+    "23:00",
+    getValues("gapTimeInMinutes")
   );
 
   return (

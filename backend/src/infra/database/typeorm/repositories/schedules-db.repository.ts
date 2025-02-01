@@ -124,6 +124,7 @@ export class TypeOrmSchedulesRepository implements SchedulesRepository {
             weekDays: scheduleData.weekDays,
             monthsAhead: scheduleData.monthsAhead,
             managerId: existingSchedule.managerId,
+            gapTimeInMinutes: scheduleData.gapTimeInMinutes,
             dateExceptions: scheduleData.dateExceptions ?? [],
           },
         },

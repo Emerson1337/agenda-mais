@@ -168,7 +168,7 @@ export class AppointmentsService {
     );
 
     // remove slots already taken by someone
-    const slots = slotsAvailableBySchedule
+    let slots = slotsAvailableBySchedule
       .map((slot) => {
         const takenTimes = appointments
           .filter((appointment) => appointment.date === slot.date)
@@ -180,6 +180,15 @@ export class AppointmentsService {
         };
       })
       .filter((slot) => !!slot.times.length);
+
+    slots = slots.map((slot) => {
+      slot.times = slot.times.sort((a, b) => {
+        const [hoursA, minutesA] = a.split(':').map(Number);
+        const [hoursB, minutesB] = b.split(':').map(Number);
+        return hoursA - hoursB || minutesA - minutesB;
+      });
+      return slot;
+    });
 
     return {
       scheduleId: schedule.id,

@@ -24,10 +24,10 @@ const ThemeCustomizer = ({ onChange }: Props) => {
 
   React.useEffect(() => {
     setMounted(true);
-    data?.palette &&
+    
       setConfig({
         ...config,
-        theme: extractBaseColorFromTheme(data.palette),
+        theme: extractBaseColorFromTheme(data?.palette ?? "theme-zinc"),
       });
   }, [data]);
 

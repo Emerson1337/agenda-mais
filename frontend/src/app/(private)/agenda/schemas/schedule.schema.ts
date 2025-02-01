@@ -18,5 +18,6 @@ export const scheduleFormSchema = z.object({
   times: z.array(z.string()),
   dateExceptions: z.array(DateExceptionsSchema).default([]),
   monthsAhead: z.number(),
+  gapTimeInMinutes: z.number(),
 });
 export type ScheduleData = z.infer<typeof scheduleFormSchema>;

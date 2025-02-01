@@ -26,6 +26,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { MonthsAheadSelector } from "./MonthsAheadSelector";
 import { useGetScheduleQuery } from "@/app/(private)/agenda/api/schedule.api";
 import React from "react";
+import { GapTimeSelector } from './GapTimeSelector';
 
 export default function CreateSchedule() {
   const { mutate, isPending, isSuccess, error } = useScheduleMutation();
@@ -35,11 +36,12 @@ export default function CreateSchedule() {
     defaultValues: data,
   });
   const { getValues, watch } = form;
-  const [times, weekDays, timeRange, monthsAhead] = watch([
+  const [times, weekDays, timeRange, monthsAhead, gapTimeInMinutes] = watch([
     "times",
     "weekDays",
     "timeRange",
     "monthsAhead",
+    "gapTimeInMinutes"
   ]);
 
   const isSubmitEnabled =
@@ -74,8 +76,9 @@ export default function CreateSchedule() {
         </CardHeader>
         <CardContent>
           <WeekdaysCards defaultValue={weekDays} />
-          {!!weekDays?.length && (
-            <>
+          {!!weekDays?.length && <GapTimeSelector defaultValue={gapTimeInMinutes} />}
+          {!!weekDays?.length && !!gapTimeInMinutes && (
+            <div className="flex flex-col gap-4">
               <TimeRangeSelector defaultValue={timeRange} />
               {timeRange?.start && timeRange?.end && (
                 <TimesSelector defaultValue={times} />
@@ -83,7 +86,7 @@ export default function CreateSchedule() {
               {timeRange?.start && timeRange?.end && (
                 <MonthsAheadSelector defaultValue={monthsAhead} />
               )}
-            </>
+            </div>
           )}
         </CardContent>
         <div className="flex justify-center mb-4 items-center">

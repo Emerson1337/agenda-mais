@@ -36,6 +36,9 @@ export class SchedulesMDB extends BaseEntityMDB implements Schedules {
   @Column({ type: 'int' })
   monthsAhead: number;
 
+  @Column({ type: 'int' })
+  gapTimeInMinutes: number;
+
   @Column({ type: 'array' })
   dateExceptions?: SchedulesDateException[];
 }
