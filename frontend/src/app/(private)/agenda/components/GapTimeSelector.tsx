@@ -8,6 +8,8 @@ import {
 import { Select } from "@radix-ui/react-select";
 import { useFormContext } from "react-hook-form";
 import { ScheduleData } from "@/app/(private)/agenda/schemas/schedule.schema";
+import { useCallback, useEffect } from "react";
+import { dateUtils } from "@/shared/utils/dateUtils";
 
 export interface GapTimeSelectorProps {
   onChange?: (value: number) => void;
@@ -18,7 +20,7 @@ export function GapTimeSelector({
   onChange,
   defaultValue,
 }: GapTimeSelectorProps) {
-  const { setValue } = useFormContext<ScheduleData>();
+  const { setValue, getValues } = useFormContext<ScheduleData>();
 
   const gaps = [];
 
@@ -27,15 +29,64 @@ export function GapTimeSelector({
     const minutes = index % 60;
     gaps.push({
       id: index,
-      label: `${hours > 0 ? `${hours} hora${hours > 1 ? 's' : ''}` : ''}${hours > 0 && minutes > 0 ? ' e ' : ''}${minutes > 0 ? `${minutes} minuto${minutes > 1 ? 's' : ''}` : ''}`,
+      label: `${hours > 0 ? `${hours} hora${hours > 1 ? "s" : ""}` : ""}${hours > 0 && minutes > 0 ? " e " : ""}${minutes > 0 ? `${minutes} minuto${minutes > 1 ? "s" : ""}` : ""}`,
     });
   }
 
+  const allTimesPossible = useCallback(() => {
+    return dateUtils.getTimes("00:00", "23:00", getValues("gapTimeInMinutes"));
+  }, [defaultValue]);
+
+  const parseTimeToMinutes = (time: string): number => {
+    const [hours, minutes] = time.split(":").map(Number);
+    return hours * 60 + minutes;
+  };
+
+  useEffect(() => {
+    const defaultValueStart = allTimesPossible().includes(
+      getValues("timeRange").start,
+    )
+      ? getValues("timeRange").start
+      : allTimesPossible().find(
+          (time) => parseTimeToMinutes(time) >= parseTimeToMinutes("06:00"),
+        );
+
+    const defaultValueEnd = allTimesPossible().includes(
+      getValues("timeRange").end,
+    )
+      ? getValues("timeRange").end
+      : allTimesPossible().findLast(
+          (time) => parseTimeToMinutes(time) <= parseTimeToMinutes("19:00"),
+        );
+
+    defaultValueStart &&
+      setValue("timeRange", {
+        ...getValues("timeRange"),
+        start: defaultValueStart,
+      });
+    defaultValueEnd &&
+      setValue("timeRange", {
+        ...getValues("timeRange"),
+        end: defaultValueEnd,
+      });
+
+    if (defaultValueStart && defaultValueEnd) {
+      setValue(
+        "times",
+        dateUtils.getTimes(
+          defaultValueStart,
+          defaultValueEnd,
+          getValues("gapTimeInMinutes"),
+        ),
+      );
+    } else {
+      setValue("times", []);
+    }
+  }, [getValues("gapTimeInMinutes")]);
+
   return (
     <div className="w-full mt-5 flex gap-4 flex-col text-center justify-center items-center">
-      <span>
-        Qual a frequência de horários que você irá atender?
-      </span>
+      <span>Qual a frequência de horários que você irá atender?</span>
       <Select
         defaultValue={defaultValue ? String(defaultValue) : undefined}
         onValueChange={(value) => {

@@ -9,6 +9,7 @@ import {
 import { useFormContext } from "react-hook-form";
 import { dateUtils } from "@/shared/utils/dateUtils";
 import { TimeRange } from "@/app/(private)/agenda/schemas/schedule.schema";
+import { useCallback, useEffect, useState } from "react";
 
 export interface TimeRangeSelectorProps {
   defaultValue?: TimeRange;
@@ -21,13 +22,19 @@ export function TimeRangeSelector({
 }: TimeRangeSelectorProps) {
   const { setValue, getValues } = useFormContext();
 
-  const allTimes = dateUtils.getTimes("00:00", "23:00", getValues("gapTimeInMinutes"));
+  const allTimesPossible = useCallback(() => {
+    return dateUtils.getTimes("00:00", "23:00", getValues("gapTimeInMinutes"));
+  }, [getValues]);
 
-  const allTimesPossible = dateUtils.getTimes(
-    (getValues().timeRange?.start ?? "00:00"),
-    "23:00",
-    getValues("gapTimeInMinutes")
+  const [startTime, setStartTime] = useState<string | undefined>(
+    defaultValue?.start,
   );
+  const [endTime, setEndTime] = useState<string | undefined>(defaultValue?.end);
+
+  useEffect(() => {
+    setStartTime(defaultValue?.start);
+    setEndTime(defaultValue?.end);
+  }, [defaultValue]);
 
   return (
     <>
@@ -36,8 +43,9 @@ export function TimeRangeSelector({
       </div>
       <div className="flex gap-4 justify-center mb-10">
         <Select
-          defaultValue={defaultValue?.start}
+          value={startTime}
           onValueChange={(value) => {
+            setStartTime(value);
             setValue("timeRange", { ...getValues().timeRange, start: value });
             onChange?.({ ...getValues().timeRange, start: value });
           }}
@@ -47,7 +55,7 @@ export function TimeRangeSelector({
           </SelectTrigger>
           <SelectContent>
             <SelectGroup>
-              {allTimes.map((time, key) => (
+              {allTimesPossible().map((time, key) => (
                 <SelectItem key={key} value={time}>
                   {time}
                 </SelectItem>
@@ -56,8 +64,9 @@ export function TimeRangeSelector({
           </SelectContent>
         </Select>
         <Select
-          defaultValue={defaultValue?.end}
+          value={endTime}
           onValueChange={(value) => {
+            setEndTime(value);
             setValue("timeRange", { ...getValues().timeRange, end: value });
             onChange?.({ ...getValues().timeRange, end: value });
           }}
@@ -67,7 +76,7 @@ export function TimeRangeSelector({
           </SelectTrigger>
           <SelectContent>
             <SelectGroup>
-              {allTimesPossible.map((time, key) => (
+              {allTimesPossible().map((time, key) => (
                 <SelectItem key={key} value={time}>
                   {time}
                 </SelectItem>

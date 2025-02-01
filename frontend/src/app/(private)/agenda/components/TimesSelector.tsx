@@ -12,7 +12,10 @@ interface Props {
 
 export function TimesSelector({ defaultValue }: Props) {
   const { setValue, watch } = useFormContext<ScheduleData>();
-  const [timeRange, gapTimeInMinutes] = watch(["timeRange", "gapTimeInMinutes"]);
+  const [timeRange, gapTimeInMinutes] = watch([
+    "timeRange",
+    "gapTimeInMinutes",
+  ]);
   const [times, setTimes] = useState<string[]>(defaultValue ?? []);
 
   const getTimesInRange = useCallback(() => {
@@ -23,7 +26,7 @@ export function TimesSelector({ defaultValue }: Props) {
 
   useEffect(() => {
     const timesRange = getTimesInRange();
-    setValue("times", timesRange);
+    setValue("times", defaultValue ?? timesRange);
     setTimes(timesRange);
   }, [getTimesInRange, setValue]);
 
@@ -45,6 +48,7 @@ const TimesCards = ({
   const { setValue } = useFormContext();
 
   if (!timesInRangeSelected.length) return <></>;
+  console.log("🟢🟢🟢🟢 timesInRangeSelected", timesInRangeSelected);
 
   return (
     <ToggleGroup
@@ -65,10 +69,12 @@ const TimesCards = ({
           </p>
           <div className="flex gap-8 justify-center w-full mt-8">
             <div className="flex gap-2 items-center">
-              <div className="size-4 bg-primary rounded-full" /><span>Selecionado</span>
+              <div className="size-4 bg-primary rounded-full" />
+              <span>Selecionado</span>
             </div>
             <div className="flex gap-2 items-center">
-              <div className="size-4 border border-primary bg-background rounded-full" /><span>Não selecionado</span>
+              <div className="size-4 border border-primary bg-background rounded-full" />
+              <span>Não selecionado</span>
             </div>
           </div>
         </div>
