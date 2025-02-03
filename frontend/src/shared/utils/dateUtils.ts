@@ -1,5 +1,6 @@
-import { startOfToday, subDays } from "date-fns";
+import { startOfToday, subDays, format, parseISO } from "date-fns";
 import { DateExceptions } from "@/app/(private)/agenda/schemas/schedule.schema";
+import { ptBR } from "date-fns/locale";
 
 export namespace dateUtils {
   export const getTimes = (
@@ -28,15 +29,18 @@ export namespace dateUtils {
   };
 
   export const sortByDate = (array: DateExceptions[]): DateExceptions[] => {
-    return array.sort((a: DateExceptions, b: DateExceptions) => {
-      const [dayA, monthA, yearA] = a.date.split("/").map(Number);
-      const [dayB, monthB, yearB] = b.date.split("/").map(Number);
-      // Months are zero-indexed in JavaScript's Date constructor
-      const dateA = new Date(yearA, monthA - 1, dayA);
-      const dateB = new Date(yearB, monthB - 1, dayB);
-
-      // Compare timestamps of the two dates
+    return array.sort((a, b) => {
+      const dateA = new Date(a.date);
+      const dateB = new Date(b.date);
       return dateA.getTime() - dateB.getTime();
+    });
+  };
+
+  export const sortTimes = (array: string[]): string[] => {
+    return array.sort((a, b) => {
+      const [aHours, aMinutes] = a.split(":").map(Number);
+      const [bHours, bMinutes] = b.split(":").map(Number);
+      return aHours - bHours || aMinutes - bMinutes;
     });
   };
 
@@ -63,5 +67,11 @@ export namespace dateUtils {
         minutes > 0 ? ` ${minutes} minuto${minutes !== 1 ? "s" : ""}` : "";
       return `${hourString}${minuteString}`;
     }
+  };
+
+  export const formatToDDMMYYYY = (date: string | Date): string => {
+    const dateParsed = typeof date === "string" ? parseISO(date) : date;
+
+    return format(dateParsed, "dd/MM/yyyy", { locale: ptBR });
   };
 }

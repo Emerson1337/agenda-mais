@@ -12,7 +12,7 @@ export class FinishPastAppointmentsService {
     private readonly salesReportRepository: SalesReportRepository,
   ) {}
 
-  @Cron(CronExpression.EVERY_HOUR, {
+  @Cron(CronExpression.EVERY_30_MINUTES, {
     name: 'FinishPastAppointmentsService',
     timeZone: 'America/Fortaleza',
   })

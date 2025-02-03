@@ -6,5 +6,7 @@ export const useGetManagerQuery = () => {
   return useQuery<MeType | undefined>({
     queryKey: ["me"],
     queryFn: async () => await fetchManagerData(),
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
   });
 };

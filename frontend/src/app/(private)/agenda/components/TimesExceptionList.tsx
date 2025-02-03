@@ -14,7 +14,11 @@ import {
   Table,
 } from "@/components/ui/table";
 import { dateUtils } from "@/shared/utils/dateUtils";
-import { DateExceptions } from "@/app/(private)/agenda/schemas/schedule.schema";
+import {
+  DateExceptions,
+  ScheduleData,
+} from "@/app/(private)/agenda/schemas/schedule.schema";
+import { useFormContext } from "react-hook-form";
 
 export interface TimesExceptionListProps {
   dateExceptions: DateExceptions[];
@@ -23,38 +27,47 @@ export interface TimesExceptionListProps {
 export function TimesExceptionList({
   dateExceptions,
 }: TimesExceptionListProps) {
+  const { watch } = useFormContext<ScheduleData>();
+  const [times] = watch(["times"]);
+
   return (
     <>
       <CardHeader>
         <CardTitle>Exceções</CardTitle>
         <CardDescription>
-          Estes serão os horaríos que <b>não estarão disponíveis</b> para
+          Estes serão os horarios que <b>não estarão disponíveis</b> para
           agendamento baseado na sua agenda.
         </CardDescription>
       </CardHeader>
-      <CardContent>
+      <CardContent className="p-0">
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead className="text-center w-1/3">Dias</TableHead>
-              <TableHead className="text-center w-2/3">Horários</TableHead>
+              <TableHead className="text-center w-1/4">Dias</TableHead>
+              <TableHead className="text-center w-3/4">Horários</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {dateUtils.sortByDate(dateExceptions).map((exception, key) => (
               <TableRow key={key}>
                 <TableCell className="font-medium text-center">
-                  {exception.date}
+                  {dateUtils.formatToDDMMYYYY(exception.date)}
                 </TableCell>
-                <TableCell className="flex gap-2 flex-wrap">
-                  {exception.times.map((time, key) => (
-                    <div
-                      key={key}
-                      className="border bg-secondary p-2 rounded-sm w-16 text-center"
-                    >
-                      {time}
-                    </div>
-                  ))}
+                <TableCell className="flex justify-center gap-2 flex-wrap">
+                  {times.length === exception.times.length ? (
+                    <span className="text-muted-foreground text-sm text-center w-full">
+                      Todos os horários
+                    </span>
+                  ) : (
+                    exception.times.map((time, key) => (
+                      <div
+                        key={key}
+                        className="border bg-secondary p-2 rounded-sm w-16 text-center"
+                      >
+                        {time}
+                      </div>
+                    ))
+                  )}
                 </TableCell>
               </TableRow>
             ))}

@@ -12,6 +12,7 @@ import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { format } from "date-fns";
 import { Button } from "@/components/ui/button";
 import React from "react";
+import { dateUtils } from "@/shared/utils/dateUtils";
 
 export interface DaysExceptionModalProps {
   open: boolean;
@@ -55,7 +56,7 @@ export function DaysExceptionModal({
               setTimesAvailable(value);
             }}
           >
-            {times.map((time, key) => (
+            {dateUtils.sortTimes(times).map((time, key) => (
               <ToggleGroupItem className="m-1" key={key} value={time}>
                 {time}
               </ToggleGroupItem>

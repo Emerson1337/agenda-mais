@@ -137,15 +137,12 @@ export class TypeOrmSchedulesRepository implements SchedulesRepository {
       timeRange: scheduleData.timeRange,
       weekDays: scheduleData.weekDays,
       managerId: scheduleData.managerId,
+      gapTimeInMinutes: scheduleData.gapTimeInMinutes,
       monthsAhead: scheduleData.monthsAhead,
     });
   }
 
-  async getAll(managerId: string): Promise<Schedules[]> {
-    return await this.repository.find({
-      where: {
-        managerId,
-      },
-    });
+  async getAll(): Promise<Schedules[]> {
+    return await this.repository.find();
   }
 }

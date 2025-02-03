@@ -17,4 +17,5 @@ export class Schedules extends BaseEntity {
   monthsAhead: number;
   timeRange: SchedulesTimeRange;
   dateExceptions?: SchedulesDateException[];
+  gapTimeInMinutes: number;
 }

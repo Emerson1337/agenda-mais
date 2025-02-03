@@ -33,9 +33,6 @@ export class SchedulesDateExceptions {
   @IsNotEmpty({ message: 'O campo horários não pode estar vazio.' })
   @IsArrayTimeFormat({ message: 'Cada horário deve estar no formato HH:MM.' })
   @ArrayMinSize(1, { message: 'O campo horários deve ter pelo menos 1 item.' })
-  @ArrayMaxSize(24, {
-    message: 'O campo horários deve ter no máximo 24 itens.',
-  })
   times: string[];
 }
 
@@ -69,9 +66,6 @@ export class CreateScheduleDto {
   @IsNotEmpty({ message: 'O campo horários não pode estar vazio.' })
   @IsArrayTimeFormat({ message: 'Cada horário deve estar no formato HH:MM.' })
   @ArrayMinSize(1, { message: 'O campo horários deve ter pelo menos 1 item.' })
-  @ArrayMaxSize(24, {
-    message: 'O campo horários deve ter no máximo 24 itens.',
-  })
   @IsArray({ message: 'O campo horários deve ser um array.' })
   times: string[];
 

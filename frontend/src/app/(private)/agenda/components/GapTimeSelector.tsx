@@ -43,21 +43,21 @@ export function GapTimeSelector({
   };
 
   useEffect(() => {
-    const defaultValueStart = allTimesPossible().includes(
-      getValues("timeRange").start,
-    )
-      ? getValues("timeRange").start
-      : allTimesPossible().find(
-          (time) => parseTimeToMinutes(time) >= parseTimeToMinutes("06:00"),
-        );
+    const defaultValueStart =
+      !getValues("timeRange")?.start ||
+      allTimesPossible().includes(getValues("timeRange")?.start)
+        ? getValues("timeRange")?.start
+        : allTimesPossible().find(
+            (time) => parseTimeToMinutes(time) >= parseTimeToMinutes("06:00"),
+          );
 
-    const defaultValueEnd = allTimesPossible().includes(
-      getValues("timeRange").end,
-    )
-      ? getValues("timeRange").end
-      : allTimesPossible().findLast(
-          (time) => parseTimeToMinutes(time) <= parseTimeToMinutes("19:00"),
-        );
+    const defaultValueEnd =
+      !getValues("timeRange")?.end ||
+      allTimesPossible().includes(getValues("timeRange").end)
+        ? getValues("timeRange")?.end
+        : allTimesPossible().findLast(
+            (time) => parseTimeToMinutes(time) <= parseTimeToMinutes("19:00"),
+          );
 
     defaultValueStart &&
       setValue("timeRange", {
@@ -69,19 +69,6 @@ export function GapTimeSelector({
         ...getValues("timeRange"),
         end: defaultValueEnd,
       });
-
-    if (defaultValueStart && defaultValueEnd) {
-      setValue(
-        "times",
-        dateUtils.getTimes(
-          defaultValueStart,
-          defaultValueEnd,
-          getValues("gapTimeInMinutes"),
-        ),
-      );
-    } else {
-      setValue("times", []);
-    }
   }, [getValues("gapTimeInMinutes")]);
 
   return (

@@ -26,7 +26,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { MonthsAheadSelector } from "./MonthsAheadSelector";
 import { useGetScheduleQuery } from "@/app/(private)/agenda/api/schedule.api";
 import React from "react";
-import { GapTimeSelector } from './GapTimeSelector';
+import { GapTimeSelector } from "./GapTimeSelector";
 
 export default function CreateSchedule() {
   const { mutate, isPending, isSuccess, error } = useScheduleMutation();
@@ -41,7 +41,7 @@ export default function CreateSchedule() {
     "weekDays",
     "timeRange",
     "monthsAhead",
-    "gapTimeInMinutes"
+    "gapTimeInMinutes",
   ]);
 
   const isSubmitEnabled =
@@ -74,15 +74,15 @@ export default function CreateSchedule() {
             Para quais dias da semana você deseja deixar a agenda aberta?
           </CardDescription>
         </CardHeader>
-        <CardContent>
+        <CardContent className="p-2">
           <WeekdaysCards defaultValue={weekDays} />
-          {!!weekDays?.length && <GapTimeSelector defaultValue={gapTimeInMinutes} />}
+          {!!weekDays?.length && (
+            <GapTimeSelector defaultValue={gapTimeInMinutes} />
+          )}
           {!!weekDays?.length && !!gapTimeInMinutes && (
             <div className="flex flex-col gap-4">
               <TimeRangeSelector defaultValue={timeRange} />
-              {timeRange?.start && timeRange?.end && (
-                <TimesSelector defaultValue={times} />
-              )}
+              <TimesSelector />
               {timeRange?.start && timeRange?.end && (
                 <MonthsAheadSelector defaultValue={monthsAhead} />
               )}

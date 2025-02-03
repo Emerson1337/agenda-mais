@@ -16,7 +16,9 @@ export const useGetScheduleQuery = () => {
     queryKey: ["schedule"],
     queryFn: () =>
       API.get(apiUrls.internal.schedule.get()).then(
-        (response) => response.data.body
+        (response) => response.data.body,
       ),
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
   });
 };
