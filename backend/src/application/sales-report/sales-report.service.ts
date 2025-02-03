@@ -321,6 +321,12 @@ export class SalesReportService {
       incomingRevenue: this.getTotalRevenue(activeAppointmentsReports).toFixed(
         2,
       ),
+      topTenClients: this.getClientRanking(finishedAppointmentsReports)
+        .map((client) => ({
+          ...client,
+          totalValue: client.totalValue.toFixed(2),
+        }))
+        .slice(0, 10),
     };
   }
 

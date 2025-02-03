@@ -19,6 +19,7 @@ export default function MonthlyMetrics() {
         <div className="flex flex-column flex-wrap gap-4 w-full">
           {data?.topTenClients && (
             <TopClients
+              title={`Top 10 clientes em ${currentMonth}`}
               emptyState="Dados insuficientes."
               clients={data.topTenClients}
             />

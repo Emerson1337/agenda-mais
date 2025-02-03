@@ -1,3 +1,5 @@
+import { TopTenClient } from "./business-total-metrics";
+
 export interface BusinessMonthlyMetrics {
   servicesReportByMonth: ServicesReportByMonth[];
   totalRevenue: string;
@@ -9,11 +11,4 @@ export interface ServicesReportByMonth {
   totalValue: string;
   service: string;
   month: string;
-}
-
-export interface TopTenClient {
-  totalAppointments: number;
-  totalValue: string;
-  phone: string;
-  name: string;
 }

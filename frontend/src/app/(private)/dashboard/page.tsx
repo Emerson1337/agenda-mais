@@ -3,6 +3,7 @@ import MonthlyCharts from "./components/sections/MonthlyCharts";
 import MonthlyMetrics from "./components/sections/MonthlyMetrics";
 import YearlyCharts from "./components/sections/YearlyCharts";
 import YearlyMetrics from "./components/sections/YearlyMetrics";
+import GeneralMetricsCards from "./components/sections/GeneralMetricsCards";
 
 export default function Dashboard() {
   return (
@@ -13,6 +14,7 @@ export default function Dashboard() {
         <YearlyCharts />
       </div>
       <div className="w-full lg:w-1/3 flex flex-col gap-4">
+        <GeneralMetricsCards />
         <MonthlyMetrics />
         <YearlyMetrics />
       </div>

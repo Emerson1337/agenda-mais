@@ -39,7 +39,7 @@ export function MenuItems({ tooltip = false, closeSheet }: Props) {
     },
     {
       icon: <History className="h-5 w-5" />,
-      title: "Histórico de agendamentos",
+      title: "Histórico",
       url: "/agendamentos-finalizados",
     },
     {
