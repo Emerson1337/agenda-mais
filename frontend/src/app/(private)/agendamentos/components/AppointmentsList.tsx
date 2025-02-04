@@ -37,7 +37,7 @@ export default function AppointmentsList() {
   const [open, setOpen] = useState<boolean>(false);
   const [appointmentFocused, setAppointmentFocused] =
     useState<AppointmentData>();
-  const { id: managerId, username } = useBusinessContext();
+  const { username } = useBusinessContext();
 
   if (isFetching)
     return <ReloadIcon className="mr-2 h-4 animate-spin w-full" />;
@@ -45,7 +45,6 @@ export default function AppointmentsList() {
   const handleCancelAppointment = async (appointment: AppointmentData) => {
     try {
       const response = await mutateAsync({
-        managerId: managerId,
         appointmentId: appointment.id,
       });
 
