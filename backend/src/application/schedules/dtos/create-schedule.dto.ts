@@ -5,7 +5,6 @@ import {
   ArrayMaxSize,
   ArrayMinSize,
   IsArray,
-  IsMongoId,
   IsNotEmpty,
   IsNumber,
   IsOptional,
@@ -39,7 +38,6 @@ export class SchedulesDateExceptions {
 export class CreateScheduleDto {
   @IsNotEmpty({ message: 'O campo managerId não pode estar vazio.' })
   @IsOptional()
-  @IsMongoId({ message: 'O campo managerId deve ser um ID MongoDB válido.' })
   managerId: string;
 
   @IsNotEmpty({ message: 'O campo dias da semana não pode estar vazio.' })

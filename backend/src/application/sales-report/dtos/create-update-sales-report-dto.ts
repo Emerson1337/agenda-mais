@@ -1,6 +1,5 @@
 import {
   IsEnum,
-  IsMongoId,
   IsNotEmpty,
   IsNumber,
   IsOptional,
@@ -13,7 +12,6 @@ import { IsTimeFormat } from '@/application/shared/decorators/time-validator.dec
 
 export class CreateOrUpdateSalesReportDto {
   @IsString({ message: 'O campo managerId deve ser uma string.' })
-  @IsMongoId({ message: 'O campo managerId deve ser um ID MongoDB válido.' })
   managerId: string;
 
   @IsNumber({}, { message: 'O campo preço deve ser um número.' })

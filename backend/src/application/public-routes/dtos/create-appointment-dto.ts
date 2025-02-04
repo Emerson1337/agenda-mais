@@ -1,6 +1,5 @@
 import { IsTimeFormat } from '@/application/shared/decorators/time-validator.decorator';
 import {
-  IsMongoId,
   IsNotEmpty,
   IsOptional,
   IsPhoneNumber,
@@ -10,10 +9,8 @@ import { IsDateFormat } from '@/application/shared/decorators/date-validator.dec
 
 export class CreateAppointmentDto {
   @IsOptional()
-  @IsMongoId({ message: 'O campo managerId deve ser um ID MongoDB válido.' })
   managerId?: string;
 
-  @IsMongoId({ message: 'O campo serviceId deve ser um ID MongoDB válido.' })
   serviceId: string;
 
   @IsOptional()
@@ -31,7 +28,6 @@ export class CreateAppointmentDto {
 
   @IsString({ message: 'O campo scheduleId deve ser uma string.' })
   @IsNotEmpty({ message: 'O campo scheduleId não pode estar vazio.' })
-  @IsMongoId({ message: 'O campo scheduleId deve ser um ID MongoDB válido.' })
   scheduleId: string;
 
   @IsTimeFormat({ message: 'O campo hora deve estar no formato HH:MM.' })
