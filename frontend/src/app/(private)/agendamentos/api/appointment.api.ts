@@ -4,7 +4,6 @@ import { API } from "@/shared/services/config/config";
 import { AppointmentData } from "@/shared/types/appointment";
 
 interface IRequestCancelAppointment {
-  managerId: string;
   appointmentId: string;
 }
 

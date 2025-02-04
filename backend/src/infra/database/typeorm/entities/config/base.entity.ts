@@ -8,6 +8,9 @@ import {
 } from 'typeorm';
 
 class BaseEntityMDB extends OmitType(BaseEntity, ['id'] as const) {
+  @ObjectIdColumn()
+  _id: string;
+
   @PrimaryColumn()
   @ObjectIdColumn()
   id: string;

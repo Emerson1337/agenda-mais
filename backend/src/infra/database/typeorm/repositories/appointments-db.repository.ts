@@ -76,7 +76,7 @@ export class TypeOrmAppointmentsRepository implements AppointmentsRepository {
   }
 
   async getByManagerId(managerId: string): Promise<Appointments[]> {
-    return await this.repository
+    const appointments = await this.repository
       .aggregate([
         {
           $match: { managerId },
@@ -92,8 +92,20 @@ export class TypeOrmAppointmentsRepository implements AppointmentsRepository {
         {
           $unwind: '$service',
         },
+        {
+          $addFields: {
+            id: '$_id',
+          },
+        },
+        {
+          $project: {
+            _id: 0,
+          },
+        },
       ])
       .toArray();
+
+    return appointments;
   }
 
   async getByScheduleId({

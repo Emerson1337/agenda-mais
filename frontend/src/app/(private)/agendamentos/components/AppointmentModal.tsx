@@ -24,12 +24,11 @@ export function AppointmentModal({
   onDismiss,
 }: AppointmentModalProps) {
   const { mutateAsync } = useAppointmentMutation();
-  const { id: managerId, username } = useBusinessContext();
+  const { username } = useBusinessContext();
 
   const handleCancelAppointment = async (appointment: AppointmentData) => {
     try {
       const response = await mutateAsync({
-        managerId: managerId,
         appointmentId: appointment.id,
       });
 
