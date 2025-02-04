@@ -79,15 +79,22 @@ export function TimesSelector() {
                 </div>
               </div>
             </div>
-            {getTimesInRange().map((time, key) => (
-              <ToggleGroupItem
-                className="m-1 border-primary"
-                key={key}
-                value={time}
-              >
-                {time}
-              </ToggleGroupItem>
-            ))}
+            {getTimesInRange().length ? (
+              getTimesInRange().map((time, key) => (
+                <ToggleGroupItem
+                  className="m-1 border-primary"
+                  key={key}
+                  value={time}
+                >
+                  {time}
+                </ToggleGroupItem>
+              ))
+            ) : (
+              <span className="text-sm text-muted-foreground">
+                Selecione o seu horário de atendimento acima para selecionar os
+                horários.
+              </span>
+            )}
           </div>
         </ToggleGroup>
       </div>

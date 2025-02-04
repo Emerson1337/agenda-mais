@@ -106,11 +106,16 @@ const BookAppointment: React.FC<BookAppointmentProps> = ({
         </Button>
       </div>
 
+      <div className="w-full mt-4 text-center text-sm text-muted-foreground">
+        Hoje é {format(new Date(), "EEEE, dd/MM/yyyy", { locale: ptBR })}
+      </div>
+
       {/* Calendar */}
       <div className="flex justify-center h-98 mt-8">
         <Calendar
           locale={ptBR}
           classNames={{
+            day_today: "outline outline-2 outline-secondary-foreground",
             day: "m-1 p-2 rounded-lg w-10",
             day_disabled: "bg-secondary",
             cell: "w-12",

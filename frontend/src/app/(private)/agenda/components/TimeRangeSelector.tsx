@@ -23,7 +23,7 @@ export function TimeRangeSelector({
   const { setValue, getValues } = useFormContext();
 
   const allTimesPossible = useCallback(() => {
-    return dateUtils.getTimes("00:00", "23:00", getValues("gapTimeInMinutes"));
+    return dateUtils.getTimes("00:00", "23:30", 30);
   }, [getValues]);
 
   const [startTime, setStartTime] = useState<string | undefined>(

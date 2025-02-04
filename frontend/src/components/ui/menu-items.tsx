@@ -28,6 +28,11 @@ export function MenuItems({ tooltip = false, closeSheet }: Props) {
       url: "/dashboard",
     },
     {
+      icon: <Hammer className="h-5 w-5" />,
+      title: "Serviços",
+      url: "/servicos",
+    },
+    {
       icon: <Calendar className="h-5 w-5" />,
       title: "Agendas",
       url: "/agenda",
@@ -41,11 +46,6 @@ export function MenuItems({ tooltip = false, closeSheet }: Props) {
       icon: <History className="h-5 w-5" />,
       title: "Histórico",
       url: "/agendamentos-finalizados",
-    },
-    {
-      icon: <Hammer className="h-5 w-5" />,
-      title: "Serviços",
-      url: "/servicos",
     },
   ];
 

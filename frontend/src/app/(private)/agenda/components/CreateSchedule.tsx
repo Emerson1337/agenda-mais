@@ -74,7 +74,7 @@ export default function CreateSchedule() {
             Para quais dias da semana você deseja deixar a agenda aberta?
           </CardDescription>
         </CardHeader>
-        <CardContent className="p-2">
+        <CardContent className="p-2 lg:p-8">
           <WeekdaysCards defaultValue={weekDays} />
           {!!weekDays?.length && (
             <GapTimeSelector defaultValue={gapTimeInMinutes} />

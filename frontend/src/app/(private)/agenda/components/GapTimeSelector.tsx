@@ -8,8 +8,6 @@ import {
 import { Select } from "@radix-ui/react-select";
 import { useFormContext } from "react-hook-form";
 import { ScheduleData } from "@/app/(private)/agenda/schemas/schedule.schema";
-import { useCallback, useEffect } from "react";
-import { dateUtils } from "@/shared/utils/dateUtils";
 
 export interface GapTimeSelectorProps {
   onChange?: (value: number) => void;
@@ -20,7 +18,7 @@ export function GapTimeSelector({
   onChange,
   defaultValue,
 }: GapTimeSelectorProps) {
-  const { setValue, getValues } = useFormContext<ScheduleData>();
+  const { setValue } = useFormContext<ScheduleData>();
 
   const gaps = [];
 
@@ -32,44 +30,6 @@ export function GapTimeSelector({
       label: `${hours > 0 ? `${hours} hora${hours > 1 ? "s" : ""}` : ""}${hours > 0 && minutes > 0 ? " e " : ""}${minutes > 0 ? `${minutes} minuto${minutes > 1 ? "s" : ""}` : ""}`,
     });
   }
-
-  const allTimesPossible = useCallback(() => {
-    return dateUtils.getTimes("00:00", "23:00", getValues("gapTimeInMinutes"));
-  }, [defaultValue]);
-
-  const parseTimeToMinutes = (time: string): number => {
-    const [hours, minutes] = time.split(":").map(Number);
-    return hours * 60 + minutes;
-  };
-
-  useEffect(() => {
-    const defaultValueStart =
-      !getValues("timeRange")?.start ||
-      allTimesPossible().includes(getValues("timeRange")?.start)
-        ? getValues("timeRange")?.start
-        : allTimesPossible().find(
-            (time) => parseTimeToMinutes(time) >= parseTimeToMinutes("06:00"),
-          );
-
-    const defaultValueEnd =
-      !getValues("timeRange")?.end ||
-      allTimesPossible().includes(getValues("timeRange").end)
-        ? getValues("timeRange")?.end
-        : allTimesPossible().findLast(
-            (time) => parseTimeToMinutes(time) <= parseTimeToMinutes("19:00"),
-          );
-
-    defaultValueStart &&
-      setValue("timeRange", {
-        ...getValues("timeRange"),
-        start: defaultValueStart,
-      });
-    defaultValueEnd &&
-      setValue("timeRange", {
-        ...getValues("timeRange"),
-        end: defaultValueEnd,
-      });
-  }, [getValues("gapTimeInMinutes")]);
 
   return (
     <div className="w-full mt-5 flex gap-4 flex-col text-center justify-center items-center">
