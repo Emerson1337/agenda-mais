@@ -2,6 +2,15 @@ name: "Release - Production"
 
 on:
   workflow_dispatch:
+    inputs:
+      version:
+        type: choice
+        description: What kind of release is this?
+        required: true
+        options:
+          - patch
+          - minor
+          - major
 
 permissions:
   id-token: write
