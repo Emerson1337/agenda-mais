@@ -177,7 +177,7 @@ export function SignUpForm({ className }: UserAuthFormProps) {
 
         <Captcha
           key={captchaKey}
-          className="flex justify-center"
+          className="flex justify-center mb-10"
           onChange={setRecaptchaToken}
         />
       </div>

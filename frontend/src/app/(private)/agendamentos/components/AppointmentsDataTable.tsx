@@ -222,7 +222,7 @@ export function AppointmentsDataTable() {
           <div className="flex items-center justify-end space-x-2 py-4">
             <div className="flex-1 text-sm text-muted-foreground">
               Página {table.getState().pagination.pageIndex + 1} de{" "}
-              {table.getPageCount()}.
+              {table.getPageCount() === 0 ? 1 : table.getPageCount()}.
             </div>
             <div className="space-x-2">
               <Button

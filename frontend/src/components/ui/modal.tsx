@@ -40,14 +40,14 @@ export function Modal({
 }: Props) {
   return (
     <AlertDialog open={open}>
-      <AlertDialogContent className="p-4 px-4 sm:p-6">
+      <AlertDialogContent className="p-4 px-4 sm:p-6 max-h-[100vh] overflow-y-auto">
         <AlertDialogHeader>
           <AlertDialogTitle className="text-center">{title}</AlertDialogTitle>
         </AlertDialogHeader>
         <AlertDialogDescription className="px-4 AlertDialogDescription">
           {description}
         </AlertDialogDescription>
-        <>{children}</>
+        <div className="overflow-y-auto">{children}</div>
         <AlertDialogFooter>
           {dismiss && (
             <AlertDialogCancel className={cancelStyle} onClick={dismiss}>
