@@ -40,7 +40,7 @@ export function Modal({
 }: Props) {
   return (
     <AlertDialog open={open}>
-      <AlertDialogContent className="p-4 px-4 py-14 sm:p-6 max-h-[100vh] overflow-y-auto">
+      <AlertDialogContent className="p-4 px-4 py-14 sm:p-6 max-h-[90vh] overflow-y-auto">
         <AlertDialogHeader>
           <AlertDialogTitle className="text-center">{title}</AlertDialogTitle>
         </AlertDialogHeader>
