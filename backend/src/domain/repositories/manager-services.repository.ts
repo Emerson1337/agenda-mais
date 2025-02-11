@@ -1,6 +1,5 @@
 import { CreateUpdateManagerServiceDto } from '@/application/manager-services/dtos/create-update-manager-service.dto';
-
-import { ManagerServices } from '../entities/manager-services.entity';
+import { ManagerServices } from '@/domain/entities/manager-services.entity';
 
 export abstract class ManagerServicesRepository {
   abstract create(

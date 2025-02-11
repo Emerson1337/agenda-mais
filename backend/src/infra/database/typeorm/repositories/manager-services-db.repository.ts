@@ -4,9 +4,8 @@ import { ManagerServices } from '@/domain/entities/manager-services.entity';
 import { ManagerServicesRepository } from '@/domain/repositories/manager-services.repository';
 import { ObjectId } from 'mongodb';
 import { MongoRepository } from 'typeorm';
-
-import { ManagerServicesMDB } from '../entities/manager-service-db.entity';
-import { TypeormService } from '../typeorm.service';
+import { ManagerServicesMDB } from '@/infra/database/typeorm/entities/manager-service-db.entity';
+import { TypeormService } from '@/infra/database/typeorm/typeorm.service';
 
 @Injectable()
 export class TypeOrmManagerServicesRepository

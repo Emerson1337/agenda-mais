@@ -1,13 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { BookingManagersRepository } from '@/domain/repositories/booking-managers.repository';
 import { InvalidParamError } from '@/presentation/errors';
-
 import { AppointmentsRepository } from '@domain/repositories/appointments.repository';
 import { generateAppointmentCode } from '@/application/shared/utils/dataGenerator';
 import { I18nContext, I18nService } from 'nestjs-i18n';
 import { SalesReportService } from '@/application/sales-report/sales-report.service';
 import { ManagerServicesRepository } from '@domain/repositories/manager-services.repository';
-import { DatesService } from './dates.service';
+import { DatesService } from '@/application/public-routes/dates.service';
 import { AppointmentStatus } from '@/domain/entities/enums/appointment-status.enum';
 import { SchedulesRepository } from '@/domain/repositories/schedules.repository';
 import {
