@@ -18,7 +18,7 @@ export const useGetScheduleQuery = () => {
       API.get(apiUrls.internal.schedule.get()).then(
         (response) => response.data.body,
       ),
-    refetchOnMount: false,
+    refetchOnMount: true,
     refetchOnWindowFocus: false,
   });
 };
