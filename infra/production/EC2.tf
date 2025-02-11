@@ -45,7 +45,7 @@ resource "aws_instance" "agendamais-web-server" {
   user_data = file("./user_data.sh")
   vpc_security_group_ids = [aws_security_group.agendamais-security-group.id]
   ebs_block_device {
-    device_name = "/dev/sda1"
+    device_name = "/dev/xvda"
     volume_size = 30
   }
 }
