@@ -9,7 +9,7 @@ import {
 
 class BaseEntityMDB extends OmitType(BaseEntity, ['id'] as const) {
   @ObjectIdColumn()
-  _id: string;
+  _id: string | undefined;
 
   @PrimaryColumn()
   @ObjectIdColumn()
