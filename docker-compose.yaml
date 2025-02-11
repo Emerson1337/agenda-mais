@@ -6,7 +6,7 @@ services:
     ports:
       - "80:3000"
     environment:
-      - NODE_ENV=staging
+      - NODE_ENV=production
 
   backend:
     build:
@@ -15,6 +15,6 @@ services:
     ports:
       - "3000:4000"
     environment:
-      - NODE_ENV=staging
+      - NODE_ENV=production
     env_file:
       - ./backend/.env
