@@ -24,8 +24,8 @@ export class TypeOrmManagerServicesRepository
     });
     return result.map((item) => ({
       ...item,
-      id: item._id.toString(),
-      _id: undefined,
+      id: item._id,
+
       deletedAt: undefined,
     }));
   }
@@ -46,8 +46,7 @@ export class TypeOrmManagerServicesRepository
     const result = await this.repository.save(managerServiceData);
     return {
       ...result,
-      id: result._id.toString(),
-      _id: undefined,
+      id: result._id,
     };
   }
 
@@ -67,8 +66,8 @@ export class TypeOrmManagerServicesRepository
     return result?.value
       ? {
           ...result.value,
-          id: result.value._id.toString(),
-          _id: undefined,
+          id: result.value._id,
+
           deletedAt: undefined,
         }
       : null;
@@ -84,8 +83,7 @@ export class TypeOrmManagerServicesRepository
     return result
       ? {
           ...result,
-          id: result._id.toString(),
-          _id: undefined,
+          id: result._id,
         }
       : null;
   }
@@ -105,8 +103,7 @@ export class TypeOrmManagerServicesRepository
     return result
       ? {
           ...result,
-          id: result._id.toString(),
-          _id: undefined,
+          id: result._id,
         }
       : null;
   }
@@ -115,8 +112,8 @@ export class TypeOrmManagerServicesRepository
     const result = await this.repository.find({ managerId });
     return result.map((item) => ({
       ...item,
-      id: item._id.toString(),
-      _id: undefined,
+      id: item._id,
+
       deletedAt: undefined,
     }));
   }
@@ -135,8 +132,7 @@ export class TypeOrmManagerServicesRepository
     return result
       ? {
           ...result,
-          id: result._id.toString(),
-          _id: undefined,
+          id: result._id,
         }
       : null;
   }

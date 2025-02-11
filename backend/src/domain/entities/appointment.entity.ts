@@ -6,6 +6,7 @@ export class Appointments extends BaseEntity {
   phone: string;
   scheduleId: string;
   serviceId: string;
+  managerId: string;
   service: ManagerServices;
   time: string;
   date: string;

@@ -101,6 +101,12 @@ export class AppointmentsService {
     }
 
     const code = generateAppointmentCode(4);
+    console.log(
+      '🟢🟢🟢🟢 manager, schedule, service',
+      manager,
+      schedule,
+      service,
+    );
 
     const appointment = await this.appointmentsRepository.create({
       managerId: manager.id,

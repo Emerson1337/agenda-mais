@@ -8,9 +8,10 @@ import {
 import { IsDateFormat } from '@/application/shared/decorators/date-validator.decorator';
 
 export class CreateAppointmentDto {
-  @IsOptional()
   managerId?: string;
 
+  @IsString({ message: 'O campo serviceId deve ser uma string.' })
+  @IsNotEmpty({ message: 'O campo serviceId não pode estar vazio.' })
   serviceId: string;
 
   @IsOptional()

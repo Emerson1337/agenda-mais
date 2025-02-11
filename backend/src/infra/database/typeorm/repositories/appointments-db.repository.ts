@@ -105,6 +105,8 @@ export class TypeOrmAppointmentsRepository implements AppointmentsRepository {
       ])
       .toArray();
 
+    console.log('🟢🟢🟢🟢 managerId', appointments);
+
     return appointments;
   }
 
