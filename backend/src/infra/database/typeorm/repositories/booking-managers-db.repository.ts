@@ -125,7 +125,21 @@ export class TypeOrmBookingManagersRepository
   }
 
   async create(data: CreateManagerDto): Promise<BookingManagersMDB> {
-    const bookingManager = await this.repository.save(data);
+    const bookingManager = await this.repository.save({
+      appointmentsPerPhone: data.appointmentsPerPhone,
+      email: data.email,
+      firstName: data.firstName,
+      lastName: data.lastName,
+      password: data.password,
+      phone: data.phone,
+      plan: data.plan,
+      profilePhoto: data.profilePhoto,
+      roles: data.roles,
+      status: data.status,
+      username: data.username,
+      welcomeMessage: data.welcomeMessage,
+      palette: data.palette,
+    });
     delete bookingManager.password;
     return bookingManager;
   }
