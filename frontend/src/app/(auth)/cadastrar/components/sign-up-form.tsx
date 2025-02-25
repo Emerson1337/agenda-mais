@@ -25,7 +25,7 @@ import { toast } from "react-toastify";
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 export function SignUpForm({ className }: UserAuthFormProps) {
-  const { mutateAsync } = useSignUpMutation();
+  const { mutateAsync, isPending } = useSignUpMutation();
   const [recaptchaToken, setRecaptchaToken] = useState<string | null>(null);
   const [captchaKey, setCaptchaKey] = useState<number>(0);
   const router = useRouter();
@@ -158,11 +158,11 @@ export function SignUpForm({ className }: UserAuthFormProps) {
             <ErrorLabel>{errors.confirmPassword?.message}</ErrorLabel>
           </div>
           <Button
-            disabled={isLoading || isSubmitting || !recaptchaToken}
+            disabled={isLoading || isSubmitting || !recaptchaToken || isPending}
             type="submit"
             className="w-full"
           >
-            {(isLoading || isSubmitting) && (
+            {(isLoading || isSubmitting || isPending) && (
               <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />
             )}
             Criar conta

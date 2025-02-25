@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -18,13 +19,23 @@ import { cn } from "@/lib/utils";
 import applyErrorsToForm, { isAxiosResponse } from "@/shared/utils/errorUtils";
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
+import { useEffect } from 'react';
 
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 export function LoginForm({ className }: UserAuthFormProps) {
   const router = useRouter();
+  const searchParams = useSearchParams();
 
-  const { mutateAsync } = useLoginMutation();
+  const { mutateAsync, isPending } = useLoginMutation();
+
+  useEffect(() => {
+    const email = searchParams.get("email");
+    const password = searchParams.get("password");
+    if (email && password) {
+      handleLogin({ email, password });
+    }
+  }, [searchParams]);
 
   const {
     register,
@@ -33,6 +44,10 @@ export function LoginForm({ className }: UserAuthFormProps) {
     formState: { errors, isLoading, isSubmitting },
   } = useForm<ILoginRequest>({
     resolver: zodResolver(LoginSchema),
+    defaultValues: {
+      email: searchParams.get("email") || "",
+      password: searchParams.get("password") || "",
+    },
   });
 
   async function handleLogin(loginForm: ILoginRequest) {
@@ -90,19 +105,15 @@ export function LoginForm({ className }: UserAuthFormProps) {
             <ErrorLabel>{errors.password?.message}</ErrorLabel>
           </div>
           <Button
-            disabled={isLoading || isSubmitting}
+            disabled={isLoading || isSubmitting || isPending}
             type="submit"
             className="w-full"
           >
-            {(isLoading || isSubmitting) && (
+            {(isLoading || isSubmitting || isPending) && (
               <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />
             )}
             Entrar
           </Button>
-          {/* <Button variant="outline" className="w-full">
-            {Icon.Google("w-6 h-6 mr-2")}
-            Entrar com Google
-          </Button> */}
         </div>
         <div className="mt-4 text-center text-sm">
           Não tem uma conta?{" "}

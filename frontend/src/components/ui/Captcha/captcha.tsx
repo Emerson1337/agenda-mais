@@ -21,12 +21,14 @@ export default function Captcha({ onChange, className, reload }: Props) {
   }, [reload]);
 
   return (
-    <ReCAPTCHA
-      ref={recaptchaRef}
-      defaultValue={""}
-      className={className}
-      sitekey={recaptchaKey}
-      onChange={onChange}
-    />
+    <div className="min-h-20">
+      <ReCAPTCHA
+        ref={recaptchaRef}
+        defaultValue={""}
+        className={className}
+        sitekey={recaptchaKey}
+        onChange={onChange}
+      />
+    </div>
   );
 }
