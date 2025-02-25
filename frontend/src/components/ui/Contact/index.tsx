@@ -16,7 +16,7 @@ const Contact = () => {
                   CONTATE-NOS
                 </span>
                 <h2 className="text-[35px] font-semibold leading-snug text-primary">
-                  Vamos conversar e quem sabe criar novas funcionalidades para o aplicativo baseado em suas necessidades 🙂.
+                  Crie a sua conta e vamos criar novas funcionalidades para o aplicativo baseado em suas necessidades. 🙂
                 </h2>
               </div>
               <div className="flex flex-wrap justify-between">

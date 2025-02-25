@@ -9,7 +9,7 @@ const Features = () => {
         <SectionTitle
           subtitle="Funcionalidades"
           title="O que você tem ao assinar o app?"
-          paragraph="Existem várias maneiras de tornar o seu negócio mais eficiente e lucrativo. O app é uma delas. Veja o que você tem ao assinar o app."
+          paragraph="Existem várias maneiras de tornar o seu negócio mais eficiente e lucrativo. O Agenda+ é uma delas. Veja o que você tem ao criar a sua conta e utilizar o app."
         />
 
         <div className="-mx-4 mt-12 flex flex-wrap lg:mt-20">

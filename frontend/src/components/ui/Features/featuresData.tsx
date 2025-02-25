@@ -123,7 +123,7 @@ const featuresData: Feature[] = [
     ),
     title: "Disponha de várias métricas",
     paragraph:
-      "Com o app você terá acesso a várias métricas para analisar o desempenho do seu negócio e com isso traçar novas metas ou criar novas estratégias maximizando os seus lucros.",
+      "Com o app você terá acesso a várias métricas para analisar o desempenho do seu negócio e com isso traçar novas metas ou criar novas estratégias maximizando os seus lucros. Disponha de gráficos com expectativa de receita; serviços mais procurados; clientes mais frequentes; entre outros.",
   },
 ];
 export default featuresData;

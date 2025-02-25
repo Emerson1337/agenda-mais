@@ -59,13 +59,13 @@ const About = () => {
                 <div className="relative flex items-center justify-center overflow-hidden bg-primary px-6 py-12 sm:h-40">
                   <div className="text-start">
                     <span className="block text-5xl font-extrabold text-secondary">
-                      10
+                      + de 10
                     </span>
                     <span className="block text-base font-semibold text-secondary">
-                      Temos
+                      Métricas
                     </span>
                     <span className="block text-sm font-medium text-secondary opacity-70">
-                      Motivos para te convencer
+                      Para análise
                     </span>
                   </div>
                   <span className="absolute left-0 top-0 -z-10">

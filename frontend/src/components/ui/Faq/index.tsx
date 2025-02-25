@@ -36,7 +36,7 @@ const Faq = () => {
             />
             <SingleFaq
               question="Como eu posso maximizar os meus lucros?"
-              answer="A plataforma disponibiliza diversas análises métricas e gráficos para você analisar o desempenho do seu negócio. Além disso, você pode criar promoções e cupons de desconto para atrair mais clientes. Nós iremos te ajudar a criar uma estratégia de marketing digital para o seu negócio."
+              answer="A plataforma disponibiliza diversas análises métricas e gráficos para você analisar o desempenho do seu negócio, como serviço mais procurado; clientes mais recorrentes; expectativa de receita; receita levantada nos últimos meses; horários mais procurados; etc. Além disso, você pode criar promoções e cupons de desconto para atrair mais clientes. Nós iremos te ajudar a criar uma estratégia de marketing digital para o seu negócio."
             />
             <SingleFaq
               question="Eu possuo alternativas ao Agenda+?"
