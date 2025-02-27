@@ -21,10 +21,7 @@ const BusinessIntroduction = (): JSX.Element => {
         />
         <div className="rounded-full w-40 h-40 absolute bg-primary-foreground mb-8 z-0" />
       </div>
-      <div>Bem vindo ao</div>
-      <div className="font-bold uppercase">
-        {business.username.replace("-", " ")}
-      </div>
+      <div>Bem vindo!</div>
       <div className="font-light text-sm text-muted-foreground opacity-80 mt-8 px-16 max-w-xl text-center">
         {business.welcomeMessage}
       </div>
