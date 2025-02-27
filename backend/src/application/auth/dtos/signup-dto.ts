@@ -26,6 +26,10 @@ export class SignUpDto {
   @IsValidUsername({ message: 'O nome de usuário não é válido.' })
   username: string;
 
+  @IsString({ message: 'O campo nome do negócio deve ser uma string.' })
+  @IsNotEmpty({ message: 'O campo nome do negócio não pode estar vazio.' })
+  businessName: string;
+
   @IsString({ message: 'O campo primeiro nome deve ser uma string.' })
   @IsNotEmpty({ message: 'O campo primeiro nome não pode estar vazio.' })
   firstName: string;

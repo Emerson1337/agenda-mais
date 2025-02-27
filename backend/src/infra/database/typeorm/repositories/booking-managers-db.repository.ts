@@ -137,6 +137,7 @@ export class TypeOrmBookingManagersRepository
       roles: data.roles,
       status: data.status,
       username: data.username,
+      businessName: data.businessName,
       welcomeMessage: data.welcomeMessage,
       palette: data.palette,
     });

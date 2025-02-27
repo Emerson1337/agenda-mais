@@ -15,6 +15,7 @@ export interface Business {
   id: string;
   welcomeMessage: string;
   username: string;
+  businessName: string;
   firstName: string;
   email: string;
   phone: string;

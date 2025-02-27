@@ -11,7 +11,13 @@ export namespace stringUtils {
   export const formatBusinessNameForURL = (name: string) => {
     return name
       .toLowerCase()
-      .replace(/[^a-zA-Z\s]/g, "") // Remove non-letter characters (no numbers or special symbols)
+      .replace(/[áàâãäå]/g, "a")
+      .replace(/[éèêë]/g, "e")
+      .replace(/[íìîï]/g, "i")
+      .replace(/[óòôõö]/g, "o")
+      .replace(/[úùûü]/g, "u")
+      .replace(/[ç]/g, "c")
+      .replace(/[^a-z\s]/g, "") // Remove non-letter characters (no numbers or special symbols)
       .replace(/\s+/g, "-"); // Replace spaces with hyphens
   };
 }

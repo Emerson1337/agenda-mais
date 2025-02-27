@@ -49,6 +49,7 @@ export function SignUpForm({ className }: UserAuthFormProps) {
       await mutateAsync({
         ...signUpForm,
         username: formattedName,
+        businessName: signUpForm.username,
         recaptchaToken,
       });
       router.push("/login");

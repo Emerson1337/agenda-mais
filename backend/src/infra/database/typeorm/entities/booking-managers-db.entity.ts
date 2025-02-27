@@ -19,6 +19,9 @@ export class BookingManagersMDB
   username: string;
 
   @Column({ type: 'string' })
+  businessName: string;
+
+  @Column({ type: 'string' })
   firstName: string;
 
   @Column({ nullable: true, type: 'string' })

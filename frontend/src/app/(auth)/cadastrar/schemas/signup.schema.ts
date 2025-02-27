@@ -14,4 +14,6 @@ export const SignUpSchema = z
     path: ["confirmPassword"],
   });
 
-export type ISignUpRequest = z.infer<typeof SignUpSchema>;
+export type ISignUpRequest = z.infer<typeof SignUpSchema> & {
+  businessName: string;
+};

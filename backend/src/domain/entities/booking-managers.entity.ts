@@ -8,6 +8,7 @@ import { ThemePalettesEnum } from './enums/theme-palettes.enum';
 export class BookingManagers extends BaseEntity {
   welcomeMessage?: string;
   username: string;
+  businessName: string;
   firstName: string;
   lastName?: string;
   email: string;
